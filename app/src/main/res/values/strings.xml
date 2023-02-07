@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">Healther</string>
+    <string name="water_tracking_title">Водный баланс</string>
+    <string name="go_back_cd">Вернуться назад</string>
+    <string name="water_tracking_history_title">История баланса</string>
+    <string name="create_water_track_title">Создание записи</string>
+    <string name="enter_milliliters_count_label">Пожалуйста, введите ниже количество выпитой воды в миллилитрах</string>
+    <string name="enter_milliliters_count_hint">Введите количество выпитой воды…</string>
+    <string name="enter_drink_type_hint">Выберите тип напитка…</string>
+    <string name="welcome_label">Добро пожаловать</string>
+    <string name="before_we_start_label">Перед тем, как мы начнём, ты можешь заполнить информацию о себе, которая поможет приложению работать корректно, например, чтобы по твоим показателям рассчитать ежедневную норму воды.</string>
+    <string name="lets_start">Давай заполним!</string>
+    <string name="skip_fill_info_label">Хочу заполнить это позже</string>
+    <string name="start_label_cd">Начать</string>
+    <string name="gender_title">Ваш пол</string>
+    <string name="gender_label">Выбери свой гендер для более точных расчётов.</string>
+    <string name="next_label">Далее</string>
+    <string name="gender_description">Ваш гендер нужен для различных рассчётов в приложении, например рассчёта нормы потребляемой воды.</string>
+    <string name="your_weight_label">Ваш вес</string>
+    <string name="weight_label">Выберите ваш вес в килограммах.</string>
+    <string name="your_exercise_stress">Занятия спортом</string>
+    <string name="exercise_stress_label">Сколько часов в день вы занимаетесь спортом или другими физическими нагрузками?</string>
+    <string name="water_label">Вода</string>
+    <string name="tea_label">Чай</string>
+    <string name="coffee_label">Кофе</string>
+    <string name="beer_label">Пиво</string>
+    <string name="juice_label">Сок</string>
+    <string name="soda_label">Газировка</string>
+    <string name="soup_label">Суп</string>
+    <string name="milk_label">Молоко</string>
+    <string name="save_label">Сохранить запись</string>
+    <string name="tap_to_add_record">Нажмите, чтобы добавить запись!</string>
 </resources>

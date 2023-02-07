@@ -13,8 +13,10 @@ object Dependencies {
         const val preferences = "1.2.0"
         const val playCore = "1.10.3"
         const val dataStore = "1.0.0"
+        const val protobuf = "3.17.3"
         const val activityCompose = "1.6.1"
         const val composeBom = "2022.10.00"
+        const val numberPicker = "1.0.3"
     }
 
     const val room = "androidx.room:room-runtime:${Versions.room}"
@@ -33,7 +35,7 @@ object Dependencies {
     const val playCore = "com.google.android.play:core:${Versions.playCore}"
 
     const val preferences = "androidx.preference:preference-ktx:${Versions.preferences}"
-    const val dataStore = "androidx.datastore:datastore:${Versions.dataStore}"
+    const val dataStore = "androidx.datastore:datastore-preferences:${Versions.dataStore}"
 
     const val composeNavigation = "androidx.navigation:navigation-compose:${Versions.navigation}"
     const val activityCompose = "androidx.activity:activity-compose:${Versions.activityCompose}"
@@ -41,9 +43,12 @@ object Dependencies {
     const val composeUi = "androidx.compose.ui:ui"
     const val composeGraphics = "androidx.compose.ui:ui-graphics"
     const val composeTooling = "androidx.compose.ui:ui-tooling-preview"
+    const val debugTooling = "androidx.compose.ui:ui-tooling"
     const val composeMaterial = "androidx.compose.material3:material3"
     const val lifecycleViewModelKtx =
         "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.lifecycleCompose}"
+
+    const val numberPicker = "com.chargemap.compose:numberpicker:${Versions.numberPicker}"
 }
 
 fun DependencyHandler.addCommonAndroid() {
@@ -76,6 +81,8 @@ fun DependencyHandler.addCompose() {
     implementation(Dependencies.composeUi)
     implementation(Dependencies.composeGraphics)
     implementation(Dependencies.composeMaterial)
-    implementation(Dependencies.composeTooling)
     implementation(Dependencies.composeNavigation)
+    implementation(Dependencies.composeTooling)
+    debugImplementation(Dependencies.debugTooling)
+    implementation(Dependencies.numberPicker)
 }
