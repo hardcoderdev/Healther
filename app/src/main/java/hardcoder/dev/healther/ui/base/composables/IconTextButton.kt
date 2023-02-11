@@ -15,11 +15,12 @@ import hardcoder.dev.healther.R
 
 @Composable
 fun IconTextButton(
+    modifier: Modifier = Modifier,
     iconResourceId: ImageVector,
     @StringRes labelResId: Int,
     onClick: () -> Unit,
 ) {
-    Button(onClick = { onClick() }, modifier = Modifier.fillMaxWidth()) {
+    Button(onClick = { onClick() }, modifier = modifier.fillMaxWidth()) {
         Text(
             text = stringResource(id = labelResId),
             textAlign = TextAlign.Center,

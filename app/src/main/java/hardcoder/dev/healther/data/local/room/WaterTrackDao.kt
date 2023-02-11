@@ -23,4 +23,7 @@ interface WaterTrackDao {
 
     @Query("SELECT * FROM waterTracks WHERE time BETWEEN :startTime AND :endTime")
     fun getWaterTracksForDay(startTime: Long, endTime: Long): Flow<List<WaterTrack>>
+
+    @Query("SELECT * FROM waterTracks WHERE id == :id")
+    fun getWaterTrackById(id: Int): WaterTrack
 }

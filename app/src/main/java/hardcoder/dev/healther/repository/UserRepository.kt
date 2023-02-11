@@ -3,6 +3,7 @@ package hardcoder.dev.healther.repository
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -16,6 +17,7 @@ class UserRepository(private val context: Context) {
     private val PREFERENCE_WEIGHT_KEY = intPreferencesKey(WEIGHT_KEY)
     private val PREFERENCE_EXERCISE_STRESS_TIME_KEY = intPreferencesKey(EXERCISE_STRESS_KEY)
     private val PREFERENCE_GENDER_KEY = stringPreferencesKey(GENDER_KEY)
+    private val PREFERENCE_FIRST_LAUNCH_KEY = booleanPreferencesKey(FIRST_LAUNCH_KEY)
 
     val weight = context.userDataStore.data.map {
         it[PREFERENCE_WEIGHT_KEY] ?: 0
@@ -27,6 +29,10 @@ class UserRepository(private val context: Context) {
 
     val gender = context.userDataStore.data.map {
         it[PREFERENCE_GENDER_KEY]?.let { genderValue -> Gender.valueOf(genderValue) } ?: Gender.MALE
+    }
+
+    val isFirstLaunch = context.userDataStore.data.map {
+        it[PREFERENCE_FIRST_LAUNCH_KEY] ?: true
     }
 
     suspend fun updateWeight(weight: Int) {
@@ -47,9 +53,16 @@ class UserRepository(private val context: Context) {
         }
     }
 
+    suspend fun updateFirstLaunch(isFirstLaunch: Boolean) {
+        context.userDataStore.edit { userData ->
+            userData[PREFERENCE_FIRST_LAUNCH_KEY] = isFirstLaunch
+        }
+    }
+
     companion object {
         private const val WEIGHT_KEY = "USER_WEIGHT_KEY"
         private const val EXERCISE_STRESS_KEY = "USER_EXERCISE_STRESS_TIME_KEY"
         private const val GENDER_KEY = "USER_GENDER_KEY"
+        private const val FIRST_LAUNCH_KEY = "USER_FIRST_LAUNCH_KEY"
     }
 }

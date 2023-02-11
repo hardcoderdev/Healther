@@ -1,5 +1,6 @@
 package hardcoder.dev.healther.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.healther.repository.UserRepository
@@ -15,21 +16,22 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     val userData = combine(
         userRepository.weight,
         userRepository.exerciseStressTime,
-        userRepository.gender
-    ) { weight, stressTime, gender ->
-        UserState(
-            weight,
-            stressTime,
-            gender,
+        userRepository.gender,
+        userRepository.isFirstLaunch
+    ) { weight, stressTime, gender, isFirstLaunch ->
+        Log.d("dwdw", "$weight $stressTime ${gender.name} $isFirstLaunch")
+        FetchingState.Loaded(
+            UserState(
+                weight,
+                stressTime,
+                gender,
+                isFirstLaunch
+            )
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
-        initialValue = UserState(
-            weight = 0,
-            stressTime = 0,
-            gender = Gender.MALE
-        )
+        initialValue = FetchingState.Loading()
     )
 
     fun updateWeight(weight: Int) = viewModelScope.launch(Dispatchers.IO) {
@@ -44,9 +46,19 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
         userRepository.updateExerciseStressTime(exerciseStressTime)
     }
 
+    fun updateFirstLaunch() = viewModelScope.launch(Dispatchers.IO) {
+        userRepository.updateFirstLaunch(isFirstLaunch = false)
+    }
+
     class UserState(
         val weight: Int,
         val stressTime: Int,
-        val gender: Gender
+        val gender: Gender,
+        val isFirstLaunch: Boolean
     )
+
+    sealed class FetchingState {
+        class Loading() : FetchingState()
+        class Loaded(val userState: UserState) : FetchingState()
+    }
 }

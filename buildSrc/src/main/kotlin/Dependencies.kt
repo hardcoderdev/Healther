@@ -13,10 +13,12 @@ object Dependencies {
         const val preferences = "1.2.0"
         const val playCore = "1.10.3"
         const val dataStore = "1.0.0"
-        const val protobuf = "3.17.3"
         const val activityCompose = "1.6.1"
         const val composeBom = "2022.10.00"
         const val numberPicker = "1.0.3"
+        const val composeCalendar = "1.0.2"
+        const val composeMaterialDialogs = "0.8.1-rc"
+        const val coreDesugaring = "2.0.0"
     }
 
     const val room = "androidx.room:room-runtime:${Versions.room}"
@@ -45,16 +47,25 @@ object Dependencies {
     const val composeTooling = "androidx.compose.ui:ui-tooling-preview"
     const val debugTooling = "androidx.compose.ui:ui-tooling"
     const val composeMaterial = "androidx.compose.material3:material3"
+
     const val lifecycleViewModelKtx =
         "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.lifecycleCompose}"
 
     const val numberPicker = "com.chargemap.compose:numberpicker:${Versions.numberPicker}"
+    const val composeCalendar =
+        "io.github.boguszpawlowski.composecalendar:composecalendar:${Versions.composeCalendar}"
+    const val composeCalendarDateTime =
+        "io.github.boguszpawlowski.composecalendar:kotlinx-datetime:${Versions.composeCalendar}"
+    const val composeMaterialDialogs =
+        "io.github.vanpra.compose-material-dialogs:datetime:${Versions.composeMaterialDialogs}"
+    const val coreDesugaring = "com.android.tools:desugar_jdk_libs:${Versions.coreDesugaring}"
 }
 
 fun DependencyHandler.addCommonAndroid() {
     implementation(Dependencies.coreKtx)
     implementation(Dependencies.lifecycleViewModelKtx)
     implementation(Dependencies.playCore)
+    coreLibraryDesugaring(Dependencies.coreDesugaring)
 }
 
 fun DependencyHandler.addData() {
@@ -85,4 +96,7 @@ fun DependencyHandler.addCompose() {
     implementation(Dependencies.composeTooling)
     debugImplementation(Dependencies.debugTooling)
     implementation(Dependencies.numberPicker)
+    implementation(Dependencies.composeCalendar)
+    implementation(Dependencies.composeCalendarDateTime)
+    implementation(Dependencies.composeMaterialDialogs)
 }

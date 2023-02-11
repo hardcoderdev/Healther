@@ -29,5 +29,15 @@
     <string name="soup_label">Суп</string>
     <string name="milk_label">Молоко</string>
     <string name="save_label">Сохранить запись</string>
-    <string name="tap_to_add_record">Нажмите, чтобы добавить запись!</string>
+    <string name="delete_track_cd">Удалить запись</string>
+    <string name="detail_history">Подробная история</string>
+    <string name="milliliters_format">%d мл</string>
+    <string name="add_water_track_cd">Добавить запись воды</string>
+    <string name="empty_history_day_label">В этот день вы не добавляли записей.</string>
+    <string name="select_date_time_hint">Вы хотите добавить запись на другой день? Воспользуйтесь кнопкой ниже.</string>
+    <string name="select_day_label">Выбрать дату</string>
+    <string name="select_option">Выбрать</string>
+    <string name="cancel_option">Отмена</string>
+    <string name="select_water_track_date">Выберите дату приёма воды</string>
+    <string name="update_water_track_title">Обновить запись</string>
 </resources>

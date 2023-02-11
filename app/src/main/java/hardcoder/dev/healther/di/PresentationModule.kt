@@ -3,22 +3,25 @@ package hardcoder.dev.healther.di
 import hardcoder.dev.healther.ui.UserViewModel
 import hardcoder.dev.healther.ui.screens.waterTracking.WaterTrackingViewModel
 import hardcoder.dev.healther.ui.screens.waterTracking.create.SaveWaterTrackViewModel
+import hardcoder.dev.healther.ui.screens.waterTracking.history.WaterTrackingHistoryViewModel
 
 class PresentationModule(
-    private val databaseModule: DatabaseModule,
     private val logicModule: LogicModule,
     private val repositoryModule: RepositoryModule
 ) {
 
     fun createWaterTrackingViewModel() = WaterTrackingViewModel(
-        waterTrackDao = databaseModule.waterTrackDao,
-        waterPercentageResolver = logicModule.waterPercentageResolver,
+        waterTrackRepository = repositoryModule.waterTrackRepository,
         waterIntakeResolver = logicModule.waterIntakeResolver
     )
 
     fun createSaveWaterTrackViewModel() = SaveWaterTrackViewModel(
-        waterTrackDao = databaseModule.waterTrackDao,
+        waterTrackRepository = repositoryModule.waterTrackRepository,
         waterPercentageResolver = logicModule.waterPercentageResolver
+    )
+
+    fun createWaterTrackingHistoryViewModel() = WaterTrackingHistoryViewModel(
+        waterTrackRepository = repositoryModule.waterTrackRepository
     )
 
     fun createUserViewModel() = UserViewModel(

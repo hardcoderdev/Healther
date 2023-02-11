@@ -10,9 +10,11 @@ class App : Application() {
 
     val presentationModule by lazy {
         PresentationModule(
-            DatabaseModule(this),
             LogicModule(),
-            RepositoryModule(this)
+            RepositoryModule(
+                this,
+                DatabaseModule(this)
+            )
         )
     }
 
