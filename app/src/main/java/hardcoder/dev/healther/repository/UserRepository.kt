@@ -8,10 +8,16 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import hardcoder.dev.healther.ui.screens.welcome.Gender
+import hardcoder.dev.healther.ui.screens.setUpFlow.gender.Gender
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
-class UserRepository(private val context: Context) {
+class UserRepository(
+    private val context: Context,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) {
 
     private val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
     private val PREFERENCE_WEIGHT_KEY = intPreferencesKey(WEIGHT_KEY)
@@ -36,26 +42,34 @@ class UserRepository(private val context: Context) {
     }
 
     suspend fun updateWeight(weight: Int) {
-        context.userDataStore.edit { userData ->
-            userData[PREFERENCE_WEIGHT_KEY] = weight
+        withContext(dispatcher) {
+            context.userDataStore.edit { userData ->
+                userData[PREFERENCE_WEIGHT_KEY] = weight
+            }
         }
     }
 
     suspend fun updateExerciseStressTime(exerciseStressTime: Int) {
-        context.userDataStore.edit { userData ->
-            userData[PREFERENCE_EXERCISE_STRESS_TIME_KEY] = exerciseStressTime
+        withContext(dispatcher) {
+            context.userDataStore.edit { userData ->
+                userData[PREFERENCE_EXERCISE_STRESS_TIME_KEY] = exerciseStressTime
+            }
         }
     }
 
     suspend fun updateGender(gender: Gender) {
-        context.userDataStore.edit { userData ->
-            userData[PREFERENCE_GENDER_KEY] = gender.name
+        withContext(dispatcher) {
+            context.userDataStore.edit { userData ->
+                userData[PREFERENCE_GENDER_KEY] = gender.name
+            }
         }
     }
 
     suspend fun updateFirstLaunch(isFirstLaunch: Boolean) {
-        context.userDataStore.edit { userData ->
-            userData[PREFERENCE_FIRST_LAUNCH_KEY] = isFirstLaunch
+        withContext(dispatcher) {
+            context.userDataStore.edit { userData ->
+                userData[PREFERENCE_FIRST_LAUNCH_KEY] = isFirstLaunch
+            }
         }
     }
 

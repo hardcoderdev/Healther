@@ -4,28 +4,40 @@ import hardcoder.dev.healther.R
 import hardcoder.dev.healther.data.local.room.WaterTrackDao
 import hardcoder.dev.healther.data.local.room.entities.DrinkType
 import hardcoder.dev.healther.data.local.room.entities.WaterTrack
-import hardcoder.dev.healther.ui.screens.waterTracking.create.Drink
+import hardcoder.dev.healther.ui.base.composables.Drink
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
-class WaterTrackRepository(private val waterTrackDao: WaterTrackDao) {
+class WaterTrackRepository(
+    private val waterTrackDao: WaterTrackDao,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) {
 
     suspend fun insert(waterTrack: WaterTrack) {
-        waterTrackDao.insert(waterTrack)
+        withContext(dispatcher) {
+            waterTrackDao.insert(waterTrack)
+        }
     }
 
     suspend fun update(waterTrack: WaterTrack) {
-        waterTrackDao.update(waterTrack)
+        withContext(dispatcher) {
+            waterTrackDao.update(waterTrack)
+        }
     }
 
     suspend fun delete(waterTrack: WaterTrack) {
-        waterTrackDao.delete(waterTrack)
+        withContext(dispatcher) {
+            waterTrackDao.delete(waterTrack)
+        }
     }
 
     fun getAllWaterTracks(startTime: Long, endTime: Long): Flow<List<WaterTrack>> {
-        return waterTrackDao.getWaterTracksForDay(startTime, endTime)
+        return waterTrackDao.getWaterTracksByDayRange(startTime, endTime)
     }
 
-    suspend fun getWaterTrackById(id: Int): WaterTrack {
+    fun getWaterTrackById(id: Int): Flow<WaterTrack> {
         return waterTrackDao.getWaterTrackById(id)
     }
 

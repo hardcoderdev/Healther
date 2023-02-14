@@ -1,4 +1,4 @@
-package hardcoder.dev.healther.ui.screens.welcome
+package hardcoder.dev.healther.ui.screens.setUpFlow.weight
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -16,10 +16,7 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -32,34 +29,50 @@ import hardcoder.dev.healther.R
 import hardcoder.dev.healther.ui.base.LocalPresentationModule
 import hardcoder.dev.healther.ui.base.composables.IconTextButton
 import hardcoder.dev.healther.ui.base.composables.ScaffoldWrapper
+import hardcoder.dev.healther.ui.base.composables.TopBarConfig
+import hardcoder.dev.healther.ui.base.composables.TopBarType
 
 @Composable
 fun EnterWeightScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
+    val presentationModule = LocalPresentationModule.current
+
+    val enterWeightViewModel = viewModel {
+        presentationModule.createEnterWeightViewModel()
+    }
+    val state = enterWeightViewModel.state.collectAsState()
+
     ScaffoldWrapper(
-        titleResId = R.string.your_weight_label,
-        content = { EnterWeightContent(onGoForward = onGoForward) },
-        onGoBack = onGoBack
+        content = {
+            EnterWeightContent(
+                state = state.value,
+                onGoForward = onGoForward,
+                onUpdateWeight = {
+                    enterWeightViewModel.updateWeight(it)
+                }
+            )
+        },
+        topBarConfig = TopBarConfig(
+            type = TopBarType.TopBarWithNavigationBack(
+                titleResId = R.string.enterWeight_title_topBar,
+                onGoBack = onGoBack
+            )
+        )
     )
 }
 
 @Composable
-fun EnterWeightContent(onGoForward: () -> Unit) {
-    val presentationModule = LocalPresentationModule.current
-
-    val userViewModel = viewModel {
-        presentationModule.createUserViewModel()
-    }
-
+fun EnterWeightContent(
+    onUpdateWeight: (Int) -> Unit,
+    onGoForward: () -> Unit,
+    state: EnterWeightViewModel.State
+) {
     Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxSize()
     ) {
-
-        var pickerValue by remember { mutableStateOf(0) }
-
         Text(
-            text = stringResource(id = R.string.weight_label),
+            text = stringResource(id = R.string.enterWeight_enterYourWeightInKg_text),
             style = MaterialTheme.typography.headlineSmall
         )
         Spacer(modifier = Modifier.height(32.dp))
@@ -69,13 +82,11 @@ fun EnterWeightContent(onGoForward: () -> Unit) {
             horizontalArrangement = Arrangement.Center
         ) {
             NumberPicker(
-                value = pickerValue,
+                value = state.weight,
                 range = MINIMUM_WEIGHT..MAXIMUM_WEIGHT,
                 dividersColor = MaterialTheme.colorScheme.primary,
                 textStyle = MaterialTheme.typography.titleLarge,
-                onValueChange = {
-                    pickerValue = it
-                },
+                onValueChange = onUpdateWeight,
                 modifier = Modifier.weight(1.8f)
             )
             Spacer(modifier = Modifier.width(32.dp))
@@ -90,11 +101,8 @@ fun EnterWeightContent(onGoForward: () -> Unit) {
         Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
             iconResourceId = Icons.Default.Done,
-            labelResId = R.string.next_label,
-            onClick = {
-                userViewModel.updateWeight(pickerValue)
-                onGoForward()
-            }
+            labelResId = R.string.enterWeight_next_button,
+            onClick = onGoForward
         )
     }
 }

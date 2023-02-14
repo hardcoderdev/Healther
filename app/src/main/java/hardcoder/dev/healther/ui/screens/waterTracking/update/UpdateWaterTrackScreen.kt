@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package hardcoder.dev.healther.ui.screens.waterTracking.create
+package hardcoder.dev.healther.ui.screens.waterTracking.update
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
@@ -19,7 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -43,32 +44,33 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
 
 @Composable
-fun SaveWaterTrackScreen(
+fun UpdateWaterTrackScreen(
+    waterTrackId: Int,
     onGoBack: () -> Unit,
     onSaved: () -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel {
-        presentationModule.createSaveWaterTrackViewModel()
+        presentationModule.createUpdateWaterTrackViewModel(waterTrackId)
     }
     val state = viewModel.state.collectAsState()
 
     ScaffoldWrapper(
         content = {
-            SaveWaterTrackContent(
-                state = state,
+            UpdateWaterTrackContent(
+                state = state.value,
                 updateWaterDrunk = { viewModel.updateWaterDrunk(it) },
                 updateSelectedDate = { viewModel.updateSelectedDate(it) },
                 updateSelectedDrink = { viewModel.updateSelectedDrink(it) },
-                createWaterTrack = {
-                    viewModel.createWaterTrack()
+                updateWaterTrack = {
+                    viewModel.updateWaterTrack()
                     onSaved()
                 }
             )
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.saveWaterTrack_create_title_topBar,
+                titleResId = if (waterTrackId != -1) R.string.saveWaterTrack_update_title_topBar else R.string.saveWaterTrack_create_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -76,17 +78,22 @@ fun SaveWaterTrackScreen(
 }
 
 @Composable
-fun SaveWaterTrackContent(
-    createWaterTrack: () -> Unit,
+fun UpdateWaterTrackContent(
+    updateWaterTrack: () -> Unit,
     updateSelectedDrink: (Drink) -> Unit,
     updateSelectedDate: (LocalDate) -> Unit,
     updateWaterDrunk: (Int) -> Unit,
-    state: State<SaveWaterTrackViewModel.State>
+    state: UpdateWaterTrackViewModel.State
 ) {
     val countRegex = "[0-9]{0,9}$".toRegex()
     val dateDialogState = rememberMaterialDialogState()
     val timeDialogState = rememberMaterialDialogState()
-    val millilitersCount = state.value.millilitersCount
+    val millilitersCount = state.millilitersCount
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(key1 = state.selectedDrink) {
+        listState.animateScrollToItem(state.drinks.indexOf(state.selectedDrink))
+    }
 
     Column(
         modifier = Modifier.padding(16.dp)
@@ -126,13 +133,14 @@ fun SaveWaterTrackContent(
         )
         Spacer(modifier = Modifier.height(16.dp))
         LazyRow(
+            state = listState,
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(state.value.drinks) { drink ->
+            items(state.drinks) { drink ->
                 DrinkItem(
                     drink = drink,
-                    selectedDrink = state.value.selectedDrink,
+                    selectedDrink = state.selectedDrink,
                     onUpdateSelectedDrink = updateSelectedDrink
                 )
             }
@@ -151,8 +159,8 @@ fun SaveWaterTrackContent(
         Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
             iconResourceId = Icons.Default.Done,
-            labelResId = R.string.saveWaterTrack_saveEntry_button,
-            onClick = createWaterTrack
+            labelResId = R.string.saveWaterTrack_updateEntry_button,
+            onClick = updateWaterTrack
         )
         MaterialDialog(
             dialogState = dateDialogState,

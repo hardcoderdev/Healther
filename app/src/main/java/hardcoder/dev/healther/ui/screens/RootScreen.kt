@@ -1,5 +1,6 @@
 package hardcoder.dev.healther.ui.screens
 
+import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -7,94 +8,118 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import hardcoder.dev.healther.ui.screens.dashboard.DashboardScreen
+import hardcoder.dev.healther.ui.screens.launch.SplashScreen
+import hardcoder.dev.healther.ui.screens.setUpFlow.exerciseStress.EnterExerciseStressScreen
+import hardcoder.dev.healther.ui.screens.setUpFlow.gender.SelectGenderScreen
+import hardcoder.dev.healther.ui.screens.setUpFlow.weight.EnterWeightScreen
+import hardcoder.dev.healther.ui.screens.setUpFlow.welcome.WelcomeScreen
 import hardcoder.dev.healther.ui.screens.waterTracking.WaterTrackingScreen
 import hardcoder.dev.healther.ui.screens.waterTracking.create.SaveWaterTrackScreen
 import hardcoder.dev.healther.ui.screens.waterTracking.history.WaterTrackingHistoryScreen
-import hardcoder.dev.healther.ui.screens.welcome.EnterExerciseStressScreen
-import hardcoder.dev.healther.ui.screens.welcome.EnterWeightScreen
-import hardcoder.dev.healther.ui.screens.welcome.SelectGenderScreen
-import hardcoder.dev.healther.ui.screens.welcome.WelcomeScreen
-import hardcoder.dev.healther.ui.screens.welcome.WhereWeGo
+import hardcoder.dev.healther.ui.screens.waterTracking.update.UpdateWaterTrackScreen
 
 @Composable
 fun RootScreen() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "where_we_go") {
-        composable(route = "where_we_go") {
-            WhereWeGo(
+    NavHost(navController = navController, startDestination = Screen.Root.route) {
+        composable(route = Screen.Root.route) {
+            SplashScreen(
                 onStart = {
-                    navController.navigate("welcome")
+                    navController.navigate(Screen.Welcome.route)
                 },
                 onSkip = {
-                    navController.navigate("water_tracking_feature")
+                    navController.navigate(Screen.WaterTrackingFeature.route)
                 }
             )
         }
-        composable(route = "welcome") {
+        composable(route = Screen.Welcome.route) {
             WelcomeScreen(
                 onStart = {
-                    navController.navigate("select_gender")
+                    navController.navigate(Screen.SelectGender.route)
                 }
             )
         }
-        composable(route = "select_gender") {
+        composable(route = Screen.SelectGender.route) {
             SelectGenderScreen(
                 onGoBack = navController::popBackStack,
                 onGoForward = {
-                    navController.navigate("enter_weight")
+                    navController.navigate(Screen.EnterWeight.route)
                 }
             )
         }
-        composable(route = "enter_weight") {
+        composable(route = Screen.EnterWeight.route) {
             EnterWeightScreen(
                 onGoBack = navController::popBackStack,
                 onGoForward = {
-                    navController.navigate("enter_exercise_stress")
+                    navController.navigate(Screen.EnterExerciseStress.route)
                 }
             )
         }
-        composable(route = "enter_exercise_stress") {
+        composable(route = Screen.EnterExerciseStress.route) {
             EnterExerciseStressScreen(
                 onGoBack = navController::popBackStack,
                 onGoForward = {
-                    navController.navigate("water_tracking_feature")
+                    navController.navigate(Screen.WaterTrackingFeature.route)
                 }
             )
         }
-        composable(route = "dashboard") {
+        composable(route = Screen.Dashboard.route) {
             DashboardScreen()
         }
-        composable(route = "water_tracking_feature") {
+        composable(route = Screen.WaterTrackingFeature.route) {
             WaterTrackingScreen(
                 onGoBack = navController::popBackStack,
                 onSaveWaterTrack = {
-                    navController.navigate("save_water_track/-1")
+                    navController.navigate(Screen.SaveWaterTrack.route)
                 },
                 onUpdateWaterTrack = {
-                    navController.navigate("save_water_track/${it.id}")
+                    navController.navigate(Screen.UpdateWaterTrack.buildRoute(it.id))
                 },
                 onHistoryDetails = {
-                    navController.navigate("water_tracking_history")
+                    navController.navigate(Screen.WaterTrackingHistory.route)
                 }
             )
         }
-        composable(
-            route = "save_water_track/{waterTrackId}",
-            arguments = listOf(navArgument("waterTrackId") { type = NavType.IntType })
-        ) { backStackEntry ->
+        composable(route = Screen.SaveWaterTrack.route) {
             SaveWaterTrackScreen(
-                waterTrackId = backStackEntry.arguments?.getInt("waterTrackId") ?: -1,
                 onGoBack = navController::popBackStack,
                 onSaved = navController::popBackStack
             )
         }
-        composable(route = "water_tracking_history") {
+        composable(
+            route = Screen.UpdateWaterTrack.route,
+            arguments = Screen.UpdateWaterTrack.arguments
+        ) { backStackEntry ->
+            UpdateWaterTrackScreen(
+                waterTrackId = Screen.UpdateWaterTrack.getWaterTrackId(backStackEntry.arguments),
+                onGoBack = navController::popBackStack,
+                onSaved = navController::popBackStack
+            )
+        }
+        composable(route = Screen.WaterTrackingHistory.route) {
             WaterTrackingHistoryScreen(
                 onGoBack = navController::popBackStack,
                 onTrackUpdate = {
-                    navController.navigate("save_water_track/${it.id}")
+                    navController.navigate(Screen.UpdateWaterTrack.buildRoute(it.id))
                 }
             )
         }
+    }
+}
+
+sealed class Screen(val route: String) {
+    object Root : Screen("splash")
+    object Welcome : Screen("welcome")
+    object SelectGender : Screen("select_gender")
+    object EnterWeight : Screen("enter_weight")
+    object EnterExerciseStress : Screen("enter_exercise_stress")
+    object Dashboard : Screen("dashboard")
+    object WaterTrackingFeature : Screen("water_tracking_feature")
+    object WaterTrackingHistory : Screen("water_tracking_history")
+    object SaveWaterTrack : Screen("save_water_track")
+    object UpdateWaterTrack : Screen("update_water_track/{waterTrackId}") {
+        fun buildRoute(waterTrackId: Int) = "update_water_track/$waterTrackId"
+        fun getWaterTrackId(arguments: Bundle?) = requireNotNull(arguments).getInt("waterTrackId")
+        val arguments = listOf(navArgument("waterTrackId") { type = NavType.IntType })
     }
 }

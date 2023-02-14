@@ -1,4 +1,7 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@file:OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class
+)
 
 package hardcoder.dev.healther.ui.screens.waterTracking.history
 
@@ -39,57 +42,77 @@ import hardcoder.dev.healther.data.local.room.entities.WaterTrack
 import hardcoder.dev.healther.logic.DrinkTypeImageResolver
 import hardcoder.dev.healther.ui.base.LocalPresentationModule
 import hardcoder.dev.healther.ui.base.composables.ScaffoldWrapper
+import hardcoder.dev.healther.ui.base.composables.TopBarConfig
+import hardcoder.dev.healther.ui.base.composables.TopBarType
+import hardcoder.dev.healther.ui.base.extensions.getEndOfDay
+import hardcoder.dev.healther.ui.base.extensions.getStartOfDay
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
+import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
-import java.time.LocalDate
 
 @Composable
 fun WaterTrackingHistoryScreen(
     onGoBack: () -> Unit,
     onTrackUpdate: (WaterTrack) -> Unit
 ) {
-    ScaffoldWrapper(
-        titleResId = R.string.detail_history,
-        content = { WaterTrackingContent(onTrackUpdate = onTrackUpdate) },
-        onGoBack = onGoBack
-    )
-}
-
-@Composable
-fun WaterTrackingContent(onTrackUpdate: (WaterTrack) -> Unit) {
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel {
         presentationModule.createWaterTrackingHistoryViewModel()
     }
 
     val state = viewModel.state.collectAsState()
+
+    ScaffoldWrapper(
+        content = {
+            WaterTrackingContent(
+                state = state.value,
+                onTrackUpdate = onTrackUpdate,
+                onTrackDelete = viewModel::deleteTrack,
+                onFetchWaterTracks = {
+                    viewModel.selectRange(it.getStartOfDay()..it.getEndOfDay())
+                }
+            )
+        },
+        topBarConfig = TopBarConfig(
+            type = TopBarType.TopBarWithNavigationBack(
+                titleResId = R.string.waterHistory_title_topBar,
+                onGoBack = onGoBack
+            )
+        )
+    )
+}
+
+@Composable
+fun WaterTrackingContent(
+    state: WaterTrackingHistoryViewModel.State,
+    onFetchWaterTracks: (LocalDate) -> Unit,
+    onTrackUpdate: (WaterTrack) -> Unit,
+    onTrackDelete: (WaterTrack) -> Unit
+) {
     val calendarState = rememberSelectableCalendarState(initialSelectionMode = SelectionMode.Single)
 
     if (calendarState.selectionState.selection.isNotEmpty()) {
-        viewModel.fetchWaterTracks(
-            calendarState.selectionState.selection.first().toKotlinLocalDate()
-        )
+        onFetchWaterTracks(calendarState.selectionState.selection.first().toKotlinLocalDate())
     } else {
-        viewModel.fetchWaterTracks(LocalDate.now().toKotlinLocalDate())
+        onFetchWaterTracks(LocalDate.now())
     }
 
     Column(Modifier.padding(16.dp)) {
         SelectableCalendar(calendarState = calendarState)
         Spacer(modifier = Modifier.height(16.dp))
         WaterTracksHistory(
-            waterTracks = state.value,
+            waterTracks = state.drinks,
             onTrackUpdate = onTrackUpdate,
-            onTrackDelete = { waterTrack ->
-                viewModel.deleteTrack(waterTrack)
-            }
+            onTrackDelete = onTrackDelete
         )
     }
 }
 
 @Composable
-fun WaterTracksHistory(
+private fun WaterTracksHistory(
     waterTracks: List<WaterTrack>,
     onTrackDelete: (WaterTrack) -> Unit,
     onTrackUpdate: (WaterTrack) -> Unit
@@ -110,7 +133,7 @@ fun WaterTracksHistory(
         }
     } else {
         Text(
-            text = stringResource(id = R.string.empty_history_day_label),
+            text = stringResource(id = R.string.waterHistory_emptyDayHistory_text),
             style = MaterialTheme.typography.titleMedium
         )
     }
@@ -154,7 +177,7 @@ fun WaterTrackItem(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(
-                        id = R.string.milliliters_format,
+                        id = R.string.waterTrackItem_formatMilliliters_text,
                         waterTrack.millilitersCount
                     ),
                     style = MaterialTheme.typography.titleMedium
@@ -166,7 +189,7 @@ fun WaterTrackItem(
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(id = R.string.delete_track_cd)
+                    contentDescription = stringResource(id = R.string.waterTrackItem_deleteTrack_iconContentDescription)
                 )
             }
         }

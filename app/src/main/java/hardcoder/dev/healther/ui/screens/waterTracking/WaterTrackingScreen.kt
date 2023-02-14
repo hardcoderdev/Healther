@@ -1,4 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class
+)
 
 package hardcoder.dev.healther.ui.screens.waterTracking
 
@@ -28,6 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,12 +43,13 @@ import hardcoder.dev.healther.R
 import hardcoder.dev.healther.data.local.room.entities.DrinkType
 import hardcoder.dev.healther.data.local.room.entities.WaterTrack
 import hardcoder.dev.healther.logic.DrinkTypeImageResolver
-import hardcoder.dev.healther.ui.UserViewModel
 import hardcoder.dev.healther.ui.base.LocalPresentationModule
 import hardcoder.dev.healther.ui.base.composables.Action
 import hardcoder.dev.healther.ui.base.composables.ActionConfig
 import hardcoder.dev.healther.ui.base.composables.CircularProgressBar
 import hardcoder.dev.healther.ui.base.composables.ScaffoldWrapper
+import hardcoder.dev.healther.ui.base.composables.TopBarConfig
+import hardcoder.dev.healther.ui.base.composables.TopBarType
 
 @Composable
 fun WaterTrackingScreen(
@@ -58,59 +62,49 @@ fun WaterTrackingScreen(
     val waterTrackingViewModel = viewModel {
         presentationModule.createWaterTrackingViewModel()
     }
-
     val state = waterTrackingViewModel.state.collectAsState()
 
-    ScaffoldWrapper(
-        titleResId = R.string.water_tracking_title,
-        content = {
-            WaterTrackingContent(onUpdateWaterTrack = onUpdateWaterTrack)
-        },
-        onGoBack = onGoBack,
-        onFabClick = if (state.value.millisCount < state.value.dailyWaterIntake) onSaveWaterTrack else null,
-        actionConfig = ActionConfig(
-            actions = listOf(
-                Action(iconImageVector = Icons.Filled.MoreVert, onActionClick = onHistoryDetails)
+    when (val fetchingState = state.value) {
+        is WaterTrackingViewModel.LoadingState.Loaded -> {
+            val dailyWaterIntake = fetchingState.state.dailyWaterIntake
+            val millisCount = fetchingState.state.millisCount
+
+            ScaffoldWrapper(
+                content = {
+                    WaterTrackingContent(
+                        state = fetchingState.state,
+                        onUpdateWaterTrack = onUpdateWaterTrack,
+                        onDeleteWaterTrack = waterTrackingViewModel::delete
+                    )
+                },
+                onFabClick = if (millisCount < dailyWaterIntake) onSaveWaterTrack else null,
+                actionConfig = ActionConfig(
+                    actions = listOf(
+                        Action(iconImageVector = Icons.Filled.MoreVert, onActionClick = onHistoryDetails)
+                    )
+                ),
+                topBarConfig = TopBarConfig(
+                    type = TopBarType.TopBarWithNavigationBack(
+                        titleResId = R.string.waterTrackingFeature_title_topBar,
+                        onGoBack = onGoBack
+                    )
+                )
             )
-        )
-    )
+        }
+        is WaterTrackingViewModel.LoadingState.Loading -> {
+            /* no-op */
+        }
+    }
 }
 
 @Composable
 fun WaterTrackingContent(
-    onUpdateWaterTrack: (WaterTrack) -> Unit
+    onUpdateWaterTrack: (WaterTrack) -> Unit,
+    onDeleteWaterTrack: (WaterTrack) -> Unit,
+    state: WaterTrackingViewModel.State
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val waterTrackingViewModel = viewModel {
-        presentationModule.createWaterTrackingViewModel()
-    }
-
-    val userViewModel = viewModel {
-        presentationModule.createUserViewModel()
-    }
-
-    userViewModel.updateFirstLaunch()
-
-    val userDataState = userViewModel.userData.collectAsState()
-    when (val state = userDataState.value) {
-        is UserViewModel.FetchingState.Loaded -> {
-            waterTrackingViewModel.resolveDailyWaterIntake(
-                state.userState.weight,
-                state.userState.stressTime,
-                state.userState.gender
-            )
-        }
-        is UserViewModel.FetchingState.Loading -> {
-            /* no-op */
-        }
-    }
-
-
-    val waterTrackingState = waterTrackingViewModel.state.collectAsState()
-    val dailyWaterIntake = waterTrackingState.value.dailyWaterIntake
-    val millisCount = waterTrackingState.value.millisCount
-
-    waterTrackingViewModel.fetchWaterTracks()
+    val millisCount = state.millisCount
+    val dailyWaterIntake = state.dailyWaterIntake
 
     Column(
         modifier = Modifier
@@ -119,7 +113,7 @@ fun WaterTrackingContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CircularProgressBar(
-            number = millisCount,
+            number = state.millisCount,
             percentage = if (millisCount != 0) {
                 (millisCount.toFloat() / dailyWaterIntake.toFloat())
                     .toString().substring(0, 3).toFloat()
@@ -135,10 +129,10 @@ fun WaterTrackingContent(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
-            items(waterTrackingState.value.waterTracks) { track ->
+            items(state.waterTracks) { track ->
                 WaterTrackItem(
                     waterTrack = track,
-                    onDelete = { waterTrackingViewModel.delete(it) },
+                    onDelete = onDeleteWaterTrack,
                     onUpdate = onUpdateWaterTrack
                 )
             }
@@ -152,7 +146,9 @@ fun WaterTrackItem(
     onDelete: (WaterTrack) -> Unit,
     onUpdate: (WaterTrack) -> Unit
 ) {
-    val drinkTypeImageResolver = DrinkTypeImageResolver()
+    val drinkTypeImageResolver = remember {
+         DrinkTypeImageResolver()
+    }
 
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, pressedElevation = 16.dp),
@@ -184,7 +180,7 @@ fun WaterTrackItem(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(
-                        id = R.string.milliliters_format,
+                        id = R.string.waterTrackItem_formatMilliliters_text,
                         waterTrack.millilitersCount
                     ),
                     style = MaterialTheme.typography.titleMedium
@@ -196,7 +192,7 @@ fun WaterTrackItem(
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(id = R.string.delete_track_cd)
+                    contentDescription = stringResource(id = R.string.waterTrackItem_deleteTrack_iconContentDescription)
                 )
             }
         }

@@ -19,6 +19,7 @@ object Dependencies {
         const val composeCalendar = "1.0.2"
         const val composeMaterialDialogs = "0.8.1-rc"
         const val coreDesugaring = "2.0.0"
+        const val splashScreen = "1.0.0"
     }
 
     const val room = "androidx.room:room-runtime:${Versions.room}"
@@ -59,12 +60,15 @@ object Dependencies {
     const val composeMaterialDialogs =
         "io.github.vanpra.compose-material-dialogs:datetime:${Versions.composeMaterialDialogs}"
     const val coreDesugaring = "com.android.tools:desugar_jdk_libs:${Versions.coreDesugaring}"
+
+    const val splashScreen = "androidx.core:core-splashscreen:${Versions.splashScreen}"
 }
 
 fun DependencyHandler.addCommonAndroid() {
     implementation(Dependencies.coreKtx)
     implementation(Dependencies.lifecycleViewModelKtx)
     implementation(Dependencies.playCore)
+    implementation(Dependencies.splashScreen)
     coreLibraryDesugaring(Dependencies.coreDesugaring)
 }
 

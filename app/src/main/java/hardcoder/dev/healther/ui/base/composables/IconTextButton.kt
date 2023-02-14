@@ -19,8 +19,9 @@ fun IconTextButton(
     iconResourceId: ImageVector,
     @StringRes labelResId: Int,
     onClick: () -> Unit,
+    @StringRes contentDescription: Int? = null
 ) {
-    Button(onClick = { onClick() }, modifier = modifier.fillMaxWidth()) {
+    Button(onClick = onClick, modifier = modifier.fillMaxWidth()) {
         Text(
             text = stringResource(id = labelResId),
             textAlign = TextAlign.Center,
@@ -29,7 +30,7 @@ fun IconTextButton(
         )
         Icon(
             imageVector = iconResourceId,
-            contentDescription = stringResource(id = R.string.start_label_cd),
+            contentDescription = contentDescription?.let { stringResource(id = it) },
             modifier = Modifier.weight(0.3f)
         )
     }

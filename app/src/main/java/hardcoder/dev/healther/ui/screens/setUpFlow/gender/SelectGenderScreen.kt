@@ -1,4 +1,4 @@
-package hardcoder.dev.healther.ui.screens.welcome
+package hardcoder.dev.healther.ui.screens.setUpFlow.gender
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -19,10 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,37 +29,52 @@ import hardcoder.dev.healther.R
 import hardcoder.dev.healther.ui.base.LocalPresentationModule
 import hardcoder.dev.healther.ui.base.composables.IconTextButton
 import hardcoder.dev.healther.ui.base.composables.ScaffoldWrapper
+import hardcoder.dev.healther.ui.base.composables.TopBarConfig
+import hardcoder.dev.healther.ui.base.composables.TopBarType
 
 enum class Gender { MALE, FEMALE }
 
 @Composable
 fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
+    val presentationModule = LocalPresentationModule.current
+
+    val selectGenderViewModel = viewModel {
+        presentationModule.createSelectGenderViewModel()
+    }
+    val state = selectGenderViewModel.state.collectAsState()
+
     ScaffoldWrapper(
-        titleResId = R.string.gender_title,
-        content = { SelectGenderContent(onGoForward = onGoForward) },
-        onGoBack = onGoBack
+        content = {
+            SelectGenderContent(
+                state = state.value,
+                onGoForward = onGoForward,
+                onUpdateGender = {
+                    selectGenderViewModel.updateGender(it)
+                }
+            )
+        },
+        topBarConfig = TopBarConfig(
+            type = TopBarType.TopBarWithNavigationBack(
+                titleResId = R.string.selectGender_title_topBar,
+                onGoBack = onGoBack
+            )
+        )
     )
 }
 
 @Composable
-fun SelectGenderContent(onGoForward: () -> Unit) {
-    val presentationModule = LocalPresentationModule.current
-
-    val userViewModel = viewModel {
-        presentationModule.createUserViewModel()
-    }
-
-    var selectedGender by remember {
-        mutableStateOf(Gender.MALE)
-    }
-
+fun SelectGenderContent(
+    state: SelectGenderViewModel.State,
+    onUpdateGender: (Gender) -> Unit,
+    onGoForward: () -> Unit
+) {
     Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxSize()
     ) {
         Text(
-            text = stringResource(id = R.string.gender_label),
+            text = stringResource(id = R.string.selectGender_selectYourGender_text),
             style = MaterialTheme.typography.headlineSmall
         )
         Spacer(modifier = Modifier.height(32.dp))
@@ -74,13 +85,13 @@ fun SelectGenderContent(onGoForward: () -> Unit) {
                     .fillMaxWidth()
                     .height(200.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                border = if (selectedGender == Gender.MALE) BorderStroke(
+                border = if (state.gender == Gender.MALE) BorderStroke(
                     width = 3.dp,
                     color = MaterialTheme.colorScheme.primary
                 ) else null
             ) {
                 IconButton(
-                    onClick = { selectedGender = Gender.MALE },
+                    onClick = { onUpdateGender(Gender.MALE) },
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Image(
@@ -96,13 +107,13 @@ fun SelectGenderContent(onGoForward: () -> Unit) {
                     .fillMaxWidth()
                     .height(200.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                border = if (selectedGender == Gender.FEMALE) BorderStroke(
+                border = if (state.gender == Gender.FEMALE) BorderStroke(
                     width = 3.dp,
                     color = MaterialTheme.colorScheme.primary
                 ) else null
             ) {
                 IconButton(
-                    onClick = { selectedGender = Gender.FEMALE },
+                    onClick = { onUpdateGender(Gender.FEMALE) },
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Image(
@@ -114,17 +125,14 @@ fun SelectGenderContent(onGoForward: () -> Unit) {
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = stringResource(id = R.string.gender_description),
+            text = stringResource(id = R.string.selectGender_forWhatGender_text),
             style = MaterialTheme.typography.titleLarge
         )
         Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
             iconResourceId = Icons.Default.Done,
-            labelResId = R.string.next_label,
-            onClick = {
-                userViewModel.updateGender(selectedGender)
-                onGoForward()
-            }
+            labelResId = R.string.selectGender_next_button,
+            onClick = onGoForward
         )
     }
 }

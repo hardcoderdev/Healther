@@ -1,43 +1,54 @@
 <resources>
     <string name="app_name">Healther</string>
-    <string name="water_tracking_title">Водный баланс</string>
-    <string name="go_back_cd">Вернуться назад</string>
-    <string name="water_tracking_history_title">История баланса</string>
-    <string name="create_water_track_title">Создание записи</string>
-    <string name="enter_milliliters_count_label">Пожалуйста, введите ниже количество выпитой воды в миллилитрах</string>
-    <string name="enter_milliliters_count_hint">Введите количество выпитой воды…</string>
-    <string name="enter_drink_type_hint">Выберите тип напитка…</string>
-    <string name="welcome_label">Добро пожаловать</string>
-    <string name="before_we_start_label">Перед тем, как мы начнём, ты можешь заполнить информацию о себе, которая поможет приложению работать корректно, например, чтобы по твоим показателям рассчитать ежедневную норму воды.</string>
-    <string name="lets_start">Давай заполним!</string>
-    <string name="skip_fill_info_label">Хочу заполнить это позже</string>
-    <string name="start_label_cd">Начать</string>
-    <string name="gender_title">Ваш пол</string>
-    <string name="gender_label">Выбери свой гендер для более точных расчётов.</string>
-    <string name="next_label">Далее</string>
-    <string name="gender_description">Ваш гендер нужен для различных рассчётов в приложении, например рассчёта нормы потребляемой воды.</string>
-    <string name="your_weight_label">Ваш вес</string>
-    <string name="weight_label">Выберите ваш вес в килограммах.</string>
-    <string name="your_exercise_stress">Занятия спортом</string>
-    <string name="exercise_stress_label">Сколько часов в день вы занимаетесь спортом или другими физическими нагрузками?</string>
-    <string name="water_label">Вода</string>
-    <string name="tea_label">Чай</string>
-    <string name="coffee_label">Кофе</string>
-    <string name="beer_label">Пиво</string>
-    <string name="juice_label">Сок</string>
-    <string name="soda_label">Газировка</string>
-    <string name="soup_label">Суп</string>
-    <string name="milk_label">Молоко</string>
-    <string name="save_label">Сохранить запись</string>
-    <string name="delete_track_cd">Удалить запись</string>
-    <string name="detail_history">Подробная история</string>
-    <string name="milliliters_format">%d мл</string>
-    <string name="add_water_track_cd">Добавить запись воды</string>
-    <string name="empty_history_day_label">В этот день вы не добавляли записей.</string>
-    <string name="select_date_time_hint">Вы хотите добавить запись на другой день? Воспользуйтесь кнопкой ниже.</string>
-    <string name="select_day_label">Выбрать дату</string>
-    <string name="select_option">Выбрать</string>
-    <string name="cancel_option">Отмена</string>
-    <string name="select_water_track_date">Выберите дату приёма воды</string>
-    <string name="update_water_track_title">Обновить запись</string>
+
+    <string name="scaffoldWrapper_goBack_iconContentDescription">Вернуться назад</string>
+    <string name="scaffoldWrapper_addWaterTrack_iconContentDescription">Добавить запись воды</string>
+
+    <string name="waterTrackingFeature_title_topBar">Водный баланс</string>
+
+    <string name="waterTrackItem_deleteTrack_iconContentDescription">Удалить запись</string>
+    <string name="waterTrackItem_formatMilliliters_text">%d мл</string>
+    <string name="waterTrackItem_waterDrinkType_text">Вода</string>
+    <string name="waterTrackItem_teaDrinkType_text">Чай</string>
+    <string name="waterTrackItem_coffeeDrinkType_text">Кофе</string>
+    <string name="waterTrackItem_beerDrinkType_text">Пиво</string>
+    <string name="waterTrackItem_juiceDrinkType_text">Сок</string>
+    <string name="waterTrackItem_sodaDrinkType_text">Газировка</string>
+    <string name="waterTrackItem_soupDrinkType_text">Суп</string>
+    <string name="waterTrackItem_milkDrinkType_text">Молоко</string>
+
+    <string name="welcome_title_topBar">Добро пожаловать</string>
+    <string name="welcome_beforeWeStart_text">Перед тем, как мы начнём, ты можешь заполнить информацию о себе, которая поможет приложению работать корректно, например, чтобы по твоим показателям рассчитать ежедневную норму воды.</string>
+    <string name="welcome_letsStart_button">Давай заполним!</string>
+    <string name="welcome_start_iconContentDescription">Начать</string>
+
+    <string name="enterWeight_title_topBar">Ваш вес</string>
+    <string name="enterWeight_enterYourWeightInKg_text">Выберите ваш вес в килограммах.</string>
+    <string name="enterWeight_next_button">Далее</string>
+
+    <string name="enterExerciseStress_title_topBar">Занятия спортом</string>
+    <string name="enterExerciseStress_enterExerciseStressTime_text">Сколько часов в день вы занимаетесь спортом или другими физическими нагрузками?</string>
+    <string name="enterExerciseStress_next_button">Далее</string>
+
+    <string name="selectGender_title_topBar">Ваш пол</string>
+    <string name="selectGender_forWhatGender_text">Ваш гендер нужен для различных рассчётов в приложении, например рассчёта нормы потребляемой воды.</string>
+    <string name="selectGender_selectYourGender_text">Выбери свой гендер для более точных расчётов.</string>
+    <string name="selectGender_next_button">Далее</string>
+
+    <string name="waterHistory_title_topBar">Подробная история</string>
+    <string name="waterHistory_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
+
+    <string name="saveWaterTrack_enterMillilitersCount_text">Пожалуйста, введите ниже количество выпитой воды в миллилитрах</string>
+    <string name="saveWaterTrack_enterMillilitersCountHint_textField">Введите количество выпитой воды…</string>
+    <string name="saveWaterTrack_selectAnotherDate_text">Вы хотите добавить запись на другой день? Воспользуйтесь кнопкой ниже.</string>
+    <string name="saveWaterTrack_selectDate_datePickerDialogButton">Выбрать</string>
+    <string name="saveWaterTrack_cancel_datePickerDialogButton">Отмена</string>
+    <string name="saveWaterTrack_enterDrinkType_text">Выберите тип напитка…</string>
+    <string name="saveWaterTrack_saveEntry_button">Сохранить запись</string>
+    <string name="saveWaterTrack_updateEntry_button">Обновить запись</string>
+    <string name="saveWaterTrack_selectDateRange_button">Выбрать дату</string>
+    <string name="saveWaterTrack_selectDateTitle_datePicker">Выберите дату приёма воды</string>
+    <string name="saveWaterTrack_update_title_topBar">Обновить запись</string>
+    <string name="saveWaterTrack_create_title_topBar">Создание записи</string>
+
 </resources>
