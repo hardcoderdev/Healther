@@ -1,5 +1,6 @@
 package hardcoder.dev.healther.ui.screens.waterTracking.create
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.healther.R
@@ -24,39 +25,34 @@ class SaveWaterTrackViewModel(
 
     private val selectedDate = MutableStateFlow(LocalDate.now())
     private val millilitersDrunk = MutableStateFlow(0)
-    private val resolvedMillilitersDrunk = MutableStateFlow(0)
-    private val selectedDrink =
-        MutableStateFlow(Drink(type = DrinkType.WATER, image = R.drawable.water))
+    private val selectedDrink = MutableStateFlow(Drink(type = DrinkType.WATER, image = R.drawable.water))
+    private val drinkTypes = waterTrackRepository.getAllDrinkTypes()
 
     val state = combine(
         millilitersDrunk,
+        drinkTypes,
         selectedDrink
-    ) { millilitersDrunk, selectedDrink ->
+    ) { millilitersDrunk, drinkTypes, selectedDrink ->
         State(
             millilitersCount = millilitersDrunk,
-            drinks = waterTrackRepository.getAllDrinkTypes(),
+            drinks = drinkTypes,
             selectedDrink = selectedDrink
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
-            millilitersCount = 0,
-            drinks = waterTrackRepository.getAllDrinkTypes(),
+            millilitersCount = millilitersDrunk.value,
+            drinks = emptyList(),
             selectedDrink = selectedDrink.value
         )
     )
 
     fun createWaterTrack() = viewModelScope.launch {
-        resolvedMillilitersDrunk.value = waterPercentageResolver.resolve(
-            drinkType = selectedDrink.value.type,
-            millilitersDrunk = millilitersDrunk.value
-        )
-
         waterTrackRepository.insert(
             WaterTrack(
                 time = selectedDate.value.getStartOfDay(),
-                millilitersCount = resolvedMillilitersDrunk.value,
+                millilitersCount = millilitersDrunk.value,
                 drinkType = selectedDrink.value.type
             )
         )

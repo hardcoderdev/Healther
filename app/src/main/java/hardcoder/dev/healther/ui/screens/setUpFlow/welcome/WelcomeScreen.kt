@@ -31,7 +31,7 @@ fun WelcomeScreen(onStart: () -> Unit) {
 }
 
 @Composable
-fun WelcomeContent(onStart: () -> Unit) {
+private fun WelcomeContent(onStart: () -> Unit) {
     Column(
         modifier = Modifier
             .padding(16.dp)

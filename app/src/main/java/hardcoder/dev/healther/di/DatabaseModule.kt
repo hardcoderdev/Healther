@@ -17,6 +17,6 @@ class DatabaseModule(private val context: Context) {
     }
 
     val waterTrackDao by lazy {
-        appDatabase.waterTrackDao()
+        appDatabase.waterTrackDao
     }
 }

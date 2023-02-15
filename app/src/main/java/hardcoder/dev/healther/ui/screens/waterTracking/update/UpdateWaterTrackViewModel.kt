@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import hardcoder.dev.healther.R
 import hardcoder.dev.healther.data.local.room.entities.DrinkType
 import hardcoder.dev.healther.logic.DrinkTypeImageResolver
-import hardcoder.dev.healther.logic.WaterPercentageResolver
 import hardcoder.dev.healther.repository.WaterTrackRepository
 import hardcoder.dev.healther.ui.base.composables.Drink
 import hardcoder.dev.healther.ui.base.extensions.getStartOfDay
@@ -13,9 +12,7 @@ import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -24,15 +21,13 @@ import kotlinx.datetime.LocalDate
 class UpdateWaterTrackViewModel(
     private val waterTrackId: Int,
     private val waterTrackRepository: WaterTrackRepository,
-    private val drinkTypeImageResolver: DrinkTypeImageResolver,
-    private val waterPercentageResolver: WaterPercentageResolver
+    private val drinkTypeImageResolver: DrinkTypeImageResolver
 ) : ViewModel() {
 
     private val selectedDate = MutableStateFlow(LocalDate.now())
     private val millilitersDrunk = MutableStateFlow(0)
-    private val resolvedMillilitersDrunk = MutableStateFlow(0)
-    private val selectedDrink =
-        MutableStateFlow(Drink(type = DrinkType.WATER, image = R.drawable.water))
+    private val selectedDrink = MutableStateFlow(Drink(type = DrinkType.WATER, image = R.drawable.water))
+    private val drinkTypes = waterTrackRepository.getAllDrinkTypes()
 
     init {
         fillStateWithUpdatedTrack()
@@ -40,37 +35,34 @@ class UpdateWaterTrackViewModel(
 
     val state = combine(
         millilitersDrunk,
+        drinkTypes,
         selectedDrink
-    ) { millisDrunk, selectDrink ->
+    ) { millilitersDrunk, drinkTypes, selectedDrink ->
         State(
-            millilitersCount = millisDrunk,
-            drinks = waterTrackRepository.getAllDrinkTypes(),
-            selectedDrink = selectDrink
+            millilitersCount = millilitersDrunk,
+            drinks = drinkTypes,
+            selectedDrink = selectedDrink
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
-            millilitersCount = 0,
-            drinks = waterTrackRepository.getAllDrinkTypes(),
+            millilitersCount = millilitersDrunk.value,
+            drinks = emptyList(),
             selectedDrink = selectedDrink.value
         )
     )
 
     fun updateWaterTrack() = viewModelScope.launch {
-        waterTrackRepository.getWaterTrackById(waterTrackId)?.let {
-            resolvedMillilitersDrunk.value = waterPercentageResolver.resolve(
-                drinkType = selectedDrink.value.type,
-                millilitersDrunk = millilitersDrunk.value
-            )
-
-            val updatedTrack = it.first().copy(
-                time = selectedDate.value.getStartOfDay(),
-                millilitersCount = resolvedMillilitersDrunk.value,
-                drinkType = selectedDrink.value.type
-            )
-
-            waterTrackRepository.update(updatedTrack)
+        waterTrackRepository.getWaterTrackById(waterTrackId).onEach { waterTrack ->
+            waterTrack?.let {
+                val updatedTrack = it.copy(
+                    time = selectedDate.value.getStartOfDay(),
+                    millilitersCount = millilitersDrunk.value,
+                    drinkType = selectedDrink.value.type
+                )
+                waterTrackRepository.update(updatedTrack)
+            }
         }
     }
 

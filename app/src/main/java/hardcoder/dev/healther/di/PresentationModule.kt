@@ -1,6 +1,7 @@
 package hardcoder.dev.healther.di
 
-import hardcoder.dev.healther.ui.screens.launch.SplashViewModel
+import hardcoder.dev.healther.logic.DrinkTypeImageResolver
+import hardcoder.dev.healther.ui.screens.splash.SplashViewModel
 import hardcoder.dev.healther.ui.screens.setUpFlow.exerciseStress.EnterExerciseStressTimeViewModel
 import hardcoder.dev.healther.ui.screens.setUpFlow.gender.SelectGenderViewModel
 import hardcoder.dev.healther.ui.screens.setUpFlow.weight.EnterWeightViewModel
@@ -13,28 +14,9 @@ class PresentationModule(
     private val logicModule: LogicModule,
     private val repositoryModule: RepositoryModule
 ) {
-
-    fun createWaterTrackingViewModel() = WaterTrackingViewModel(
-        waterTrackRepository = repositoryModule.waterTrackRepository,
-        userRepository = repositoryModule.userRepository,
-        waterIntakeResolver = logicModule.waterIntakeResolver
-    )
-
-    fun createSaveWaterTrackViewModel() = SaveWaterTrackViewModel(
-        waterTrackRepository = repositoryModule.waterTrackRepository,
-        waterPercentageResolver = logicModule.waterPercentageResolver
-    )
-
-    fun createUpdateWaterTrackViewModel(waterTrackId: Int) = UpdateWaterTrackViewModel(
-        waterTrackId = waterTrackId,
-        waterTrackRepository = repositoryModule.waterTrackRepository,
-        waterPercentageResolver = logicModule.waterPercentageResolver,
-        drinkTypeImageResolver = logicModule.drinkTypeImageResolver
-    )
-
-    fun createWaterTrackingHistoryViewModel() = WaterTrackingHistoryViewModel(
-        waterTrackRepository = repositoryModule.waterTrackRepository
-    )
+    val drinkTypeImageResolver by lazy {
+        DrinkTypeImageResolver()
+    }
 
     fun createSplashViewModel() = SplashViewModel(
         userRepository = repositoryModule.userRepository
@@ -50,5 +32,26 @@ class PresentationModule(
 
     fun createEnterExerciseStressTimeViewModel() = EnterExerciseStressTimeViewModel(
         userRepository = repositoryModule.userRepository
+    )
+
+    fun createWaterTrackingViewModel() = WaterTrackingViewModel(
+        waterTrackRepository = repositoryModule.waterTrackRepository,
+        userRepository = repositoryModule.userRepository,
+        waterIntakeResolver = logicModule.waterIntakeResolver
+    )
+
+    fun createSaveWaterTrackViewModel() = SaveWaterTrackViewModel(
+        waterTrackRepository = repositoryModule.waterTrackRepository,
+        waterPercentageResolver = logicModule.waterPercentageResolver
+    )
+
+    fun createUpdateWaterTrackViewModel(waterTrackId: Int) = UpdateWaterTrackViewModel(
+        waterTrackId = waterTrackId,
+        waterTrackRepository = repositoryModule.waterTrackRepository,
+        drinkTypeImageResolver = drinkTypeImageResolver
+    )
+
+    fun createWaterTrackingHistoryViewModel() = WaterTrackingHistoryViewModel(
+        waterTrackRepository = repositoryModule.waterTrackRepository
     )
 }

@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import hardcoder.dev.healther.ui.screens.dashboard.DashboardScreen
-import hardcoder.dev.healther.ui.screens.launch.SplashScreen
+import hardcoder.dev.healther.ui.screens.splash.SplashScreen
 import hardcoder.dev.healther.ui.screens.setUpFlow.exerciseStress.EnterExerciseStressScreen
 import hardcoder.dev.healther.ui.screens.setUpFlow.gender.SelectGenderScreen
 import hardcoder.dev.healther.ui.screens.setUpFlow.weight.EnterWeightScreen
@@ -24,10 +24,10 @@ fun RootScreen() {
     NavHost(navController = navController, startDestination = Screen.Root.route) {
         composable(route = Screen.Root.route) {
             SplashScreen(
-                onStart = {
+                onStartSetUp = {
                     navController.navigate(Screen.Welcome.route)
                 },
-                onSkip = {
+                onNavigateToDashboard = {
                     navController.navigate(Screen.WaterTrackingFeature.route)
                 }
             )

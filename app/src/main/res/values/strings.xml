@@ -48,7 +48,7 @@
     <string name="saveWaterTrack_updateEntry_button">Обновить запись</string>
     <string name="saveWaterTrack_selectDateRange_button">Выбрать дату</string>
     <string name="saveWaterTrack_selectDateTitle_datePicker">Выберите дату приёма воды</string>
-    <string name="saveWaterTrack_update_title_topBar">Обновить запись</string>
+    <string name="saveWaterTrack_update_title_topBar">Обновление запись</string>
     <string name="saveWaterTrack_create_title_topBar">Создание записи</string>
 
 </resources>

@@ -61,7 +61,7 @@ fun EnterExerciseStressScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
 }
 
 @Composable
-fun EnterExerciseStressContent(
+private fun EnterExerciseStressContent(
     state: EnterExerciseStressTimeViewModel.State,
     onUpdateExerciseStressTime: (Int) -> Unit,
     onGoForward: () -> Unit

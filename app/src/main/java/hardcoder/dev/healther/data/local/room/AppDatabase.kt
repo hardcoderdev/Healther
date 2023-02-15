@@ -6,5 +6,5 @@ import hardcoder.dev.healther.data.local.room.entities.WaterTrack
 
 @Database(entities = [WaterTrack::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun waterTrackDao(): WaterTrackDao
+    abstract val waterTrackDao: WaterTrackDao
 }

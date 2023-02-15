@@ -10,13 +10,12 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import hardcoder.dev.healther.ui.screens.setUpFlow.gender.Gender
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class UserRepository(
     private val context: Context,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher
 ) {
 
     private val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")

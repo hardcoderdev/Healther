@@ -2,9 +2,9 @@ package hardcoder.dev.healther.ui.screens.waterTracking.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.healther.data.local.room.entities.WaterTrack
 import hardcoder.dev.healther.repository.WaterTrackRepository
 import hardcoder.dev.healther.ui.base.extensions.createRangeForCurrentDay
+import hardcoder.dev.healther.ui.screens.waterTracking.WaterTrackItem
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,14 +22,14 @@ class WaterTrackingHistoryViewModel(
     private val selectedRangeStateFlow =
         MutableStateFlow(LocalDate.now().createRangeForCurrentDay())
     val state = selectedRangeStateFlow.flatMapLatest { range ->
-        waterTrackRepository.getAllWaterTracks(range.first, range.last)
+        waterTrackRepository.getWaterTracksByDayRange(range)
     }.map {
         State(it)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
-            drinks = emptyList()
+            waterTrackItems = emptyList()
         )
     )
 
@@ -37,9 +37,9 @@ class WaterTrackingHistoryViewModel(
         selectedRangeStateFlow.value = range
     }
 
-    fun deleteTrack(waterTrack: WaterTrack) = viewModelScope.launch(Dispatchers.IO) {
-        waterTrackRepository.delete(waterTrack)
+    fun deleteTrack(waterTrackId: Int) = viewModelScope.launch(Dispatchers.IO) {
+        waterTrackRepository.delete(waterTrackId)
     }
 
-    data class State(val drinks: List<WaterTrack>)
+    data class State(val waterTrackItems: List<WaterTrackItem>)
 }

@@ -57,9 +57,9 @@ fun SaveWaterTrackScreen(
         content = {
             SaveWaterTrackContent(
                 state = state,
-                updateWaterDrunk = { viewModel.updateWaterDrunk(it) },
-                updateSelectedDate = { viewModel.updateSelectedDate(it) },
-                updateSelectedDrink = { viewModel.updateSelectedDrink(it) },
+                updateWaterDrunk = viewModel::updateWaterDrunk,
+                updateSelectedDate = viewModel::updateSelectedDate,
+                updateSelectedDrink = viewModel::updateSelectedDrink,
                 createWaterTrack = {
                     viewModel.createWaterTrack()
                     onSaved()
@@ -76,7 +76,7 @@ fun SaveWaterTrackScreen(
 }
 
 @Composable
-fun SaveWaterTrackContent(
+private fun SaveWaterTrackContent(
     createWaterTrack: () -> Unit,
     updateSelectedDrink: (Drink) -> Unit,
     updateSelectedDate: (LocalDate) -> Unit,

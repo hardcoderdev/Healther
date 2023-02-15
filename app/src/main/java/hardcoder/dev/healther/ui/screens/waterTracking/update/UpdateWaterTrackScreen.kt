@@ -2,6 +2,7 @@
 
 package hardcoder.dev.healther.ui.screens.waterTracking.update
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -59,9 +60,9 @@ fun UpdateWaterTrackScreen(
         content = {
             UpdateWaterTrackContent(
                 state = state.value,
-                updateWaterDrunk = { viewModel.updateWaterDrunk(it) },
-                updateSelectedDate = { viewModel.updateSelectedDate(it) },
-                updateSelectedDrink = { viewModel.updateSelectedDrink(it) },
+                updateWaterDrunk = viewModel::updateWaterDrunk,
+                updateSelectedDate = viewModel::updateSelectedDate,
+                updateSelectedDrink = viewModel::updateSelectedDrink,
                 updateWaterTrack = {
                     viewModel.updateWaterTrack()
                     onSaved()
@@ -70,7 +71,7 @@ fun UpdateWaterTrackScreen(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = if (waterTrackId != -1) R.string.saveWaterTrack_update_title_topBar else R.string.saveWaterTrack_create_title_topBar,
+                titleResId = R.string.saveWaterTrack_update_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -78,7 +79,7 @@ fun UpdateWaterTrackScreen(
 }
 
 @Composable
-fun UpdateWaterTrackContent(
+private fun UpdateWaterTrackContent(
     updateWaterTrack: () -> Unit,
     updateSelectedDrink: (Drink) -> Unit,
     updateSelectedDate: (LocalDate) -> Unit,

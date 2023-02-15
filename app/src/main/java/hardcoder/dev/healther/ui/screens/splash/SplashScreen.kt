@@ -1,4 +1,4 @@
-package hardcoder.dev.healther.ui.screens.launch
+package hardcoder.dev.healther.ui.screens.splash
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,7 +11,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.healther.ui.base.LocalPresentationModule
 
 @Composable
-fun SplashScreen(onStart: () -> Unit, onSkip: () -> Unit) {
+fun SplashScreen(onStartSetUp: () -> Unit, onNavigateToDashboard: () -> Unit) {
     val presentationModule = LocalPresentationModule.current
     val splashViewModel = viewModel {
         presentationModule.createSplashViewModel()
@@ -22,19 +22,19 @@ fun SplashScreen(onStart: () -> Unit, onSkip: () -> Unit) {
         mutableStateOf(false)
     }
 
-    when (val fetchingState = state.value) {
-        is SplashViewModel.FetchingState.Loaded -> {
-            LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(key1 = state.value) {
+        when (val fetchingState = state.value) {
+            is SplashViewModel.FetchingState.Loaded -> {
                 if (!fetchingState.state.isFirstLaunch) {
-                    onSkip()
+                    onNavigateToDashboard()
                 } else {
-                    onStart()
+                    onStartSetUp()
                 }
             }
-        }
 
-        is SplashViewModel.FetchingState.Loading -> {
-            /* no-op */
+            is SplashViewModel.FetchingState.Loading -> {
+                /* no-op */
+            }
         }
     }
 }

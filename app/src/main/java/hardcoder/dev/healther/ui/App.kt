@@ -13,6 +13,7 @@ class App : Application() {
             LogicModule(),
             RepositoryModule(
                 this,
+                LogicModule(),
                 DatabaseModule(this)
             )
         )

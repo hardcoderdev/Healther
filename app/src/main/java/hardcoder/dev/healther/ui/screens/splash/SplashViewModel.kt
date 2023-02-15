@@ -1,4 +1,4 @@
-package hardcoder.dev.healther.ui.screens.launch
+package hardcoder.dev.healther.ui.screens.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

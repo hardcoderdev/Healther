@@ -61,7 +61,7 @@ fun EnterWeightScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
 }
 
 @Composable
-fun EnterWeightContent(
+private fun EnterWeightContent(
     onUpdateWeight: (Int) -> Unit,
     onGoForward: () -> Unit,
     state: EnterWeightViewModel.State

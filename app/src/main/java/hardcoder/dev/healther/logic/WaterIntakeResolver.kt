@@ -6,10 +6,21 @@ import kotlin.math.roundToInt
 class WaterIntakeResolver {
 
     fun resolve(weight: Int, stressTime: Int, gender: Gender): Int {
-        val stressTimeMultiplier =
-            if (gender == Gender.MALE) 0.6 else 0.4
+        val stressTimeMultiplier = if (gender == Gender.MALE) {
+            MALE_STRESS_TIME_MULTIPLIER
+        } else {
+            FEMALE_STRESS_TIME_MULTIPLIER
+        }
+
         val dailyWaterIntakeInLiters =
-            ((weight * 0.03) + (stressTime * stressTimeMultiplier)).roundToInt()
-        return dailyWaterIntakeInLiters * 1000
+            ((weight * WEIGHT_MULTIPLIER) + (stressTime * stressTimeMultiplier)).roundToInt()
+        return dailyWaterIntakeInLiters * MILLILITERS_MULTIPLIER
+    }
+
+    private companion object {
+        private const val MALE_STRESS_TIME_MULTIPLIER = 0.6
+        private const val FEMALE_STRESS_TIME_MULTIPLIER = 0.6
+        private const val WEIGHT_MULTIPLIER = 0.03
+        private const val MILLILITERS_MULTIPLIER = 1000
     }
 }

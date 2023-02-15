@@ -63,7 +63,7 @@ fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
 }
 
 @Composable
-fun SelectGenderContent(
+private fun SelectGenderContent(
     state: SelectGenderViewModel.State,
     onUpdateGender: (Gender) -> Unit,
     onGoForward: () -> Unit

@@ -18,12 +18,12 @@ interface WaterTrackDao {
     @Update
     suspend fun update(waterTrack: WaterTrack)
 
-    @Delete
-    suspend fun delete(waterTrack: WaterTrack)
+    @Query("DELETE FROM waterTracks WHERE ID == :waterTrackId")
+    suspend fun delete(waterTrackId: Int)
 
-    @Query("SELECT * FROM waterTracks WHERE time BETWEEN :startTime AND :endTime")
-    fun getWaterTracksByDayRange(startTime: Long, endTime: Long): Flow<List<WaterTrack>>
+    @Query("SELECT * FROM waterTracks WHERE time BETWEEN :startOfDayTime AND :endOfDayTime")
+    fun getWaterTracksByDayRange(startOfDayTime: Long, endOfDayTime: Long): Flow<List<WaterTrack>>
 
     @Query("SELECT * FROM waterTracks WHERE id == :id")
-    fun getWaterTrackById(id: Int): Flow<WaterTrack>
+    fun getWaterTrackById(id: Int): Flow<WaterTrack?>
 }

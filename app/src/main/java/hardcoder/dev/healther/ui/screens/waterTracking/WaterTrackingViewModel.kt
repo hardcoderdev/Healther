@@ -1,9 +1,9 @@
 package hardcoder.dev.healther.ui.screens.waterTracking
 
-import android.util.Log
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.healther.data.local.room.entities.WaterTrack
 import hardcoder.dev.healther.logic.WaterIntakeResolver
 import hardcoder.dev.healther.repository.UserRepository
 import hardcoder.dev.healther.repository.WaterTrackRepository
@@ -20,6 +20,15 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
+data class WaterTrackItem(
+    val id: Int,
+    @StringRes val drinkNameResId: Int,
+    @DrawableRes val imageResId: Int,
+    val millilitersCount: Int,
+    val resolvedMillilitersCount: Int,
+    val timeInMillis: Long
+)
+
 class WaterTrackingViewModel(
     private val waterTrackRepository: WaterTrackRepository,
     private val userRepository: UserRepository,
@@ -28,7 +37,7 @@ class WaterTrackingViewModel(
 
     private val millilitersDrunk = MutableStateFlow(0)
     private val dailyWaterIntake = MutableStateFlow(0)
-    private val waterTracksList = MutableStateFlow<List<WaterTrack>>(emptyList())
+    private val waterTracksList = MutableStateFlow<List<WaterTrackItem>>(emptyList())
     private val weight = userRepository.weight.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -79,7 +88,7 @@ class WaterTrackingViewModel(
         val currentDay = LocalDate.now()
         val startOfCurrentDay = currentDay.getStartOfDay()
         val endOfCurrentDay = currentDay.getEndOfDay()
-        waterTrackRepository.getAllWaterTracks(startOfCurrentDay, endOfCurrentDay)
+        waterTrackRepository.getWaterTracksByDayRange(startOfCurrentDay..endOfCurrentDay)
             .collectLatest { waterTracks ->
                 val millilitersCount = waterTracks.sumOf { it.millilitersCount }
                 millilitersDrunk.value = millilitersCount
@@ -99,8 +108,8 @@ class WaterTrackingViewModel(
         )
     }
 
-    fun delete(waterTrack: WaterTrack) = viewModelScope.launch(Dispatchers.IO) {
-        waterTrackRepository.delete(waterTrack)
+    fun delete(waterTrackId: Int) = viewModelScope.launch(Dispatchers.IO) {
+        waterTrackRepository.delete(waterTrackId)
     }
 
     fun updateWaterDrunk(waterDrunkInMilliliters: Int) {
@@ -113,7 +122,7 @@ class WaterTrackingViewModel(
         val gender: Gender,
         val millisCount: Int,
         val dailyWaterIntake: Int,
-        val waterTracks: List<WaterTrack>
+        val waterTracks: List<WaterTrackItem>
     )
 
     sealed class LoadingState {
