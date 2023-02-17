@@ -4,8 +4,9 @@ import hardcoder.dev.healther.R
 import hardcoder.dev.healther.data.local.room.WaterTrackDao
 import hardcoder.dev.healther.data.local.room.entities.DrinkType
 import hardcoder.dev.healther.data.local.room.entities.WaterTrack
-import hardcoder.dev.healther.logic.DrinkTypeImageResolver
-import hardcoder.dev.healther.logic.WaterPercentageResolver
+import hardcoder.dev.healther.logic.resolvers.DrinkTypeImageResolver
+import hardcoder.dev.healther.logic.resolvers.WaterPercentageResolver
+import hardcoder.dev.healther.logic.validators.WaterTrackMillilitersValidator
 import hardcoder.dev.healther.ui.base.composables.Drink
 import hardcoder.dev.healther.ui.base.extensions.mapItems
 import hardcoder.dev.healther.ui.screens.waterTracking.WaterTrackItem
@@ -16,8 +17,6 @@ import kotlinx.coroutines.withContext
 
 class WaterTrackRepository(
     private val waterTrackDao: WaterTrackDao,
-    private val drinkTypeImageResolver: DrinkTypeImageResolver,
-    private val waterPercentageResolver: WaterPercentageResolver,
     private val dispatcher: CoroutineDispatcher
 ) {
 
@@ -39,21 +38,8 @@ class WaterTrackRepository(
         }
     }
 
-    fun getWaterTracksByDayRange(dayRange: LongRange): Flow<List<WaterTrackItem>> {
+    fun getWaterTracksByDayRange(dayRange: LongRange): Flow<List<WaterTrack>> {
         return waterTrackDao.getWaterTracksByDayRange(dayRange.first, dayRange.last)
-            .mapItems { waterTrackEntity ->
-                WaterTrackItem(
-                    id = waterTrackEntity.id,
-                    timeInMillis = waterTrackEntity.time,
-                    drinkNameResId = waterTrackEntity.drinkType.transcriptionResId,
-                    imageResId = drinkTypeImageResolver.resolve(waterTrackEntity.drinkType),
-                    millilitersCount = waterTrackEntity.millilitersCount,
-                    resolvedMillilitersCount = waterPercentageResolver.resolve(
-                        drinkType = waterTrackEntity.drinkType,
-                        millilitersDrunk = waterTrackEntity.millilitersCount
-                    )
-                )
-            }
     }
 
     fun getWaterTrackById(id: Int): Flow<WaterTrack?> {

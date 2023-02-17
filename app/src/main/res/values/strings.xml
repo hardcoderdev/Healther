@@ -7,7 +7,7 @@
     <string name="waterTrackingFeature_title_topBar">Водный баланс</string>
 
     <string name="waterTrackItem_deleteTrack_iconContentDescription">Удалить запись</string>
-    <string name="waterTrackItem_formatMilliliters_text">%d мл</string>
+    <string name="waterTrackItem_formatMilliliters_text">%d (%d) мл</string>
     <string name="waterTrackItem_waterDrinkType_text">Вода</string>
     <string name="waterTrackItem_teaDrinkType_text">Чай</string>
     <string name="waterTrackItem_coffeeDrinkType_text">Кофе</string>
@@ -38,17 +38,28 @@
     <string name="waterHistory_title_topBar">Подробная история</string>
     <string name="waterHistory_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
 
-    <string name="saveWaterTrack_enterMillilitersCount_text">Пожалуйста, введите ниже количество выпитой воды в миллилитрах</string>
-    <string name="saveWaterTrack_enterMillilitersCountHint_textField">Введите количество выпитой воды…</string>
-    <string name="saveWaterTrack_selectAnotherDate_text">Вы хотите добавить запись на другой день? Воспользуйтесь кнопкой ниже.</string>
+    <string name="saveWaterTrack_create_title_topBar">Создание записи</string>
+    <string name="saveWaterTrack_selectDateRange_button">Выбрать дату</string>
+    <string name="saveWaterTrack_enterMillilitersCount_text">Введите количество выпитого напитка (в мл)</string>
+    <string name="saveWaterTrack_enterMillilitersCountHint_textField">Количество выпитого напитка…</string>
+    <string name="saveWaterTrack_selectAnotherDate_text">Уже пили воду раньше?\nВы можете изменить дату.</string>
+
+    <string name="saveWaterTrack_selectDateTitle_datePicker">Выбор даты</string>
     <string name="saveWaterTrack_selectDate_datePickerDialogButton">Выбрать</string>
     <string name="saveWaterTrack_cancel_datePickerDialogButton">Отмена</string>
     <string name="saveWaterTrack_enterDrinkType_text">Выберите тип напитка…</string>
-    <string name="saveWaterTrack_saveEntry_button">Сохранить запись</string>
-    <string name="saveWaterTrack_updateEntry_button">Обновить запись</string>
-    <string name="saveWaterTrack_selectDateRange_button">Выбрать дату</string>
-    <string name="saveWaterTrack_selectDateTitle_datePicker">Выберите дату приёма воды</string>
-    <string name="saveWaterTrack_update_title_topBar">Обновление запись</string>
-    <string name="saveWaterTrack_create_title_topBar">Создание записи</string>
+    <string name="saveWaterTrack_saveEntry_button">Создать запись</string>
 
+    <string name="updateWaterTrack_updateEntry_button">Обновить запись</string>
+    <string name="updateWaterTrack_update_title_topBar">Обновление записи</string>
+    <string name="updateWaterTrack_selectDateRange_button">Выбрать дату</string>
+    <string name="updateWaterTrack_selectDateTitle_datePicker">Выбор даты</string>
+    <string name="updateWaterTrack_enterMillilitersCount_text">Введите количество выпитого напитка (в мл)</string>
+    <string name="updateWaterTrack_enterMillilitersCountHint_textField">Количество выпитого напитка…</string>
+    <string name="updateWaterTrack_selectAnotherDate_text">Уже пили воду раньше?\nВы можете изменить дату.</string>
+    <string name="updateWaterTrack_selectDate_datePickerDialogButton">Выбрать</string>
+    <string name="updateWaterTrack_cancel_datePickerDialogButton">Отмена</string>
+    <string name="updateWaterTrack_enterDrinkType_text">Выберите тип напитка…</string>
+    <string name="saveWaterTrack_selectedDateFormat_text">Выбранная дата: %s</string>
+    <string name="updateWaterTrack_selectedDateFormat_text">Выбранная дата: %s</string>
 </resources>

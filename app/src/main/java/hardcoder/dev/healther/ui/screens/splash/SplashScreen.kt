@@ -3,10 +3,6 @@ package hardcoder.dev.healther.ui.screens.splash
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.healther.ui.base.LocalPresentationModule
 
@@ -17,10 +13,6 @@ fun SplashScreen(onStartSetUp: () -> Unit, onNavigateToDashboard: () -> Unit) {
         presentationModule.createSplashViewModel()
     }
     val state = splashViewModel.state.collectAsState()
-
-    var splashVisibility by remember {
-        mutableStateOf(false)
-    }
 
     LaunchedEffect(key1 = state.value) {
         when (val fetchingState = state.value) {

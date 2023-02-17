@@ -1,6 +1,6 @@
 package hardcoder.dev.healther.di
 
-import hardcoder.dev.healther.logic.DrinkTypeImageResolver
+import hardcoder.dev.healther.logic.resolvers.DrinkTypeImageResolver
 import hardcoder.dev.healther.ui.screens.splash.SplashViewModel
 import hardcoder.dev.healther.ui.screens.setUpFlow.exerciseStress.EnterExerciseStressTimeViewModel
 import hardcoder.dev.healther.ui.screens.setUpFlow.gender.SelectGenderViewModel
@@ -48,7 +48,7 @@ class PresentationModule(
     fun createUpdateWaterTrackViewModel(waterTrackId: Int) = UpdateWaterTrackViewModel(
         waterTrackId = waterTrackId,
         waterTrackRepository = repositoryModule.waterTrackRepository,
-        drinkTypeImageResolver = drinkTypeImageResolver
+        drinkTypeImageResolver = logicModule.drinkTypeImageResolver
     )
 
     fun createWaterTrackingHistoryViewModel() = WaterTrackingHistoryViewModel(

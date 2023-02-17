@@ -23,7 +23,7 @@ class RepositoryModule(
         WaterTrackRepository(
             waterTrackDao = databaseModule.waterTrackDao,
             waterPercentageResolver = logicModule.waterPercentageResolver,
-            drinkTypeImageResolver = logicModule.drinkTypeImageResolver,
+            drinkTypeImageResolver = drinkTypeImageResolver,
             dispatcher = Dispatchers.IO
         )
     }

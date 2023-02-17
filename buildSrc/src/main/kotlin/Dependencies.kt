@@ -60,15 +60,12 @@ object Dependencies {
     const val composeMaterialDialogs =
         "io.github.vanpra.compose-material-dialogs:datetime:${Versions.composeMaterialDialogs}"
     const val coreDesugaring = "com.android.tools:desugar_jdk_libs:${Versions.coreDesugaring}"
-
-    const val splashScreen = "androidx.core:core-splashscreen:${Versions.splashScreen}"
 }
 
 fun DependencyHandler.addCommonAndroid() {
     implementation(Dependencies.coreKtx)
     implementation(Dependencies.lifecycleViewModelKtx)
     implementation(Dependencies.playCore)
-    implementation(Dependencies.splashScreen)
     coreLibraryDesugaring(Dependencies.coreDesugaring)
 }
 

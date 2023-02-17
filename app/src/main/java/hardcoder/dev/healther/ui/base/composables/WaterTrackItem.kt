@@ -28,10 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.healther.R
-import hardcoder.dev.healther.data.local.room.entities.DrinkType
-import hardcoder.dev.healther.data.local.room.entities.WaterTrack
-import hardcoder.dev.healther.logic.DrinkTypeImageResolver
-import hardcoder.dev.healther.ui.base.LocalPresentationModule
 import hardcoder.dev.healther.ui.screens.waterTracking.WaterTrackItem
 
 @Composable
@@ -71,7 +67,8 @@ fun WaterTrackItem(
                 Text(
                     text = stringResource(
                         id = R.string.waterTrackItem_formatMilliliters_text,
-                        waterTrackItem.millilitersCount
+                        waterTrackItem.millilitersCount,
+                        waterTrackItem.resolvedMillilitersCount
                     ),
                     style = MaterialTheme.typography.titleMedium
                 )

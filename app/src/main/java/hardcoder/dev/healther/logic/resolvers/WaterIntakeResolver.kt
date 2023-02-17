@@ -1,4 +1,4 @@
-package hardcoder.dev.healther.logic
+package hardcoder.dev.healther.logic.resolvers
 
 import hardcoder.dev.healther.ui.screens.setUpFlow.gender.Gender
 import kotlin.math.roundToInt
