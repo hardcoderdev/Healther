@@ -1,7 +1,6 @@
 package hardcoder.dev.healther.data.local.room
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -21,7 +20,7 @@ interface WaterTrackDao {
     @Query("DELETE FROM waterTracks WHERE ID == :waterTrackId")
     suspend fun delete(waterTrackId: Int)
 
-    @Query("SELECT * FROM waterTracks WHERE time BETWEEN :startOfDayTime AND :endOfDayTime")
+    @Query("SELECT * FROM waterTracks WHERE date BETWEEN :startOfDayTime AND :endOfDayTime")
     fun getWaterTracksByDayRange(startOfDayTime: Long, endOfDayTime: Long): Flow<List<WaterTrack>>
 
     @Query("SELECT * FROM waterTracks WHERE id == :id")

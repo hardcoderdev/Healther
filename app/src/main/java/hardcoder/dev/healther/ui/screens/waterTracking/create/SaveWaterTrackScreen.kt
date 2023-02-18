@@ -1,7 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
-
 package hardcoder.dev.healther.ui.screens.waterTracking.create
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,12 +13,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.rounded.DateRange
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -33,21 +30,23 @@ import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import hardcoder.dev.healther.R
+import hardcoder.dev.healther.logic.validators.IncorrectMillilitersInput
 import hardcoder.dev.healther.ui.base.LocalPresentationModule
 import hardcoder.dev.healther.ui.base.composables.ButtonStyles
 import hardcoder.dev.healther.ui.base.composables.Drink
 import hardcoder.dev.healther.ui.base.composables.DrinkItem
+import hardcoder.dev.healther.ui.base.composables.ErrorText
+import hardcoder.dev.healther.ui.base.composables.FilledTextField
 import hardcoder.dev.healther.ui.base.composables.IconTextButton
 import hardcoder.dev.healther.ui.base.composables.ScaffoldWrapper
 import hardcoder.dev.healther.ui.base.composables.TopBarConfig
 import hardcoder.dev.healther.ui.base.composables.TopBarType
 import hardcoder.dev.healther.ui.base.extensions.toDate
+import hardcoder.dev.healther.ui.base.regex.RegexHolder
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
 import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 @Composable
 fun SaveWaterTrackScreen(
@@ -60,17 +59,20 @@ fun SaveWaterTrackScreen(
     }
     val state = viewModel.state.collectAsState()
 
+    LaunchedEffect(key1 = state.value.creationState) {
+        if (state.value.creationState is SaveWaterTrackViewModel.CreationState.Executed) {
+            onSaved()
+        }
+    }
+
     ScaffoldWrapper(
         content = {
             SaveWaterTrackContent(
-                state = state,
+                state = state.value,
                 updateWaterDrunk = viewModel::updateWaterDrunk,
                 updateSelectedDate = viewModel::updateSelectedDate,
                 updateSelectedDrink = viewModel::updateSelectedDrink,
-                createWaterTrack = {
-                    viewModel.createWaterTrack()
-                    onSaved()
-                }
+                createWaterTrack = viewModel::createWaterTrack
             )
         },
         topBarConfig = TopBarConfig(
@@ -88,31 +90,31 @@ private fun SaveWaterTrackContent(
     updateSelectedDrink: (Drink) -> Unit,
     updateSelectedDate: (LocalDate) -> Unit,
     updateWaterDrunk: (Int) -> Unit,
-    state: State<SaveWaterTrackViewModel.State>
+    state: SaveWaterTrackViewModel.State
 ) {
     val dateDialogState = rememberMaterialDialogState()
-    val millilitersCount = state.value.millilitersCount
 
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
         Column(Modifier.weight(2f)) {
             EnterDrunkMillilitersSection(
-                millilitersCount = millilitersCount,
-                updateWaterDrunk = updateWaterDrunk
+                updateWaterDrunk = updateWaterDrunk,
+                state = state
             )
             Spacer(modifier = Modifier.height(16.dp))
             SelectDrinkTypeSection(
-                state = state.value,
+                state = state,
                 updateSelectedDrink = updateSelectedDrink
             )
             Spacer(modifier = Modifier.height(16.dp))
-            SelectDateSection(dateDialogState = dateDialogState, state = state.value)
+            SelectDateSection(dateDialogState = dateDialogState, state = state)
         }
         IconTextButton(
             iconResourceId = Icons.Default.Done,
             labelResId = R.string.saveWaterTrack_saveEntry_button,
-            onClick = createWaterTrack
+            onClick = createWaterTrack,
+            isEnabled = state.creationAllowed
         )
         MaterialDialog(
             dialogState = dateDialogState,
@@ -140,39 +142,58 @@ private fun SaveWaterTrackContent(
 
 @Composable
 private fun EnterDrunkMillilitersSection(
-    millilitersCount: Int,
+    state: SaveWaterTrackViewModel.State,
     updateWaterDrunk: (Int) -> Unit,
 ) {
-    val countRegex = "[0-9]{0,9}$".toRegex()
+    val validatedMillilitersCount = state.validatedMillilitersCount
+    val validatedByRegexMillilitersCount = validatedMillilitersCount?.data?.value ?: 0
 
     Text(
         text = stringResource(id = R.string.saveWaterTrack_enterMillilitersCount_text),
         style = MaterialTheme.typography.titleLarge
     )
     Spacer(modifier = Modifier.height(16.dp))
-    TextField(
-        value = if (millilitersCount == 0) "" else millilitersCount.toString(),
+    FilledTextField(
+        value = validatedByRegexMillilitersCount.toString(),
         onValueChange = {
-            if (countRegex.matches(it)) {
-                try {
-                    updateWaterDrunk(it.toInt())
-                } catch (e: NumberFormatException) {
-                    updateWaterDrunk(0)
-                }
+            try {
+                updateWaterDrunk(it.toInt())
+            } catch (e: NumberFormatException) {
+                updateWaterDrunk(0)
             }
         },
-        label = {
-            Text(
-                text = stringResource(id = R.string.saveWaterTrack_enterMillilitersCountHint_textField),
-                style = MaterialTheme.typography.labelLarge
-            )
-        },
+        regex = RegexHolder.textFieldDigitRegex,
+        label = R.string.saveWaterTrack_enterMillilitersCountHint_textField,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done
         ),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        isError = state.validatedMillilitersCount is IncorrectMillilitersInput
     )
+
+    AnimatedVisibility(
+        visible = validatedMillilitersCount is IncorrectMillilitersInput
+    ) {
+        if (validatedMillilitersCount is IncorrectMillilitersInput) {
+            ErrorText(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                text = when (validatedMillilitersCount.reason) {
+                    is IncorrectMillilitersInput.Reason.Empty -> {
+                        stringResource(R.string.saveWaterTrack_emptyTextField_error)
+                    }
+
+                    is IncorrectMillilitersInput.Reason.LessThanMinimum -> {
+                        stringResource(R.string.saveWaterTrack_millilitersLessThanMinimum_error)
+                    }
+
+                    is IncorrectMillilitersInput.Reason.MoreThanDailyWaterIntake -> {
+                        stringResource(R.string.saveWaterTrack_millilitersMoreThanDailyWaterIntake_error)
+                    }
+                }
+            )
+        }
+    }
 }
 
 @Composable
@@ -204,7 +225,7 @@ private fun SelectDateSection(
     state: SaveWaterTrackViewModel.State,
     dateDialogState: MaterialDialogState
 ) {
-    val selectedDate = state.selectedDate.toDate()
+    val selectedDate = requireNotNull(state.selectedDate.toDate())
     val formattedDate = DateFormat.getDateInstance().format(selectedDate)
 
     Text(

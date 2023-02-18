@@ -1,18 +1,17 @@
 package hardcoder.dev.healther.logic.validators
 
-import hardcoder.dev.healther.data.local.room.entities.WaterTrack
-
 class WaterTrackMillilitersValidator {
 
-    suspend fun validate(
+    fun validate(
         data: MillilitersCount,
         dailyWaterIntakeInMillisCount: Int
     ) = data.incorrectReason(dailyWaterIntakeInMillisCount)?.let {
         IncorrectMillilitersInput(data, it)
     } ?: CorrectMillilitersInput(data)
 
-    private suspend fun MillilitersCount.incorrectReason(dailyWaterIntakeInMillisCount: Int): IncorrectMillilitersInput.Reason? {
+    private fun MillilitersCount.incorrectReason(dailyWaterIntakeInMillisCount: Int): IncorrectMillilitersInput.Reason? {
         return when {
+            value.toString().isBlank() -> IncorrectMillilitersInput.Reason.Empty()
             value > dailyWaterIntakeInMillisCount -> IncorrectMillilitersInput.Reason.MoreThanDailyWaterIntake()
             value < MINIMUM_MILLILITERS -> IncorrectMillilitersInput.Reason.LessThanMinimum()
             else -> null

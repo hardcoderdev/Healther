@@ -19,7 +19,6 @@ object Dependencies {
         const val composeCalendar = "1.0.2"
         const val composeMaterialDialogs = "0.8.1-rc"
         const val coreDesugaring = "2.0.0"
-        const val splashScreen = "1.0.0"
     }
 
     const val room = "androidx.room:room-runtime:${Versions.room}"
@@ -48,6 +47,7 @@ object Dependencies {
     const val composeTooling = "androidx.compose.ui:ui-tooling-preview"
     const val debugTooling = "androidx.compose.ui:ui-tooling"
     const val composeMaterial = "androidx.compose.material3:material3"
+    const val composeExtendedIcons = "androidx.compose.material:material-icons-extended"
 
     const val lifecycleViewModelKtx =
         "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.lifecycleCompose}"
@@ -95,6 +95,7 @@ fun DependencyHandler.addCompose() {
     implementation(Dependencies.composeMaterial)
     implementation(Dependencies.composeNavigation)
     implementation(Dependencies.composeTooling)
+    implementation(Dependencies.composeExtendedIcons)
     debugImplementation(Dependencies.debugTooling)
     implementation(Dependencies.numberPicker)
     implementation(Dependencies.composeCalendar)

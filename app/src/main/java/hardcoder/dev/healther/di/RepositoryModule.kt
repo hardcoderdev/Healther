@@ -4,11 +4,9 @@ import android.content.Context
 import hardcoder.dev.healther.repository.UserRepository
 import hardcoder.dev.healther.repository.WaterTrackRepository
 import kotlinx.coroutines.Dispatchers
-import kotlin.math.log
 
 class RepositoryModule(
     private val context: Context,
-    private val logicModule: LogicModule,
     private val databaseModule: DatabaseModule
 ) {
 
@@ -22,8 +20,6 @@ class RepositoryModule(
     val waterTrackRepository by lazy {
         WaterTrackRepository(
             waterTrackDao = databaseModule.waterTrackDao,
-            waterPercentageResolver = logicModule.waterPercentageResolver,
-            drinkTypeImageResolver = drinkTypeImageResolver,
             dispatcher = Dispatchers.IO
         )
     }

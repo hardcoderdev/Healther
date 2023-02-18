@@ -18,16 +18,21 @@ enum class ButtonStyles { FILLED, OUTLINED }
 
 @Composable
 fun IconTextButton(
-    style: ButtonStyles = ButtonStyles.FILLED,
     modifier: Modifier = Modifier,
+    style: ButtonStyles = ButtonStyles.FILLED,
     iconResourceId: ImageVector,
     @StringRes labelResId: Int,
     onClick: () -> Unit,
+    isEnabled: Boolean = true,
     @StringRes contentDescription: Int? = null
 ) {
     when (style) {
         ButtonStyles.FILLED -> {
-            Button(onClick = onClick, modifier = modifier.fillMaxWidth()) {
+            Button(
+                onClick = onClick,
+                modifier = modifier.fillMaxWidth(),
+                enabled = isEnabled
+            ) {
                 IconButtonContent(
                     labelResId = labelResId,
                     iconResourceId = iconResourceId,
@@ -37,7 +42,11 @@ fun IconTextButton(
         }
 
         ButtonStyles.OUTLINED -> {
-            OutlinedButton(onClick = onClick, modifier = modifier.fillMaxWidth()) {
+            OutlinedButton(
+                onClick = onClick,
+                modifier = modifier.fillMaxWidth(),
+                enabled = isEnabled
+            ) {
                 IconButtonContent(
                     labelResId = labelResId,
                     iconResourceId = iconResourceId,

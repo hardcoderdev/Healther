@@ -37,21 +37,30 @@ class PresentationModule(
     fun createWaterTrackingViewModel() = WaterTrackingViewModel(
         waterTrackRepository = repositoryModule.waterTrackRepository,
         userRepository = repositoryModule.userRepository,
-        waterIntakeResolver = logicModule.waterIntakeResolver
+        waterIntakeResolver = logicModule.waterIntakeResolver,
+        waterPercentageResolver = logicModule.waterPercentageResolver,
+        drinkTypeImageResolver = drinkTypeImageResolver
     )
 
     fun createSaveWaterTrackViewModel() = SaveWaterTrackViewModel(
         waterTrackRepository = repositoryModule.waterTrackRepository,
-        waterPercentageResolver = logicModule.waterPercentageResolver
+        userRepository = repositoryModule.userRepository,
+        waterIntakeResolver = logicModule.waterIntakeResolver,
+        waterTrackMillilitersValidator = logicModule.waterTrackMillilitersValidator
     )
 
     fun createUpdateWaterTrackViewModel(waterTrackId: Int) = UpdateWaterTrackViewModel(
         waterTrackId = waterTrackId,
         waterTrackRepository = repositoryModule.waterTrackRepository,
-        drinkTypeImageResolver = logicModule.drinkTypeImageResolver
+        userRepository = repositoryModule.userRepository,
+        drinkTypeImageResolver = logicModule.drinkTypeImageResolver,
+        waterTrackMillilitersValidator = logicModule.waterTrackMillilitersValidator,
+        waterIntakeResolver = logicModule.waterIntakeResolver
     )
 
     fun createWaterTrackingHistoryViewModel() = WaterTrackingHistoryViewModel(
-        waterTrackRepository = repositoryModule.waterTrackRepository
+        waterTrackRepository = repositoryModule.waterTrackRepository,
+        drinkTypeImageResolver = drinkTypeImageResolver,
+        waterPercentageResolver = logicModule.waterPercentageResolver
     )
 }

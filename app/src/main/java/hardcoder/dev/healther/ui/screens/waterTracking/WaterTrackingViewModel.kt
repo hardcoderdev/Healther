@@ -4,7 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.healther.data.local.room.entities.WaterTrack
 import hardcoder.dev.healther.logic.resolvers.DrinkTypeImageResolver
 import hardcoder.dev.healther.logic.resolvers.WaterIntakeResolver
 import hardcoder.dev.healther.logic.resolvers.WaterPercentageResolver
@@ -13,6 +12,7 @@ import hardcoder.dev.healther.repository.WaterTrackRepository
 import hardcoder.dev.healther.ui.base.extensions.getEndOfDay
 import hardcoder.dev.healther.ui.base.extensions.getStartOfDay
 import hardcoder.dev.healther.ui.base.extensions.mapItems
+import hardcoder.dev.healther.ui.base.extensions.toItem
 import hardcoder.dev.healther.ui.base.flow.combine
 import hardcoder.dev.healther.ui.screens.setUpFlow.gender.Gender
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
@@ -95,7 +95,15 @@ class WaterTrackingViewModel(
         val startOfCurrentDay = currentDay.getStartOfDay()
         val endOfCurrentDay = currentDay.getEndOfDay()
         waterTrackRepository.getWaterTracksByDayRange(startOfCurrentDay..endOfCurrentDay)
-            .mapItems { it.toItem() }
+            .mapItems {
+                it.toItem(
+                    drinkTypeImageResolver.resolve(it.drinkType),
+                    waterPercentageResolver.resolve(
+                        drinkType = it.drinkType,
+                        millilitersDrunk = it.millilitersCount
+                    )
+                )
+            }
             .collectLatest { waterTracks ->
                 val millilitersCount = waterTracks.sumOf { it.resolvedMillilitersCount }
                 millilitersDrunk.value = millilitersCount
@@ -115,24 +123,8 @@ class WaterTrackingViewModel(
         )
     }
 
-    private fun WaterTrack.toItem() =  WaterTrackItem(
-        id = id,
-        timeInMillis = date,
-        drinkNameResId = drinkType.transcriptionResId,
-        imageResId = drinkTypeImageResolver.resolve(drinkType),
-        millilitersCount = millilitersCount,
-        resolvedMillilitersCount = waterPercentageResolver.resolve(
-            drinkType = drinkType,
-            millilitersDrunk = millilitersCount
-        )
-    )
-
     fun delete(waterTrackId: Int) = viewModelScope.launch(Dispatchers.IO) {
         waterTrackRepository.delete(waterTrackId)
-    }
-
-    fun updateWaterDrunk(waterDrunkInMilliliters: Int) {
-        millilitersDrunk.value = waterDrunkInMilliliters
     }
 
     data class State(

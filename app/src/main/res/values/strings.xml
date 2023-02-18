@@ -43,12 +43,14 @@
     <string name="saveWaterTrack_enterMillilitersCount_text">Введите количество выпитого напитка (в мл)</string>
     <string name="saveWaterTrack_enterMillilitersCountHint_textField">Количество выпитого напитка…</string>
     <string name="saveWaterTrack_selectAnotherDate_text">Уже пили воду раньше?\nВы можете изменить дату.</string>
-
     <string name="saveWaterTrack_selectDateTitle_datePicker">Выбор даты</string>
     <string name="saveWaterTrack_selectDate_datePickerDialogButton">Выбрать</string>
     <string name="saveWaterTrack_cancel_datePickerDialogButton">Отмена</string>
     <string name="saveWaterTrack_enterDrinkType_text">Выберите тип напитка…</string>
     <string name="saveWaterTrack_saveEntry_button">Создать запись</string>
+    <string name="saveWaterTrack_emptyTextField_error">Введите кол-во миллилитров!</string>
+    <string name="saveWaterTrack_millilitersLessThanMinimum_error">Минимальное кол-во мл - 100!</string>
+    <string name="saveWaterTrack_millilitersMoreThanDailyWaterIntake_error">Введёные вами мл больше, чем дневная норма!</string>
 
     <string name="updateWaterTrack_updateEntry_button">Обновить запись</string>
     <string name="updateWaterTrack_update_title_topBar">Обновление записи</string>
@@ -62,4 +64,7 @@
     <string name="updateWaterTrack_enterDrinkType_text">Выберите тип напитка…</string>
     <string name="saveWaterTrack_selectedDateFormat_text">Выбранная дата: %s</string>
     <string name="updateWaterTrack_selectedDateFormat_text">Выбранная дата: %s</string>
+    <string name="updateWaterTrack_emptyTextField_error">Введите кол-во миллилитров!</string>
+    <string name="updateWaterTrack_millilitersLessThanMinimum_error">Минимальное кол-во мл - 100!</string>
+    <string name="updateWaterTrack_millilitersMoreThanDailyWaterIntake_error">Введёные вами мл больше, чем дневная норма!</string>
 </resources>

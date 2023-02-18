@@ -1,90 +1,100 @@
 package hardcoder.dev.healther.ui.screens.waterTracking.create
 
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.healther.R
 import hardcoder.dev.healther.data.local.room.entities.DrinkType
 import hardcoder.dev.healther.data.local.room.entities.WaterTrack
-import hardcoder.dev.healther.logic.resolvers.WaterPercentageResolver
+import hardcoder.dev.healther.logic.resolvers.WaterIntakeResolver
 import hardcoder.dev.healther.logic.validators.CorrectMillilitersInput
-import hardcoder.dev.healther.logic.validators.IncorrectMillilitersInput
 import hardcoder.dev.healther.logic.validators.MillilitersCount
+import hardcoder.dev.healther.logic.validators.ValidatedMillilitersCount
 import hardcoder.dev.healther.logic.validators.WaterTrackMillilitersValidator
+import hardcoder.dev.healther.repository.UserRepository
 import hardcoder.dev.healther.repository.WaterTrackRepository
 import hardcoder.dev.healther.ui.base.composables.Drink
 import hardcoder.dev.healther.ui.base.extensions.getStartOfDay
+import hardcoder.dev.healther.ui.base.flow.combine
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
 class SaveWaterTrackViewModel(
     private val waterTrackRepository: WaterTrackRepository,
-    private val waterPercentageResolver: WaterPercentageResolver,
+    private val userRepository: UserRepository,
+    private val waterIntakeResolver: WaterIntakeResolver,
     private val waterTrackMillilitersValidator: WaterTrackMillilitersValidator,
 ) : ViewModel() {
 
     private val selectedDate = MutableStateFlow(LocalDate.now())
-    private val millilitersDrunk = MutableStateFlow(0)
+    private val millilitersDrunk = MutableStateFlow<Int?>(null)
     private val selectedDrink =
         MutableStateFlow(Drink(type = DrinkType.WATER, image = R.drawable.water))
     private val drinkTypes = waterTrackRepository.getAllDrinkTypes()
-    private val validationState = MutableStateFlow<ValidationState>(ValidationState.NotValidated)
+    private val creationState = MutableStateFlow<CreationState>(CreationState.NotExecuted)
+    private val validatedMillilitersCountState = millilitersDrunk.map {
+        it?.let {
+            waterTrackMillilitersValidator.validate(
+                data = MillilitersCount(it),
+                dailyWaterIntakeInMillisCount = waterIntakeResolver.resolve(
+                    userRepository.weight.first(),
+                    userRepository.exerciseStressTime.first(),
+                    userRepository.gender.first()
+                )
+            )
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = null
+    )
 
     val state = combine(
+        creationState,
         selectedDate,
         millilitersDrunk,
         drinkTypes,
         selectedDrink,
-        validationState
-    ) { selectedDate, millilitersDrunk, drinkTypes, selectedDrink, validationState ->
+        validatedMillilitersCountState
+    ) { creationState, selectedDate, millilitersDrunk, drinkTypes, selectedDrink, validatedMillilitersCountState ->
         State(
+            creationState = creationState,
             selectedDate = selectedDate,
             millilitersCount = millilitersDrunk,
             drinks = drinkTypes,
             selectedDrink = selectedDrink,
-            validationState = validationState
+            validatedMillilitersCount = validatedMillilitersCountState,
+            creationAllowed = validatedMillilitersCountState is CorrectMillilitersInput
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
+            creationState = creationState.value,
             selectedDate = selectedDate.value,
             millilitersCount = millilitersDrunk.value,
             drinks = emptyList(),
             selectedDrink = selectedDrink.value,
-            validationState = ValidationState.NotValidated
+            validatedMillilitersCount = null,
+            creationAllowed = false
         )
     )
 
     fun createWaterTrack() = viewModelScope.launch {
-        val validationResult = waterTrackMillilitersValidator.validate(
-            data = MillilitersCount(millilitersDrunk.value),
-            dailyWaterIntakeInMillisCount = waterPercentageResolver.resolve(
-                selectedDrink.value.type,
-                millilitersDrunk.value
+        require(validatedMillilitersCountState.value is CorrectMillilitersInput)
+        waterTrackRepository.insert(
+            WaterTrack(
+                date = selectedDate.value.getStartOfDay(),
+                millilitersCount = millilitersDrunk.value!!,
+                drinkType = selectedDrink.value.type
             )
         )
-
-        when (validationResult) {
-            is CorrectMillilitersInput -> {
-                waterTrackRepository.insert(
-                    WaterTrack(
-                        date = selectedDate.value.getStartOfDay(),
-                        millilitersCount = millilitersDrunk.value,
-                        drinkType = selectedDrink.value.type
-                    )
-                )
-            }
-
-            is IncorrectMillilitersInput -> {
-                validationState.value = ValidationState.Error(validationResult.reason)
-            }
-        }
+        creationState.value = CreationState.Executed
     }
 
     fun updateWaterDrunk(waterDrunkInMilliliters: Int) {
@@ -99,17 +109,18 @@ class SaveWaterTrackViewModel(
         selectedDate.value = localDate
     }
 
-    sealed class ValidationState {
-        object NotValidated : ValidationState()
-        object Success : ValidationState()
-        data class Error(@StringRes val reasonResId: Int) : ValidationState()
+    sealed class CreationState {
+        object NotExecuted : CreationState()
+        object Executed : CreationState()
     }
 
     data class State(
-        val validationState: ValidationState,
-        val selectedDate: LocalDate,
-        val millilitersCount: Int,
+        val creationAllowed: Boolean,
+        val creationState: CreationState,
+        val millilitersCount: Int?,
+        val validatedMillilitersCount: ValidatedMillilitersCount?,
         val drinks: List<Drink>,
         val selectedDrink: Drink,
+        val selectedDate: LocalDate
     )
 }

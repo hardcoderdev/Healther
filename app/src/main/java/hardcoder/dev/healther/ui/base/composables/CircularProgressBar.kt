@@ -18,17 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import hardcoder.dev.healther.R
-import kotlinx.coroutines.delay
 
 @Composable
 fun CircularProgressBar(
+    modifier: Modifier = Modifier,
     percentage: Float,
     number: Int,
     fontSize: TextUnit = 28.sp,
@@ -36,8 +34,7 @@ fun CircularProgressBar(
     color: Color = MaterialTheme.colorScheme.primary,
     strokeWidth: Dp = 8.dp,
     animationDuration: Int = 1000,
-    animationDelay: Int = 0,
-    modifier: Modifier = Modifier
+    animationDelay: Int = 0
 ) {
     var animationPlayed by remember {
         mutableStateOf(false)
@@ -67,13 +64,12 @@ fun CircularProgressBar(
                 useCenter = false,
                 style = Stroke(
                     width = strokeWidth.toPx(),
-                    cap = StrokeCap.Round,
-                    
+                    cap = StrokeCap.Round
                 )
             )
         }
         Text(
-            text = (currentPercentage * number).toInt().toString(),
+            text = number.toString(),
             color = Color.Black,
             fontSize = fontSize,
             fontWeight = FontWeight.Bold
