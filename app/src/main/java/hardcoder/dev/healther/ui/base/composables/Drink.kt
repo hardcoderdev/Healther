@@ -44,8 +44,8 @@ fun DrinkItem(
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 8.dp,
-            pressedElevation = 16.dp
+            defaultElevation = 4.dp,
+            pressedElevation = 8.dp
         ),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
