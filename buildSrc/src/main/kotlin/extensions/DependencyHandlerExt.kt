@@ -23,3 +23,7 @@ fun DependencyHandler.kapt(depName: Any) {
 fun DependencyHandler.ksp(depName: Any) {
     add("ksp", depName)
 }
+
+fun DependencyHandler.coreLibraryDesugaring(depName: Any) {
+    add("coreLibraryDesugaring", depName)
+}
