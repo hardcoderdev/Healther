@@ -26,13 +26,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.healther.R
+import hardcoder.dev.healther.repository.Gender
 import hardcoder.dev.healther.ui.base.LocalPresentationModule
 import hardcoder.dev.healther.ui.base.composables.IconTextButton
 import hardcoder.dev.healther.ui.base.composables.ScaffoldWrapper
 import hardcoder.dev.healther.ui.base.composables.TopBarConfig
 import hardcoder.dev.healther.ui.base.composables.TopBarType
-
-enum class Gender { MALE, FEMALE }
 
 @Composable
 fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
@@ -48,9 +47,7 @@ fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
             SelectGenderContent(
                 state = state.value,
                 onGoForward = onGoForward,
-                onUpdateGender = {
-                    selectGenderViewModel.updateGender(it)
-                }
+                onUpdateGender = selectGenderViewModel::updateGender
             )
         },
         topBarConfig = TopBarConfig(

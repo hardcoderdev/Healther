@@ -1,19 +1,17 @@
 package hardcoder.dev.healther.ui.screens.waterTracking.create
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -179,10 +177,6 @@ private fun EnterDrunkMillilitersSection(
             ErrorText(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                 text = when (validatedMillilitersCount.reason) {
-                    is IncorrectMillilitersInput.Reason.Empty -> {
-                        stringResource(R.string.saveWaterTrack_emptyTextField_error)
-                    }
-
                     is IncorrectMillilitersInput.Reason.LessThanMinimum -> {
                         stringResource(R.string.saveWaterTrack_millilitersLessThanMinimum_error)
                     }
@@ -206,12 +200,16 @@ private fun SelectDrinkTypeSection(
         style = MaterialTheme.typography.titleLarge
     )
     Spacer(modifier = Modifier.height(16.dp))
-    LazyRow(
+    ScrollableTabRow(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        selectedTabIndex = state.drinks.indexOf(state.selectedDrink),
+        indicator = {},
+        divider = {},
+        edgePadding = 0.dp
     ) {
-        items(state.drinks) { drink ->
+        state.drinks.forEach { drink ->
             DrinkItem(
+                modifier = Modifier.padding(12.dp),
                 drink = drink,
                 selectedDrink = state.selectedDrink,
                 onUpdateSelectedDrink = updateSelectedDrink
@@ -225,7 +223,7 @@ private fun SelectDateSection(
     state: SaveWaterTrackViewModel.State,
     dateDialogState: MaterialDialogState
 ) {
-    val selectedDate = requireNotNull(state.selectedDate.toDate())
+    val selectedDate = state.selectedDate.toDate()
     val formattedDate = DateFormat.getDateInstance().format(selectedDate)
 
     Text(

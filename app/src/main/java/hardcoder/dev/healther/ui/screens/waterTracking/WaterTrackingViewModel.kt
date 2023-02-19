@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import hardcoder.dev.healther.logic.resolvers.DrinkTypeImageResolver
 import hardcoder.dev.healther.logic.resolvers.WaterIntakeResolver
 import hardcoder.dev.healther.logic.resolvers.WaterPercentageResolver
+import hardcoder.dev.healther.repository.Gender
 import hardcoder.dev.healther.repository.UserRepository
 import hardcoder.dev.healther.repository.WaterTrackRepository
 import hardcoder.dev.healther.ui.base.extensions.getEndOfDay
@@ -14,7 +15,6 @@ import hardcoder.dev.healther.ui.base.extensions.getStartOfDay
 import hardcoder.dev.healther.ui.base.extensions.mapItems
 import hardcoder.dev.healther.ui.base.extensions.toItem
 import hardcoder.dev.healther.ui.base.flow.combine
-import hardcoder.dev.healther.ui.screens.setUpFlow.gender.Gender
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -90,29 +90,33 @@ class WaterTrackingViewModel(
         fetchWaterTracks()
     }
 
-    private fun fetchWaterTracks() = viewModelScope.launch {
-        val currentDay = LocalDate.now()
-        val startOfCurrentDay = currentDay.getStartOfDay()
-        val endOfCurrentDay = currentDay.getEndOfDay()
-        waterTrackRepository.getWaterTracksByDayRange(startOfCurrentDay..endOfCurrentDay)
-            .mapItems {
-                it.toItem(
-                    drinkTypeImageResolver.resolve(it.drinkType),
-                    waterPercentageResolver.resolve(
-                        drinkType = it.drinkType,
-                        millilitersDrunk = it.millilitersCount
+    private fun fetchWaterTracks() {
+        viewModelScope.launch {
+            val currentDay = LocalDate.now()
+            val startOfCurrentDay = currentDay.getStartOfDay()
+            val endOfCurrentDay = currentDay.getEndOfDay()
+            waterTrackRepository.getWaterTracksByDayRange(startOfCurrentDay..endOfCurrentDay)
+                .mapItems {
+                    it.toItem(
+                        drinkTypeImageResolver.resolve(it.drinkType),
+                        waterPercentageResolver.resolve(
+                            drinkType = it.drinkType,
+                            millilitersDrunk = it.millilitersCount
+                        )
                     )
-                )
-            }
-            .collectLatest { waterTracks ->
-                val millilitersCount = waterTracks.sumOf { it.resolvedMillilitersCount }
-                millilitersDrunk.value = millilitersCount
-                waterTracksList.value = waterTracks
-            }
+                }
+                .collectLatest { waterTracks ->
+                    val millilitersCount = waterTracks.sumOf { it.resolvedMillilitersCount }
+                    millilitersDrunk.value = millilitersCount
+                    waterTracksList.value = waterTracks
+                }
+        }
     }
 
-    private fun updateFirstLaunch() = viewModelScope.launch {
-        userRepository.updateFirstLaunch(isFirstLaunch = false)
+    private fun updateFirstLaunch() {
+        viewModelScope.launch {
+            userRepository.updateFirstLaunch(isFirstLaunch = false)
+        }
     }
 
     private fun resolveDailyWaterIntake() {
@@ -123,8 +127,10 @@ class WaterTrackingViewModel(
         )
     }
 
-    fun delete(waterTrackId: Int) = viewModelScope.launch(Dispatchers.IO) {
-        waterTrackRepository.delete(waterTrackId)
+    fun delete(waterTrackId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            waterTrackRepository.delete(waterTrackId)
+        }
     }
 
     data class State(

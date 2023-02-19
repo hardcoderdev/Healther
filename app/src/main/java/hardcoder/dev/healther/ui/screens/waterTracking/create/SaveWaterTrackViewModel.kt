@@ -85,16 +85,18 @@ class SaveWaterTrackViewModel(
         )
     )
 
-    fun createWaterTrack() = viewModelScope.launch {
-        require(validatedMillilitersCountState.value is CorrectMillilitersInput)
-        waterTrackRepository.insert(
-            WaterTrack(
-                date = selectedDate.value.getStartOfDay(),
-                millilitersCount = millilitersDrunk.value!!,
-                drinkType = selectedDrink.value.type
+    fun createWaterTrack() {
+        viewModelScope.launch {
+            require(validatedMillilitersCountState.value is CorrectMillilitersInput)
+            waterTrackRepository.insert(
+                WaterTrack(
+                    date = selectedDate.value.getStartOfDay(),
+                    millilitersCount = millilitersDrunk.value!!,
+                    drinkType = selectedDrink.value.type
+                )
             )
-        )
-        creationState.value = CreationState.Executed
+            creationState.value = CreationState.Executed
+        }
     }
 
     fun updateWaterDrunk(waterDrunkInMilliliters: Int) {

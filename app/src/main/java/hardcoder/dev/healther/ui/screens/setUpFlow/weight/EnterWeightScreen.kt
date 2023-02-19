@@ -46,9 +46,7 @@ fun EnterWeightScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
             EnterWeightContent(
                 state = state.value,
                 onGoForward = onGoForward,
-                onUpdateWeight = {
-                    enterWeightViewModel.updateWeight(it)
-                }
+                onUpdateWeight = enterWeightViewModel::updateWeight
             )
         },
         topBarConfig = TopBarConfig(

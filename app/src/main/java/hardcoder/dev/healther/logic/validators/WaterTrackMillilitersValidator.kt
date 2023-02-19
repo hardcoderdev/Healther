@@ -11,7 +11,6 @@ class WaterTrackMillilitersValidator {
 
     private fun MillilitersCount.incorrectReason(dailyWaterIntakeInMillisCount: Int): IncorrectMillilitersInput.Reason? {
         return when {
-            value.toString().isBlank() -> IncorrectMillilitersInput.Reason.Empty()
             value > dailyWaterIntakeInMillisCount -> IncorrectMillilitersInput.Reason.MoreThanDailyWaterIntake()
             value < MINIMUM_MILLILITERS -> IncorrectMillilitersInput.Reason.LessThanMinimum()
             else -> null
@@ -36,7 +35,6 @@ data class IncorrectMillilitersInput(
     val reason: Reason
 ) : ValidatedMillilitersCount() {
     sealed class Reason {
-        class Empty : Reason()
         class LessThanMinimum : Reason()
         class MoreThanDailyWaterIntake : Reason()
     }

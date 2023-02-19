@@ -46,9 +46,7 @@ fun EnterExerciseStressScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
             EnterExerciseStressContent(
                 state = state.value,
                 onGoForward = onGoForward,
-                onUpdateExerciseStressTime = {
-                    enterExerciseStressTimeViewModel.updateExerciseStressTime(it)
-                }
+                onUpdateExerciseStressTime = enterExerciseStressTimeViewModel::updateExerciseStressTime
             )
         },
         topBarConfig = TopBarConfig(

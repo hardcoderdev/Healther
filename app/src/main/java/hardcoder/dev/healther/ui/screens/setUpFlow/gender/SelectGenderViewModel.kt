@@ -2,6 +2,7 @@ package hardcoder.dev.healther.ui.screens.setUpFlow.gender
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import hardcoder.dev.healther.repository.Gender
 import hardcoder.dev.healther.repository.UserRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -20,8 +21,10 @@ class SelectGenderViewModel(private val userRepository: UserRepository) : ViewMo
         )
     )
 
-    fun updateGender(gender: Gender) = viewModelScope.launch {
-        userRepository.updateGender(gender)
+    fun updateGender(gender: Gender) {
+        viewModelScope.launch {
+            userRepository.updateGender(gender)
+        }
     }
 
     data class State(val gender: Gender)

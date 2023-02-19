@@ -31,6 +31,7 @@ data class Drink(
 
 @Composable
 fun DrinkItem(
+    modifier: Modifier = Modifier,
     drink: Drink,
     selectedDrink: Drink,
     onUpdateSelectedDrink: (Drink) -> Unit
@@ -41,6 +42,7 @@ fun DrinkItem(
     ) else null
 
     Card(
+        modifier = modifier,
         elevation = CardDefaults.cardElevation(
             defaultElevation = 8.dp,
             pressedElevation = 16.dp

@@ -53,8 +53,10 @@ class WaterTrackingHistoryViewModel(
         selectedRangeStateFlow.value = range
     }
 
-    fun deleteTrack(waterTrackId: Int) = viewModelScope.launch(Dispatchers.IO) {
-        waterTrackRepository.delete(waterTrackId)
+    fun deleteTrack(waterTrackId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            waterTrackRepository.delete(waterTrackId)
+        }
     }
 
     data class State(val waterTrackItems: List<WaterTrackItem>)

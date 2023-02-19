@@ -20,8 +20,10 @@ class EnterWeightViewModel(private val userRepository: UserRepository) : ViewMod
         )
     )
 
-    fun updateWeight(weight: Int) = viewModelScope.launch {
-        userRepository.updateWeight(weight)
+    fun updateWeight(weight: Int) {
+        viewModelScope.launch {
+            userRepository.updateWeight(weight)
+        }
     }
 
     data class State(val weight: Int)

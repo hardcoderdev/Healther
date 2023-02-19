@@ -53,7 +53,7 @@ class PresentationModule(
         waterTrackId = waterTrackId,
         waterTrackRepository = repositoryModule.waterTrackRepository,
         userRepository = repositoryModule.userRepository,
-        drinkTypeImageResolver = logicModule.drinkTypeImageResolver,
+        drinkTypeImageResolver = drinkTypeImageResolver,
         waterTrackMillilitersValidator = logicModule.waterTrackMillilitersValidator,
         waterIntakeResolver = logicModule.waterIntakeResolver
     )

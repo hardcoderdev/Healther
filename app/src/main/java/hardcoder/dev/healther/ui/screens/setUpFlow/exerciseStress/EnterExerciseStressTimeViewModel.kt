@@ -20,8 +20,10 @@ class EnterExerciseStressTimeViewModel(private val userRepository: UserRepositor
         )
     )
 
-    fun updateExerciseStressTime(exerciseStressTime: Int) = viewModelScope.launch {
-        userRepository.updateExerciseStressTime(exerciseStressTime)
+    fun updateExerciseStressTime(exerciseStressTime: Int) {
+        viewModelScope.launch {
+            userRepository.updateExerciseStressTime(exerciseStressTime)
+        }
     }
 
     data class State(val exerciseStressTime: Int)

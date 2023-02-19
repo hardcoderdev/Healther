@@ -26,7 +26,7 @@ fun LocalDate.createRangeForCurrentDay(): LongRange {
     return getStartOfDay()..getEndOfDay()
 }
 
-fun LocalDate.toDate(): Date? {
+fun LocalDate.toDate(): Date {
     return Date.from(
         atTime(LocalTime(hour = 0, minute = 0, second = 59))
             .toInstant(TimeZone.UTC)

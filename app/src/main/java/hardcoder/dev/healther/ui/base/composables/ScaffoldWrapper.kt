@@ -39,7 +39,6 @@ fun ScaffoldWrapper(
                     onGoBack = topBarConfig.type.onGoBack,
                     actionConfig = actionConfig
                 )
-
                 is TopBarType.WithoutTopBar -> null
             }
         },
