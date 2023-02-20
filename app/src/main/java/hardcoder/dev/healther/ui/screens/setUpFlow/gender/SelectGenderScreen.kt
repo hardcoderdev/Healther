@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.healther.R
-import hardcoder.dev.healther.repository.Gender
+import hardcoder.dev.healther.entities.Gender
 import hardcoder.dev.healther.ui.base.LocalPresentationModule
 import hardcoder.dev.healther.ui.base.composables.IconTextButton
 import hardcoder.dev.healther.ui.base.composables.ScaffoldWrapper
@@ -34,20 +34,21 @@ import hardcoder.dev.healther.ui.base.composables.TopBarConfig
 import hardcoder.dev.healther.ui.base.composables.TopBarType
 
 @Composable
-fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
+fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: (Gender) -> Unit) {
     val presentationModule = LocalPresentationModule.current
-
-    val selectGenderViewModel = viewModel {
+    val selectedGenderViewModel = viewModel {
         presentationModule.createSelectGenderViewModel()
     }
-    val state = selectGenderViewModel.state.collectAsState()
+    val state = selectedGenderViewModel.state.collectAsState()
 
     ScaffoldWrapper(
         content = {
             SelectGenderContent(
                 state = state.value,
-                onGoForward = onGoForward,
-                onUpdateGender = selectGenderViewModel::updateGender
+                onUpdateGender = selectedGenderViewModel::updateGender,
+                onGoForward = {
+                    onGoForward(state.value.gender)
+                }
             )
         },
         topBarConfig = TopBarConfig(

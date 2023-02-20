@@ -1,7 +1,7 @@
 package hardcoder.dev.healther.ui.base.extensions
 
 import androidx.annotation.DrawableRes
-import hardcoder.dev.healther.data.local.room.entities.WaterTrack
+import hardcoder.dev.healther.database.WaterTrack
 import hardcoder.dev.healther.ui.screens.waterTracking.WaterTrackItem
 
 fun WaterTrack.toItem(

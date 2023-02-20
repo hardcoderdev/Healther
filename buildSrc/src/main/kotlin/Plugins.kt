@@ -10,6 +10,11 @@ object Plugins {
         const val library = "com.android.library"
     }
 
+    object Versions {
+        const val sqlDelight = "1.5.4"
+    }
+
     const val serialization = "kotlin-parcelize"
     const val navigationSafeArgs = "androidx.navigation.safeargs"
+    const val sqlDelight = "com.squareup.sqldelight"
 }

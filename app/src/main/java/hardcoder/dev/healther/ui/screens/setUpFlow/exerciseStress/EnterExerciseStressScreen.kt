@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.chargemap.compose.numberpicker.NumberPicker
 import hardcoder.dev.healther.R
+import hardcoder.dev.healther.entities.Gender
 import hardcoder.dev.healther.ui.base.LocalPresentationModule
 import hardcoder.dev.healther.ui.base.composables.IconTextButton
 import hardcoder.dev.healther.ui.base.composables.ScaffoldWrapper
@@ -33,7 +34,13 @@ import hardcoder.dev.healther.ui.base.composables.TopBarConfig
 import hardcoder.dev.healther.ui.base.composables.TopBarType
 
 @Composable
-fun EnterExerciseStressScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
+fun EnterExerciseStressScreen(
+    gender: Gender,
+    weight: Int,
+    exerciseStressTime: Int,
+    onGoBack: () -> Unit,
+    onGoForward: (Gender, Int, Int) -> Unit
+) {
     val presentationModule = LocalPresentationModule.current
 
     val enterExerciseStressTimeViewModel = viewModel {
@@ -45,7 +52,9 @@ fun EnterExerciseStressScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
         content = {
             EnterExerciseStressContent(
                 state = state.value,
-                onGoForward = onGoForward,
+                onGoForward = {
+                    onGoForward(gender, weight, exerciseStressTime)
+                },
                 onUpdateExerciseStressTime = enterExerciseStressTimeViewModel::updateExerciseStressTime
             )
         },
@@ -109,7 +118,13 @@ private fun EnterExerciseStressContent(
 @Preview
 @Composable
 fun EnterExerciseStressScreenPreview() {
-    EnterExerciseStressScreen(onGoBack = {}, onGoForward = {})
+    EnterExerciseStressScreen(
+        onGoBack = {},
+        onGoForward = { gender, weight, exerciseStressTime -> },
+        gender = Gender.MALE,
+        weight = 60,
+        exerciseStressTime = 2
+    )
 }
 
 private const val MINIMUM_HOURS = 0

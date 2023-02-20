@@ -1,7 +1,7 @@
 package hardcoder.dev.healther.logic.resolvers
 
 import hardcoder.dev.healther.R
-import hardcoder.dev.healther.data.local.room.entities.DrinkType
+import hardcoder.dev.healther.entities.DrinkType
 
 class DrinkTypeImageResolver {
 
