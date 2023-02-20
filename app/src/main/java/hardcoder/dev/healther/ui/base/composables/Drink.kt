@@ -22,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.healther.data.local.room.entities.DrinkType
+import hardcoder.dev.healther.entities.DrinkType
 
 data class Drink(
     val type: DrinkType,

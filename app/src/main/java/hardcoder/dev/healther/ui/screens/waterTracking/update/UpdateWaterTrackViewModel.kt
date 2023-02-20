@@ -4,15 +4,16 @@ import android.content.res.Resources.NotFoundException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.healther.R
-import hardcoder.dev.healther.data.local.room.entities.DrinkType
+import hardcoder.dev.healther.entities.DrinkType
+import hardcoder.dev.healther.logic.providers.HeroProvider
+import hardcoder.dev.healther.logic.providers.WaterTrackProvider
 import hardcoder.dev.healther.logic.resolvers.DrinkTypeImageResolver
 import hardcoder.dev.healther.logic.resolvers.WaterIntakeResolver
+import hardcoder.dev.healther.logic.updaters.WaterTrackUpdater
 import hardcoder.dev.healther.logic.validators.CorrectMillilitersInput
 import hardcoder.dev.healther.logic.validators.MillilitersCount
 import hardcoder.dev.healther.logic.validators.ValidatedMillilitersCount
 import hardcoder.dev.healther.logic.validators.WaterTrackMillilitersValidator
-import hardcoder.dev.healther.repository.UserRepository
-import hardcoder.dev.healther.repository.WaterTrackRepository
 import hardcoder.dev.healther.ui.base.composables.Drink
 import hardcoder.dev.healther.ui.base.extensions.getStartOfDay
 import hardcoder.dev.healther.ui.base.flow.combine
@@ -28,8 +29,9 @@ import kotlinx.datetime.LocalDate
 
 class UpdateWaterTrackViewModel(
     private val waterTrackId: Int,
-    private val waterTrackRepository: WaterTrackRepository,
-    private val userRepository: UserRepository,
+    heroProvider: HeroProvider,
+    private val waterTrackUpdater: WaterTrackUpdater,
+    private val waterTrackProvider: WaterTrackProvider,
     private val drinkTypeImageResolver: DrinkTypeImageResolver,
     private val waterTrackMillilitersValidator: WaterTrackMillilitersValidator,
     private val waterIntakeResolver: WaterIntakeResolver
@@ -39,15 +41,17 @@ class UpdateWaterTrackViewModel(
     private val millilitersDrunk = MutableStateFlow(0)
     private val selectedDrink =
         MutableStateFlow(Drink(type = DrinkType.WATER, image = R.drawable.water))
-    private val drinkTypes = waterTrackRepository.getAllDrinkTypes()
+    private val drinkTypes = waterTrackProvider.getAllDrinkTypes()
+    private val hero = heroProvider.requireHero()
     private val updateState = MutableStateFlow<UpdateState>(UpdateState.NotExecuted)
     private val validatedMillilitersCountState = millilitersDrunk.map {
+        val currentHero = hero.first()
         waterTrackMillilitersValidator.validate(
             data = MillilitersCount(it),
             dailyWaterIntakeInMillisCount = waterIntakeResolver.resolve(
-                userRepository.weight.first(),
-                userRepository.exerciseStressTime.first(),
-                userRepository.gender.first()
+                currentHero.weight,
+                currentHero.exerciseStressTime,
+                currentHero.gender
             )
         )
     }.stateIn(
@@ -94,13 +98,13 @@ class UpdateWaterTrackViewModel(
     fun updateWaterTrack() {
         viewModelScope.launch {
             require(validatedMillilitersCountState.value is CorrectMillilitersInput)
-            waterTrackRepository.getWaterTrackById(waterTrackId).firstOrNull()?.let {
+            waterTrackProvider.provideWaterTrackById(waterTrackId).firstOrNull()?.let {
                 val updatedTrack = it.copy(
                     date = selectedDate.value.getStartOfDay(),
                     millilitersCount = millilitersDrunk.value,
                     drinkType = selectedDrink.value.type
                 )
-                waterTrackRepository.update(updatedTrack)
+                waterTrackUpdater.update(updatedTrack)
                 updateState.value = UpdateState.Executed
             } ?: throw NotFoundException("Track not found by it's id")
         }
@@ -120,13 +124,14 @@ class UpdateWaterTrackViewModel(
 
     private fun fillStateWithUpdatedTrack() {
         viewModelScope.launch {
-            waterTrackRepository.getWaterTrackById(waterTrackId).firstOrNull()?.let { waterTrack ->
-                millilitersDrunk.value = waterTrack.millilitersCount
-                selectedDrink.value = Drink(
-                    type = waterTrack.drinkType,
-                    image = drinkTypeImageResolver.resolve(waterTrack.drinkType)
-                )
-            }
+            waterTrackProvider.provideWaterTrackById(waterTrackId).firstOrNull()
+                ?.let { waterTrack ->
+                    millilitersDrunk.value = waterTrack.millilitersCount
+                    selectedDrink.value = Drink(
+                        type = waterTrack.drinkType,
+                        image = drinkTypeImageResolver.resolve(waterTrack.drinkType)
+                    )
+                }
         }
     }
 

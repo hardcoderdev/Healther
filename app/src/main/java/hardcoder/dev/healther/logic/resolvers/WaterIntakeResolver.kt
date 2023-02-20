@@ -1,6 +1,6 @@
 package hardcoder.dev.healther.logic.resolvers
 
-import hardcoder.dev.healther.repository.Gender
+import hardcoder.dev.healther.entities.Gender
 import kotlin.math.roundToInt
 
 class WaterIntakeResolver {

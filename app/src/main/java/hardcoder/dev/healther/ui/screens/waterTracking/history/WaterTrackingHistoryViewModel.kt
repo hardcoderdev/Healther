@@ -2,9 +2,10 @@ package hardcoder.dev.healther.ui.screens.waterTracking.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import hardcoder.dev.healther.logic.deleters.WaterTrackDeleter
+import hardcoder.dev.healther.logic.providers.WaterTrackProvider
 import hardcoder.dev.healther.logic.resolvers.DrinkTypeImageResolver
 import hardcoder.dev.healther.logic.resolvers.WaterPercentageResolver
-import hardcoder.dev.healther.repository.WaterTrackRepository
 import hardcoder.dev.healther.ui.base.extensions.createRangeForCurrentDay
 import hardcoder.dev.healther.ui.base.extensions.mapItems
 import hardcoder.dev.healther.ui.base.extensions.toItem
@@ -22,7 +23,8 @@ import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class WaterTrackingHistoryViewModel(
-    private val waterTrackRepository: WaterTrackRepository,
+    private val waterTrackProvider: WaterTrackProvider,
+    private val waterTrackDeleter: WaterTrackDeleter,
     private val drinkTypeImageResolver: DrinkTypeImageResolver,
     private val waterPercentageResolver: WaterPercentageResolver
 ) : ViewModel() {
@@ -30,7 +32,7 @@ class WaterTrackingHistoryViewModel(
     private val selectedRangeStateFlow =
         MutableStateFlow(LocalDate.now().createRangeForCurrentDay())
     val state = selectedRangeStateFlow.flatMapLatest { range ->
-        waterTrackRepository.getWaterTracksByDayRange(range)
+        waterTrackProvider.provideWaterTracksByDayRange(range)
     }.mapItems {
         it.toItem(
             drinkTypeImageResolver.resolve(it.drinkType),
@@ -55,7 +57,7 @@ class WaterTrackingHistoryViewModel(
 
     fun deleteTrack(waterTrackId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            waterTrackRepository.delete(waterTrackId)
+            waterTrackDeleter.deleteById(waterTrackId)
         }
     }
 

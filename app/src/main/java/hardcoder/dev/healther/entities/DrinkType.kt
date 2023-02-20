@@ -1,18 +1,7 @@
-package hardcoder.dev.healther.data.local.room.entities
+package hardcoder.dev.healther.entities
 
 import androidx.annotation.StringRes
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import hardcoder.dev.healther.R
-
-@Entity(tableName = "waterTracks")
-data class WaterTrack(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val date: Long,
-    val millilitersCount: Int,
-    val drinkType: DrinkType
-)
 
 enum class DrinkType(@StringRes val transcriptionResId: Int) {
     WATER(R.string.waterTrackItem_waterDrinkType_text),

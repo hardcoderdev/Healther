@@ -4,12 +4,15 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import hardcoder.dev.healther.entities.AppPreference
+import hardcoder.dev.healther.entities.Gender
+import hardcoder.dev.healther.logic.deleters.WaterTrackDeleter
+import hardcoder.dev.healther.logic.providers.HeroProvider
+import hardcoder.dev.healther.logic.providers.WaterTrackProvider
 import hardcoder.dev.healther.logic.resolvers.DrinkTypeImageResolver
 import hardcoder.dev.healther.logic.resolvers.WaterIntakeResolver
 import hardcoder.dev.healther.logic.resolvers.WaterPercentageResolver
-import hardcoder.dev.healther.repository.Gender
-import hardcoder.dev.healther.repository.UserRepository
-import hardcoder.dev.healther.repository.WaterTrackRepository
+import hardcoder.dev.healther.logic.updaters.AppPreferenceUpdater
 import hardcoder.dev.healther.ui.base.extensions.getEndOfDay
 import hardcoder.dev.healther.ui.base.extensions.getStartOfDay
 import hardcoder.dev.healther.ui.base.extensions.mapItems
@@ -20,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
@@ -34,8 +38,10 @@ data class WaterTrackItem(
 )
 
 class WaterTrackingViewModel(
-    private val waterTrackRepository: WaterTrackRepository,
-    private val userRepository: UserRepository,
+    private val appPreferenceUpdater: AppPreferenceUpdater,
+    heroProvider: HeroProvider,
+    private val waterTrackProvider: WaterTrackProvider,
+    private val waterTrackDeleter: WaterTrackDeleter,
     private val waterIntakeResolver: WaterIntakeResolver,
     private val waterPercentageResolver: WaterPercentageResolver,
     private val drinkTypeImageResolver: DrinkTypeImageResolver
@@ -44,17 +50,26 @@ class WaterTrackingViewModel(
     private val millilitersDrunk = MutableStateFlow(0)
     private val dailyWaterIntake = MutableStateFlow(0)
     private val waterTracksList = MutableStateFlow<List<WaterTrackItem>>(emptyList())
-    private val weight = userRepository.weight.stateIn(
+    private val hero = heroProvider.requireHero()
+    private val weight = hero.map {
+        it.weight
+    }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = 0
     )
-    private val exerciseStressTime = userRepository.exerciseStressTime.stateIn(
+
+    private val exerciseStressTime = hero.map {
+        it.exerciseStressTime
+    }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = 0
     )
-    private val gender = userRepository.gender.stateIn(
+
+    private val gender = hero.map {
+        it.gender
+    }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = Gender.MALE
@@ -95,13 +110,13 @@ class WaterTrackingViewModel(
             val currentDay = LocalDate.now()
             val startOfCurrentDay = currentDay.getStartOfDay()
             val endOfCurrentDay = currentDay.getEndOfDay()
-            waterTrackRepository.getWaterTracksByDayRange(startOfCurrentDay..endOfCurrentDay)
-                .mapItems {
-                    it.toItem(
-                        drinkTypeImageResolver.resolve(it.drinkType),
+            waterTrackProvider.provideWaterTracksByDayRange(startOfCurrentDay..endOfCurrentDay)
+                .mapItems { waterTrack ->
+                    waterTrack.toItem(
+                        drinkTypeImageResolver.resolve(waterTrack.drinkType),
                         waterPercentageResolver.resolve(
-                            drinkType = it.drinkType,
-                            millilitersDrunk = it.millilitersCount
+                            drinkType = waterTrack.drinkType,
+                            millilitersDrunk = waterTrack.millilitersCount
                         )
                     )
                 }
@@ -115,7 +130,12 @@ class WaterTrackingViewModel(
 
     private fun updateFirstLaunch() {
         viewModelScope.launch {
-            userRepository.updateFirstLaunch(isFirstLaunch = false)
+            appPreferenceUpdater.update(
+                AppPreference(
+                    id = 0,
+                    isFirstLaunch = false
+                )
+            )
         }
     }
 
@@ -129,7 +149,7 @@ class WaterTrackingViewModel(
 
     fun delete(waterTrackId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            waterTrackRepository.delete(waterTrackId)
+            waterTrackDeleter.deleteById(waterTrackId)
         }
     }
 

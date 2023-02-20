@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.chargemap.compose.numberpicker.NumberPicker
 import hardcoder.dev.healther.R
+import hardcoder.dev.healther.entities.Gender
 import hardcoder.dev.healther.ui.base.LocalPresentationModule
 import hardcoder.dev.healther.ui.base.composables.IconTextButton
 import hardcoder.dev.healther.ui.base.composables.ScaffoldWrapper
@@ -33,7 +34,11 @@ import hardcoder.dev.healther.ui.base.composables.TopBarConfig
 import hardcoder.dev.healther.ui.base.composables.TopBarType
 
 @Composable
-fun EnterWeightScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
+fun EnterWeightScreen(
+    gender: Gender,
+    onGoBack: () -> Unit,
+    onGoForward: (Gender, Int) -> Unit,
+) {
     val presentationModule = LocalPresentationModule.current
 
     val enterWeightViewModel = viewModel {
@@ -45,7 +50,7 @@ fun EnterWeightScreen(onGoBack: () -> Unit, onGoForward: () -> Unit) {
         content = {
             EnterWeightContent(
                 state = state.value,
-                onGoForward = onGoForward,
+                onGoForward = { onGoForward(gender, state.value.weight) },
                 onUpdateWeight = enterWeightViewModel::updateWeight
             )
         },
@@ -108,7 +113,11 @@ private fun EnterWeightContent(
 @Preview
 @Composable
 fun EnterWeightScreenPreview() {
-    EnterWeightScreen(onGoBack = {}, onGoForward = {})
+    EnterWeightScreen(
+        gender = Gender.MALE,
+        onGoBack = {},
+        onGoForward = { gender, weight ->  }
+    )
 }
 
 private const val MINIMUM_WEIGHT = 30
