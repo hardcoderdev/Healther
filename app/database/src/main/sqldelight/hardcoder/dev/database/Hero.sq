@@ -1,0 +1,20 @@
+import hardcoder.dev.entities.Gender;
+
+CREATE TABLE IF NOT EXISTS Hero (
+    id INTEGER AS Int NOT NULL PRIMARY KEY AUTOINCREMENT,
+    weight INTEGER AS Int NOT NULL,
+    exerciseStressTime INTEGER AS Int NOT NULL,
+    gender TEXT AS Gender NOT NULL
+);
+
+insert:
+INSERT INTO Hero (id, weight, exerciseStressTime, gender)
+VALUES (?, ?, ?, ?);
+
+update:
+UPDATE Hero SET weight = ?, exerciseStressTime = ?, gender = ?
+WHERE id = ?;
+
+selectCurrentHero:
+SELECT * FROM Hero;
+

@@ -18,6 +18,7 @@ object Dependencies {
         const val composeCalendar = "1.0.2"
         const val composeMaterialDialogs = "0.8.1-rc"
         const val coreDesugaring = "2.0.0"
+        const val dateTime = "0.4.0"
     }
 
     const val sqlDelightCoroutinesExt = "com.squareup.sqldelight:coroutines-extensions:${Versions.sqlDelight}"
@@ -56,6 +57,7 @@ object Dependencies {
     const val composeMaterialDialogs =
         "io.github.vanpra.compose-material-dialogs:datetime:${Versions.composeMaterialDialogs}"
     const val coreDesugaring = "com.android.tools:desugar_jdk_libs:${Versions.coreDesugaring}"
+    const val dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.dateTime}"
 }
 
 fun DependencyHandler.addCommonAndroid() {

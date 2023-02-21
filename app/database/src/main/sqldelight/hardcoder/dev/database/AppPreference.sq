@@ -1,0 +1,16 @@
+import java.lang.Boolean;
+
+CREATE TABLE IF NOT EXISTS AppPreference (
+    id INTEGER AS Int NOT NULL PRIMARY KEY AUTOINCREMENT,
+    isFirstLaunch INTEGER AS Boolean NOT NULL
+);
+
+insert:
+INSERT INTO AppPreference (id, isFirstLaunch)
+VALUES (?, ?);
+
+update:
+UPDATE AppPreference SET isFirstLaunch = ? WHERE id = ?;
+
+selectPreferences:
+SELECT * FROM AppPreference;

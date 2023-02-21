@@ -3,6 +3,7 @@ object Plugins {
     object Kotlin {
         const val android = "android"
         const val kapt = "kapt"
+        const val kotlinLibrary = "org.jetbrains.kotlin.android"
     }
 
     object Android {
