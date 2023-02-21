@@ -1,0 +1,31 @@
+import hardcoder.dev.healther.entities.DrinkType;
+
+CREATE TABLE waterTrack (
+    id INTEGER AS Int NOT NULL PRIMARY KEY AUTOINCREMENT,
+    date INTEGER NOT NULL,
+    millilitersCount INTEGER AS Int NOT NULL,
+    drinkType TEXT AS DrinkType NOT NULL
+);
+
+insert:
+INSERT INTO waterTrack (id, date, millilitersCount, drinkType)
+VALUES (?, ?, ?, ?);
+
+update:
+UPDATE waterTrack SET date = ?, millilitersCount = ?, drinkType = ?
+WHERE id = ?;
+
+deleteById:
+DELETE FROM waterTrack WHERE id = ?;
+
+selectWaterTrackById:
+SELECT * FROM waterTrack WHERE id = ?;
+
+selectWaterTracksByDayRange:
+SELECT * FROM waterTrack WHERE date BETWEEN ? AND ?;
+
+
+
+
+
+
