@@ -39,7 +39,7 @@ fun WaterTrackItem(
     onDelete: (Int) -> Unit,
     onUpdate: (WaterTrackItem) -> Unit
 ) {
-    val drinkTypeResourcesProvider = LocalDrinkTypeResources.current
+    val drinkTypeResourcesProvider = LocalDrinkTypeResourcesProvider.current
     val drinkTypeResources = drinkTypeResourcesProvider.provide(waterTrackItem.drinkType)
 
     Card(

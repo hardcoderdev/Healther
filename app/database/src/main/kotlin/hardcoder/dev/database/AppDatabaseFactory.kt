@@ -1,7 +1,6 @@
 package hardcoder.dev.database
 
 import android.content.Context
-import com.squareup.sqldelight.EnumColumnAdapter
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 
 object AppDatabaseFactory {
@@ -11,12 +10,6 @@ object AppDatabaseFactory {
             schema = AppDatabase.Schema,
             context = context,
             name = name
-        ),
-        waterTrackAdapter = WaterTrack.Adapter(
-            drinkTypeAdapter = EnumColumnAdapter()
-        ),
-        HeroAdapter = Hero.Adapter(
-            genderAdapter = EnumColumnAdapter()
         )
     )
 }

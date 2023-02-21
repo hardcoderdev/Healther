@@ -28,6 +28,11 @@ import com.chargemap.compose.numberpicker.NumberPicker
 import hardcoder.dev.android_ui.LocalPresentationModule
 import hardcoder.dev.entities.Gender
 import hardcoder.dev.healther.R
+import hardcoder.dev.presentation.EnterWeightViewModel
+import hardcoder.dev.uikit.IconTextButton
+import hardcoder.dev.uikit.ScaffoldWrapper
+import hardcoder.dev.uikit.TopBarConfig
+import hardcoder.dev.uikit.TopBarType
 
 @Composable
 fun EnterWeightScreen(
@@ -42,7 +47,7 @@ fun EnterWeightScreen(
     }
     val state = enterWeightViewModel.state.collectAsState()
 
-    hardcoder.dev.uikit.ScaffoldWrapper(
+    ScaffoldWrapper(
         content = {
             EnterWeightContent(
                 state = state.value,
@@ -50,8 +55,8 @@ fun EnterWeightScreen(
                 onUpdateWeight = enterWeightViewModel::updateWeight
             )
         },
-        topBarConfig = hardcoder.dev.uikit.TopBarConfig(
-            type = hardcoder.dev.uikit.TopBarType.TopBarWithNavigationBack(
+        topBarConfig = TopBarConfig(
+            type = TopBarType.TopBarWithNavigationBack(
                 titleResId = R.string.enterWeight_title_topBar,
                 onGoBack = onGoBack
             )
@@ -63,7 +68,7 @@ fun EnterWeightScreen(
 private fun EnterWeightContent(
     onUpdateWeight: (Int) -> Unit,
     onGoForward: () -> Unit,
-    state: hardcoder.dev.presentation.EnterWeightViewModel.State
+    state: EnterWeightViewModel.State
 ) {
     Column(
         modifier = Modifier
@@ -98,7 +103,7 @@ private fun EnterWeightContent(
             )
         }
         Spacer(modifier = Modifier.height(32.dp))
-        hardcoder.dev.uikit.IconTextButton(
+        IconTextButton(
             iconResourceId = Icons.Default.Done,
             labelResId = R.string.enterWeight_next_button,
             onClick = onGoForward
@@ -112,7 +117,7 @@ fun EnterWeightScreenPreview() {
     EnterWeightScreen(
         gender = Gender.MALE,
         onGoBack = {},
-        onGoForward = { gender, weight ->  }
+        onGoForward = { _, _ -> }
     )
 }
 

@@ -1,6 +1,5 @@
 package hardcoder.dev.extensions
 
-import android.annotation.SuppressLint
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
@@ -27,7 +26,7 @@ fun LocalDate.createRangeForCurrentDay(): LongRange {
     return getStartOfDay()..getEndOfDay()
 }
 
-@SuppressLint("NewApi")
+
 fun LocalDate.toDate(): Date {
     return Date.from(
         atTime(LocalTime(hour = 0, minute = 0, second = 59))

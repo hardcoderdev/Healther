@@ -1,20 +1,21 @@
 package hardcoder.dev.di
 
 import android.content.Context
-import hardcoder.dev.logic.validators.WaterTrackMillilitersValidator
-import hardcoder.dev.logic.resolvers.WaterIntakeResolver
-import hardcoder.dev.logic.creators.WaterTrackCreator
-import hardcoder.dev.logic.creators.HeroCreator
-import hardcoder.dev.logic.creators.AppPreferenceCreator
-import hardcoder.dev.logic.updaters.WaterTrackUpdater
-import hardcoder.dev.logic.updaters.HeroUpdater
-import hardcoder.dev.logic.updaters.AppPreferenceUpdater
-import hardcoder.dev.logic.deleters.WaterTrackDeleter
-import hardcoder.dev.logic.providers.WaterTrackProvider
-import hardcoder.dev.logic.providers.HeroProvider
-import hardcoder.dev.logic.providers.AppPreferenceProvider
 import hardcoder.dev.database.AppDatabaseFactory
-import hardcoder.dev.logic.resolvers.WaterPercentageResolver
+import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
+import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
+import hardcoder.dev.logic.hero.GenderIdMapper
+import hardcoder.dev.logic.hero.HeroCreator
+import hardcoder.dev.logic.hero.HeroProvider
+import hardcoder.dev.logic.hero.HeroUpdater
+import hardcoder.dev.logic.waterBalance.DrinkTypeIdMapper
+import hardcoder.dev.logic.waterBalance.WaterTrackCreator
+import hardcoder.dev.logic.waterBalance.WaterTrackDeleter
+import hardcoder.dev.logic.waterBalance.WaterTrackProvider
+import hardcoder.dev.logic.waterBalance.WaterTrackUpdater
+import hardcoder.dev.logic.waterBalance.resolvers.WaterIntakeResolver
+import hardcoder.dev.logic.waterBalance.resolvers.WaterPercentageResolver
+import hardcoder.dev.logic.waterBalance.validators.WaterTrackMillilitersValidator
 import kotlinx.coroutines.Dispatchers
 
 class LogicModule(private val context: Context) {
@@ -38,17 +39,23 @@ class LogicModule(private val context: Context) {
         WaterTrackMillilitersValidator()
     }
 
+    private val drinkTypeIdMapper by lazy {
+        DrinkTypeIdMapper()
+    }
+
     val waterTrackCreator by lazy {
         WaterTrackCreator(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            dispatcher = Dispatchers.IO,
+            drinkTypeIdMapper = drinkTypeIdMapper
         )
     }
 
     val waterTrackUpdater by lazy {
         WaterTrackUpdater(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            dispatcher = Dispatchers.IO,
+            drinkTypeIdMapper = drinkTypeIdMapper
         )
     }
 
@@ -60,31 +67,36 @@ class LogicModule(private val context: Context) {
     }
 
     val waterTrackProvider by lazy {
-        WaterTrackProvider(appDatabase = appDatabase)
+        WaterTrackProvider(
+            appDatabase = appDatabase,
+            drinkTypeIdMapper = drinkTypeIdMapper
+        )
+    }
+
+    private val genderIdMapper by lazy {
+        GenderIdMapper()
     }
 
     val heroCreator by lazy {
         HeroCreator(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            dispatcher = Dispatchers.IO,
+            genderIdMapper = genderIdMapper
         )
     }
 
     val heroUpdater by lazy {
         HeroUpdater(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            dispatcher = Dispatchers.IO,
+            genderIdMapper = genderIdMapper
         )
     }
 
     val heroProvider by lazy {
-        HeroProvider(appDatabase = appDatabase)
-    }
-
-    val appPreferenceCreator by lazy {
-        AppPreferenceCreator(
+        HeroProvider(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            genderIdMapper = genderIdMapper
         )
     }
 

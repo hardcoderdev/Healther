@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.entities.DrinkType
 import hardcoder.dev.extensions.getStartOfDay
-import hardcoder.dev.logic.providers.HeroProvider
-import hardcoder.dev.logic.providers.WaterTrackProvider
-import hardcoder.dev.logic.resolvers.WaterIntakeResolver
-import hardcoder.dev.logic.updaters.WaterTrackUpdater
-import hardcoder.dev.logic.validators.CorrectMillilitersInput
-import hardcoder.dev.logic.validators.WaterTrackMillilitersValidator
+import hardcoder.dev.logic.hero.HeroProvider
+import hardcoder.dev.logic.waterBalance.WaterTrackProvider
+import hardcoder.dev.logic.waterBalance.resolvers.WaterIntakeResolver
+import hardcoder.dev.logic.waterBalance.WaterTrackUpdater
+import hardcoder.dev.logic.waterBalance.validators.CorrectMillilitersInput
+import hardcoder.dev.logic.waterBalance.validators.WaterTrackMillilitersValidator
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,7 +21,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.logic.validators.ValidatedMillilitersCount
+import hardcoder.dev.logic.waterBalance.validators.MillilitersCount
+import hardcoder.dev.logic.waterBalance.validators.ValidatedMillilitersCount
 
 class UpdateWaterTrackViewModel(
     private val waterTrackId: Int,
@@ -41,7 +42,7 @@ class UpdateWaterTrackViewModel(
     private val validatedMillilitersCountState = millilitersDrunk.map {
         val currentHero = hero.first()
         waterTrackMillilitersValidator.validate(
-            data = hardcoder.dev.logic.validators.MillilitersCount(it),
+            data = MillilitersCount(it),
             dailyWaterIntakeInMillisCount = waterIntakeResolver.resolve(
                 currentHero.weight,
                 currentHero.exerciseStressTime,

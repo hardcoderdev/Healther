@@ -12,6 +12,7 @@ android {
 sqldelight {
     database("AppDatabase") {
         packageName = "hardcoder.dev.database"
+        dialect = "sqlite:3.24"
     }
 }
 

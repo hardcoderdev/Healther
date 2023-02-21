@@ -26,16 +26,15 @@ import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import hardcoder.dev.android_ui.DrinkItem
+import hardcoder.dev.android_ui.LocalDrinkTypeResourcesProvider
 import hardcoder.dev.android_ui.LocalPresentationModule
 import hardcoder.dev.android_ui.RegexHolder
 import hardcoder.dev.entities.DrinkType
 import hardcoder.dev.extensions.toDate
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.validators.IncorrectMillilitersInput
+import hardcoder.dev.logic.waterBalance.validators.IncorrectMillilitersInput
 import hardcoder.dev.presentation.UpdateWaterTrackViewModel
-import hardcoder.dev.android_ui.DrinkItem
-import hardcoder.dev.android_ui.DrinkTypeResources
-import hardcoder.dev.android_ui.LocalDrinkTypeResources
 import hardcoder.dev.uikit.ErrorText
 import hardcoder.dev.uikit.FilledTextField
 import hardcoder.dev.uikit.IconTextButton
@@ -102,9 +101,7 @@ private fun UpdateWaterTrackContent(
             Spacer(modifier = Modifier.height(16.dp))
             SelectDrinkTypeSection(
                 state = state,
-                updateSelectedDrink = {
-                    updateSelectedDrink(it.drinkType)
-                }
+                updateSelectedDrink = updateSelectedDrink
             )
             Spacer(modifier = Modifier.height(16.dp))
             SelectDateSection(dateDialogState = dateDialogState, state = state)
@@ -174,8 +171,8 @@ private fun EnterDrunkMillilitersSection(
             ErrorText(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp),
                 text = when (validatedMillilitersCount.reason) {
-                    is IncorrectMillilitersInput.Reason.LessThanMinimum -> {
-                        stringResource(R.string.updateWaterTrack_millilitersLessThanMinimum_error)
+                    is IncorrectMillilitersInput.Reason.Empty -> {
+                        stringResource(R.string.updateWaterTrack_millilitersEmpty_error)
                     }
 
                     is IncorrectMillilitersInput.Reason.MoreThanDailyWaterIntake -> {
@@ -194,9 +191,9 @@ private fun EnterDrunkMillilitersSection(
 @Composable
 private fun SelectDrinkTypeSection(
     state: UpdateWaterTrackViewModel.State,
-    updateSelectedDrink: (DrinkTypeResources) -> Unit
+    updateSelectedDrink: (DrinkType) -> Unit
 ) {
-    val drinkTypeResourcesProvider = LocalDrinkTypeResources.current
+    val drinkTypeResourcesProvider = LocalDrinkTypeResourcesProvider.current
 
     Text(
         text = stringResource(id = R.string.updateWaterTrack_enterDrinkType_text),
@@ -215,7 +212,9 @@ private fun SelectDrinkTypeSection(
                 modifier = Modifier.padding(12.dp),
                 drinkTypeResources = drinkTypeResourcesProvider.provide(drink),
                 selectedDrink = drinkTypeResourcesProvider.provide(state.selectedDrink),
-                onUpdateSelectedDrink = updateSelectedDrink
+                onUpdateSelectedDrink = {
+                    updateSelectedDrink(it.drinkType)
+                }
             )
         }
     }

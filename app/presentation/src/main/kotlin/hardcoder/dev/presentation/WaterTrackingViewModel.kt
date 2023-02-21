@@ -3,17 +3,15 @@ package hardcoder.dev.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.entities.AppPreference
 import hardcoder.dev.entities.DrinkType
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.extensions.mapItems
-import hardcoder.dev.logic.deleters.WaterTrackDeleter
-import hardcoder.dev.logic.providers.HeroProvider
-import hardcoder.dev.logic.providers.WaterTrackProvider
-import hardcoder.dev.logic.resolvers.WaterIntakeResolver
-import hardcoder.dev.logic.resolvers.WaterPercentageResolver
-import hardcoder.dev.logic.updaters.AppPreferenceUpdater
+import hardcoder.dev.logic.hero.HeroProvider
+import hardcoder.dev.logic.waterBalance.WaterTrackDeleter
+import hardcoder.dev.logic.waterBalance.WaterTrackProvider
+import hardcoder.dev.logic.waterBalance.resolvers.WaterIntakeResolver
+import hardcoder.dev.logic.waterBalance.resolvers.WaterPercentageResolver
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +31,6 @@ data class WaterTrackItem(
 )
 
 class WaterTrackingViewModel(
-    private val appPreferenceUpdater: AppPreferenceUpdater,
     heroProvider: HeroProvider,
     private val waterTrackProvider: WaterTrackProvider,
     private val waterTrackDeleter: WaterTrackDeleter,
@@ -94,7 +91,6 @@ class WaterTrackingViewModel(
     )
 
     init {
-        updateFirstLaunch()
         resolveDailyWaterIntake()
         fetchWaterTracks()
     }
@@ -107,7 +103,6 @@ class WaterTrackingViewModel(
             waterTrackProvider.provideWaterTracksByDayRange(startOfCurrentDay..endOfCurrentDay)
                 .mapItems { waterTrack ->
                     waterTrack.toItem(
-                        drinkType = waterTrack.drinkType,
                         resolvedMillilitersCount = waterPercentageResolver.resolve(
                             drinkType = waterTrack.drinkType,
                             millilitersDrunk = waterTrack.millilitersCount
@@ -119,17 +114,6 @@ class WaterTrackingViewModel(
                     millilitersDrunk.value = millilitersCount
                     waterTracksList.value = waterTracks
                 }
-        }
-    }
-
-    private fun updateFirstLaunch() {
-        viewModelScope.launch {
-            appPreferenceUpdater.update(
-                AppPreference(
-                    id = 0,
-                    isFirstLaunch = false
-                )
-            )
         }
     }
 

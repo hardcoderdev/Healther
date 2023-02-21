@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.healther.R
+import hardcoder.dev.uikit.IconTextButton
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -43,7 +44,7 @@ private fun WelcomeContent(onStart: () -> Unit) {
             )
         }
         Spacer(modifier = Modifier.height(32.dp))
-        hardcoder.dev.uikit.IconTextButton(
+        IconTextButton(
             labelResId = R.string.welcome_letsStart_button,
             iconResourceId = Icons.Default.PlayArrow,
             onClick = onStart,

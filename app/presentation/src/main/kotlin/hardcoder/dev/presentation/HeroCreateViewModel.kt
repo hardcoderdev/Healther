@@ -2,17 +2,18 @@ package hardcoder.dev.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import hardcoder.dev.entities.AppPreference
 import hardcoder.dev.entities.Gender
-import hardcoder.dev.logic.creators.AppPreferenceCreator
-import hardcoder.dev.logic.creators.HeroCreator
+import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
+import hardcoder.dev.logic.hero.HeroCreator
 import kotlinx.coroutines.launch
 
 class HeroCreateViewModel(
-    private val appPreferenceCreator: AppPreferenceCreator,
+    private val appPreferenceUpdater: AppPreferenceUpdater,
     private val heroCreator: HeroCreator
 ) : ViewModel() {
 
-    suspend fun createHero(
+    fun createUserHero(
         gender: Gender,
         weight: Int,
         exerciseStressTime: Int
@@ -23,14 +24,8 @@ class HeroCreateViewModel(
                 exerciseStressTime = exerciseStressTime,
                 gender = gender
             )
-        }
 
-        updateFirstLaunch()
-    }
-
-    private suspend fun updateFirstLaunch() {
-        viewModelScope.launch {
-            appPreferenceCreator.createAppPreference()
+            appPreferenceUpdater.update(AppPreference(firstLaunchTime = System.currentTimeMillis()))
         }
     }
 }

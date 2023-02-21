@@ -7,6 +7,6 @@ val LocalPresentationModule = compositionLocalOf<PresentationModule> {
     error("LocalPresentationModule not provided")
 }
 
-val LocalDrinkTypeResources = compositionLocalOf<DrinkTypeResourcesProvider> {
+val LocalDrinkTypeResourcesProvider = compositionLocalOf<DrinkTypeResourcesProvider> {
     error("LocalDrinkTypeResources not provided")
 }

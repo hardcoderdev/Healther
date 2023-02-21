@@ -2,15 +2,19 @@ package hardcoder.dev.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.logic.providers.AppPreferenceProvider
+import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class SplashViewModel(appPreferenceProvider: AppPreferenceProvider) : ViewModel() {
 
-    val state = appPreferenceProvider.provideAppPreference().map {
-        FetchingState.Loaded(State(it?.isFirstLaunch ?: LAUNCH_FIRST))
+    val state = appPreferenceProvider.provideAppPreference().map { appPreferences ->
+        FetchingState.Loaded(State(isFirstLaunch = appPreferences?.let {
+            false
+        } ?: run {
+            LAUNCH_FIRST
+        }))
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -24,7 +28,7 @@ class SplashViewModel(appPreferenceProvider: AppPreferenceProvider) : ViewModel(
         object Loading : FetchingState()
     }
 
-    companion object{
+    companion object {
         const val LAUNCH_FIRST = true
     }
 }

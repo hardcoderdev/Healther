@@ -4,7 +4,6 @@ plugins {
     kotlin(Plugins.Kotlin.kapt)
     id(Plugins.serialization)
     id(Plugins.navigationSafeArgs)
-    id(Plugins.sqlDelight) version(Plugins.Versions.sqlDelight)
 }
 
 android {
@@ -80,12 +79,5 @@ dependencies {
     addCompose()
     addCommonAndroid()
     addCoroutines()
-    addData()
     addRetrofit()
-}
-
-sqldelight {
-    database("AppDatabase") {
-        packageName = "hardcoder.dev.healther.database"
-    }
 }

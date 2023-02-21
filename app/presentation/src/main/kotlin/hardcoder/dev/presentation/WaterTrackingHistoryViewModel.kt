@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.extensions.createRangeForCurrentDay
 import hardcoder.dev.extensions.mapItems
-import hardcoder.dev.logic.deleters.WaterTrackDeleter
-import hardcoder.dev.logic.providers.WaterTrackProvider
-import hardcoder.dev.logic.resolvers.WaterPercentageResolver
+import hardcoder.dev.logic.waterBalance.WaterTrackDeleter
+import hardcoder.dev.logic.waterBalance.WaterTrackProvider
+import hardcoder.dev.logic.waterBalance.resolvers.WaterPercentageResolver
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,7 +31,6 @@ class WaterTrackingHistoryViewModel(
         waterTrackProvider.provideWaterTracksByDayRange(range)
     }.mapItems {
         it.toItem(
-            drinkType = it.drinkType,
             resolvedMillilitersCount = waterPercentageResolver.resolve(
                 drinkType = it.drinkType,
                 millilitersDrunk = it.millilitersCount

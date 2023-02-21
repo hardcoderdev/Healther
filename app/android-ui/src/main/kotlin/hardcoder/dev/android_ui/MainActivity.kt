@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
             HealtherTheme {
                 CompositionLocalProvider(
                     LocalPresentationModule provides App.instance.presentationModule,
-                    LocalDrinkTypeResources provides DrinkTypeResourcesProvider()
+                    LocalDrinkTypeResourcesProvider provides DrinkTypeResourcesProvider()
                 ) {
                     RootScreen()
                 }

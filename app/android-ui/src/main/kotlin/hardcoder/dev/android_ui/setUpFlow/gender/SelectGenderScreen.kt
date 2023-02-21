@@ -28,7 +28,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.android_ui.LocalPresentationModule
 import hardcoder.dev.entities.Gender
 import hardcoder.dev.healther.R
+import hardcoder.dev.presentation.SelectGenderViewModel
+import hardcoder.dev.uikit.IconTextButton
 import hardcoder.dev.uikit.ScaffoldWrapper
+import hardcoder.dev.uikit.TopBarConfig
+import hardcoder.dev.uikit.TopBarType
 
 @Composable
 fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: (Gender) -> Unit) {
@@ -48,8 +52,8 @@ fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: (Gender) -> Unit) {
                 }
             )
         },
-        topBarConfig = hardcoder.dev.uikit.TopBarConfig(
-            type = hardcoder.dev.uikit.TopBarType.TopBarWithNavigationBack(
+        topBarConfig = TopBarConfig(
+            type = TopBarType.TopBarWithNavigationBack(
                 titleResId = R.string.selectGender_title_topBar,
                 onGoBack = onGoBack
             )
@@ -59,7 +63,7 @@ fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: (Gender) -> Unit) {
 
 @Composable
 private fun SelectGenderContent(
-    state: hardcoder.dev.presentation.SelectGenderViewModel.State,
+    state: SelectGenderViewModel.State,
     onUpdateGender: (Gender) -> Unit,
     onGoForward: () -> Unit
 ) {
@@ -124,7 +128,7 @@ private fun SelectGenderContent(
             style = MaterialTheme.typography.titleLarge
         )
         Spacer(modifier = Modifier.height(32.dp))
-        hardcoder.dev.uikit.IconTextButton(
+        IconTextButton(
             iconResourceId = Icons.Default.Done,
             labelResId = R.string.selectGender_next_button,
             onClick = onGoForward

@@ -3,12 +3,12 @@ package hardcoder.dev.di
 import hardcoder.dev.presentation.EnterExerciseStressTimeViewModel
 import hardcoder.dev.presentation.EnterWeightViewModel
 import hardcoder.dev.presentation.HeroCreateViewModel
+import hardcoder.dev.presentation.SaveWaterTrackViewModel
 import hardcoder.dev.presentation.SelectGenderViewModel
 import hardcoder.dev.presentation.SplashViewModel
+import hardcoder.dev.presentation.UpdateWaterTrackViewModel
 import hardcoder.dev.presentation.WaterTrackingHistoryViewModel
 import hardcoder.dev.presentation.WaterTrackingViewModel
-import hardcoder.dev.presentation.SaveWaterTrackViewModel
-import hardcoder.dev.presentation.UpdateWaterTrackViewModel
 
 class PresentationModule(
     private val logicModule: LogicModule
@@ -24,7 +24,6 @@ class PresentationModule(
     fun createEnterExerciseStressTimeViewModel() = EnterExerciseStressTimeViewModel()
 
     fun createWaterTrackingViewModel() = WaterTrackingViewModel(
-        appPreferenceUpdater = logicModule.appPreferenceUpdater,
         heroProvider = logicModule.heroProvider,
         waterTrackDeleter = logicModule.waterTrackDeleter,
         waterTrackProvider = logicModule.waterTrackProvider,
@@ -57,6 +56,6 @@ class PresentationModule(
 
     fun createHeroCreateViewModel() = HeroCreateViewModel(
         heroCreator = logicModule.heroCreator,
-        appPreferenceCreator = logicModule.appPreferenceCreator
+        appPreferenceUpdater = logicModule.appPreferenceUpdater
     )
 }

@@ -28,7 +28,11 @@ import com.chargemap.compose.numberpicker.NumberPicker
 import hardcoder.dev.android_ui.LocalPresentationModule
 import hardcoder.dev.entities.Gender
 import hardcoder.dev.healther.R
+import hardcoder.dev.presentation.EnterExerciseStressTimeViewModel
+import hardcoder.dev.uikit.IconTextButton
 import hardcoder.dev.uikit.ScaffoldWrapper
+import hardcoder.dev.uikit.TopBarConfig
+import hardcoder.dev.uikit.TopBarType
 
 @Composable
 fun EnterExerciseStressScreen(
@@ -36,12 +40,15 @@ fun EnterExerciseStressScreen(
     weight: Int,
     exerciseStressTime: Int,
     onGoBack: () -> Unit,
-    onGoForward: (Gender, Int, Int) -> Unit
+    onGoForward: () -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
 
     val enterExerciseStressTimeViewModel = viewModel {
         presentationModule.createEnterExerciseStressTimeViewModel()
+    }
+    val heroCreateViewModel = viewModel {
+        presentationModule.createHeroCreateViewModel()
     }
     val state = enterExerciseStressTimeViewModel.state.collectAsState()
 
@@ -50,13 +57,14 @@ fun EnterExerciseStressScreen(
             EnterExerciseStressContent(
                 state = state.value,
                 onGoForward = {
-                    onGoForward(gender, weight, exerciseStressTime)
+                    heroCreateViewModel.createUserHero(gender, weight, exerciseStressTime)
+                    onGoForward()
                 },
                 onUpdateExerciseStressTime = enterExerciseStressTimeViewModel::updateExerciseStressTime
             )
         },
-        topBarConfig = hardcoder.dev.uikit.TopBarConfig(
-            type = hardcoder.dev.uikit.TopBarType.TopBarWithNavigationBack(
+        topBarConfig = TopBarConfig(
+            type = TopBarType.TopBarWithNavigationBack(
                 titleResId = R.string.enterExerciseStress_title_topBar,
                 onGoBack = onGoBack
             )
@@ -66,9 +74,9 @@ fun EnterExerciseStressScreen(
 
 @Composable
 private fun EnterExerciseStressContent(
-    state: hardcoder.dev.presentation.EnterExerciseStressTimeViewModel.State,
+    state: EnterExerciseStressTimeViewModel.State,
     onUpdateExerciseStressTime: (Int) -> Unit,
-    onGoForward: () -> Unit
+    onGoForward:  () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -103,7 +111,7 @@ private fun EnterExerciseStressContent(
             )
         }
         Spacer(modifier = Modifier.height(32.dp))
-        hardcoder.dev.uikit.IconTextButton(
+        IconTextButton(
             iconResourceId = Icons.Default.Done,
             labelResId = R.string.enterExerciseStress_next_button,
             onClick = onGoForward
@@ -117,7 +125,7 @@ private fun EnterExerciseStressContent(
 fun EnterExerciseStressScreenPreview() {
     EnterExerciseStressScreen(
         onGoBack = {},
-        onGoForward = { gender, weight, exerciseStressTime -> },
+        onGoForward = {},
         gender = Gender.MALE,
         weight = 60,
         exerciseStressTime = 2

@@ -6,6 +6,14 @@ plugins {
 android {
     namespace = Modules.Namespaces.extensions
     compileSdk = Android.compileSdk
+
+    defaultConfig {
+        multiDexEnabled = true
+    }
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
 }
 
 dependencies {
