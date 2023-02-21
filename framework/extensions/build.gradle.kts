@@ -9,7 +9,6 @@ android {
 
     defaultConfig {
         multiDexEnabled = true
-        minSdk = Android.DefaultConfig.minSdk
     }
 
     compileOptions {
