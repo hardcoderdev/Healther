@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS AppPreference (
+    id INTEGER AS Int NOT NULL PRIMARY KEY AUTOINCREMENT,
+    firstLaunchTime INTEGER NOT NULL
+);
+
+upsert:
+INSERT INTO AppPreference (id, firstLaunchTime)
+VALUES (?, ?) ON CONFLICT(id) DO UPDATE SET firstLaunchTime = excluded.firstLaunchTime;
+
+selectPreferences:
+SELECT * FROM AppPreference;
