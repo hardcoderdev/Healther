@@ -6,4 +6,8 @@ plugins {
 android {
     namespace = Modules.Namespaces.entities
     compileSdk = Android.compileSdk
+
+    defaultConfig {
+        minSdk = Android.DefaultConfig.minSdk
+    }
 }

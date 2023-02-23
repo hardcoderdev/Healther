@@ -3,11 +3,8 @@ package hardcoder.dev.logic.waterBalance
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.WaterTrack
-import hardcoder.dev.entities.DrinkType
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import hardcoder.dev.entities.WaterTrack as WaterTrackEntity
+import hardcoder.dev.entities.waterTracking.WaterTrack as WaterTrackEntity
 
 class WaterTrackProvider(
     private val appDatabase: AppDatabase,
@@ -29,10 +26,6 @@ class WaterTrackProvider(
         .map {
             it.executeAsOneOrNull()?.toEntity()
         }
-
-    fun getAllDrinkTypes(): Flow<List<DrinkType>> {
-        return flowOf(DrinkType.values().toList())
-    }
 
     private fun WaterTrack.toEntity() = WaterTrackEntity(
         id, date, millilitersCount, drinkTypeIdMapper.mapToDrinkType(drinkTypeId)

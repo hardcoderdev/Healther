@@ -1,8 +1,8 @@
-package hardcoder.dev.android_ui
+package hardcoder.dev.android_ui.waterBalance
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import hardcoder.dev.entities.DrinkType
+import hardcoder.dev.entities.waterTracking.DrinkType
 
 data class DrinkTypeResources(
     @StringRes val title: Int,

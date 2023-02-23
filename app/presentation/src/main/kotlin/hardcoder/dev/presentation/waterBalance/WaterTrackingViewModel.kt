@@ -1,9 +1,9 @@
-package hardcoder.dev.presentation
+package hardcoder.dev.presentation.waterBalance
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.coroutines.combine
-import hardcoder.dev.entities.DrinkType
+import hardcoder.dev.entities.waterTracking.DrinkType
+import hardcoder.dev.entities.hero.Hero
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.extensions.mapItems
@@ -17,7 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
@@ -42,46 +43,19 @@ class WaterTrackingViewModel(
     private val dailyWaterIntake = MutableStateFlow(0)
     private val waterTracksList = MutableStateFlow<List<WaterTrackItem>>(emptyList())
     private val hero = heroProvider.requireHero()
-    private val weight = hero.map {
-        it.weight
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = 0
-    )
-
-    private val exerciseStressTime = hero.map {
-        it.exerciseStressTime
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = 0
-    )
-
-    private val gender = hero.map {
-        it.gender
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = hardcoder.dev.entities.Gender.MALE
-    )
 
     val state = combine(
         millilitersDrunk,
         waterTracksList,
         dailyWaterIntake,
-        weight,
-        exerciseStressTime,
-        gender
-    ) { millilitersDrunk, waterTracks, dailyWaterIntake, weight, exerciseStressTime, gender ->
+        hero
+    ) { millilitersDrunk, waterTracks, dailyWaterIntake, hero ->
         LoadingState.Loaded(
             State(
                 millisCount = millilitersDrunk,
                 waterTracks = waterTracks,
                 dailyWaterIntake = dailyWaterIntake,
-                weight = weight,
-                exerciseStressTime = exerciseStressTime,
-                gender = gender
+                hero = hero
             )
         )
     }.stateIn(
@@ -118,11 +92,15 @@ class WaterTrackingViewModel(
     }
 
     private fun resolveDailyWaterIntake() {
-        dailyWaterIntake.value = waterIntakeResolver.resolve(
-            weight.value,
-            exerciseStressTime.value,
-            gender.value
-        )
+        viewModelScope.launch {
+            val currentHero = hero.first()
+
+            dailyWaterIntake.value = waterIntakeResolver.resolve(
+                currentHero.weight,
+                currentHero.exerciseStressTime,
+                currentHero.gender
+            )
+        }
     }
 
     fun delete(waterTrackId: Int) {
@@ -132,9 +110,7 @@ class WaterTrackingViewModel(
     }
 
     data class State(
-        val weight: Int,
-        val exerciseStressTime: Int,
-        val gender: hardcoder.dev.entities.Gender,
+        val hero: Hero,
         val millisCount: Int,
         val dailyWaterIntake: Int,
         val waterTracks: List<WaterTrackItem>

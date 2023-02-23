@@ -1,4 +1,4 @@
-package hardcoder.dev.entities
+package hardcoder.dev.entities.waterTracking
 
 data class WaterTrack(
     val id: Int,

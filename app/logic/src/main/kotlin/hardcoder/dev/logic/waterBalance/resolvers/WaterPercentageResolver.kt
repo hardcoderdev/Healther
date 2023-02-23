@@ -1,6 +1,6 @@
 package hardcoder.dev.logic.waterBalance.resolvers
 
-import hardcoder.dev.entities.DrinkType
+import hardcoder.dev.entities.waterTracking.DrinkType
 
 class WaterPercentageResolver {
 

@@ -6,6 +6,10 @@ plugins {
 android {
     namespace = Modules.Namespaces.coroutines
     compileSdk = Android.compileSdk
+
+    defaultConfig {
+        minSdk = Android.DefaultConfig.minSdk
+    }
 }
 
 dependencies {

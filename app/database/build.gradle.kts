@@ -7,6 +7,10 @@ plugins {
 android {
     namespace = Modules.Namespaces.database
     compileSdk = Android.compileSdk
+
+    defaultConfig {
+        minSdk = Android.DefaultConfig.minSdk
+    }
 }
 
 sqldelight {

@@ -6,6 +6,10 @@ plugins {
 android {
     namespace = Modules.Namespaces.presentation
     compileSdk = Android.compileSdk
+
+    defaultConfig {
+        minSdk = Android.DefaultConfig.minSdk
+    }
 }
 
 dependencies {
@@ -13,6 +17,6 @@ dependencies {
     api(project(Modules.Paths.coroutines))
     api(project(Modules.Paths.extensions))
 
-    addCommonAndroid()
+    implementation(Dependencies.lifecycleViewModelKtx)
     implementation(Dependencies.composeCalendarDateTime)
 }

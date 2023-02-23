@@ -1,29 +1,23 @@
 package hardcoder.dev.logic.waterBalance
 
-import hardcoder.dev.entities.DrinkType
+import hardcoder.dev.entities.waterTracking.DrinkType
 
 class DrinkTypeIdMapper {
 
-    fun mapToId(drinkType: DrinkType) = when(drinkType) {
-        DrinkType.WATER -> 0
-        DrinkType.COFFEE -> 1
-        DrinkType.BEER -> 2
-        DrinkType.MILK -> 3
-        DrinkType.TEA -> 4
-        DrinkType.JUICE -> 5
-        DrinkType.SODA -> 6
-        DrinkType.SOUP -> 7
-    }
+    private val drinkTypeIds = mapOf(
+        DrinkType.WATER to 0,
+        DrinkType.COFFEE to 1,
+        DrinkType.BEER to 2,
+        DrinkType.MILK to 3,
+        DrinkType.TEA to 4,
+        DrinkType.JUICE to 5,
+        DrinkType.SODA to 6,
+        DrinkType.SOUP to 7
+    )
 
-    fun mapToDrinkType(drinkId: Int) = when (drinkId) {
-        0 -> DrinkType.WATER
-        1 -> DrinkType.COFFEE
-        2 -> DrinkType.BEER
-        3 -> DrinkType.MILK
-        4 -> DrinkType.TEA
-        5 -> DrinkType.JUICE
-        6 -> DrinkType.SODA
-        7 -> DrinkType.SOUP
-        else -> DrinkType.WATER
-    }
+    fun mapToId(drinkType: DrinkType) = checkNotNull(drinkTypeIds[drinkType])
+
+    fun mapToDrinkType(drinkId: Int) = checkNotNull(
+        drinkTypeIds.entries.find { it.value == drinkId }
+    ).key
 }

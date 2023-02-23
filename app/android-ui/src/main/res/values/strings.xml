@@ -8,14 +8,14 @@
 
     <string name="waterTrackItem_deleteTrack_iconContentDescription">Удалить запись</string>
     <string name="waterTrackItem_formatMilliliters_text">%d (%d) мл</string>
-    <string name="waterTrackItem_waterDrinkType_text">Вода</string>
-    <string name="waterTrackItem_teaDrinkType_text">Чай</string>
-    <string name="waterTrackItem_coffeeDrinkType_text">Кофе</string>
-    <string name="waterTrackItem_beerDrinkType_text">Пиво</string>
-    <string name="waterTrackItem_juiceDrinkType_text">Сок</string>
-    <string name="waterTrackItem_sodaDrinkType_text">Газировка</string>
-    <string name="waterTrackItem_soupDrinkType_text">Суп</string>
-    <string name="waterTrackItem_milkDrinkType_text">Молоко</string>
+    <string name="waterTracking_drinkType_water">Вода</string>
+    <string name="waterTracking_drinkType_tea">Чай</string>
+    <string name="waterTracking_drinkType_coffee">Кофе</string>
+    <string name="waterTracking_drinkType_beer">Пиво</string>
+    <string name="waterTracking_drinkType_juice">Сок</string>
+    <string name="waterTracking_drinkType_soda">Газировка</string>
+    <string name="waterTracking_drinkType_soup">Суп</string>
+    <string name="waterTracking_drinkType_milk">Молоко</string>
 
     <string name="welcome_title_topBar">Добро пожаловать</string>
     <string name="welcome_beforeWeStart_text">Перед тем, как мы начнём, ты можешь заполнить информацию о себе, которая поможет приложению работать корректно, например, чтобы по твоим показателям рассчитать ежедневную норму воды.</string>

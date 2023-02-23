@@ -1,13 +1,15 @@
-package hardcoder.dev.presentation
+package hardcoder.dev.presentation.waterBalance
 
+import android.content.res.Resources.NotFoundException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.entities.DrinkType
+import hardcoder.dev.entities.waterTracking.DrinkType
 import hardcoder.dev.extensions.getStartOfDay
-import hardcoder.dev.logic.waterBalance.WaterTrackCreator
 import hardcoder.dev.logic.hero.HeroProvider
+import hardcoder.dev.logic.waterBalance.DrinkTypeProvider
 import hardcoder.dev.logic.waterBalance.WaterTrackProvider
+import hardcoder.dev.logic.waterBalance.WaterTrackUpdater
 import hardcoder.dev.logic.waterBalance.resolvers.WaterIntakeResolver
 import hardcoder.dev.logic.waterBalance.validators.CorrectMillilitersInput
 import hardcoder.dev.logic.waterBalance.validators.MillilitersCount
@@ -17,53 +19,58 @@ import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
-class SaveWaterTrackViewModel(
-    private val waterTrackCreator: WaterTrackCreator,
-    waterTrackProvider: WaterTrackProvider,
+class UpdateWaterTrackViewModel(
+    private val waterTrackId: Int,
     heroProvider: HeroProvider,
-    private val waterIntakeResolver: WaterIntakeResolver,
+    drinkTypeProvider: DrinkTypeProvider,
+    private val waterTrackUpdater: WaterTrackUpdater,
+    private val waterTrackProvider: WaterTrackProvider,
     private val waterTrackMillilitersValidator: WaterTrackMillilitersValidator,
+    private val waterIntakeResolver: WaterIntakeResolver
 ) : ViewModel() {
 
     private val selectedDate = MutableStateFlow(LocalDate.now())
-    private val millilitersDrunk = MutableStateFlow<Int?>(null)
+    private val millilitersDrunk = MutableStateFlow(0)
     private val selectedDrink = MutableStateFlow(DrinkType.WATER)
-    private val drinkTypes = waterTrackProvider.getAllDrinkTypes()
+    private val drinkTypes = drinkTypeProvider.getAllDrinkTypes()
     private val hero = heroProvider.requireHero()
-    private val creationState = MutableStateFlow<CreationState>(CreationState.NotExecuted)
+    private val updateState = MutableStateFlow<UpdateState>(UpdateState.NotExecuted)
     private val validatedMillilitersCountState = millilitersDrunk.map {
         val currentHero = hero.first()
-        it?.let {
-            waterTrackMillilitersValidator.validate(
-                data = MillilitersCount(it),
-                dailyWaterIntakeInMillisCount = waterIntakeResolver.resolve(
-                    currentHero.weight,
-                    currentHero.exerciseStressTime,
-                    currentHero.gender
-                )
+        waterTrackMillilitersValidator.validate(
+            data = MillilitersCount(it),
+            dailyWaterIntakeInMillisCount = waterIntakeResolver.resolve(
+                currentHero.weight,
+                currentHero.exerciseStressTime,
+                currentHero.gender
             )
-        }
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = null
     )
 
+    init {
+        fillStateWithUpdatedTrack()
+    }
+
     val state = combine(
-        creationState,
+        updateState,
         selectedDate,
         millilitersDrunk,
         drinkTypes,
         selectedDrink,
         validatedMillilitersCountState
-    ) { creationState, selectedDate, millilitersDrunk, drinkTypes, selectedDrink, validatedMillilitersCountState ->
+    ) { updateState, selectedDate, millilitersDrunk, drinkTypes, selectedDrink, validatedMillilitersCountState ->
         State(
-            creationState = creationState,
+            updateState = updateState,
             selectedDate = selectedDate,
             millilitersCount = millilitersDrunk,
             drinks = drinkTypes,
@@ -75,25 +82,28 @@ class SaveWaterTrackViewModel(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
-            creationState = creationState.value,
             selectedDate = selectedDate.value,
             millilitersCount = millilitersDrunk.value,
             drinks = emptyList(),
             selectedDrink = selectedDrink.value,
-            validatedMillilitersCount = null,
+            validatedMillilitersCount = validatedMillilitersCountState.value,
+            updateState = updateState.value,
             creationAllowed = false
         )
     )
 
-    fun createWaterTrack() {
+    fun updateWaterTrack() {
         viewModelScope.launch {
             require(validatedMillilitersCountState.value is CorrectMillilitersInput)
-            waterTrackCreator.createWaterTrack(
-                date = selectedDate.value.getStartOfDay(),
-                millilitersCount = millilitersDrunk.value!!,
-                drinkType = selectedDrink.value
-            )
-            creationState.value = CreationState.Executed
+            waterTrackProvider.provideWaterTrackById(waterTrackId).firstOrNull()?.let {
+                val updatedTrack = it.copy(
+                    date = selectedDate.value.getStartOfDay(),
+                    millilitersCount = millilitersDrunk.value,
+                    drinkType = selectedDrink.value
+                )
+                waterTrackUpdater.update(updatedTrack)
+                updateState.value = UpdateState.Executed
+            } ?: throw NotFoundException("Track not found by it's id")
         }
     }
 
@@ -109,18 +119,28 @@ class SaveWaterTrackViewModel(
         selectedDate.value = localDate
     }
 
-    sealed class CreationState {
-        object NotExecuted : CreationState()
-        object Executed : CreationState()
+    private fun fillStateWithUpdatedTrack() {
+        viewModelScope.launch {
+            waterTrackProvider.provideWaterTrackById(waterTrackId).firstOrNull()
+                ?.let { waterTrack ->
+                    millilitersDrunk.value = waterTrack.millilitersCount
+                    selectedDrink.value = waterTrack.drinkType
+                }
+        }
+    }
+
+    sealed class UpdateState {
+        object NotExecuted : UpdateState()
+        object Executed : UpdateState()
     }
 
     data class State(
         val creationAllowed: Boolean,
-        val creationState: CreationState,
-        val millilitersCount: Int?,
+        val updateState: UpdateState,
         val validatedMillilitersCount: ValidatedMillilitersCount?,
+        val selectedDate: LocalDate,
+        val millilitersCount: Int,
         val drinks: List<DrinkType>,
         val selectedDrink: DrinkType,
-        val selectedDate: LocalDate
     )
 }

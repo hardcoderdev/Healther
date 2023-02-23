@@ -1,4 +1,4 @@
-package hardcoder.dev.entities
+package hardcoder.dev.entities.hero
 
 data class Hero(
     val weight: Int,

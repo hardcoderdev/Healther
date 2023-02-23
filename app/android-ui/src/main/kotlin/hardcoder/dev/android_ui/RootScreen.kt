@@ -13,11 +13,11 @@ import hardcoder.dev.android_ui.setUpFlow.gender.SelectGenderScreen
 import hardcoder.dev.android_ui.setUpFlow.weight.EnterWeightScreen
 import hardcoder.dev.android_ui.setUpFlow.welcome.WelcomeScreen
 import hardcoder.dev.android_ui.splash.SplashScreen
-import hardcoder.dev.android_ui.waterTracking.WaterTrackingScreen
-import hardcoder.dev.android_ui.waterTracking.create.SaveWaterTrackScreen
-import hardcoder.dev.android_ui.waterTracking.history.WaterTrackingHistoryScreen
-import hardcoder.dev.android_ui.waterTracking.update.UpdateWaterTrackScreen
-import hardcoder.dev.entities.Gender
+import hardcoder.dev.android_ui.waterBalance.WaterTrackingScreen
+import hardcoder.dev.android_ui.waterBalance.create.SaveWaterTrackScreen
+import hardcoder.dev.android_ui.waterBalance.history.WaterTrackingHistoryScreen
+import hardcoder.dev.android_ui.waterBalance.update.UpdateWaterTrackScreen
+import hardcoder.dev.entities.hero.Gender
 
 @Composable
 fun RootScreen() {

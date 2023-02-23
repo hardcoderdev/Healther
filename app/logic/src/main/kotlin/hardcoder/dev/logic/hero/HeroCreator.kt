@@ -1,7 +1,7 @@
 package hardcoder.dev.logic.hero
 
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.entities.Gender
+import hardcoder.dev.entities.hero.Gender
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -17,7 +17,7 @@ class HeroCreator(
         gender: Gender
     ) = withContext(dispatcher) {
         appDatabase.heroQueries.insert(
-            id = null,
+            id = HERO_ID,
             weight = weight,
             exerciseStressTime = exerciseStressTime,
             genderId = genderIdMapper.mapToId(gender)

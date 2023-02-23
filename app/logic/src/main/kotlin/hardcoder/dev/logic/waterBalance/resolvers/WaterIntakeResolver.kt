@@ -1,6 +1,6 @@
 package hardcoder.dev.logic.waterBalance.resolvers
 
-import hardcoder.dev.entities.Gender
+import hardcoder.dev.entities.hero.Gender
 import kotlin.math.roundToInt
 
 class WaterIntakeResolver {

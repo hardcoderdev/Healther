@@ -1,7 +1,7 @@
 package hardcoder.dev.logic.appPreferences
 
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.entities.AppPreference
+import hardcoder.dev.entities.appPreferences.AppPreference
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

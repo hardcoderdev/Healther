@@ -1,4 +1,4 @@
-package hardcoder.dev.presentation
+package hardcoder.dev.presentation.setUpFlow
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

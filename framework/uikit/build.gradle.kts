@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     id(Plugins.Android.library)
     id(Plugins.Kotlin.kotlinLibrary)
@@ -6,6 +8,10 @@ plugins {
 android {
     namespace = Modules.Namespaces.uikit
     compileSdk = Android.compileSdk
+
+    defaultConfig {
+        minSdk = Android.DefaultConfig.minSdk
+    }
 
     buildFeatures {
         compose = true

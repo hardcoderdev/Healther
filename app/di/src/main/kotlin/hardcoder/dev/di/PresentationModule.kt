@@ -1,14 +1,14 @@
 package hardcoder.dev.di
 
-import hardcoder.dev.presentation.EnterExerciseStressTimeViewModel
-import hardcoder.dev.presentation.EnterWeightViewModel
-import hardcoder.dev.presentation.HeroCreateViewModel
-import hardcoder.dev.presentation.SaveWaterTrackViewModel
-import hardcoder.dev.presentation.SelectGenderViewModel
-import hardcoder.dev.presentation.SplashViewModel
-import hardcoder.dev.presentation.UpdateWaterTrackViewModel
-import hardcoder.dev.presentation.WaterTrackingHistoryViewModel
-import hardcoder.dev.presentation.WaterTrackingViewModel
+import hardcoder.dev.presentation.setUpFlow.EnterExerciseStressTimeViewModel
+import hardcoder.dev.presentation.setUpFlow.EnterWeightViewModel
+import hardcoder.dev.presentation.setUpFlow.HeroCreateViewModel
+import hardcoder.dev.presentation.waterBalance.SaveWaterTrackViewModel
+import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
+import hardcoder.dev.presentation.setUpFlow.SplashViewModel
+import hardcoder.dev.presentation.waterBalance.UpdateWaterTrackViewModel
+import hardcoder.dev.presentation.waterBalance.WaterTrackingHistoryViewModel
+import hardcoder.dev.presentation.waterBalance.WaterTrackingViewModel
 
 class PresentationModule(
     private val logicModule: LogicModule
@@ -34,7 +34,7 @@ class PresentationModule(
     fun createSaveWaterTrackViewModel() = SaveWaterTrackViewModel(
         heroProvider = logicModule.heroProvider,
         waterTrackCreator = logicModule.waterTrackCreator,
-        waterTrackProvider = logicModule.waterTrackProvider,
+        drinkTypeProvider = logicModule.drinkTypeProvider,
         waterIntakeResolver = logicModule.waterIntakeResolver,
         waterTrackMillilitersValidator = logicModule.waterTrackMillilitersValidator
     )
@@ -44,6 +44,7 @@ class PresentationModule(
         heroProvider = logicModule.heroProvider,
         waterTrackUpdater = logicModule.waterTrackUpdater,
         waterTrackProvider = logicModule.waterTrackProvider,
+        drinkTypeProvider = logicModule.drinkTypeProvider,
         waterTrackMillilitersValidator = logicModule.waterTrackMillilitersValidator,
         waterIntakeResolver = logicModule.waterIntakeResolver
     )

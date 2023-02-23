@@ -1,7 +1,7 @@
 package hardcoder.dev.logic.hero
 
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.entities.Hero
+import hardcoder.dev.entities.hero.Hero
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -18,9 +18,5 @@ class HeroUpdater(
             genderId = genderIdMapper.mapToId(hero.gender),
             id = HERO_ID
         )
-    }
-
-    companion object {
-        private const val HERO_ID = 0
     }
 }

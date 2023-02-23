@@ -1,4 +1,4 @@
-package hardcoder.dev.android_ui.waterTracking
+package hardcoder.dev.android_ui.waterBalance
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,10 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.android_ui.LocalPresentationModule
-import hardcoder.dev.android_ui.WaterTrackItem
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.WaterTrackItem
-import hardcoder.dev.presentation.WaterTrackingViewModel
+import hardcoder.dev.presentation.waterBalance.WaterTrackItem
+import hardcoder.dev.presentation.waterBalance.WaterTrackingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.ScaffoldWrapper

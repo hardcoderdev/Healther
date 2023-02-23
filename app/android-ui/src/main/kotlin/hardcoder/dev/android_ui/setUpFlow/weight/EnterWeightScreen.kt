@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.chargemap.compose.numberpicker.NumberPicker
 import hardcoder.dev.android_ui.LocalPresentationModule
-import hardcoder.dev.entities.Gender
+import hardcoder.dev.entities.hero.Gender
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.EnterWeightViewModel
+import hardcoder.dev.presentation.setUpFlow.EnterWeightViewModel
 import hardcoder.dev.uikit.IconTextButton
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig

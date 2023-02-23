@@ -26,9 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.android_ui.LocalPresentationModule
-import hardcoder.dev.entities.Gender
+import hardcoder.dev.entities.hero.Gender
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.SelectGenderViewModel
+import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
 import hardcoder.dev.uikit.IconTextButton
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig

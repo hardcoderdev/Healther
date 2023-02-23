@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.android_ui.LocalPresentationModule
-import hardcoder.dev.presentation.SplashViewModel
+import hardcoder.dev.presentation.setUpFlow.SplashViewModel
 
 @Composable
 fun SplashScreen(onStartSetUp: () -> Unit, onNavigateToDashboard: () -> Unit) {

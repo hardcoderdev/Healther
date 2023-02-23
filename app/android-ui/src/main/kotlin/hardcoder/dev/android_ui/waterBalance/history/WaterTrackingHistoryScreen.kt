@@ -1,4 +1,4 @@
-package hardcoder.dev.android_ui.waterTracking.history
+package hardcoder.dev.android_ui.waterBalance.history
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,12 +23,12 @@ import hardcoder.dev.android_ui.LocalPresentationModule
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.WaterTrackItem
-import hardcoder.dev.presentation.WaterTrackingHistoryViewModel
+import hardcoder.dev.presentation.waterBalance.WaterTrackItem
+import hardcoder.dev.presentation.waterBalance.WaterTrackingHistoryViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.android_ui.WaterTrackItem
+import hardcoder.dev.android_ui.waterBalance.WaterTrackItem
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState

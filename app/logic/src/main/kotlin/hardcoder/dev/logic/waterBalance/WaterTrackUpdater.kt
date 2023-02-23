@@ -1,7 +1,7 @@
 package hardcoder.dev.logic.waterBalance
 
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.entities.WaterTrack
+import hardcoder.dev.entities.waterTracking.WaterTrack
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

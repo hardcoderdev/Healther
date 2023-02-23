@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package hardcoder.dev.android_ui
+package hardcoder.dev.android_ui.waterBalance
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -21,15 +21,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.android_ui.LocalDrinkTypeResourcesProvider
+import hardcoder.dev.entities.waterTracking.DrinkType
 
 @Composable
 fun DrinkItem(
     modifier: Modifier = Modifier,
-    drinkTypeResources: DrinkTypeResources,
-    selectedDrink: DrinkTypeResources,
+    drinkType: DrinkType,
+    selectedDrink: DrinkType,
     onUpdateSelectedDrink: (DrinkTypeResources) -> Unit
 ) {
-    val selectedBorder = if (selectedDrink == drinkTypeResources) BorderStroke(
+    val drinkTypeResourcesProvider = LocalDrinkTypeResourcesProvider.current
+    val drinkTypeResources = drinkTypeResourcesProvider.provide(drinkType)
+
+    val selectedBorder = if (selectedDrink == drinkType) BorderStroke(
         width = 3.dp,
         color = MaterialTheme.colorScheme.primary
     ) else null

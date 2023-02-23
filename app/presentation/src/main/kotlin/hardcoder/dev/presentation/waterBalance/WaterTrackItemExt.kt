@@ -1,6 +1,6 @@
-package hardcoder.dev.presentation
+package hardcoder.dev.presentation.waterBalance
 
-import hardcoder.dev.entities.WaterTrack
+import hardcoder.dev.entities.waterTracking.WaterTrack
 
 fun WaterTrack.toItem(resolvedMillilitersCount: Int) = WaterTrackItem(
     id = id,

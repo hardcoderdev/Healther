@@ -1,9 +1,9 @@
-package hardcoder.dev.presentation
+package hardcoder.dev.presentation.setUpFlow
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.entities.AppPreference
-import hardcoder.dev.entities.Gender
+import hardcoder.dev.entities.appPreferences.AppPreference
+import hardcoder.dev.entities.hero.Gender
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
 import hardcoder.dev.logic.hero.HeroCreator
 import kotlinx.coroutines.launch

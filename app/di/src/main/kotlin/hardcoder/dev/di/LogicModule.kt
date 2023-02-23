@@ -9,6 +9,7 @@ import hardcoder.dev.logic.hero.HeroCreator
 import hardcoder.dev.logic.hero.HeroProvider
 import hardcoder.dev.logic.hero.HeroUpdater
 import hardcoder.dev.logic.waterBalance.DrinkTypeIdMapper
+import hardcoder.dev.logic.waterBalance.DrinkTypeProvider
 import hardcoder.dev.logic.waterBalance.WaterTrackCreator
 import hardcoder.dev.logic.waterBalance.WaterTrackDeleter
 import hardcoder.dev.logic.waterBalance.WaterTrackProvider
@@ -71,6 +72,10 @@ class LogicModule(private val context: Context) {
             appDatabase = appDatabase,
             drinkTypeIdMapper = drinkTypeIdMapper
         )
+    }
+
+    val drinkTypeProvider by lazy {
+        DrinkTypeProvider()
     }
 
     private val genderIdMapper by lazy {

@@ -6,6 +6,10 @@ plugins {
 android {
     namespace = Modules.Namespaces.logic
     compileSdk = Android.compileSdk
+
+    defaultConfig {
+        minSdk = Android.DefaultConfig.minSdk
+    }
 }
 
 dependencies {

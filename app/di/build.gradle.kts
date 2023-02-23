@@ -6,10 +6,13 @@ plugins {
 android {
     namespace = Modules.Namespaces.di
     compileSdk = Android.compileSdk
+
+    defaultConfig {
+        minSdk = Android.DefaultConfig.minSdk
+    }
 }
 
 dependencies {
-    api(project(Modules.Paths.logic))
     api(project(Modules.Paths.presentation))
     addCoroutines()
 }

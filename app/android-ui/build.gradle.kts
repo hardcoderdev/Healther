@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     id(Plugins.Android.application)
     kotlin(Plugins.Kotlin.android)
@@ -78,6 +80,4 @@ dependencies {
     implementation(project(Modules.Paths.uikit))
     addCompose()
     addCommonAndroid()
-    addCoroutines()
-    addRetrofit()
 }
