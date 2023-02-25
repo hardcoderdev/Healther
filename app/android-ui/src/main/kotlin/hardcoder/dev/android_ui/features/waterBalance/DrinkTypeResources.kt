@@ -1,4 +1,4 @@
-package hardcoder.dev.android_ui.waterBalance
+package hardcoder.dev.android_ui.features.waterBalance
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

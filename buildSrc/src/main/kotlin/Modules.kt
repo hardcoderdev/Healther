@@ -10,6 +10,7 @@ object Modules {
         const val extensions = "hardcoder.dev.extensions"
         const val coroutines = "hardcoder.dev.coroutines"
         const val uikit = "hardcoder.dev.uikit"
+        const val utilities = "hardcoder.dev.utilities"
     }
 
     object Paths {
@@ -22,5 +23,6 @@ object Modules {
         val extensions = mapOf("path" to ":framework:extensions")
         val coroutines = mapOf("path" to ":framework:coroutines")
         val uikit = mapOf("path" to ":framework:uikit")
+        val utilities = mapOf("path" to ":framework:utilities")
     }
 }

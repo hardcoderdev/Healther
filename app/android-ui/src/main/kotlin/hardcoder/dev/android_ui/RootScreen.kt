@@ -8,15 +8,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import hardcoder.dev.android_ui.dashboard.DashboardScreen
+import hardcoder.dev.android_ui.features.pedometer.PedometerScreen
+import hardcoder.dev.android_ui.features.pedometer.history.PedometerHistoryScreen
 import hardcoder.dev.android_ui.setUpFlow.exerciseStress.EnterExerciseStressScreen
 import hardcoder.dev.android_ui.setUpFlow.gender.SelectGenderScreen
 import hardcoder.dev.android_ui.setUpFlow.weight.EnterWeightScreen
 import hardcoder.dev.android_ui.setUpFlow.welcome.WelcomeScreen
 import hardcoder.dev.android_ui.splash.SplashScreen
-import hardcoder.dev.android_ui.waterBalance.WaterTrackingScreen
-import hardcoder.dev.android_ui.waterBalance.create.SaveWaterTrackScreen
-import hardcoder.dev.android_ui.waterBalance.history.WaterTrackingHistoryScreen
-import hardcoder.dev.android_ui.waterBalance.update.UpdateWaterTrackScreen
+import hardcoder.dev.android_ui.features.waterBalance.WaterTrackingScreen
+import hardcoder.dev.android_ui.features.waterBalance.create.SaveWaterTrackScreen
+import hardcoder.dev.android_ui.features.waterBalance.history.WaterTrackingHistoryScreen
+import hardcoder.dev.android_ui.features.waterBalance.update.UpdateWaterTrackScreen
 import hardcoder.dev.entities.hero.Gender
 
 @Composable
@@ -29,7 +31,7 @@ fun RootScreen() {
                     navController.navigate(Screen.Welcome.route)
                 },
                 onNavigateToDashboard = {
-                    navController.navigate(Screen.WaterTrackingFeature.route)
+                    navController.navigate(Screen.PedometerFeature.route)
                 }
             )
         }
@@ -80,7 +82,7 @@ fun RootScreen() {
                 onGoBack = navController::popBackStack,
                 onGoForward = {
                     //navController.navigate(Screen.Dashboard.route)
-                    navController.navigate(Screen.WaterTrackingFeature.route)
+                    navController.navigate(Screen.PedometerFeature.route)
                 }
             )
         }
@@ -125,6 +127,17 @@ fun RootScreen() {
                 }
             )
         }
+        composable(route = Screen.PedometerFeature.route) {
+            PedometerScreen(
+                onGoBack = navController::popBackStack,
+                onGoToPedometerHistory = {
+                    navController.navigate(Screen.PedometerHistory.route)
+                }
+            )
+        }
+        composable(route = Screen.PedometerHistory.route) {
+            PedometerHistoryScreen(onGoBack = navController::popBackStack)
+        }
     }
 }
 
@@ -152,6 +165,10 @@ sealed class Screen(val route: String) {
         )
     }
     object Dashboard : Screen("dashboard")
+
+    object PedometerFeature : Screen("pedometer_feature")
+    object PedometerHistory : Screen("pedometer_history")
+
     object WaterTrackingFeature : Screen("water_tracking_feature")
     object WaterTrackingHistory : Screen("water_tracking_history")
     object SaveWaterTrack : Screen("save_water_track")

@@ -1,4 +1,4 @@
-package hardcoder.dev.android_ui.waterBalance
+package hardcoder.dev.android_ui.features.waterBalance
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,10 +36,10 @@ fun WaterTrackingScreen(
 ) {
     val presentationModule = LocalPresentationModule.current
 
-    val waterTrackingViewModel = viewModel {
+    val viewModel = viewModel {
         presentationModule.createWaterTrackingViewModel()
     }
-    val state = waterTrackingViewModel.state.collectAsState()
+    val state = viewModel.state.collectAsState()
 
     when (val fetchingState = state.value) {
         is WaterTrackingViewModel.LoadingState.Loaded -> {
@@ -51,7 +51,7 @@ fun WaterTrackingScreen(
                     WaterTrackingContent(
                         state = fetchingState.state,
                         onUpdateWaterTrack = onUpdateWaterTrack,
-                        onDeleteWaterTrack = waterTrackingViewModel::delete
+                        onDeleteWaterTrack = viewModel::delete
                     )
                 },
                 onFabClick = if (millisCount < dailyWaterIntake) onSaveWaterTrack else null,

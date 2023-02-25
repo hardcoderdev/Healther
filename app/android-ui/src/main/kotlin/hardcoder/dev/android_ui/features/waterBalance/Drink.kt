@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package hardcoder.dev.android_ui.waterBalance
+package hardcoder.dev.android_ui.features.waterBalance
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

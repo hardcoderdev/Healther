@@ -16,6 +16,7 @@ dependencies {
     api(project(Modules.Paths.logic))
     api(project(Modules.Paths.coroutines))
     api(project(Modules.Paths.extensions))
+    api(project(Modules.Paths.utilities))
 
     implementation(Dependencies.lifecycleViewModelKtx)
     implementation(Dependencies.composeCalendarDateTime)

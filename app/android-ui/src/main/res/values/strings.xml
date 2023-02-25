@@ -35,8 +35,8 @@
     <string name="selectGender_selectYourGender_text">Выбери свой гендер для более точных расчётов.</string>
     <string name="selectGender_next_button">Далее</string>
 
-    <string name="waterHistory_title_topBar">Подробная история</string>
-    <string name="waterHistory_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
+    <string name="featureHistory_title_topBar">Подробная история</string>
+    <string name="featureHistory_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
 
     <string name="saveWaterTrack_create_title_topBar">Создание записи</string>
     <string name="saveWaterTrack_selectDateRange_button">Выбрать дату</string>
@@ -65,4 +65,17 @@
     <string name="updateWaterTrack_selectedDateFormat_text">Выбранная дата: %s</string>
     <string name="updateWaterTrack_millilitersEmpty_error">Это поле не может быть пустым!</string>
     <string name="updateWaterTrack_millilitersMoreThanDailyWaterIntake_error">Введёные вами мл больше, чем дневная норма!</string>
+    <string name="pedometerScreen_title_topBar">Шагомер</string>
+    <string name="pedometerScreen_stepCountFormat_text">%d\n/ %d шагов</string>
+    <string name="pedometerScreen_playIcon_contentDescription">Начать запись шагов</string>
+    <string name="pedometerScreen_kilometersLabel_text">км</string>
+    <string name="pedometerScreen_yourIndicatorsForToday_text">Ваши показатели на сегодня:</string>
+    <string name="pedometerScreen_stopIcon_contentDescription">Закончить запись шагов</string>
+    <string name="pedometerScreen_caloriesLabel_text">Калории</string>
+    <string name="pedometerScreen_timeLabel_text">Время ходьбы</string>
+    <string name="pedometerNotification_notificationContentTitle_text">Healther - шагомер</string>
+    <string name="pedometerScreen_thisPermissionIsRequired_error">Это разрешение нужно нам, чтобы отслеживать ваши шаги!</string>
+    <string name="pedometerScreen_noHardwareSensorOnDevice_error">На вашем девайсе отсутствует сенсор.\nК сожалению вы не сможете воспользоваться этой фичей</string>
+    <string name="pedometerNotification_contentStepFormat_text">Вы прошли %d шагов</string>
+    <string name="pedometerScreen_savePedometerTrack_buttonLabel">Сохранить запись</string>
 </resources>

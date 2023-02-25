@@ -1,4 +1,4 @@
-package hardcoder.dev.android_ui.waterBalance
+package hardcoder.dev.android_ui.features.waterBalance
 
 import hardcoder.dev.entities.waterTracking.DrinkType
 import hardcoder.dev.healther.R

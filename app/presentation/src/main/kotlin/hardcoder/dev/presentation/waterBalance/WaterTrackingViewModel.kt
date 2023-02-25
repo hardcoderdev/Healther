@@ -23,14 +23,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
-data class WaterTrackItem(
-    val id: Int,
-    val drinkType: DrinkType,
-    val millilitersCount: Int,
-    val resolvedMillilitersCount: Int,
-    val timeInMillis: Long
-)
-
 class WaterTrackingViewModel(
     heroProvider: HeroProvider,
     private val waterTrackProvider: WaterTrackProvider,

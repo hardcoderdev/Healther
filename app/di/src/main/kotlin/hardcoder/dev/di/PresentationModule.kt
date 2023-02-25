@@ -1,5 +1,7 @@
 package hardcoder.dev.di
 
+import hardcoder.dev.presentation.pedometer.PedometerHistoryViewModel
+import hardcoder.dev.presentation.pedometer.PedometerViewModel
 import hardcoder.dev.presentation.setUpFlow.EnterExerciseStressTimeViewModel
 import hardcoder.dev.presentation.setUpFlow.EnterWeightViewModel
 import hardcoder.dev.presentation.setUpFlow.HeroCreateViewModel
@@ -22,6 +24,11 @@ class PresentationModule(
     fun createSelectGenderViewModel() = SelectGenderViewModel()
 
     fun createEnterExerciseStressTimeViewModel() = EnterExerciseStressTimeViewModel()
+
+    fun createHeroCreateViewModel() = HeroCreateViewModel(
+        heroCreator = logicModule.heroCreator,
+        appPreferenceUpdater = logicModule.appPreferenceUpdater
+    )
 
     fun createWaterTrackingViewModel() = WaterTrackingViewModel(
         heroProvider = logicModule.heroProvider,
@@ -55,8 +62,15 @@ class PresentationModule(
         waterPercentageResolver = logicModule.waterPercentageResolver
     )
 
-    fun createHeroCreateViewModel() = HeroCreateViewModel(
-        heroCreator = logicModule.heroCreator,
-        appPreferenceUpdater = logicModule.appPreferenceUpdater
+    fun createPedometerViewModel() = PedometerViewModel(
+        heroProvider = logicModule.heroProvider,
+        pedometerTrackCreator = logicModule.pedometerTrackCreator,
+        kilometersResolver = logicModule.kilometersResolver,
+        caloriesResolver = logicModule.caloriesResolver
+    )
+
+    fun createPedometerHistoryViewModel() = PedometerHistoryViewModel(
+        pedometerTrackProvider = logicModule.pedometerTrackProvider,
+        pedometerTrackDeleter = logicModule.pedometerTrackDeleter
     )
 }
