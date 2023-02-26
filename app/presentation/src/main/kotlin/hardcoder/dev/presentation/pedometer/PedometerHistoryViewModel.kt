@@ -25,7 +25,7 @@ class PedometerHistoryViewModel(
     private val selectedRangeStateFlow =
         MutableStateFlow(LocalDate.now().createRangeForCurrentDay())
     val state = selectedRangeStateFlow.flatMapLatest { range ->
-        pedometerTrackProvider.providePedometerTracksByDayRange(range)
+        pedometerTrackProvider.providePedometerTracksByRange(range)
     }.mapItems { it.toItem() }.map {
         State(it)
     }.stateIn(

@@ -2,6 +2,7 @@ package hardcoder.dev.di
 
 import android.content.Context
 import hardcoder.dev.database.AppDatabaseFactory
+import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
 import hardcoder.dev.logic.hero.GenderIdMapper
@@ -31,6 +32,10 @@ class LogicModule(private val context: Context) {
             context,
             name = "healther_db"
         )
+    }
+
+    val idGenerator by lazy {
+        IdGenerator(context)
     }
 
     val waterPercentageResolver by lazy {

@@ -14,6 +14,8 @@ android {
 
 dependencies {
     api(project(Modules.Paths.database))
+    api(project(Modules.Paths.extensions))
+    implementation(Dependencies.dateTime)
     addData()
     addCoroutines()
 }

@@ -3,15 +3,14 @@
 package hardcoder.dev.android_ui.features.pedometer
 
 import android.Manifest
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.os.PowerManager
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,7 +29,6 @@ import androidx.compose.material.icons.filled.LockClock
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -39,8 +37,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -49,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.android_ui.LocalPresentationModule
 import hardcoder.dev.extensions.hasPermission
@@ -57,7 +54,6 @@ import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.pedometer.PedometerViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
-import hardcoder.dev.uikit.IconTextButton
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.Text
 import hardcoder.dev.uikit.TopBarConfig
@@ -75,43 +71,22 @@ fun PedometerScreen(
     val viewModel = viewModel { presentationModule.createPedometerViewModel() }
     val state = viewModel.state.collectAsState()
 
-    val isServiceBound = remember { mutableStateOf(false) }
     val serviceIntent = Intent(context, PedometerService::class.java)
-
-    var pedometerService: PedometerService
-
-    val connection = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            val binder = service as PedometerService.PedometerBinder
-            pedometerService = binder.getService()
-            viewModel.updateTotalStepsCount(pedometerService.summaryStepCount)
-        }
-
-        override fun onServiceDisconnected(arg0: ComponentName) {
-        }
-    }
 
     ScaffoldWrapper(
         content = {
             PedometerContent(
                 state = state.value,
-                onSavePedometerTrack = viewModel::savePedometerTrack,
                 onStartPedometerService = {
                     if (VersionChecker.isOreo()) {
                         context.startForegroundService(serviceIntent)
                     } else {
                         context.startService(serviceIntent)
                     }
-                    context.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
-                    isServiceBound.value = true
                     viewModel.updateTrackingStatus(isTracking = true)
                 },
                 onStopPedometerService = {
                     context.stopService(serviceIntent)
-                    if (isServiceBound.value) {
-                        context.unbindService(connection)
-                        isServiceBound.value = false
-                    }
                     viewModel.updateTrackingStatus(isTracking = false)
                 }
             )
@@ -131,14 +106,11 @@ fun PedometerScreen(
             )
         )
     )
-
-
 }
 
 @Composable
 private fun PedometerContent(
     state: PedometerViewModel.State,
-    onSavePedometerTrack: () -> Unit,
     onStartPedometerService: () -> Unit,
     onStopPedometerService: () -> Unit
 ) {
@@ -155,16 +127,6 @@ private fun PedometerContent(
         Spacer(modifier = Modifier.height(64.dp))
         InfoForTodayCardSection(state = state)
         Spacer(modifier = Modifier.height(32.dp))
-        AnimatedVisibility(visible = state.isTrackingNow) {
-            IconTextButton(
-                iconResourceId = Icons.Filled.Save,
-                labelResId = R.string.pedometerScreen_savePedometerTrack_buttonLabel,
-                onClick = {
-                    onSavePedometerTrack()
-                    onStopPedometerService()
-                }
-            )
-        }
     }
 }
 
@@ -200,6 +162,18 @@ private fun DailyRateSection(
         }
     }
 
+    val packageName = context.packageName
+    val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+    if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
+        Intent().apply {
+            action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+            flags = FLAG_ACTIVITY_NEW_TASK
+            data = "package:$packageName".toUri()
+        }.also {
+            context.startActivity(it)
+        }
+    }
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -215,38 +189,38 @@ private fun DailyRateSection(
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(16.dp))
-           // AnimatedVisibility(visible = state.totalStepsCount >= state.dailyRateStepsCount) {
-                IconButton(
-                    onClick = {
-                        if (context.hasPermission(Manifest.permission.ACTIVITY_RECOGNITION)) {
-                            if (isPedometerRunning) {
-                                onStopPedometerService()
-                            } else {
-                                onStartPedometerService()
-                            }
+            // AnimatedVisibility(visible = state.totalStepsCount >= state.dailyRateStepsCount) {
+            IconButton(
+                onClick = {
+                    if (context.hasPermission(Manifest.permission.ACTIVITY_RECOGNITION)) {
+                        if (isPedometerRunning) {
+                            onStopPedometerService()
                         } else {
-                            launcher.launch(
-                                arrayOf(
-                                    Manifest.permission.ACTIVITY_RECOGNITION,
-                                    Manifest.permission.POST_NOTIFICATIONS
-                                )
-                            )
+                            onStartPedometerService()
                         }
-                    }
-                ) {
-                    Icon(
-                        imageVector = toggleServiceButtonIcon,
-                        contentDescription = toggleServiceButtonContentDescription,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = RoundedCornerShape(16.dp),
+                    } else {
+                        launcher.launch(
+                            arrayOf(
+                                Manifest.permission.ACTIVITY_RECOGNITION,
+                                Manifest.permission.POST_NOTIFICATIONS
                             )
-                            .padding(8.dp)
-                    )
+                        )
+                    }
                 }
-           // }
+            ) {
+                Icon(
+                    imageVector = toggleServiceButtonIcon,
+                    contentDescription = toggleServiceButtonContentDescription,
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .background(
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = RoundedCornerShape(16.dp),
+                        )
+                        .padding(8.dp)
+                )
+            }
+            // }
         }
     }
     Spacer(modifier = Modifier.height(32.dp))
@@ -333,8 +307,7 @@ fun PedometerContentPreview() {
                     totalCaloriesBurned = 60.2f
                 ),
                 onStartPedometerService = {},
-                onStopPedometerService = {},
-                onSavePedometerTrack = {}
+                onStopPedometerService = {}
             )
         },
         topBarConfig = TopBarConfig(

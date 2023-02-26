@@ -1,4 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class
+)
 
 package hardcoder.dev.android_ui.features.pedometer.history
 
@@ -67,15 +69,12 @@ fun PedometerTrackItem(
                     .weight(2f)
             ) {
                 Text(
-                    text = stringResource(id = pedometerTrackItem.stepsCount),
+                    text = pedometerTrackItem.stepsCount.toString(),
                     style = MaterialTheme.typography.headlineSmall
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = stringResource(
-                        id = R.string.waterTrackItem_formatMilliliters_text,
-                        pedometerTrackItem.caloriesCount
-                    ),
+                    text = pedometerTrackItem.stepsCount.toString(),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -99,9 +98,7 @@ fun PedometerTrackItemPreview() {
         pedometerTrackItem = PedometerTrackItem(
             id = 1,
             stepsCount = 6300,
-            caloriesCount = 192.3f,
-            wastedTimeInMinutes = 120,
-            date = System.currentTimeMillis()
+            range = 1L..2L
         ),
         onDelete = {},
         onUpdate = {}

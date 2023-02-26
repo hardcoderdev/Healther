@@ -2,31 +2,37 @@ package hardcoder.dev.presentation.pedometer
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.extensions.getStartOfDay
+import hardcoder.dev.extensions.createRangeForCurrentDay
 import hardcoder.dev.logic.hero.HeroProvider
 import hardcoder.dev.logic.pedometer.CaloriesResolver
 import hardcoder.dev.logic.pedometer.KilometersResolver
-import hardcoder.dev.logic.pedometer.PedometerTrackCreator
+import hardcoder.dev.logic.pedometer.PedometerTrackProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
 class PedometerViewModel(
     heroProvider: HeroProvider,
-    private val pedometerTrackCreator: PedometerTrackCreator,
+    pedometerTrackProvider: PedometerTrackProvider,
     private val kilometersResolver: KilometersResolver,
     private val caloriesResolver: CaloriesResolver
 ) : ViewModel() {
 
     private val hero = heroProvider.requireHero()
-    private val wastedTimeInMinutes = MutableStateFlow(0)
     private val isTrackingNow = MutableStateFlow(false)
-    private val totalStepsCount = MutableStateFlow(0)
+    private val totalStepsCount = pedometerTrackProvider.providePedometerTracksByRange(
+        LocalDate.now().createRangeForCurrentDay()
+    ).map { pedometerTracks ->
+        pedometerTracks.sumOf { it.stepsCount }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = 0
+    )
     private val dailyRateStepsCount = MutableStateFlow(DAILY_RATE_PEDOMETER)
     private val totalKilometersCount = totalStepsCount.map {
         kilometersResolver.resolve(it)
@@ -50,12 +56,12 @@ class PedometerViewModel(
         totalCaloriesCount,
         dailyRateStepsCount
     ) { isTrackingNow, totalStepsCount, totalKilometersCount, totalCaloriesCount, dailyRateStepsCount ->
-            State(
-                isTrackingNow,
-                totalStepsCount,
-                totalKilometersCount,
-                totalCaloriesCount,
-                dailyRateStepsCount
+        State(
+            isTrackingNow,
+            totalStepsCount,
+            totalKilometersCount,
+            totalCaloriesCount,
+            dailyRateStepsCount
         )
     }.stateIn(
         scope = viewModelScope,
@@ -68,21 +74,6 @@ class PedometerViewModel(
             dailyRateStepsCount.value
         )
     )
-
-    fun savePedometerTrack() {
-        viewModelScope.launch {
-            pedometerTrackCreator.createPedometerTrack(
-                date = LocalDate.now().getStartOfDay(),
-                stepsCount = totalStepsCount.value,
-                caloriesCount = totalCaloriesCount.value,
-                wastedTimeInMinutes = 120
-            )
-        }
-    }
-
-    fun updateTotalStepsCount(stepsCount: Int) {
-        totalStepsCount.value = stepsCount
-    }
 
     fun updateTrackingStatus(isTracking: Boolean) {
         isTrackingNow.value = isTracking

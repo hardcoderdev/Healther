@@ -10,6 +10,6 @@ class PedometerTrackDeleter(
 ) {
 
     suspend fun deleteById(id: Int) = withContext(dispatcher) {
-        appDatabase.pedometerTrackQueries.deleteById(id)
+        appDatabase.pedometerTrackQueries.deleteById(id.toLong())
     }
 }

@@ -23,5 +23,6 @@ sqldelight {
 dependencies {
     api(project(Modules.Paths.entities))
     addData()
+    implementation(Dependencies.dateTime)
     implementation(Dependencies.sqlDelightCoroutinesExt)
 }

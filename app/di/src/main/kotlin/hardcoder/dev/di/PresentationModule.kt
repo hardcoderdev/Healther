@@ -11,6 +11,7 @@ import hardcoder.dev.presentation.setUpFlow.SplashViewModel
 import hardcoder.dev.presentation.waterBalance.UpdateWaterTrackViewModel
 import hardcoder.dev.presentation.waterBalance.WaterTrackingHistoryViewModel
 import hardcoder.dev.presentation.waterBalance.WaterTrackingViewModel
+import kotlin.math.log
 
 class PresentationModule(
     private val logicModule: LogicModule
@@ -64,7 +65,7 @@ class PresentationModule(
 
     fun createPedometerViewModel() = PedometerViewModel(
         heroProvider = logicModule.heroProvider,
-        pedometerTrackCreator = logicModule.pedometerTrackCreator,
+        pedometerTrackProvider = logicModule.pedometerTrackProvider,
         kilometersResolver = logicModule.kilometersResolver,
         caloriesResolver = logicModule.caloriesResolver
     )

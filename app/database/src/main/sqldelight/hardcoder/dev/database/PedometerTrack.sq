@@ -1,18 +1,13 @@
 CREATE TABLE IF NOT EXISTS PedometerTrack (
-    id INTEGER AS Int NOT NULL PRIMARY KEY AUTOINCREMENT,
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     stepsCount INTEGER AS Int NOT NULL,
-    caloriesCount REAL AS Float NOT NULL,
-    wastedTimeInMinutes INTEGER AS Int NOT NULL,
-    date INTEGER NOT NULL
+    startTime INTEGER NOT NULL,
+    endTime INTEGER NOT NULL
 );
 
-insert:
-INSERT INTO PedometerTrack (id, stepsCount, caloriesCount, wastedTimeInMinutes, date)
-VALUES (?, ?, ?, ?, ?);
-
-update:
-UPDATE PedometerTrack SET stepsCount = ?, caloriesCount = ?, wastedTimeInMinutes = ?, date = ?
-WHERE id = ?;
+upsert:
+INSERT INTO PedometerTrack (id, stepsCount, startTime, endTime)
+VALUES (?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET stepsCount = excluded.stepsCount, startTime = excluded.startTime, endTime = excluded.endTime;
 
 deleteById:
 DELETE FROM PedometerTrack WHERE id = ?;
@@ -21,4 +16,4 @@ selectPedometerTrackById:
 SELECT * FROM PedometerTrack WHERE id = ?;
 
 selectPedometerTracksByDayRange:
-SELECT * FROM PedometerTrack WHERE date BETWEEN ? AND ?;
+SELECT * FROM PedometerTrack;

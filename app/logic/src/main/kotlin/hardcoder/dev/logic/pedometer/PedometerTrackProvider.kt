@@ -8,8 +8,10 @@ import kotlinx.coroutines.flow.map
 
 class PedometerTrackProvider(private val appDatabase: AppDatabase) {
 
-    fun providePedometerTracksByDayRange(dayRange: LongRange) = appDatabase.pedometerTrackQueries
-        .selectPedometerTracksByDayRange(dayRange.first, dayRange.last)
+    fun providePedometerTracksByRange(range: LongRange) = appDatabase.pedometerTrackQueries
+        .selectPedometerTracksByDayRange(
+
+        )
         .asFlow()
         .map {
             it.executeAsList().map { pedometerDatabase ->
@@ -18,13 +20,13 @@ class PedometerTrackProvider(private val appDatabase: AppDatabase) {
         }
 
     fun providePedometerTrackById(id: Int) = appDatabase.pedometerTrackQueries
-        .selectPedometerTrackById(id)
+        .selectPedometerTrackById(id.toLong())
         .asFlow()
         .map {
             it.executeAsOneOrNull()?.toEntity()
         }
 
-    fun PedometerTrack.toEntity() = PedometerTrackEntity(
-        id, stepsCount, caloriesCount, wastedTimeInMinutes, date
+    private fun PedometerTrack.toEntity() = PedometerTrackEntity(
+        id.toInt(), stepsCount, startTime..endTime
     )
 }

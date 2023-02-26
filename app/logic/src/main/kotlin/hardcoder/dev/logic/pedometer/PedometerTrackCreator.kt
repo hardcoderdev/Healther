@@ -1,8 +1,10 @@
 package hardcoder.dev.logic.pedometer
 
 import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.extensions.toMillis
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.LocalDateTime
 
 class PedometerTrackCreator(
     private val appDatabase: AppDatabase,
@@ -10,17 +12,15 @@ class PedometerTrackCreator(
 ) {
 
     suspend fun createPedometerTrack(
-        date: Long,
-        stepsCount: Int,
-        caloriesCount: Float,
-        wastedTimeInMinutes: Int
+        id: Long,
+        range: ClosedRange<LocalDateTime>,
+        stepsCount: Int
     ) = withContext(dispatcher) {
-        appDatabase.pedometerTrackQueries.insert(
-            id = null,
+        appDatabase.pedometerTrackQueries.upsert(
+            id = id,
             stepsCount = stepsCount,
-            caloriesCount = caloriesCount,
-            wastedTimeInMinutes = wastedTimeInMinutes,
-            date = date
+            startTime = range.start.toMillis(),
+            endTime = range.endInclusive.toMillis()
         )
     }
 }
