@@ -11,28 +11,32 @@ import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toLocalDateTime
 import java.util.Date
 
-fun LocalDate.getStartOfDay(): Long {
-    return atTime(LocalTime(hour = 0, minute = 0, second = 59)).toInstant(TimeZone.UTC).epochSeconds
+fun LocalDate.getStartOfDay(
+    timeZone: TimeZone = TimeZone.UTC
+): Long {
+    return atTime(LocalTime(hour = 0, minute = 0, second = 59)).toInstant(timeZone).epochSeconds
 }
 
-fun LocalDate.getEndOfDay(): Long {
+fun LocalDate.getEndOfDay(
+    timeZone: TimeZone = TimeZone.UTC
+): Long {
     return atTime(
         LocalTime(
             hour = 23,
             minute = 59,
             second = 59
         )
-    ).toInstant(TimeZone.UTC).epochSeconds
+    ).toInstant(timeZone).epochSeconds
 }
 
-fun LocalDate.createRangeForCurrentDay(): LongRange {
-    return getStartOfDay()..getEndOfDay()
+fun LocalDate.createRangeForCurrentDay(timeZone: TimeZone = TimeZone.UTC): LongRange {
+    return getStartOfDay(timeZone)..getEndOfDay(timeZone)
 }
 
-fun LocalDate.toDate(): Date {
+fun LocalDate.toDate(timeZone: TimeZone = TimeZone.UTC): Date {
     return Date.from(
         atTime(LocalTime(hour = 0, minute = 0, second = 59))
-            .toInstant(TimeZone.UTC)
+            .toInstant(timeZone)
             .toJavaInstant()
     )
 }

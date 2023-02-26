@@ -37,6 +37,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -69,14 +70,14 @@ fun PedometerScreen(
     val context = LocalContext.current
 
     val viewModel = viewModel { presentationModule.createPedometerViewModel() }
-    val state = viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     val serviceIntent = Intent(context, PedometerService::class.java)
 
     ScaffoldWrapper(
         content = {
             PedometerContent(
-                state = state.value,
+                state = state,
                 onStartPedometerService = {
                     if (VersionChecker.isOreo()) {
                         context.startForegroundService(serviceIntent)

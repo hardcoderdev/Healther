@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PedometerHistoryViewModel(
@@ -23,7 +24,7 @@ class PedometerHistoryViewModel(
 ) : ViewModel() {
 
     private val selectedRangeStateFlow =
-        MutableStateFlow(LocalDate.now().createRangeForCurrentDay())
+        MutableStateFlow(LocalDate.now().createRangeForCurrentDay(timeZone = TimeZone.currentSystemDefault()))
     val state = selectedRangeStateFlow.flatMapLatest { range ->
         pedometerTrackProvider.providePedometerTracksByRange(range)
     }.mapItems { it.toItem() }.map {

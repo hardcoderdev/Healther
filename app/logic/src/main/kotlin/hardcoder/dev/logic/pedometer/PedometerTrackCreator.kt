@@ -11,7 +11,7 @@ class PedometerTrackCreator(
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun createPedometerTrack(
+    suspend fun upsertPedometerTrack(
         id: Long,
         range: ClosedRange<LocalDateTime>,
         stepsCount: Int

@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS PedometerTrack (
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    id INTEGER NOT NULL PRIMARY KEY,
     stepsCount INTEGER AS Int NOT NULL,
     startTime INTEGER NOT NULL,
     endTime INTEGER NOT NULL
@@ -15,5 +15,5 @@ DELETE FROM PedometerTrack WHERE id = ?;
 selectPedometerTrackById:
 SELECT * FROM PedometerTrack WHERE id = ?;
 
-selectPedometerTracksByDayRange:
-SELECT * FROM PedometerTrack;
+selectPedometerTracksByRange:
+SELECT * FROM PedometerTrack WHERE startTime >= ? OR startTime <= ? AND endTime >= ? OR endTime <= ?;

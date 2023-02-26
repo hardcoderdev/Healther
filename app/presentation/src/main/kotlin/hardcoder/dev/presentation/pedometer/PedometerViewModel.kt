@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
 
 class PedometerViewModel(
     heroProvider: HeroProvider,
@@ -25,7 +26,7 @@ class PedometerViewModel(
     private val hero = heroProvider.requireHero()
     private val isTrackingNow = MutableStateFlow(false)
     private val totalStepsCount = pedometerTrackProvider.providePedometerTracksByRange(
-        LocalDate.now().createRangeForCurrentDay()
+        LocalDate.now().createRangeForCurrentDay(timeZone = TimeZone.currentSystemDefault())
     ).map { pedometerTracks ->
         pedometerTracks.sumOf { it.stepsCount }
     }.stateIn(

@@ -9,8 +9,11 @@ import kotlinx.coroutines.flow.map
 class PedometerTrackProvider(private val appDatabase: AppDatabase) {
 
     fun providePedometerTracksByRange(range: LongRange) = appDatabase.pedometerTrackQueries
-        .selectPedometerTracksByDayRange(
-
+        .selectPedometerTracksByRange(
+            range.first,
+            range.last,
+            range.first,
+            range.last
         )
         .asFlow()
         .map {

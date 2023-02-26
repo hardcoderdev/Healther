@@ -5,16 +5,15 @@ import hardcoder.dev.presentation.pedometer.PedometerViewModel
 import hardcoder.dev.presentation.setUpFlow.EnterExerciseStressTimeViewModel
 import hardcoder.dev.presentation.setUpFlow.EnterWeightViewModel
 import hardcoder.dev.presentation.setUpFlow.HeroCreateViewModel
-import hardcoder.dev.presentation.waterBalance.SaveWaterTrackViewModel
 import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
 import hardcoder.dev.presentation.setUpFlow.SplashViewModel
+import hardcoder.dev.presentation.waterBalance.SaveWaterTrackViewModel
 import hardcoder.dev.presentation.waterBalance.UpdateWaterTrackViewModel
 import hardcoder.dev.presentation.waterBalance.WaterTrackingHistoryViewModel
 import hardcoder.dev.presentation.waterBalance.WaterTrackingViewModel
-import kotlin.math.log
 
 class PresentationModule(
-    private val logicModule: LogicModule
+    val logicModule: LogicModule // TODO RESOLVE
 ) {
     fun createSplashViewModel() = SplashViewModel(
         appPreferenceProvider = logicModule.appPreferenceProvider
