@@ -1,12 +1,15 @@
 package hardcoder.dev.logic.pedometer
 
+import hardcoder.dev.extensions.roundOffToThreeDecimal
+
+
 class CaloriesResolver {
 
-    fun resolve(weight: Int): Float {
-        return weight * CALORIES_IN_HOUR_FOR_ONE_KILOGRAM
+    fun resolve(stepsCount: Int): Float {
+        return (stepsCount.toFloat() / 1000 * CALORIES_ON_ONE_THOUSAND_STEPS).roundOffToThreeDecimal()
     }
 
     companion object {
-        private const val CALORIES_IN_HOUR_FOR_ONE_KILOGRAM = 3.2f
+        private const val CALORIES_ON_ONE_THOUSAND_STEPS = 35
     }
 }

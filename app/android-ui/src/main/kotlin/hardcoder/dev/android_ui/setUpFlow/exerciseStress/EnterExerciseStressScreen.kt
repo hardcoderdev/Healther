@@ -112,7 +112,7 @@ private fun EnterExerciseStressContent(
         }
         Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
-            iconResourceId = Icons.Default.Done,
+            imageVector = Icons.Default.Done,
             labelResId = R.string.enterExerciseStress_next_button,
             onClick = onGoForward
         )

@@ -12,13 +12,13 @@ import kotlinx.datetime.toLocalDateTime
 import java.util.Date
 
 fun LocalDate.getStartOfDay(
-    timeZone: TimeZone = TimeZone.UTC
+    timeZone: TimeZone = TimeZone.currentSystemDefault()
 ): Long {
     return atTime(LocalTime(hour = 0, minute = 0, second = 59)).toInstant(timeZone).epochSeconds
 }
 
 fun LocalDate.getEndOfDay(
-    timeZone: TimeZone = TimeZone.UTC
+    timeZone: TimeZone = TimeZone.currentSystemDefault()
 ): Long {
     return atTime(
         LocalTime(
@@ -29,7 +29,7 @@ fun LocalDate.getEndOfDay(
     ).toInstant(timeZone).epochSeconds
 }
 
-fun LocalDate.createRangeForCurrentDay(timeZone: TimeZone = TimeZone.UTC): LongRange {
+fun LocalDate.createRangeForCurrentDay(timeZone: TimeZone = TimeZone.currentSystemDefault()): LongRange {
     return getStartOfDay(timeZone)..getEndOfDay(timeZone)
 }
 

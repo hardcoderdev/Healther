@@ -106,7 +106,7 @@ private fun UpdateWaterTrackContent(
             SelectDateSection(dateDialogState = dateDialogState, state = state)
         }
         IconTextButton(
-            iconResourceId = Icons.Default.Done,
+            imageVector = Icons.Default.Done,
             labelResId = R.string.updateWaterTrack_updateEntry_button,
             onClick = updateWaterTrack,
             isEnabled = state.creationAllowed
@@ -231,7 +231,7 @@ private fun SelectDateSection(
     )
     Spacer(modifier = Modifier.height(16.dp))
     IconTextButton(
-        iconResourceId = Icons.Rounded.DateRange,
+        imageVector = Icons.Rounded.DateRange,
         labelResId = R.string.updateWaterTrack_selectDateRange_button,
         style = hardcoder.dev.uikit.ButtonStyles.OUTLINED,
         onClick = dateDialogState::show

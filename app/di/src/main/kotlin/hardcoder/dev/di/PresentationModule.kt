@@ -63,14 +63,15 @@ class PresentationModule(
     )
 
     fun createPedometerViewModel() = PedometerViewModel(
-        heroProvider = logicModule.heroProvider,
         pedometerTrackProvider = logicModule.pedometerTrackProvider,
         kilometersResolver = logicModule.kilometersResolver,
-        caloriesResolver = logicModule.caloriesResolver
+        caloriesResolver = logicModule.caloriesResolver,
+        minutesResolver = logicModule.minutesResolver
     )
 
     fun createPedometerHistoryViewModel() = PedometerHistoryViewModel(
-        pedometerTrackProvider = logicModule.pedometerTrackProvider,
-        pedometerTrackDeleter = logicModule.pedometerTrackDeleter
+        kilometersResolver = logicModule.kilometersResolver,
+        caloriesResolver = logicModule.caloriesResolver,
+        pedometerTrackProvider = logicModule.pedometerTrackProvider
     )
 }

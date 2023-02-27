@@ -31,6 +31,8 @@ class PedometerService : Service(), SensorEventListener {
     private var currentTrackStartTime = LocalDateTime.now()
     private var currentTrackEndTime = currentTrackStartTime.withMinute(59)
 
+    // TODO SHOW ON LOCK SCREEN
+
     private val logicModule by lazy { App.instance.presentationModule.logicModule }
     private val pedometerNotificationManager by lazy { PedometerNotificationManager(this) }
     private val sensorManager by lazy { getSystemService(SENSOR_SERVICE) as SensorManager }

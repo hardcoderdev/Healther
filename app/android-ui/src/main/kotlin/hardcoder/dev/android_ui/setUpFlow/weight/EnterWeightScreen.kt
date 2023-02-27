@@ -104,7 +104,7 @@ private fun EnterWeightContent(
         }
         Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
-            iconResourceId = Icons.Default.Done,
+            imageVector = Icons.Default.Done,
             labelResId = R.string.enterWeight_next_button,
             onClick = onGoForward
         )

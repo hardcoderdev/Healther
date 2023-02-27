@@ -46,7 +46,7 @@ private fun WelcomeContent(onStart: () -> Unit) {
         Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
             labelResId = R.string.welcome_letsStart_button,
-            iconResourceId = Icons.Default.PlayArrow,
+            imageVector = Icons.Default.PlayArrow,
             onClick = onStart,
             contentDescription = R.string.welcome_start_iconContentDescription
         )

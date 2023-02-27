@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
 import hardcoder.dev.healther.R
 import hardcoder.dev.utilities.VersionChecker
 import hardcoder.dev.android_ui.MainActivity
@@ -51,6 +52,7 @@ class PedometerNotificationManager(private val context: Context) {
             setSmallIcon(R.drawable.ic_pedometer_notification)
             setOngoing(true)
             setCategory(Notification.CATEGORY_STATUS)
+            setVisibility(Notification.VISIBILITY_PUBLIC)
             if (VersionChecker.isNougatOrLower()) {
                 setPriority(Notification.PRIORITY_HIGH)
             }

@@ -23,6 +23,7 @@ import hardcoder.dev.presentation.waterBalance.WaterTrackItem
 import hardcoder.dev.presentation.waterBalance.WaterTrackingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
+import hardcoder.dev.uikit.CircularProgressBar
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -93,7 +94,7 @@ private fun WaterTrackingContent(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        hardcoder.dev.uikit.CircularProgressBar(
+        CircularProgressBar(
             number = state.millisCount,
             percentage = if (millisCount != 0) {
                 (millisCount.toFloat() / dailyWaterIntake.toFloat())

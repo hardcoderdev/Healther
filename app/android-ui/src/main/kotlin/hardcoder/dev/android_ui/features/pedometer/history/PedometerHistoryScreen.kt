@@ -1,5 +1,6 @@
 package hardcoder.dev.android_ui.features.pedometer.history
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,6 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.android_ui.LocalPresentationModule
+import hardcoder.dev.android_ui.features.pedometer.PedometerTrackItem
+import hardcoder.dev.extensions.createRangeForCurrentDay
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.healther.R
@@ -32,6 +35,7 @@ import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toKotlinLocalDate
 
 @Composable
@@ -46,12 +50,8 @@ fun PedometerHistoryScreen(onGoBack: () -> Unit) {
         content = {
             PedometerHistoryContent(
                 state = state.value,
-                onTrackDelete = viewModel::deleteTrack,
                 onFetchPedometerTracks = {
-                    viewModel.selectRange(it.getStartOfDay()..it.getEndOfDay())
-                },
-                onTrackUpdate = {
-
+                    viewModel.selectRange(it.createRangeForCurrentDay())
                 }
             )
         },
@@ -67,8 +67,6 @@ fun PedometerHistoryScreen(onGoBack: () -> Unit) {
 @Composable
 private fun PedometerHistoryContent(
     state: PedometerHistoryViewModel.State,
-    onTrackDelete: (Int) -> Unit,
-    onTrackUpdate: (PedometerTrackItem) -> Unit,
     onFetchPedometerTracks: (LocalDate) -> Unit
 ) {
     val calendarState = rememberSelectableCalendarState(initialSelectionMode = SelectionMode.Single)
@@ -86,35 +84,15 @@ private fun PedometerHistoryContent(
     Column(Modifier.padding(16.dp)) {
         SelectableCalendar(calendarState = calendarState)
         Spacer(modifier = Modifier.height(16.dp))
-        PedometerTracksHistory(
-            pedometerTrackItems = state.pedometerTrackItems,
-            onTrackUpdate = onTrackUpdate,
-            onTrackDelete = onTrackDelete
-        )
+        PedometerTracksHistory(pedometerTrackItem = state.pedometerTrackItem)
     }
 }
 
 @Composable
-private fun PedometerTracksHistory(
-    pedometerTrackItems: List<PedometerTrackItem>,
-    onTrackDelete: (Int) -> Unit,
-    onTrackUpdate: (PedometerTrackItem) -> Unit
-) {
-    if (pedometerTrackItems.isNotEmpty()) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(vertical = 16.dp)
-        ) {
-            items(pedometerTrackItems) { track ->
-                PedometerTrackItem(
-                    pedometerTrackItem = track,
-                    onDelete = onTrackDelete,
-                    onUpdate = onTrackUpdate
-                )
-            }
-        }
-    } else {
+private fun PedometerTracksHistory(pedometerTrackItem: PedometerTrackItem?) {
+    pedometerTrackItem?.let {
+        PedometerTrackItem(pedometerTrackItem = pedometerTrackItem)
+    } ?: run {
         Text(
             text = stringResource(id = R.string.featureHistory_emptyDayHistory_text),
             style = MaterialTheme.typography.titleMedium

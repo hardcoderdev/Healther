@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package hardcoder.dev.android_ui.features.pedometer
 
 import android.Manifest
@@ -10,7 +8,6 @@ import android.os.PowerManager
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,15 +21,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Fireplace
-import androidx.compose.material.icons.filled.LockClock
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -40,7 +31,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,6 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.android_ui.LocalPresentationModule
+import hardcoder.dev.extensions.calculateProgress
+import hardcoder.dev.extensions.getEndOfDay
+import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.extensions.hasPermission
 import hardcoder.dev.extensions.toast
 import hardcoder.dev.healther.R
@@ -60,6 +53,9 @@ import hardcoder.dev.uikit.Text
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.utilities.VersionChecker
+import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
+import kotlinx.datetime.LocalDate
+import hardcoder.dev.presentation.pedometer.PedometerTrackItem as PedometerTrackItemEntry
 
 @Composable
 fun PedometerScreen(
@@ -126,7 +122,14 @@ private fun PedometerContent(
             onStopPedometerService = onStopPedometerService
         )
         Spacer(modifier = Modifier.height(64.dp))
-        InfoForTodayCardSection(state = state)
+        PedometerTrackItem(
+            pedometerTrackItem = PedometerTrackItemEntry(
+                range = LocalDate.now().getStartOfDay()..LocalDate.now().getEndOfDay(),
+                stepsCount = state.totalStepsCount,
+                kilometersCount = state.totalKilometersCount,
+                caloriesBurnt = state.totalCaloriesBurned
+            )
+        )
         Spacer(modifier = Modifier.height(32.dp))
     }
 }
@@ -226,72 +229,14 @@ private fun DailyRateSection(
     }
     Spacer(modifier = Modifier.height(32.dp))
     LinearProgressIndicator(
-        progress = (state.totalStepsCount.toFloat() / state.dailyRateStepsCount.toFloat())
-            .toString().substring(0, 3).toFloat(),
+        progress = state.totalStepsCount.toFloat()
+            .calculateProgress(state.dailyRateStepsCount.toFloat()),
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(14.dp))
             .height(16.dp),
         color = MaterialTheme.colorScheme.primary
     )
-}
-
-@Composable
-private fun InfoForTodayCardSection(state: PedometerViewModel.State) {
-    Text(
-        text = stringResource(id = R.string.pedometerScreen_yourIndicatorsForToday_text),
-        style = MaterialTheme.typography.titleLarge
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    Card(
-        onClick = {},
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(
-            contentColor = MaterialTheme.colorScheme.primaryContainer
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            ItemInfo(
-                imageVector = Icons.Filled.MyLocation,
-                valueLabelResId = R.string.pedometerScreen_kilometersLabel_text,
-                value = state.totalKilometersCount
-            )
-            ItemInfo(
-                imageVector = Icons.Filled.Fireplace,
-                valueLabelResId = R.string.pedometerScreen_caloriesLabel_text,
-                value = state.totalCaloriesBurned
-            )
-            ItemInfo(
-                imageVector = Icons.Filled.LockClock,
-                valueLabelResId = R.string.pedometerScreen_timeLabel_text,
-                value = 0.0f
-            )
-        }
-    }
-}
-
-@Composable
-private fun ItemInfo(imageVector: ImageVector, @StringRes valueLabelResId: Int, value: Float) {
-    Column {
-        Icon(imageVector = imageVector, contentDescription = null)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = value.toString(),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
-        )
-        Text(
-            text = stringResource(id = valueLabelResId),
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
-        )
-    }
 }
 
 @Preview
@@ -305,7 +250,8 @@ fun PedometerContentPreview() {
                     totalStepsCount = 300,
                     dailyRateStepsCount = 3000,
                     totalKilometersCount = 10.0f,
-                    totalCaloriesBurned = 60.2f
+                    totalCaloriesBurned = 60.2f,
+                    totalWastedTime = 20
                 ),
                 onStartPedometerService = {},
                 onStopPedometerService = {}

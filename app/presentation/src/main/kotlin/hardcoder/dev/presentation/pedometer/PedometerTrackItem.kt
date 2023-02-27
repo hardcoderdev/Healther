@@ -1,7 +1,8 @@
 package hardcoder.dev.presentation.pedometer
 
 data class PedometerTrackItem(
-    val id: Int,
     val stepsCount: Int,
+    val kilometersCount: Float,
+    val caloriesBurnt: Float,
     val range: LongRange
 )

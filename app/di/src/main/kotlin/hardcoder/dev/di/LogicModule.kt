@@ -11,8 +11,8 @@ import hardcoder.dev.logic.hero.HeroProvider
 import hardcoder.dev.logic.hero.HeroUpdater
 import hardcoder.dev.logic.pedometer.CaloriesResolver
 import hardcoder.dev.logic.pedometer.KilometersResolver
+import hardcoder.dev.logic.pedometer.MinutesResolver
 import hardcoder.dev.logic.pedometer.PedometerTrackCreator
-import hardcoder.dev.logic.pedometer.PedometerTrackDeleter
 import hardcoder.dev.logic.pedometer.PedometerTrackProvider
 import hardcoder.dev.logic.waterBalance.DrinkTypeIdMapper
 import hardcoder.dev.logic.waterBalance.DrinkTypeProvider
@@ -100,6 +100,10 @@ class LogicModule(private val context: Context) {
         CaloriesResolver()
     }
 
+    val minutesResolver by lazy {
+        MinutesResolver()
+    }
+
     val pedometerTrackCreator by lazy {
         PedometerTrackCreator(
             appDatabase = appDatabase,
@@ -110,13 +114,6 @@ class LogicModule(private val context: Context) {
     val pedometerTrackProvider by lazy {
         PedometerTrackProvider(
             appDatabase = appDatabase
-        )
-    }
-
-    val pedometerTrackDeleter by lazy {
-        PedometerTrackDeleter(
-            appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
         )
     }
 

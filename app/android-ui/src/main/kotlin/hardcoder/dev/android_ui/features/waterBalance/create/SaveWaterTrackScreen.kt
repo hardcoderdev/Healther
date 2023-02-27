@@ -110,7 +110,7 @@ private fun SaveWaterTrackContent(
             SelectDateSection(dateDialogState = dateDialogState, state = state)
         }
         IconTextButton(
-            iconResourceId = Icons.Default.Done,
+            imageVector = Icons.Default.Done,
             labelResId = R.string.saveWaterTrack_saveEntry_button,
             onClick = createWaterTrack,
             isEnabled = state.creationAllowed
@@ -239,7 +239,7 @@ private fun SelectDateSection(
     )
     Spacer(modifier = Modifier.height(16.dp))
     IconTextButton(
-        iconResourceId = Icons.Rounded.DateRange,
+        imageVector = Icons.Rounded.DateRange,
         labelResId = R.string.saveWaterTrack_selectDateRange_button,
         style = ButtonStyles.OUTLINED,
         onClick = dateDialogState::show

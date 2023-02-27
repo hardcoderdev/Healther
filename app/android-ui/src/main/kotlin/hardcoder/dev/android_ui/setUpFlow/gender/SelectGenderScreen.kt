@@ -129,7 +129,7 @@ private fun SelectGenderContent(
         )
         Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
-            iconResourceId = Icons.Default.Done,
+            imageVector = Icons.Default.Done,
             labelResId = R.string.selectGender_next_button,
             onClick = onGoForward
         )

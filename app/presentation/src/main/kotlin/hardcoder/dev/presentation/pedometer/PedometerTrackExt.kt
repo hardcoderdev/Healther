@@ -2,8 +2,9 @@ package hardcoder.dev.presentation.pedometer
 
 import hardcoder.dev.entities.pedometer.PedometerTrack
 
-fun PedometerTrack.toItem() = PedometerTrackItem(
-    id = id,
+fun PedometerTrack.toItem(kilometersCount: Float, caloriesBurnt: Float) = PedometerTrackItem(
+    range = range,
     stepsCount = stepsCount,
-    range = range
+    kilometersCount = kilometersCount,
+    caloriesBurnt = caloriesBurnt
 )
