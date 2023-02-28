@@ -16,4 +16,4 @@ selectPedometerTrackById:
 SELECT * FROM PedometerTrack WHERE id = ?;
 
 selectPedometerTracksByRange:
-SELECT * FROM PedometerTrack WHERE startTime >= ? OR startTime <= ? AND endTime >= ? OR endTime <= ?;
+SELECT * FROM PedometerTrack WHERE startTime >= ? AND startTime <= ? AND endTime >= ? AND endTime <= ?;

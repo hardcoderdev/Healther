@@ -44,7 +44,7 @@ class PedometerHistoryViewModel(
         val stepsCount = pedometerTrackItems.sumOf { it.stepsCount }
         State(
             PedometerTrackItem(
-                range = pedometerTrackItems[0].range, // TODO MAYBE DELETE ?
+                range = 123L..123L, // TODO MAYBE DELETE ? YES DELETE
                 stepsCount = stepsCount,
                 kilometersCount = kilometersResolver.resolve(stepsCount),
                 caloriesBurnt = caloriesResolver.resolve(stepsCount)

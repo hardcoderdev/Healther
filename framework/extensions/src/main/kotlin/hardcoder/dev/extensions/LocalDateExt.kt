@@ -14,7 +14,7 @@ import java.util.Date
 fun LocalDate.getStartOfDay(
     timeZone: TimeZone = TimeZone.currentSystemDefault()
 ): Long {
-    return atTime(LocalTime(hour = 0, minute = 0, second = 59)).toInstant(timeZone).epochSeconds
+    return atTime(LocalTime(hour = 0, minute = 0, second = 59)).toInstant(timeZone).toEpochMilliseconds()
 }
 
 fun LocalDate.getEndOfDay(
@@ -26,7 +26,7 @@ fun LocalDate.getEndOfDay(
             minute = 59,
             second = 59
         )
-    ).toInstant(timeZone).epochSeconds
+    ).toInstant(timeZone).toEpochMilliseconds()
 }
 
 fun LocalDate.createRangeForCurrentDay(timeZone: TimeZone = TimeZone.currentSystemDefault()): LongRange {
