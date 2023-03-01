@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.Fireplace
+import androidx.compose.material.icons.filled.LockClock
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -33,10 +33,16 @@ import androidx.compose.ui.unit.dp
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.pedometer.PedometerTrackItem
 
+data class InfoItem(
+    val icon: ImageVector,
+    @StringRes val nameResId: Int,
+    val value: String
+)
+
 @Composable
-fun PedometerTrackItem(pedometerTrackItem: PedometerTrackItem) {
+fun PedometerInfoSection(infoItemList: List<InfoItem>) {
     Text(
-        text = stringResource(id = R.string.pedometer_yourIndicatorsForToday_text),
+        text = stringResource(id = R.string.pedometer_yourIndicatorsForThisDay_text),
         style = MaterialTheme.typography.titleLarge
     )
     Spacer(modifier = Modifier.height(16.dp))
@@ -53,21 +59,13 @@ fun PedometerTrackItem(pedometerTrackItem: PedometerTrackItem) {
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            ItemInfo(
-                imageVector = Icons.Filled.DirectionsWalk,
-                valueLabelResId = R.string.pedometerScreen_stepsLabel_text,
-                value = pedometerTrackItem.stepsCount.toString()
-            )
-            ItemInfo(
-                imageVector = Icons.Filled.MyLocation,
-                valueLabelResId = R.string.pedometerScreen_kilometersLabel_text,
-                value = pedometerTrackItem.kilometersCount.toString()
-            )
-            ItemInfo(
-                imageVector = Icons.Filled.Fireplace,
-                valueLabelResId = R.string.pedometerScreen_caloriesLabel_text,
-                value = pedometerTrackItem.caloriesBurnt.toString()
-            )
+            infoItemList.forEach {
+                ItemInfo(
+                    imageVector = it.icon,
+                    valueLabelResId = it.nameResId,
+                    value = it.value
+                )
+            }
         }
     }
 }
@@ -95,12 +93,28 @@ private fun ItemInfo(imageVector: ImageVector, @StringRes valueLabelResId: Int, 
 @Preview
 @Composable
 fun PedometerTrackItemPreview() {
-    PedometerTrackItem(
-        pedometerTrackItem = PedometerTrackItem(
-            range = 0L..2L,
-            stepsCount = 1000,
-            kilometersCount = 300.0f,
-            caloriesBurnt = 29.3f
+    val pedometerTrackItem = PedometerTrackItem(
+        stepsCount = 1000,
+        kilometersCount = 300.0f,
+        caloriesBurnt = 29.3f
+    )
+    PedometerInfoSection(
+        infoItemList = listOf(
+            InfoItem(
+                icon = Icons.Filled.LockClock,
+                nameResId = R.string.pedometer_stepsLabel_text,
+                value = pedometerTrackItem.stepsCount.toString()
+            ),
+            InfoItem(
+                icon = Icons.Filled.MyLocation,
+                nameResId = R.string.pedometer_kilometersLabel_text,
+                value = pedometerTrackItem.kilometersCount.toString()
+            ),
+            InfoItem(
+                icon = Icons.Filled.Fireplace,
+                nameResId = R.string.pedometer_caloriesLabel_text,
+                value = pedometerTrackItem.caloriesBurnt.toString()
+            )
         )
     )
 }

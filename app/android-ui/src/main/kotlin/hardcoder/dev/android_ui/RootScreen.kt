@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import hardcoder.dev.android_ui.dashboard.DashboardScreen
 import hardcoder.dev.android_ui.features.pedometer.PedometerScreen
 import hardcoder.dev.android_ui.features.pedometer.history.PedometerHistoryScreen
@@ -127,7 +128,12 @@ fun RootScreen() {
                 }
             )
         }
-        composable(route = Screen.PedometerFeature.route) {
+        composable(
+            route = Screen.PedometerFeature.route,
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "https://android/healther/features/pedometer"
+            })
+        ) {
             PedometerScreen(
                 onGoBack = navController::popBackStack,
                 onGoToPedometerHistory = {
@@ -150,6 +156,7 @@ sealed class Screen(val route: String) {
         fun getGender(arguments: Bundle?) = requireNotNull(arguments).getString("gender")!!
         val arguments = listOf(navArgument("gender") { type = NavType.StringType })
     }
+
     object EnterExerciseStress : Screen("enter_exercise_stress/{gender}/{weight}") {
         fun buildRoute(gender: Gender, weight: Int) =
             "enter_exercise_stress/${gender.name}/${weight}"
@@ -164,6 +171,7 @@ sealed class Screen(val route: String) {
             navArgument("weight") { type = NavType.IntType }
         )
     }
+
     object Dashboard : Screen("dashboard")
 
     object PedometerFeature : Screen("pedometer_feature")

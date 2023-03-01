@@ -49,6 +49,7 @@
     <string name="saveWaterTrack_enterDrinkType_text">Выберите тип напитка…</string>
     <string name="saveWaterTrack_saveEntry_button">Создать запись</string>
     <string name="saveWaterTrack_millilitersEmpty_error">Это поле не может быть пустым!</string>
+    <string name="saveWaterTrack_selectedDateFormat_text">Выбранная дата: %s</string>
     <string name="saveWaterTrack_millilitersMoreThanDailyWaterIntake_error">Введёные вами мл больше, чем дневная норма!</string>
 
     <string name="updateWaterTrack_updateEntry_button">Обновить запись</string>
@@ -61,22 +62,27 @@
     <string name="updateWaterTrack_selectDate_datePickerDialogButton">Выбрать</string>
     <string name="updateWaterTrack_cancel_datePickerDialogButton">Отмена</string>
     <string name="updateWaterTrack_enterDrinkType_text">Выберите тип напитка…</string>
-    <string name="saveWaterTrack_selectedDateFormat_text">Выбранная дата: %s</string>
     <string name="updateWaterTrack_selectedDateFormat_text">Выбранная дата: %s</string>
     <string name="updateWaterTrack_millilitersEmpty_error">Это поле не может быть пустым!</string>
     <string name="updateWaterTrack_millilitersMoreThanDailyWaterIntake_error">Введёные вами мл больше, чем дневная норма!</string>
-    <string name="pedometerScreen_title_topBar">Шагомер</string>
-    <string name="pedometerScreen_stepCountFormat_text">%d\n/ %d шагов</string>
-    <string name="pedometerScreen_playIcon_contentDescription">Начать запись шагов</string>
-    <string name="pedometerScreen_kilometersLabel_text">км</string>
-    <string name="pedometer_yourIndicatorsForToday_text">Ваши показатели на сегодня:</string>
-    <string name="pedometerScreen_stopIcon_contentDescription">Закончить запись шагов</string>
-    <string name="pedometerScreen_caloriesLabel_text">Калории</string>
-    <string name="pedometerScreen_timeLabel_text">Время ходьбы</string>
+
     <string name="pedometerNotification_notificationContentTitle_text">Шагомер</string>
-    <string name="pedometerScreen_thisPermissionIsRequired_error">Это разрешение нужно нам, чтобы отслеживать ваши шаги!</string>
-    <string name="pedometerScreen_noHardwareSensorOnDevice_error">На вашем девайсе отсутствует сенсор.\nК сожалению вы не сможете воспользоваться этой фичей</string>
-    <string name="pedometerNotification_contentStepFormat_text">Вы прошли %d шагов</string>
-    <string name="pedometerScreen_savePedometerTrack_buttonLabel">Сохранить запись</string>
-    <string name="pedometerScreen_stepsLabel_text">Шаги</string>
+    <string name="pedometerNotification_contentStepFormat_text">Шагов пройдено: %d</string>
+
+    <string name="pedometer_title_topBar">Шагомер</string>
+    <string name="pedometer_stepCountFormat_text">%d\n/ %d шагов</string>
+    <string name="pedometer_playIcon_contentDescription">Начать запись шагов</string>
+    <string name="pedometer_kilometersLabel_text">км</string>
+    <string name="pedometer_yourIndicatorsForThisDay_text">Ваши показатели за день:</string>
+    <string name="pedometer_stopIcon_contentDescription">Закончить запись шагов</string>
+    <string name="pedometer_caloriesLabel_text">Калории</string>
+    <string name="pedometer_timeLabel_text">Время ходьбы</string>
+    <string name="pedometer_thisPermissionsIsRequired_error">Это разрешение нужно нам, чтобы отслеживать ваши шаги!</string>
+    <string name="pedometer_noHardwareSensorOnDevice_error">На вашем девайсе отсутствует сенсор.\nК сожалению вы не сможете воспользоваться этой фичей</string>
+    <string name="pedometer_savePedometerTrack_buttonLabel">Сохранить запись</string>
+    <string name="pedometer_stepsLabel_text">Шаги</string>
+    <string name="pedometer_emptyDayHistory_text">В этот день вы не включали шагомер.</string>
+    <string name="pedometer_weDontHaveEnoughDataToShowChart">У нас пока недостаточно данных для отображения графика. Используйте эту фичу на протяжении пары часов и график появится!</string>
+    <string name="pedometerHistory_weDontHaveEnoughDataToShowChart">За этот день недостаточно данных для отображения графика.</string>
+
 </resources>

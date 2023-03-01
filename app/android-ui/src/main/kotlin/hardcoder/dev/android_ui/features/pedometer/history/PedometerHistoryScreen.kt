@@ -1,15 +1,13 @@
 package hardcoder.dev.android_ui.features.pedometer.history
 
-import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DirectionsWalk
+import androidx.compose.material.icons.filled.Fireplace
+import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,11 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import hardcoder.dev.android_ui.LocalFloatFormatter
 import hardcoder.dev.android_ui.LocalPresentationModule
-import hardcoder.dev.android_ui.features.pedometer.PedometerTrackItem
+import hardcoder.dev.android_ui.features.pedometer.InfoItem
+import hardcoder.dev.android_ui.features.pedometer.MINIMUM_ENTRIES_FOR_SHOWING_CHART
+import hardcoder.dev.android_ui.features.pedometer.PedometerActivityChart
+import hardcoder.dev.android_ui.features.pedometer.PedometerInfoSection
 import hardcoder.dev.extensions.createRangeForCurrentDay
-import hardcoder.dev.extensions.getEndOfDay
-import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.pedometer.PedometerHistoryViewModel
 import hardcoder.dev.presentation.pedometer.PedometerTrackItem
@@ -35,7 +35,6 @@ import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toKotlinLocalDate
 
 @Composable
@@ -85,16 +84,53 @@ private fun PedometerHistoryContent(
         SelectableCalendar(calendarState = calendarState)
         Spacer(modifier = Modifier.height(16.dp))
         PedometerTracksHistory(pedometerTrackItem = state.pedometerTrackItem)
+        Spacer(modifier = Modifier.height(16.dp))
+        if (
+            state.chartEntries.isNotEmpty() &&
+            state.chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART
+        ) {
+            PedometerActivityChart(
+                modifier = Modifier.weight(2f),
+                chartEntries = state.chartEntries
+            )
+        } else {
+            Text(
+                text = stringResource(id = R.string.pedometerHistory_weDontHaveEnoughDataToShowChart),
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
     }
 }
 
 @Composable
 private fun PedometerTracksHistory(pedometerTrackItem: PedometerTrackItem?) {
+    val floatFormatter = LocalFloatFormatter.current
+
+    Spacer(modifier = Modifier.height(16.dp))
+
     pedometerTrackItem?.let {
-        PedometerTrackItem(pedometerTrackItem = pedometerTrackItem)
+        PedometerInfoSection(
+            infoItemList = listOf(
+                InfoItem(
+                    icon = Icons.Filled.DirectionsWalk,
+                    nameResId = R.string.pedometer_stepsLabel_text,
+                    value = pedometerTrackItem.stepsCount.toString()
+                ),
+                InfoItem(
+                    icon = Icons.Filled.MyLocation,
+                    nameResId = R.string.pedometer_kilometersLabel_text,
+                    value = floatFormatter.format(pedometerTrackItem.kilometersCount)
+                ),
+                InfoItem(
+                    icon = Icons.Filled.Fireplace,
+                    nameResId = R.string.pedometer_caloriesLabel_text,
+                    value = floatFormatter.format(pedometerTrackItem.caloriesBurnt)
+                )
+            )
+        )
     } ?: run {
         Text(
-            text = stringResource(id = R.string.featureHistory_emptyDayHistory_text),
+            text = stringResource(id = R.string.pedometer_emptyDayHistory_text),
             style = MaterialTheme.typography.titleMedium
         )
     }

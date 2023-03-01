@@ -1,11 +1,9 @@
 package hardcoder.dev.logic.pedometer
 
-import hardcoder.dev.extensions.roundOffToThreeDecimal
-
 class KilometersResolver {
 
     fun resolve(stepsCount: Int): Float {
-        return (stepsCount.toFloat() / AVERAGE_STEPS_COUNT_IN_ONE_KILOMETER).roundOffToThreeDecimal()
+        return (stepsCount.toFloat() / AVERAGE_STEPS_COUNT_IN_ONE_KILOMETER)
     }
 
     private companion object {

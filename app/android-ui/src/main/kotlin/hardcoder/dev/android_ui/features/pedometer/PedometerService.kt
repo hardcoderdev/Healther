@@ -30,9 +30,6 @@ class PedometerService : Service(), SensorEventListener {
     private var currentTrackStepCount = 0
     private var currentTrackStartTime = LocalDateTime.now()
     private var currentTrackEndTime = currentTrackStartTime.withMinute(59)
-
-    // TODO SHOW ON LOCK SCREEN
-
     private val logicModule by lazy { App.instance.presentationModule.logicModule }
     private val pedometerNotificationManager by lazy { PedometerNotificationManager(this) }
     private val sensorManager by lazy { getSystemService(SENSOR_SERVICE) as SensorManager }
@@ -43,7 +40,7 @@ class PedometerService : Service(), SensorEventListener {
         val stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
 
         if (stepSensor == null) {
-            toast(msgResId = R.string.pedometerScreen_noHardwareSensorOnDevice_error)
+            toast(msgResId = R.string.pedometer_noHardwareSensorOnDevice_error)
             return
         }
 

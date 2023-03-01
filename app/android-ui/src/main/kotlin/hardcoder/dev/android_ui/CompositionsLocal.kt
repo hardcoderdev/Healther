@@ -11,3 +11,7 @@ val LocalPresentationModule = compositionLocalOf<PresentationModule> {
 val LocalDrinkTypeResourcesProvider = compositionLocalOf<DrinkTypeResourcesProvider> {
     error("LocalDrinkTypeResources not provided")
 }
+
+val LocalFloatFormatter = compositionLocalOf<FloatFormatter> {
+    error("LocalFloatFormatter not provided")
+}

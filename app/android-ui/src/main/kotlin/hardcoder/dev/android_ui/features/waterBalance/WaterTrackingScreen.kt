@@ -97,8 +97,8 @@ private fun WaterTrackingContent(
         CircularProgressBar(
             number = state.millisCount,
             percentage = if (millisCount != 0) {
-                (millisCount.toFloat() / dailyWaterIntake.toFloat())
-                    .toString().substring(0, 3).toFloat()
+                (state.millisCount.toFloat() / dailyWaterIntake.toFloat()).toString()
+                    .substring(0, 3).toFloat()
             } else {
                 0.0f
             }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
 import hardcoder.dev.extensions.createRangeForCurrentDay
+import hardcoder.dev.extensions.millisToLocalDateTime
 import hardcoder.dev.logic.pedometer.CaloriesResolver
 import hardcoder.dev.logic.pedometer.KilometersResolver
 import hardcoder.dev.logic.pedometer.MinutesResolver
@@ -15,8 +16,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlin.time.Duration.Companion.hours
-import kotlin.time.Duration.Companion.minutes
 
 class PedometerViewModel(
     pedometerTrackProvider: PedometerTrackProvider,
@@ -29,6 +28,8 @@ class PedometerViewModel(
     private val totalWastedTime = MutableStateFlow(0L)
     private val totalKilometersCount = MutableStateFlow(0.0f)
     private val totalCaloriesCount = MutableStateFlow(0.0f)
+    private val chartEntries = MutableStateFlow(listOf(0 to 0))
+    private val dailyRateStepsCount = MutableStateFlow(DAILY_RATE_PEDOMETER)
 
     private val totalStepsCount = pedometerTrackProvider.providePedometerTracksByRange(
         LocalDate.now().createRangeForCurrentDay(timeZone = TimeZone.currentSystemDefault())
@@ -37,16 +38,17 @@ class PedometerViewModel(
 
         totalCaloriesCount.value = caloriesResolver.resolve(totalStepsCount)
         totalKilometersCount.value = kilometersResolver.resolve(totalStepsCount)
-        totalWastedTime.value = pedometerTracks.sumOf {
-            val startTimeInLocalDate = it.range.first
-            val endTimeInLocalDate = it.range.last
-            if (endTimeInLocalDate.hours > startTimeInLocalDate.hours) {
-                val differenceInMillis = endTimeInLocalDate - startTimeInLocalDate
-                differenceInMillis / 1000 / 60
-            } else {
-                0
-            }
+        chartEntries.value = pedometerTracks.groupBy {
+            it.range.first.millisToLocalDateTime().hour
+        }.map { entry ->
+            entry.key to entry.value.sumOf { it.stepsCount }
         }
+
+        totalWastedTime.value = pedometerTracks.groupBy {
+            it.range.first.millisToLocalDateTime().hour
+        }.map { entry ->
+            entry.value.sumOf { it.range.first + it.range.last }
+        }.sum()
 
         totalStepsCount
     }.stateIn(
@@ -55,44 +57,40 @@ class PedometerViewModel(
         initialValue = 0
     )
 
-    private val dailyRateStepsCount = MutableStateFlow(DAILY_RATE_PEDOMETER)
-
     val state = combine(
         isTrackingNow,
         totalStepsCount,
         totalKilometersCount,
         totalCaloriesCount,
         totalWastedTime,
-        dailyRateStepsCount
-    ) { isTrackingNow, totalStepsCount, totalKilometersCount, totalCaloriesCount, totalWastedTime, dailyRateStepsCount ->
-        State(
-            isTrackingNow,
-            totalStepsCount,
-            totalKilometersCount,
-            totalCaloriesCount,
-            totalWastedTime,
-            dailyRateStepsCount
+        dailyRateStepsCount,
+        chartEntries
+    ) { isTrackingNow, totalStepsCount, totalKilometersCount, totalCaloriesCount,
+        totalWastedTime, dailyRateStepsCount, chartEntries ->
+        LoadingState.Loaded(
+            State(
+                isTrackingNow,
+                totalStepsCount,
+                totalKilometersCount,
+                totalCaloriesCount,
+                totalWastedTime,
+                dailyRateStepsCount,
+                chartEntries
+            )
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
-        initialValue = State(
-            isTrackingNow.value,
-            totalStepsCount.value,
-            totalKilometersCount.value,
-            totalCaloriesCount.value,
-            totalWastedTime.value,
-            dailyRateStepsCount.value
-        )
+        initialValue = LoadingState.Loading
     )
 
     fun updateTrackingStatus(isTracking: Boolean) {
         isTrackingNow.value = isTracking
     }
 
-    sealed class FetchingState {
-        object NotFetched : FetchingState()
-        data class Fetched(val state: State)
+    sealed class LoadingState {
+        object Loading : LoadingState()
+        data class Loaded(val state: State) : LoadingState()
     }
 
     data class State(
@@ -101,7 +99,8 @@ class PedometerViewModel(
         val totalKilometersCount: Float,
         val totalCaloriesBurned: Float,
         val totalWastedTime: Long,
-        val dailyRateStepsCount: Int
+        val dailyRateStepsCount: Int,
+        val chartEntries: List<Pair<Int, Int>>
     )
 
     internal companion object {

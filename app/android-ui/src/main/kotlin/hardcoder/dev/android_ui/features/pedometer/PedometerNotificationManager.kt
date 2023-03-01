@@ -9,10 +9,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
-import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
+import hardcoder.dev.android_ui.MainActivity
 import hardcoder.dev.healther.R
 import hardcoder.dev.utilities.VersionChecker
-import hardcoder.dev.android_ui.MainActivity
 
 class PedometerNotificationManager(private val context: Context) {
 
@@ -28,6 +27,7 @@ class PedometerNotificationManager(private val context: Context) {
             Notification.Builder(context)
         }
 
+        // TODO OPEN PEDOMETER WITH PENDING CONTENT INTENT
         val contentIntent = Intent(context, MainActivity::class.java).apply {
             // putExtra("NOTIFICATION_DESTINATION", R.id.recordVoiceFragment)
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -64,7 +64,12 @@ class PedometerNotificationManager(private val context: Context) {
 
     fun updateNotification(newStepCount: Int) {
         notificationBuilder?.apply {
-            setContentText("Вы прошли $newStepCount шагов")
+            setContentText(
+                context.getString(
+                    R.string.pedometerNotification_contentStepFormat_text,
+                    newStepCount
+                )
+            )
         }?.build()
 
         val service = context.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager

@@ -1,6 +1,5 @@
 package hardcoder.dev.presentation.pedometer
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.extensions.createRangeForCurrentDay
@@ -15,9 +14,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PedometerHistoryViewModel(
@@ -26,15 +25,17 @@ class PedometerHistoryViewModel(
     private val pedometerTrackProvider: PedometerTrackProvider
 ) : ViewModel() {
 
-    private val selectedRangeStateFlow = MutableStateFlow(
-        LocalDate.now().createRangeForCurrentDay(timeZone = TimeZone.currentSystemDefault())
-    )
+    private val selectedRangeStateFlow = MutableStateFlow(LocalDate.now().createRangeForCurrentDay())
+    private val chartEntries = MutableStateFlow(listOf(0 to 0))
+
     val state = selectedRangeStateFlow.flatMapLatest { range ->
-        Log.d(
-            "dwdwdw",
-            range.first.toString() + " dwkdd" + range.last.toString()
-        )
         pedometerTrackProvider.providePedometerTracksByRange(range)
+    }.onEach { pedometerTracks ->
+        chartEntries.value = pedometerTracks.groupBy {
+            it.range.first.millisToLocalDateTime().hour
+        }.map { entry ->
+            entry.key to entry.value.sumOf { it.stepsCount }
+        }
     }.mapItems {
         it.toItem(
             kilometersCount = kilometersResolver.resolve(it.stepsCount),
@@ -42,19 +43,24 @@ class PedometerHistoryViewModel(
         )
     }.map { pedometerTrackItems ->
         val stepsCount = pedometerTrackItems.sumOf { it.stepsCount }
-        State(
-            PedometerTrackItem(
-                range = 123L..123L, // TODO MAYBE DELETE ? YES DELETE
-                stepsCount = stepsCount,
-                kilometersCount = kilometersResolver.resolve(stepsCount),
-                caloriesBurnt = caloriesResolver.resolve(stepsCount)
+            State(
+                chartEntries = chartEntries.value,
+                pedometerTrackItem = if (stepsCount != 0) {
+                    PedometerTrackItem(
+                        stepsCount = stepsCount,
+                        kilometersCount = kilometersResolver.resolve(stepsCount),
+                        caloriesBurnt = caloriesResolver.resolve(stepsCount)
+                    )
+                } else {
+                    null
+                }
             )
-        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
-            pedometerTrackItem = null
+            pedometerTrackItem = null,
+            chartEntries = chartEntries.value
         )
     )
 
@@ -62,5 +68,8 @@ class PedometerHistoryViewModel(
         selectedRangeStateFlow.value = range
     }
 
-    data class State(val pedometerTrackItem: PedometerTrackItem?)
+    data class State(
+        val pedometerTrackItem: PedometerTrackItem?,
+        val chartEntries: List<Pair<Int, Int>>
+    )
 }
