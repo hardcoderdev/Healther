@@ -29,7 +29,6 @@ class PedometerService : Service(), SensorEventListener {
     private var currentTrackId = 0L
     private var currentTrackStepCount = 0
     private var currentTrackStartTime = LocalDateTime.now()
-    private var currentTrackEndTime = currentTrackStartTime.withMinute(59)
     private val logicModule by lazy { App.instance.presentationModule.logicModule }
     private val pedometerNotificationManager by lazy { PedometerNotificationManager(this) }
     private val sensorManager by lazy { getSystemService(SENSOR_SERVICE) as SensorManager }
@@ -69,12 +68,12 @@ class PedometerService : Service(), SensorEventListener {
     override fun onBind(intent: Intent?) = null
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (LocalDateTime.now().hour > currentTrackEndTime.hour) {
+        if (LocalDateTime.now().hour > currentTrackStartTime.hour) {
             currentTrackId = logicModule.idGenerator.nextId()
             currentTrackStartTime = LocalDateTime.now()
-            currentTrackEndTime = currentTrackStartTime.withMinute(59)
             currentTrackStepCount = 0
         }
+        val currentTrackEndTime = LocalDateTime.now()
 
         currentTrackStepCount += event?.values?.get(0)?.toInt() ?: 0
 

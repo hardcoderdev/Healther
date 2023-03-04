@@ -39,6 +39,7 @@ data class InfoItem(
     val value: String
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PedometerInfoSection(infoItemList: List<InfoItem>) {
     Text(
@@ -71,7 +72,11 @@ fun PedometerInfoSection(infoItemList: List<InfoItem>) {
 }
 
 @Composable
-private fun ItemInfo(imageVector: ImageVector, @StringRes valueLabelResId: Int, value: String) {
+private fun ItemInfo(
+    imageVector: ImageVector,
+    @StringRes valueLabelResId: Int,
+    value: String
+) {
     Column {
         Icon(imageVector = imageVector, contentDescription = null)
         Spacer(modifier = Modifier.height(8.dp))
@@ -96,7 +101,8 @@ fun PedometerTrackItemPreview() {
     val pedometerTrackItem = PedometerTrackItem(
         stepsCount = 1000,
         kilometersCount = 300.0f,
-        caloriesBurnt = 29.3f
+        caloriesBurnt = 29.3f,
+        timeInMillis = 123456789
     )
     PedometerInfoSection(
         infoItemList = listOf(

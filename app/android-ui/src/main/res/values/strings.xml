@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Healther</string>
 
+    <string name="datetime_seconds">%dс</string>
+    <string name="datetime_minutes">%dм</string>
+    <string name="datetime_hours">%dч</string>
+    <string name="datetime_days">%dд</string>
+
     <string name="scaffoldWrapper_goBack_iconContentDescription">Вернуться назад</string>
     <string name="scaffoldWrapper_addWaterTrack_iconContentDescription">Добавить запись воды</string>
 

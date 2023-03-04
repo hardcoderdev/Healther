@@ -25,7 +25,8 @@ class PedometerHistoryViewModel(
     private val pedometerTrackProvider: PedometerTrackProvider
 ) : ViewModel() {
 
-    private val selectedRangeStateFlow = MutableStateFlow(LocalDate.now().createRangeForCurrentDay())
+    private val selectedRangeStateFlow =
+        MutableStateFlow(LocalDate.now().createRangeForCurrentDay())
     private val chartEntries = MutableStateFlow(listOf(0 to 0))
 
     val state = selectedRangeStateFlow.flatMapLatest { range ->
@@ -42,19 +43,21 @@ class PedometerHistoryViewModel(
             caloriesBurnt = caloriesResolver.resolve(it.stepsCount)
         )
     }.map { pedometerTrackItems ->
-        val stepsCount = pedometerTrackItems.sumOf { it.stepsCount }
-            State(
-                chartEntries = chartEntries.value,
-                pedometerTrackItem = if (stepsCount != 0) {
-                    PedometerTrackItem(
-                        stepsCount = stepsCount,
-                        kilometersCount = kilometersResolver.resolve(stepsCount),
-                        caloriesBurnt = caloriesResolver.resolve(stepsCount)
-                    )
-                } else {
-                    null
-                }
-            )
+        val totalStepsCount = pedometerTrackItems.sumOf { it.stepsCount }
+        val totalTimeInMillis = pedometerTrackItems.sumOf { it.timeInMillis }
+        State(
+            chartEntries = chartEntries.value,
+            pedometerTrackItem = if (totalStepsCount != 0) {
+                PedometerTrackItem(
+                    stepsCount = totalStepsCount,
+                    kilometersCount = kilometersResolver.resolve(totalStepsCount),
+                    caloriesBurnt = caloriesResolver.resolve(totalStepsCount),
+                    timeInMillis = totalTimeInMillis
+                )
+            } else {
+                null
+            }
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,

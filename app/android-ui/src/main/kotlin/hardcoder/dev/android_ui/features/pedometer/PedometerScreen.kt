@@ -48,8 +48,10 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.shouldShowRationale
+import hardcoder.dev.android_ui.LocalDateTimeFormatter
 import hardcoder.dev.android_ui.LocalFloatFormatter
 import hardcoder.dev.android_ui.LocalPresentationModule
+import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.extensions.toast
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.pedometer.PedometerViewModel
@@ -60,7 +62,6 @@ import hardcoder.dev.uikit.Text
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.utilities.VersionChecker
-import hardcoder.dev.presentation.pedometer.PedometerTrackItem as PedometerTrackItemEntry
 
 @Composable
 fun PedometerScreen(
@@ -125,12 +126,7 @@ private fun PedometerContent(
     onStopPedometerService: () -> Unit
 ) {
     val floatFormatter = LocalFloatFormatter.current
-
-    val pedometerTrackItemEntry = PedometerTrackItemEntry(
-        stepsCount = state.totalStepsCount,
-        kilometersCount = state.totalKilometersCount,
-        caloriesBurnt = state.totalCaloriesBurned
-    )
+    val dateTimeFormatter = LocalDateTimeFormatter.current
 
     Column(
         modifier = Modifier
@@ -149,17 +145,17 @@ private fun PedometerContent(
                 InfoItem(
                     icon = Icons.Filled.MyLocation,
                     nameResId = R.string.pedometer_kilometersLabel_text,
-                    value = floatFormatter.format(pedometerTrackItemEntry.kilometersCount)
+                    value = floatFormatter.format(state.totalKilometersCount)
                 ),
                 InfoItem(
                     icon = Icons.Filled.Fireplace,
                     nameResId = R.string.pedometer_caloriesLabel_text,
-                    value = floatFormatter.format(pedometerTrackItemEntry.caloriesBurnt)
+                    value = floatFormatter.format(state.totalCaloriesBurned)
                 ),
                 InfoItem(
                     icon = Icons.Filled.LockClock,
                     nameResId = R.string.pedometer_timeLabel_text,
-                    value = "ВВОВЫЩ" // TODO
+                    value = dateTimeFormatter.formatMillisDistance(state.totalTrackingTime)
                 )
             )
         )
@@ -181,6 +177,7 @@ private fun PedometerContent(
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun DailyRateSection(
     state: PedometerViewModel.State,
@@ -272,8 +269,7 @@ private fun DailyRateSection(
     }
     Spacer(modifier = Modifier.height(32.dp))
     LinearProgressIndicator(
-        progress = (state.totalStepsCount.toFloat() / state.dailyRateStepsCount.toFloat()).toString()
-            .substring(0, 3).toFloat(),
+        progress = state.totalStepsCount safeDiv state.dailyRateStepsCount,
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(14.dp))
@@ -294,7 +290,7 @@ fun PedometerContentPreview() {
                     dailyRateStepsCount = 3000,
                     totalKilometersCount = 10.0f,
                     totalCaloriesBurned = 60.2f,
-                    totalWastedTime = 20,
+                    totalTrackingTime = 20,
                     chartEntries = listOf(0 to 0)
                 ),
                 onStartPedometerService = {},

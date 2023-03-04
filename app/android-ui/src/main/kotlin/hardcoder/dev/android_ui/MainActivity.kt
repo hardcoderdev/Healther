@@ -17,7 +17,11 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(
                     LocalPresentationModule provides App.instance.presentationModule,
                     LocalDrinkTypeResourcesProvider provides DrinkTypeResourcesProvider(),
-                    LocalFloatFormatter provides FloatFormatter()
+                    LocalFloatFormatter provides FloatFormatter(),
+                    LocalDateTimeFormatter provides DateTimeFormatter(
+                        context = this,
+                        defaultAccuracy = DateTimeFormatter.Accuracy.MINUTES
+                    )
                 ) {
                     RootScreen()
                 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.android_ui.LocalPresentationModule
+import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.waterBalance.WaterTrackItem
 import hardcoder.dev.presentation.waterBalance.WaterTrackingViewModel
@@ -85,9 +86,6 @@ private fun WaterTrackingContent(
     onDeleteWaterTrack: (Int) -> Unit,
     state: WaterTrackingViewModel.State
 ) {
-    val millisCount = state.millisCount
-    val dailyWaterIntake = state.dailyWaterIntake
-
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -96,12 +94,7 @@ private fun WaterTrackingContent(
     ) {
         CircularProgressBar(
             number = state.millisCount,
-            percentage = if (millisCount != 0) {
-                (state.millisCount.toFloat() / dailyWaterIntake.toFloat()).toString()
-                    .substring(0, 3).toFloat()
-            } else {
-                0.0f
-            }
+            percentage = state.millisCount safeDiv state.dailyWaterIntake,
         )
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(

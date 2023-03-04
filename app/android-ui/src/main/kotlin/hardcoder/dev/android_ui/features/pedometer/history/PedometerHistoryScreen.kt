@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -43,12 +44,12 @@ fun PedometerHistoryScreen(onGoBack: () -> Unit) {
     val viewModel = viewModel {
         presentationModule.createPedometerHistoryViewModel()
     }
-    val state = viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     ScaffoldWrapper(
         content = {
             PedometerHistoryContent(
-                state = state.value,
+                state = state,
                 onFetchPedometerTracks = {
                     viewModel.selectRange(it.createRangeForCurrentDay())
                 }

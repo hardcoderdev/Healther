@@ -15,3 +15,7 @@ val LocalDrinkTypeResourcesProvider = compositionLocalOf<DrinkTypeResourcesProvi
 val LocalFloatFormatter = compositionLocalOf<FloatFormatter> {
     error("LocalFloatFormatter not provided")
 }
+
+val LocalDateTimeFormatter = compositionLocalOf<DateTimeFormatter> {
+    error("LocalDateTimeFormatter not provided")
+}

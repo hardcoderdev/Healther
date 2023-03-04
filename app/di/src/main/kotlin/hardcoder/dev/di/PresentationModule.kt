@@ -13,7 +13,7 @@ import hardcoder.dev.presentation.waterBalance.WaterTrackingHistoryViewModel
 import hardcoder.dev.presentation.waterBalance.WaterTrackingViewModel
 
 class PresentationModule(
-    val logicModule: LogicModule // TODO RESOLVE
+    val logicModule: LogicModule
 ) {
     fun createSplashViewModel() = SplashViewModel(
         appPreferenceProvider = logicModule.appPreferenceProvider
@@ -65,8 +65,7 @@ class PresentationModule(
     fun createPedometerViewModel() = PedometerViewModel(
         pedometerTrackProvider = logicModule.pedometerTrackProvider,
         kilometersResolver = logicModule.kilometersResolver,
-        caloriesResolver = logicModule.caloriesResolver,
-        minutesResolver = logicModule.minutesResolver
+        caloriesResolver = logicModule.caloriesResolver
     )
 
     fun createPedometerHistoryViewModel() = PedometerHistoryViewModel(
