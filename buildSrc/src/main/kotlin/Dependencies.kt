@@ -23,7 +23,8 @@ object Dependencies {
         const val composeCharts = "1.6.4"
     }
 
-    const val sqlDelightCoroutinesExt = "com.squareup.sqldelight:coroutines-extensions:${Versions.sqlDelight}"
+    const val sqlDelightCoroutinesExt =
+        "com.squareup.sqldelight:coroutines-extensions:${Versions.sqlDelight}"
     const val sqlDelightDriver = "com.squareup.sqldelight:android-driver:${Versions.sqlDelight}"
     const val preferences = "androidx.preference:preference-ktx:${Versions.preferences}"
 
@@ -47,7 +48,8 @@ object Dependencies {
     const val debugTooling = "androidx.compose.ui:ui-tooling"
     const val composeMaterial = "androidx.compose.material3:material3"
     const val composeExtendedIcons = "androidx.compose.material:material-icons-extended"
-    const val accompanistPermissions = "com.google.accompanist:accompanist-permissions:${Versions.accompanistPermissions}"
+    const val accompanistPermissions =
+        "com.google.accompanist:accompanist-permissions:${Versions.accompanistPermissions}"
 
     const val lifecycleViewModelKtx =
         "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.lifecycleCompose}"

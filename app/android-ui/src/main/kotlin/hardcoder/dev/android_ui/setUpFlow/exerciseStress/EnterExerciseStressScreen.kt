@@ -76,7 +76,7 @@ fun EnterExerciseStressScreen(
 private fun EnterExerciseStressContent(
     state: EnterExerciseStressTimeViewModel.State,
     onUpdateExerciseStressTime: (Int) -> Unit,
-    onGoForward:  () -> Unit
+    onGoForward: () -> Unit
 ) {
     Column(
         modifier = Modifier

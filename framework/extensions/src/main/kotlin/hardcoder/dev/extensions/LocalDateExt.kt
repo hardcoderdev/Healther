@@ -9,12 +9,13 @@ import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toLocalDateTime
-import java.util.Date
+import java.util.*
 
 fun LocalDate.getStartOfDay(
     timeZone: TimeZone = TimeZone.currentSystemDefault()
 ): Long {
-    return atTime(LocalTime(hour = 0, minute = 0, second = 59)).toInstant(timeZone).toEpochMilliseconds()
+    return atTime(LocalTime(hour = 0, minute = 0, second = 59)).toInstant(timeZone)
+        .toEpochMilliseconds()
 }
 
 fun LocalDate.getEndOfDay(

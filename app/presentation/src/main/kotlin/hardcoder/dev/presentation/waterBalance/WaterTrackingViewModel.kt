@@ -2,7 +2,6 @@ package hardcoder.dev.presentation.waterBalance
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.entities.waterTracking.DrinkType
 import hardcoder.dev.entities.hero.Hero
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay

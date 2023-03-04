@@ -11,15 +11,15 @@ import androidx.navigation.navDeepLink
 import hardcoder.dev.android_ui.dashboard.DashboardScreen
 import hardcoder.dev.android_ui.features.pedometer.PedometerScreen
 import hardcoder.dev.android_ui.features.pedometer.history.PedometerHistoryScreen
+import hardcoder.dev.android_ui.features.waterBalance.WaterTrackingScreen
+import hardcoder.dev.android_ui.features.waterBalance.create.SaveWaterTrackScreen
+import hardcoder.dev.android_ui.features.waterBalance.history.WaterTrackingHistoryScreen
+import hardcoder.dev.android_ui.features.waterBalance.update.UpdateWaterTrackScreen
 import hardcoder.dev.android_ui.setUpFlow.exerciseStress.EnterExerciseStressScreen
 import hardcoder.dev.android_ui.setUpFlow.gender.SelectGenderScreen
 import hardcoder.dev.android_ui.setUpFlow.weight.EnterWeightScreen
 import hardcoder.dev.android_ui.setUpFlow.welcome.WelcomeScreen
 import hardcoder.dev.android_ui.splash.SplashScreen
-import hardcoder.dev.android_ui.features.waterBalance.WaterTrackingScreen
-import hardcoder.dev.android_ui.features.waterBalance.create.SaveWaterTrackScreen
-import hardcoder.dev.android_ui.features.waterBalance.history.WaterTrackingHistoryScreen
-import hardcoder.dev.android_ui.features.waterBalance.update.UpdateWaterTrackScreen
 import hardcoder.dev.entities.hero.Gender
 
 @Composable
