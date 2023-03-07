@@ -13,8 +13,6 @@ object VersionChecker {
     // 11
     fun isRedVelvetCake() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
 
+    // 10
     fun isOreo() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-
-    // 7 or lower
-    fun isNougatOrLower() = Build.VERSION.SDK_INT <= Build.VERSION_CODES.N
 }

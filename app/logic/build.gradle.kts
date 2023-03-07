@@ -10,12 +10,17 @@ android {
     defaultConfig {
         minSdk = Android.DefaultConfig.minSdk
     }
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
 }
 
 dependencies {
     api(project(Modules.Paths.database))
     api(project(Modules.Paths.extensions))
     implementation(Dependencies.dateTime)
+    implementation(Dependencies.composeCalendarDateTime)
     addData()
     addCoroutines()
 }

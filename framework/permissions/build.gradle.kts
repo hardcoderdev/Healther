@@ -4,10 +4,19 @@ plugins {
 }
 
 android {
-    namespace = Modules.Namespaces.utilities
+    namespace = Modules.Namespaces.permissions
     compileSdk = Android.compileSdk
 
     defaultConfig {
         minSdk = Android.DefaultConfig.minSdk
     }
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
+}
+
+dependencies {
+    addCoroutines()
+    implementation(Dependencies.activityKtx)
 }

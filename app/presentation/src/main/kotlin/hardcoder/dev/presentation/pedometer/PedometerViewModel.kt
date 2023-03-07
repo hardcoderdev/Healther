@@ -7,25 +7,29 @@ import hardcoder.dev.extensions.createRangeForCurrentDay
 import hardcoder.dev.extensions.millisToLocalDateTime
 import hardcoder.dev.logic.pedometer.CaloriesResolver
 import hardcoder.dev.logic.pedometer.KilometersResolver
-import hardcoder.dev.logic.pedometer.PedometerTrackProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 
 class PedometerViewModel(
-    pedometerTrackProvider: PedometerTrackProvider,
+    private val pedometerManager: PedometerManager,
     private val kilometersResolver: KilometersResolver,
     private val caloriesResolver: CaloriesResolver
 ) : ViewModel() {
 
-    private val isTrackingNow = MutableStateFlow(false)
     private val dailyRateStepsCount = MutableStateFlow(DAILY_RATE_PEDOMETER)
+    private val isTrackingNow = pedometerManager.isTrackingNow().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = false
+    )
 
-    private val tracks = pedometerTrackProvider.providePedometerTracksByRange(
+    private val tracks = pedometerManager.newStepsFlow(
         LocalDate.now().createRangeForCurrentDay(timeZone = TimeZone.currentSystemDefault())
     ).stateIn(
         scope = viewModelScope,
@@ -33,16 +37,16 @@ class PedometerViewModel(
         initialValue = emptyList()
     )
 
-    private val totalStepCount = tracks.map {
-        it.sumOf { it.stepsCount }
+    private val totalStepCount = tracks.map { pedometerTracks ->
+        pedometerTracks.sumOf { it.stepsCount }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = 0
     )
 
-    private val totalTrackingTime = tracks.map {
-        it.sumOf { it.range.last - it.range.first }
+    private val totalTrackingTime = tracks.map { pedometerTracks ->
+        pedometerTracks.sumOf { it.range.last - it.range.first }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -65,8 +69,8 @@ class PedometerViewModel(
         initialValue = 0f
     )
 
-    private val chartEntries = tracks.map {
-        it.groupBy {
+    private val chartEntries = tracks.map { pedometerTracks ->
+        pedometerTracks.groupBy {
             it.range.first.millisToLocalDateTime().hour
         }.map { entry ->
             entry.key to entry.value.sumOf { it.stepsCount }
@@ -76,7 +80,6 @@ class PedometerViewModel(
         started = SharingStarted.Eagerly,
         initialValue = listOf(0 to 0)
     )
-
 
     val state = combine(
         isTrackingNow,
@@ -105,8 +108,16 @@ class PedometerViewModel(
         initialValue = LoadingState.Loading
     )
 
-    fun updateTrackingStatus(isTracking: Boolean) {
-        isTrackingNow.value = isTracking
+    fun startService() {
+        pedometerManager.startTracking()
+    }
+
+    fun stopService() {
+        pedometerManager.stopTracking()
+    }
+
+    fun requestPermissions() {
+        pedometerManager.requestPermissions()
     }
 
     sealed class LoadingState {

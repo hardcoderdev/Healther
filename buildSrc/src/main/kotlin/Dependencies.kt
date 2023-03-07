@@ -17,10 +17,10 @@ object Dependencies {
         const val numberPicker = "1.0.3"
         const val composeCalendar = "1.0.2"
         const val composeMaterialDialogs = "0.8.1-rc"
-        const val accompanistPermissions = "0.29.1-alpha"
         const val coreDesugaring = "2.0.0"
         const val dateTime = "0.4.0"
         const val composeCharts = "1.6.4"
+        const val activityKtx = "1.3.0-alpha04"
     }
 
     const val sqlDelightCoroutinesExt =
@@ -48,8 +48,6 @@ object Dependencies {
     const val debugTooling = "androidx.compose.ui:ui-tooling"
     const val composeMaterial = "androidx.compose.material3:material3"
     const val composeExtendedIcons = "androidx.compose.material:material-icons-extended"
-    const val accompanistPermissions =
-        "com.google.accompanist:accompanist-permissions:${Versions.accompanistPermissions}"
 
     const val lifecycleViewModelKtx =
         "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.lifecycleCompose}"
@@ -64,10 +62,12 @@ object Dependencies {
     const val composeCharts = "com.patrykandpatrick.vico:compose-m3:${Versions.composeCharts}"
     const val coreDesugaring = "com.android.tools:desugar_jdk_libs:${Versions.coreDesugaring}"
     const val dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.dateTime}"
+    const val activityKtx = "androidx.activity:activity-ktx:${Versions.activityKtx}"
 }
 
 fun DependencyHandler.addCommonAndroid() {
     implementation(Dependencies.coreKtx)
+    implementation(Dependencies.activityKtx)
     implementation(Dependencies.lifecycleViewModelKtx)
     implementation(Dependencies.playCore)
     coreLibraryDesugaring(Dependencies.coreDesugaring)
@@ -104,5 +104,4 @@ fun DependencyHandler.addCompose() {
     implementation(Dependencies.composeCalendarDateTime)
     implementation(Dependencies.composeMaterialDialogs)
     implementation(Dependencies.composeCharts)
-    implementation(Dependencies.accompanistPermissions)
 }
