@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-class EmptyPermissions : IllegalArgumentException("Permissions for the request were not passed")
+class EmptyPermissionsException : IllegalArgumentException("Permissions for the request were not passed")
 
 class PermissionsController {
 
@@ -26,11 +26,11 @@ class PermissionsController {
     }
 
     suspend fun requestPermissions(
-        vararg permissions: String
+        permissions: Array<String>
     ): Map<String, Boolean> {
         mutex.withLock {
-            if (permissions.isEmpty()) throw EmptyPermissions()
-            launcher.launch(arrayOf(*permissions))
+            if (permissions.isEmpty()) throw EmptyPermissionsException()
+            launcher.launch(permissions)
             return lastResult.filterNotNull().first().also {
                 lastResult.value = null
             }

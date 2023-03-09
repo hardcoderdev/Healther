@@ -14,5 +14,7 @@ object VersionChecker {
     fun isRedVelvetCake() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
 
     // 10
-    fun isOreo() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+    fun isQuinceTart() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+
+    fun isOreo() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
 }

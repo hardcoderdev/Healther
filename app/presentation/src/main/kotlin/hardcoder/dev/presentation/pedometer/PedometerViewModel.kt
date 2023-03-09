@@ -7,17 +7,19 @@ import hardcoder.dev.extensions.createRangeForCurrentDay
 import hardcoder.dev.extensions.millisToLocalDateTime
 import hardcoder.dev.logic.pedometer.CaloriesResolver
 import hardcoder.dev.logic.pedometer.KilometersResolver
+import hardcoder.dev.logic.pedometer.PedometerTrackProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 
 class PedometerViewModel(
     private val pedometerManager: PedometerManager,
+    pedometerTrackProvider: PedometerTrackProvider,
     private val kilometersResolver: KilometersResolver,
     private val caloriesResolver: CaloriesResolver
 ) : ViewModel() {
@@ -29,7 +31,7 @@ class PedometerViewModel(
         initialValue = false
     )
 
-    private val tracks = pedometerManager.newStepsFlow(
+    private val tracks = pedometerTrackProvider.providePedometerTracksByRange(
         LocalDate.now().createRangeForCurrentDay(timeZone = TimeZone.currentSystemDefault())
     ).stateIn(
         scope = viewModelScope,
@@ -108,16 +110,14 @@ class PedometerViewModel(
         initialValue = LoadingState.Loading
     )
 
-    fun startService() {
-        pedometerManager.startTracking()
-    }
-
-    fun stopService() {
-        pedometerManager.stopTracking()
-    }
-
-    fun requestPermissions() {
-        pedometerManager.requestPermissions()
+    fun togglePedometerTracking() {
+        viewModelScope.launch {
+            if (isTrackingNow.value) {
+                pedometerManager.stopTracking()
+            } else {
+                pedometerManager.startTracking()
+            }
+        }
     }
 
     sealed class LoadingState {

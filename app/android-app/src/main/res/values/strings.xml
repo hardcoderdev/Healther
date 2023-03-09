@@ -88,7 +88,12 @@
 
     <string name="pedometerNotification_notificationContentTitle_text">Шагомер</string>
     <string name="pedometerNotification_contentStepFormat_text">Шагов пройдено: %d</string>
+    <string name="pedometerNotificationManagerChannelId">healther_pedometer_feature_id</string>
+    <string name="pedometerNotificationManager_channelName">pedometer</string>
+    <string name="pedometerNotificationManager_contentIntent_deeplinkPattern">healther://pedometer_feature</string>
+
     <string name="pedometer_thisPermissionsIsRequired_error">Это разрешение нужно нам, чтобы отслеживать ваши шаги!</string>
     <string name="pedometer_noHardwareSensorOnDevice_error">На вашем девайсе отсутствует сенсор.\nК сожалению вы не сможете воспользоваться этой фичей</string>
+
 
 </resources>

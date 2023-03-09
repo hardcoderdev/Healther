@@ -6,14 +6,8 @@ CREATE TABLE IF NOT EXISTS PedometerTrack (
 );
 
 upsert:
-INSERT INTO PedometerTrack (id, stepsCount, startTime, endTime)
-VALUES (?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET stepsCount = excluded.stepsCount, startTime = excluded.startTime, endTime = excluded.endTime;
-
-deleteById:
-DELETE FROM PedometerTrack WHERE id = ?;
-
-selectPedometerTrackById:
-SELECT * FROM PedometerTrack WHERE id = ?;
+INSERT OR REPLACE INTO PedometerTrack (id, stepsCount, startTime, endTime)
+VALUES (?, ?, ?, ?);
 
 selectPedometerTracksByRange:
 SELECT * FROM PedometerTrack WHERE startTime >= ? AND startTime <= ? AND endTime >= ? AND endTime <= ?;

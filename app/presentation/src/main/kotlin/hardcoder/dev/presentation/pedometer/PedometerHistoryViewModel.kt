@@ -3,7 +3,6 @@ package hardcoder.dev.presentation.pedometer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.extensions.createRangeForCurrentDay
-import hardcoder.dev.extensions.mapItems
 import hardcoder.dev.extensions.millisToLocalDateTime
 import hardcoder.dev.logic.pedometer.CaloriesResolver
 import hardcoder.dev.logic.pedometer.KilometersResolver
@@ -12,9 +11,9 @@ import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.LocalDate
 
@@ -27,42 +26,80 @@ class PedometerHistoryViewModel(
 
     private val selectedRangeStateFlow =
         MutableStateFlow(LocalDate.now().createRangeForCurrentDay())
-    private val chartEntries = MutableStateFlow(listOf(0 to 0))
-
-    val state = selectedRangeStateFlow.flatMapLatest { range ->
+    private val pedometerTracks = selectedRangeStateFlow.flatMapLatest { range ->
         pedometerTrackProvider.providePedometerTracksByRange(range)
-    }.onEach { pedometerTracks ->
-        chartEntries.value = pedometerTracks.groupBy {
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = emptyList()
+    )
+
+    private val totalStepsCount = pedometerTracks.map { pedometerTracks ->
+        pedometerTracks.sumOf { it.stepsCount }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = 0
+    )
+
+    private val totalTrackingTime = pedometerTracks.map { pedometerTracks ->
+        pedometerTracks.sumOf { it.range.last - it.range.first }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = 0
+    )
+
+    private val totalCaloriesCount = totalStepsCount.map {
+        caloriesResolver.resolve(it)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = 0f
+    )
+
+    private val totalKilometersCount = totalStepsCount.map {
+        kilometersResolver.resolve(it)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = 0f
+    )
+
+    private val chartEntries = pedometerTracks.map { pedometerTracks ->
+        pedometerTracks.groupBy {
             it.range.first.millisToLocalDateTime().hour
         }.map { entry ->
             entry.key to entry.value.sumOf { it.stepsCount }
         }
-    }.mapItems {
-        it.toItem(
-            kilometersCount = kilometersResolver.resolve(it.stepsCount),
-            caloriesBurnt = caloriesResolver.resolve(it.stepsCount)
-        )
-    }.map { pedometerTrackItems ->
-        val totalStepsCount = pedometerTrackItems.sumOf { it.stepsCount }
-        val totalTimeInMillis = pedometerTrackItems.sumOf { it.timeInMillis }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = emptyList()
+    )
+
+    val state = combine(
+        totalStepsCount,
+        totalKilometersCount,
+        totalCaloriesCount,
+        totalTrackingTime,
+        chartEntries
+    ) { totalStepsCount, totalKilometersCount, totalCaloriesCount, totalTrackingTime, chartEntries ->
         State(
-            chartEntries = chartEntries.value,
-            pedometerTrackItem = if (totalStepsCount != 0) {
-                PedometerTrackItem(
-                    stepsCount = totalStepsCount,
-                    kilometersCount = kilometersResolver.resolve(totalStepsCount),
-                    caloriesBurnt = caloriesResolver.resolve(totalStepsCount),
-                    timeInMillis = totalTimeInMillis
-                )
-            } else {
-                null
-            }
+            totalStepsCount = totalStepsCount,
+            totalKilometersCount = totalKilometersCount,
+            totalCaloriesBurned = totalCaloriesCount,
+            totalTrackingTime = totalTrackingTime,
+            chartEntries = chartEntries
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
-            pedometerTrackItem = null,
+            totalStepsCount = totalStepsCount.value,
+            totalKilometersCount = totalKilometersCount.value,
+            totalCaloriesBurned = totalCaloriesCount.value,
+            totalTrackingTime = totalTrackingTime.value,
             chartEntries = chartEntries.value
         )
     )
@@ -72,7 +109,10 @@ class PedometerHistoryViewModel(
     }
 
     data class State(
-        val pedometerTrackItem: PedometerTrackItem?,
+        val totalStepsCount: Int,
+        val totalKilometersCount: Float,
+        val totalCaloriesBurned: Float,
+        val totalTrackingTime: Long,
         val chartEntries: List<Pair<Int, Int>>
     )
 }
