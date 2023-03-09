@@ -19,4 +19,8 @@ class HeroUpdater(
             id = HERO_ID
         )
     }
+
+    companion object {
+        private const val HERO_ID = 0
+    }
 }

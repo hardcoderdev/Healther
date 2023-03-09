@@ -19,5 +19,6 @@ android {
 
 dependencies {
     addCoroutines()
+    implementation(Dependencies.coreKtx)
     implementation(Dependencies.dateTime)
 }

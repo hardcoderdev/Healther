@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS PedometerTrack (
+    id INTEGER NOT NULL PRIMARY KEY,
+    stepsCount INTEGER AS Int NOT NULL,
+    startTime INTEGER NOT NULL,
+    endTime INTEGER NOT NULL
+);
+
+upsert:
+INSERT INTO PedometerTrack (id, stepsCount, startTime, endTime)
+VALUES (?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET stepsCount = excluded.stepsCount, startTime = excluded.startTime, endTime = excluded.endTime;
+
+deleteById:
+DELETE FROM PedometerTrack WHERE id = ?;
+
+selectPedometerTrackById:
+SELECT * FROM PedometerTrack WHERE id = ?;
+
+selectPedometerTracksByRange:
+SELECT * FROM PedometerTrack WHERE startTime >= ? AND startTime <= ? AND endTime >= ? AND endTime <= ?;

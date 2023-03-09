@@ -8,7 +8,6 @@ import hardcoder.dev.logic.waterBalance.WaterTrackDeleter
 import hardcoder.dev.logic.waterBalance.WaterTrackProvider
 import hardcoder.dev.logic.waterBalance.resolvers.WaterPercentageResolver
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -51,7 +50,7 @@ class WaterTrackingHistoryViewModel(
     }
 
     fun deleteTrack(waterTrackId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             waterTrackDeleter.deleteById(waterTrackId)
         }
     }

@@ -1,7 +1,7 @@
 plugins {
     id(Plugins.Android.library)
     id(Plugins.Kotlin.kotlinLibrary)
-    id(Plugins.sqlDelight) version(Plugins.Versions.sqlDelight)
+    id(Plugins.sqlDelight) version (Plugins.Versions.sqlDelight)
 }
 
 android {
@@ -23,5 +23,6 @@ sqldelight {
 dependencies {
     api(project(Modules.Paths.entities))
     addData()
+    implementation(Dependencies.dateTime)
     implementation(Dependencies.sqlDelightCoroutinesExt)
 }

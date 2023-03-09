@@ -20,7 +20,7 @@ enum class ButtonStyles { FILLED, OUTLINED }
 fun IconTextButton(
     modifier: Modifier = Modifier,
     style: ButtonStyles = ButtonStyles.FILLED,
-    iconResourceId: ImageVector,
+    imageVector: ImageVector,
     @StringRes labelResId: Int,
     onClick: () -> Unit,
     isEnabled: Boolean = true,
@@ -35,7 +35,7 @@ fun IconTextButton(
             ) {
                 IconButtonContent(
                     labelResId = labelResId,
-                    iconResourceId = iconResourceId,
+                    iconResourceId = imageVector,
                     contentDescription = contentDescription
                 )
             }
@@ -49,7 +49,7 @@ fun IconTextButton(
             ) {
                 IconButtonContent(
                     labelResId = labelResId,
-                    iconResourceId = iconResourceId,
+                    iconResourceId = imageVector,
                     contentDescription = contentDescription
                 )
             }

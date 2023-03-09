@@ -2,7 +2,6 @@ package hardcoder.dev.presentation.waterBalance
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.entities.waterTracking.DrinkType
 import hardcoder.dev.entities.hero.Hero
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
@@ -22,14 +21,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-
-data class WaterTrackItem(
-    val id: Int,
-    val drinkType: DrinkType,
-    val millilitersCount: Int,
-    val resolvedMillilitersCount: Int,
-    val timeInMillis: Long
-)
 
 class WaterTrackingViewModel(
     heroProvider: HeroProvider,
