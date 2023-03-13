@@ -20,8 +20,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.waterBalance.WaterTrackItem
-import hardcoder.dev.presentation.waterBalance.WaterTrackingViewModel
+import hardcoder.dev.presentation.features.waterBalance.WaterTrackItem
+import hardcoder.dev.presentation.features.waterBalance.WaterTrackingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.CircularProgressBar
@@ -93,7 +93,7 @@ private fun WaterTrackingContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CircularProgressBar(
-            number = state.millisCount,
+            innerText = state.millisCount.toString(),
             percentage = state.millisCount safeDiv state.dailyWaterIntake,
         )
         Spacer(modifier = Modifier.height(16.dp))

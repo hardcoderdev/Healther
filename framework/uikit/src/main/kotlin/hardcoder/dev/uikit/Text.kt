@@ -30,12 +30,13 @@ fun Text(
     imageVector: ImageVector? = null,
     textAlign: TextAlign? = null,
     iconTint: Color = LocalContentColor.current,
-    overflow: TextOverflow = TextOverflow.Clip
+    overflow: TextOverflow = TextOverflow.Clip,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Center,
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = horizontalArrangement
     ) {
         if (imageVector != null) {
             Icon(

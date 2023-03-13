@@ -21,6 +21,8 @@ object Dependencies {
         const val dateTime = "0.4.0"
         const val composeCharts = "1.6.4"
         const val activityKtx = "1.3.0-alpha04"
+        const val accompanist = "0.29.1-alpha"
+        const val dataStore = "1.0.0"
     }
 
     const val sqlDelightCoroutinesExt =
@@ -63,6 +65,12 @@ object Dependencies {
     const val coreDesugaring = "com.android.tools:desugar_jdk_libs:${Versions.coreDesugaring}"
     const val dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.dateTime}"
     const val activityKtx = "androidx.activity:activity-ktx:${Versions.activityKtx}"
+
+    const val accompanistPager = "com.google.accompanist:accompanist-pager:${Versions.accompanist}"
+    const val accompanistPagerIndicators = "com.google.accompanist:accompanist-pager-indicators:${Versions.accompanist}"
+    const val flowRow = "com.google.accompanist:accompanist-flowlayout:${Versions.accompanist}"
+
+    const val dataStore = "androidx.datastore:datastore-preferences:${Versions.dataStore}"
 }
 
 fun DependencyHandler.addCommonAndroid() {
@@ -104,4 +112,7 @@ fun DependencyHandler.addCompose() {
     implementation(Dependencies.composeCalendarDateTime)
     implementation(Dependencies.composeMaterialDialogs)
     implementation(Dependencies.composeCharts)
+    implementation(Dependencies.accompanistPager)
+    implementation(Dependencies.accompanistPagerIndicators)
+    implementation(Dependencies.flowRow)
 }

@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.LocalDrinkTypeResourcesProvider
 import hardcoder.dev.entities.waterTracking.DrinkType
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.waterBalance.WaterTrackItem
+import hardcoder.dev.presentation.features.waterBalance.WaterTrackItem
 
 @Composable
 fun WaterTrackItem(

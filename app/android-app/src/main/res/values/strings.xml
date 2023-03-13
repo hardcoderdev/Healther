@@ -96,4 +96,125 @@
     <string name="pedometer_noHardwareSensorOnDevice_error">На вашем девайсе отсутствует сенсор.\nК сожалению вы не сможете воспользоваться этой фичей</string>
 
 
+
+    <string name="starvation_letsStartStarving_text">Начните своё интервальное голодание прямо сейчас!</string>
+    <string name="starvationScreen_youReadyForStarving_text">Вы готовы к голоданию!</string>
+    <string name="starvationScreen_changeDate_buttonText">Изменить дату</string>
+    <string name="starvation_currentDate_formatText">Желаете запланировать голодание на другой день?</string>
+    <string name="starvation_selectedDate_text">Выбранная дата голодания: %s</string>
+    <string name="starvation_cancel_datePickerDialogButton">Отмена</string>
+    <string name="starvation_selectDate_datePickerDialogButton">Выбрать</string>
+    <string name="starvation_selectDateTitle_datePicker">Выбор даты голодания</string>
+    <string name="starvation_yourSelectedPlan_formatText">Выбранный план голодания: %s</string>
+    <string name="starvationScreen_changePlan_buttonText">Изменить план</string>
+    <string name="starvationPlan_selectStarvationPlan_text">Выбор плана:</string>
+    <string name="sharedPreferences_name">HEALTHER_PREFS</string>
+    <string name="starvationSaveTrack_title_topBar">Сохранение голодания</string>
+    <string name="starvationMood_happy">Отлично</string>
+    <string name="starvationMood_neutral">Нейтрально</string>
+    <string name="starvationSaveTrack_howYouFeelYourself_text">Как вы себя чувствуете после голодания?</string>
+    <string name="starvationSaveTrack_hasYourWeightChanged_text">Ваш вес изменился?</string>
+    <string name="starvationSaveTrack_save_buttonText">Сохранить запись</string>
+    <string name="starvationSaveTrack_youCanAddNote_text">Вы можете добавить заметку:</string>
+    <string name="starvationSaveTrack_enterNote_textField">Заметку вводите здесь…</string>
+    <string name="starvationSaveDiaryTrack_title_topBar">Сохранение в дневник</string>
+    <string name="starvationSaveDiaryTrack_whatHungryType_text">Какой голод вы ощущаете?</string>
+    <string name="starvationSaveDiaryTrack_physical_hunger_text">Физический голод</string>
+    <string name="starvationSaveDiaryTrack_emotional_hunger_text">Эмоциональный голод</string>
+    <string name="starvationSaveDiaryTrack_notSureInHungryType_text">Не уверены в типе голода?</string>
+    <string name="starvationSaveDiaryTrack_hungryTypeQuiz_buttonText">Пройти тест</string>
+    <string name="starvationSaveDiaryTrack_howYouFeelYourself_text">Как вы себя чувствуете прямо сейчас?</string>
+    <string name="starvationSaveDiaryTrack_feelSomeSymptoms_text">У вас есть симптомы ниже? Можете отметить несколько.</string>
+    <string name="starvationSymptom_weakness">Слабость</string>
+    <string name="starvationSymptom_indigestion">Несварение</string>
+    <string name="starvationSymptom_headache">Головная боль</string>
+    <string name="starvationSymptom_dizziness">Головокружение</string>
+    <string name="starvationSymptom_hunger">Голод</string>
+    <string name="starvationSymptom_nausea">Тошнота</string>
+    <string name="starvationSymptom_satiation">Пресыщение</string>
+    <string name="starvationSymptom_insomnia">Бессонница</string>
+    <string name="starvationSymptom_fatigue">Усталость</string>
+    <string name="starvationSaveDiaryTrack_save_buttonText">Сохранить запись</string>
+    <string name="starvationSaveDiaryTrack_enterNote_textField">Заметку вводите здесь…</string>
+    <string name="starvation_starvingTimeLeft_formatText">До конца голодания осталось %d %s %d %s.</string>
+    <string name="starvation_plans_title_topBar">Выбор плана</string>
+    <string name="starvationPlan_14_10">14–10</string>
+    <string name="starvationPlan_hoursForStarving_formatText" />
+    <string name="starvationPlan_hoursForStarving_text">• %d %s голодания</string>
+    <string name="starvationPlan_hoursForEating_text">• %d %s на приём пищи</string>
+    <string name="starvationPlan_customHoursForStarving_text">• Неограниченные часы голодания</string>
+    <string name="starvationPlan_customHoursForEating_text">• Приём пищи в конце голодания</string>
+
+    <string name="starvationPlan_16_8">16–8</string>
+    <string name="starvationPlan_18_6">18–6</string>
+    <string name="starvationPlan_20_4">20–4</string>
+    <string name="starvationPlan_customPlan">Свой план</string>
+    <string name="starvationPlan_planDifficulty_text">Все планы ниже расположены в порядке возрастания сложности.</string>
+
+    <string name="starvationScreen_startStarvation_buttonText">Начать голодание</string>
+    <string name="starvationScreen_planStarvation_buttonText">Запланировать голодание</string>
+    <string name="starvationScreen_wantToKnowStarvationStatus_text">Этапы голодания</string>
+    <string name="starvtionScreen_statusIcon_contentDescription">Статус голодания</string>
+    <string name="starvationScreen_checkStatus_buttonText">Смотреть статус</string>
+    <string name="starvationScreen_starvationStatusDescription_text">Узнайте подробнее о процессах в вашем организме в период голодания</string>
+    <string name="starvationStatusScreen_title_topBar">Статус голодания</string>
+    <string name="starvationStatusScreen_starvationStatus_sugarRising_title">Уровень сахара в крови повышается</string>
+    <string name="starvationStatusScreen_starvationStatus_sugarLowering_title">Уровень сахара в крови понижается</string>
+    <string name="starvationStatusScreen_starvationStatus_sugarBackToNorm_title">Уровень сахара возвращается в норму</string>
+    <string name="starvationStatusScreen_starvationStatus_fastingMode_title">Режим голодания</string>
+    <string name="starvationStatusScreen_starvationStatus_transitionToKetosis_title">Переход к сжиганию жира - кетозу</string>
+    <string name="starvationStatusScreen_starvationStatus_ketosisMode_title">Режим кетоза</string>
+    <string name="starvationStatusScreen_starvationStatus_fatBurningMode_title">Режим сжигания жира</string>
+    <string name="starvationStatusScreen_starvationStatus_startAutophagy_title">Режим аутофагии</string>
+    <string name="starvationStatusScreen_starvationStatus_growthHormoneIncreases_title">Повышение уровня гормона роста</string>
+    <string name="starvationStatusScreen_starvationStatus_decreasedInsulinLevel_title">Уменьшение уровня инсулина в крови</string>
+    <string name="starvationStatusScreen_starvationStatus_regenerationOfImmuneCells_title">Регенерация имунных клеток</string>
+    <string name="starvationScreen_you_starving_text">Вы голодаете!</string>
+    <string name="starvationStatusScreen_starvationStatus_sugarRising_description">В первые часы голодания человек чувствует себя нейтрально, потому что в организме происходит обычный процесс расщепления гликогена. Уровень сахара в крови повышается. Поджелудочная железа высвобождает инсулин для расщепления глюкозы и выработки энергии, а также сохраняет излишки глюкозы для дальнейшего использования.</string>
+    <string name="starvationStatusScreen_starvationStatus_sugarLowering_description">Под воздействием инсулина уровень сахара в крови понижается с пикового до почти нормального уровня. Обычно он больше не повышается, потому что инсулин поступает в систему кровообращения сразу после еды.</string>
+    <string name="starvationStatusScreen_starvationStatus_sugarBackToNorm_description">В этой фазе уровень сахара в крови возвращается в норму. Чувствуете голод? Желудок напоминает, что с последнего приёма пищи прошло много времени, однако на самом деле вы не очень голодны.\\n\\nУмираете с голоду? Мышечная масса уменьшается? Этого не происходит. На самом деле уменьшаются запасы гликогена, и можно даже потерять немного жира.\\n\\nОрганизм продолжает переваривать пищу, полученную в прошлый раз. Он начинает использовать для получения энергии накопленную глюкозу и продолжает функционировать так, как будто скоро будет очередной приём пищи.</string>
+    <string name="starvationStatusScreen_starvationStatus_fastingMode_description">Через 8 часов после последнего приёма пищи печень расходует последние запасы глюкозы. В организме начинается глюконеогенез, что указывает на то, что включился режим голодания.\\n\\nИсследования показали, что глюконеогенез как метаболический путь приводит к образованию глюкозы из жира, а не углеводов. Это ускоряет сжигание калорий.</string>
+    <string name="starvationStatusScreen_starvationStatus_transitionToKetosis_description">Запасы гликогена заканчиваются! В результате может появиться раздражительность или злость от голода. Просто расслабьтесь, ведь это признак того, что ваше тело сжигает жир!\\n\\nКогда остаётся мало гликогена, жировые клетки (адипоциты) начинают выделять в кровоток жир. Они также попадают прямо в печень и превращаются в энергию для организма. Вы как бы обманываете свой организм, заставляя сжигать жир для выживания.</string>
+    <string name="starvationStatusScreen_starvationStatus_ketosisMode_description">Теперь организму приходится получать энергию из жира. Это метаболическое состояние называется кетозом. Гликоген почти полностью израсходован, и печень превращает жир в кетоновые тела - альтернативный источник энергии для организма.\\n\\nЖировые запасы легко высвобождаются и потребляются, поэтому кетоз иногда называют режимом сжигания жира. При кетозе производится меньше воспалительных побочных продуктов, поэтому он полезен для сердца, мозга и обмена веществ.</string>
+    <string name="starvationStatusScreen_starvationStatus_fatBurningMode_description">Чем продолжительней голодание, тем глубже кетоз. К 18 часам организм полностью переходит в режим сжигания жира. Исследования показывают, что при голодании в течении 12–24 часов производство энергии из жира возрастает на 60%, причем существенный рост происходит через 18 часов. Теперь:\\n\\n1) Уровень кетоновых тел повышается.\\n2)Кетоны действуют как сигнальные молекулы, подсказывающие организму, как лучше регулировать метаболизм в стрессовой ситуации.\\n3) Противовоспалительные и омолаживающие процессы организма готовы к работе.</string>
+    <string name="starvationStatusScreen_starvationStatus_startAutophagy_description">В этот момент в организме запускается аутофагия (буквально - самопоедание). Начинается уборка в клетках. Удаляются ненужные или неработоспособные компоненты. Это полезно, потому что приводит к упорядоченной деградации и переработке клеточных компонентов.\\n\\nВо время аутофагии клетки разрушают вирусы, бактерии и повреждённые компоненты. Во время этого процесса организм получает энергию для создания новых клеточных компонентов. Это важно для здоровья клеток, их обновления и выживания. Основная польза от аутофагии состоит в омоложении клеток.</string>
+    <string name="starvationStatusScreen_starvationStatus_growthHormoneIncreases_description">Уровень гормона роста значительно выше, чем до начала голодания. Гормон роста помогает увеличить сухую мышечную массу и улучшить состояние сердечно-сосудистой системы.</string>
+    <string name="starvationStatusScreen_starvationStatus_decreasedInsulinLevel_description">Инсулин находится на самом низком уровне с момента начала голодания. Это повышает чувствительность к инсулину, что особенно полезно при высоком риске развития диабета.\\n\\nСнижение уровня инсулина полезно для здоровья как в краткосрочной, так и в долгосрочной перспективе, так как активирует аутофагию и уменьшает воспалительные процессы.</string>
+    <string name="starvationStatusScreen_starvationStatus_regenerationOfImmuneCells_description">Выживание сильнейших. Организм выключает пути клеточного выживания и перерабатывает имунные клетки, повреждённые при борьбе с вирусами, бактериями и микробами.\\n\\nЧтобы восполнить нехватку охранников, организм быстро генерирует новые имунные клетки. Запускается процесс регенерации имунной системы, и клетки переходят в режим самообновления. Имунная система становится ещё сильнее.</string>
+    <string name="starvationScreen_endStarvation_buttonText">Закончить голодание</string>
+
+
+    <string name="dashboard_featureType_starvation">Голодание</string>
+    <string name="starvationDiary_title_topBar">Дневник голодания</string>
+    <string name="starvationDiary_feelMySelf_at_formatText">Запись от %s</string>
+    <string name="starvationDiary_addNewEntry_buttonText">Новая запись</string>
+    <string name="starvation_startDate_text">Вы начали голодание: %s</string>
+    <string name="starvationCreation_title_topBar">Старт голодания</string>
+    <string name="starvationHistory_title_topBar">Подробная история</string>
+    <string name="starvationItem_starvation_startTime_formatText">Начало голодания: %s</string>
+    <string name="starvationItem_starvation_endTime_formatText">Конец голодания: %s</string>
+    <string name="starvationItem_starvationImage_contentDescription">Картинка элемента голодания</string>
+    <string name="starvation_lastStarvationTracks_text">Недавние голодания:</string>
+    <string name="starvation_statistic_text">Общая статистика:</string>
+    <string name="starvationItem_starvationHasInterrupted_formatText">Голодание прервано в: %s</string>
+    <string name="starvationItem_starvationPlan_text">План голодания: %s</string>
+    <string name="starvation_plans_plan_custom">Свой план</string>
+    <string name="starvation_noEnoughDataToShowLastTracks_text">Недостаточно данных для отображения последних записей о голодании.</string>
+
+    <string name="starvation_statistic_not_enough_data">Мало инфы</string>
+    <string name="starvation_statistic_max_hours_label">Максимум часов</string>
+    <string name="starvation_statistic_average_hours_label">Часов в среднем</string>
+    <string name="starvation_statistic_min_hours_label">Минимум часов</string>
+    <string name="starvation_statistic_completion_percentage_label">Процент выполнения</string>
+
+
+    <string name="starvation_statistic_favorite_plan_label">Любимый план</string>
+    <string name="starvation_starvingHoursFormat_text">%d / %d часов голодания</string>
+    <string name="starvation_finished_text">Голодание завершено!</string>
+    <string name="starvation_finish_title_topBar">Конец голодания</string>
+    <string name="starvation_finish_image_contentDescription">Изображение победы</string>
+    <string name="starvation_finish_success_results_text">Прекрасные результаты! Вы завершили голодание и не срывались до самого конца! Так держать, у вас всё получится!</string>
+    <string name="starvation_finish_fail_results_text">Отличные результаты! Вы старались изо всех сил и смогли продержаться целых %d %s %d %s! Не сдавайтесь и старайтесь ещё больше, и у вас обязательно получится завершить план полностью!</string>
+    <string name="starvation_finish_custom_results_text">Невероятно! Вы голодали аж %d %s %d %s! Не забывайте, главное голодать без вреда здоровью!</string>
+    <string name="starvation_finish_goNext_buttonText">Хорошо, спасибо!</string>
 </resources>

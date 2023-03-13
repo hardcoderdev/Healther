@@ -32,8 +32,8 @@ import hardcoder.dev.androidApp.ui.features.waterBalance.DrinkItem
 import hardcoder.dev.entities.waterTracking.DrinkType
 import hardcoder.dev.extensions.toDate
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.waterBalance.validators.IncorrectMillilitersInput
-import hardcoder.dev.presentation.waterBalance.UpdateWaterTrackViewModel
+import hardcoder.dev.logic.features.waterBalance.validators.IncorrectMillilitersInput
+import hardcoder.dev.presentation.features.waterBalance.UpdateWaterTrackViewModel
 import hardcoder.dev.uikit.ErrorText
 import hardcoder.dev.uikit.FilledTextField
 import hardcoder.dev.uikit.IconTextButton

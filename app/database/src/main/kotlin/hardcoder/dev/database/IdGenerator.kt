@@ -10,15 +10,15 @@ class IdGenerator(context: Context) {
         Context.MODE_PRIVATE
     )
 
-    fun nextId(): Long {
-        val lastId = sharedPreferences.getLong(LAST_ID_KEY, 0)
+    fun nextId(): Int {
+        val lastId = sharedPreferences.getInt(LAST_ID_KEY, 0)
         val newId = lastId + 1
         setLastId(newId)
         return newId
     }
 
-    private fun setLastId(lastId: Long) {
-        sharedPreferences.edit { putLong(LAST_ID_KEY, lastId) }
+    private fun setLastId(lastId: Int) {
+        sharedPreferences.edit { putInt(LAST_ID_KEY, lastId) }
     }
 
     companion object {

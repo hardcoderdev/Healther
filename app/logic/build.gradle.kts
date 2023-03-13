@@ -20,6 +20,7 @@ dependencies {
     api(project(Modules.Paths.database))
     api(project(Modules.Paths.extensions))
     implementation(Dependencies.dateTime)
+    implementation(Dependencies.dataStore)
     implementation(Dependencies.composeCalendarDateTime)
     addData()
     addCoroutines()
