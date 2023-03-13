@@ -23,9 +23,9 @@ import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.waterBalance.WaterTrackItem
+import hardcoder.dev.presentation.features.waterBalance.WaterTrackItem
 import hardcoder.dev.androidApp.ui.features.waterBalance.WaterTrackItem as WaterTrackItemRow
-import hardcoder.dev.presentation.waterBalance.WaterTrackingHistoryViewModel
+import hardcoder.dev.presentation.features.waterBalance.WaterTrackingHistoryViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType

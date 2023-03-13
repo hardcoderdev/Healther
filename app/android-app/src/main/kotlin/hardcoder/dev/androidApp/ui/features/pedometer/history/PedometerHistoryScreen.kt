@@ -21,12 +21,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.ui.LocalFloatFormatter
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.pedometer.InfoItem
-import hardcoder.dev.androidApp.ui.features.pedometer.MINIMUM_ENTRIES_FOR_SHOWING_CHART
-import hardcoder.dev.androidApp.ui.features.pedometer.PedometerActivityChart
+import hardcoder.dev.uikit.ActivityChartSection
 import hardcoder.dev.androidApp.ui.features.pedometer.PedometerInfoSection
 import hardcoder.dev.extensions.createRangeForCurrentDay
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.pedometer.PedometerHistoryViewModel
+import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -89,7 +88,7 @@ private fun PedometerHistoryContent(
             state.chartEntries.isNotEmpty() &&
             state.chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART
         ) {
-            PedometerActivityChart(
+            ActivityChartSection(
                 modifier = Modifier.weight(2f),
                 chartEntries = state.chartEntries
             )
@@ -136,3 +135,5 @@ private fun PedometerTracksHistory(
         )
     }
 }
+
+const val MINIMUM_ENTRIES_FOR_SHOWING_CHART = 2

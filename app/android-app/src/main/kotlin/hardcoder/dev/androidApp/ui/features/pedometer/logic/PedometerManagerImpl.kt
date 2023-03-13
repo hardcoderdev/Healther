@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import hardcoder.dev.androidApp.ui.features.pedometer.PedometerService
 import hardcoder.dev.permissions.PermissionsController
-import hardcoder.dev.presentation.pedometer.PedometerManager
+import hardcoder.dev.presentation.features.pedometer.PedometerManager
 import hardcoder.dev.utilities.VersionChecker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

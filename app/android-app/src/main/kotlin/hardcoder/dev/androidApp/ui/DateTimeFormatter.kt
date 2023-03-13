@@ -2,11 +2,31 @@ package hardcoder.dev.androidApp.ui
 
 import android.content.Context
 import hardcoder.dev.healther.R
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class DateTimeFormatter(
     private val context: Context,
     private val defaultAccuracy: Accuracy
 ) {
+
+    fun formatDateTime(
+        date: Date,
+        formatPattern: String = DEFAULT_PATTERN
+    ): String {
+        val simpleDateFormat = SimpleDateFormat(formatPattern, Locale.getDefault())
+        return simpleDateFormat.format(date)
+    }
+
+    fun formatDateTime(
+        dateInMillis: Long,
+        formatPattern: String = DEFAULT_PATTERN
+    ): String {
+        val date = Date(dateInMillis)
+        val simpleDateFormat = SimpleDateFormat(formatPattern, Locale.getDefault())
+        return simpleDateFormat.format(date)
+    }
 
     fun formatMillisDistance(
         distanceInMillis: Long,
@@ -43,9 +63,13 @@ class DateTimeFormatter(
     }
 
     enum class Accuracy(val order: Int) {
-        DAYS(4),
-        HOURS(3),
-        MINUTES(1),
-        SECONDS(0)
+        DAYS(1),
+        HOURS(2),
+        MINUTES(3),
+        SECONDS(4)
+    }
+
+    private companion object {
+        private const val DEFAULT_PATTERN = "dd.MM, HH:mm:ss"
     }
 }

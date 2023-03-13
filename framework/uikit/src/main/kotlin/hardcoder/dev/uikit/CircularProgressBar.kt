@@ -5,8 +5,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,6 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -28,10 +30,11 @@ import androidx.compose.ui.unit.sp
 fun CircularProgressBar(
     modifier: Modifier = Modifier,
     percentage: Float,
-    number: Int,
+    innerText: String,
     fontSize: TextUnit = 28.sp,
     radius: Dp = 50.dp,
     color: Color = MaterialTheme.colorScheme.primary,
+    shadowColor: Color? = null,
     strokeWidth: Dp = 8.dp,
     animationDuration: Int = 1000,
     animationDelay: Int = 0
@@ -57,6 +60,18 @@ fun CircularProgressBar(
         modifier = modifier.size(radius.times(2))
     ) {
         Canvas(modifier = Modifier.size(radius.times(2))) {
+            shadowColor?.let {
+                drawArc(
+                    color = it,
+                    startAngle = -90f,
+                    sweepAngle = 360f * 100,
+                    useCenter = false,
+                    style = Stroke(
+                        width = strokeWidth.toPx(),
+                        cap = StrokeCap.Round
+                    )
+                )
+            }
             drawArc(
                 color = color,
                 startAngle = -90f,
@@ -68,11 +83,16 @@ fun CircularProgressBar(
                 )
             )
         }
-        Text(
-            text = number.toString(),
+
+        androidx.compose.material3.Text(
+            text = innerText,
+            modifier = Modifier.width(radius.times(2) - 20.dp),
+            fontWeight = FontWeight.Bold,
             color = Color.Black,
             fontSize = fontSize,
-            fontWeight = FontWeight.Bold
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = TextOverflow.Clip
         )
     }
 }
