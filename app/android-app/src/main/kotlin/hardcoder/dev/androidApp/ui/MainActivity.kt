@@ -4,12 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
-import hardcoder.dev.androidApp.ui.features.starvation.TimeUnitMapper
 import hardcoder.dev.androidApp.ui.features.starvation.plans.StarvationPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.features.waterBalance.DrinkTypeResourcesProvider
 import hardcoder.dev.androidApp.ui.navigation.RootScreen
 import hardcoder.dev.androidApp.ui.theme.HealtherTheme
-import hardcoder.dev.androidApp.ui.features.starvation.StarvationStatisticLabelResolver
+import hardcoder.dev.datetime.TimeUnitMapper
 
 class MainActivity : ComponentActivity() {
 
@@ -32,7 +31,6 @@ class MainActivity : ComponentActivity() {
                         defaultAccuracy = DateTimeFormatter.Accuracy.MINUTES
                     ),
                     LocalStarvationPlanResourcesProvider provides StarvationPlanResourcesProvider(),
-                    LocalStarvationStatisticLabelResolver provides StarvationStatisticLabelResolver(),
                     LocalTimeUnitMapper provides TimeUnitMapper()
                 ) {
                     RootScreen()

@@ -82,17 +82,13 @@ class PresentationModule(
         dateTimeProvider = logicModule.dateTimeProvider,
         starvationTrackProvider = logicModule.starvationTrackProvider,
         statisticProvider = logicModule.starvationStatisticProvider,
-        starvationCurrentIdManager = logicModule.starvationCurrentIdManager,
-        starvationPlanMillisResolver = logicModule.starvationPlanMillisResolver,
-        starvationTrackUpdater = logicModule.starvationTrackUpdater
+        starvationCurrentTrackManager = logicModule.starvationCurrentTrackManager
     )
 
     fun createStarvationCreateTrackViewModel() = StarvationCreateTrackViewModel(
-        starvationPlanProvider = logicModule.starvationPlanProvider,
-        idGenerator = logicModule.idGenerator,
-        starvationCurrentIdManager = logicModule.starvationCurrentIdManager,
-        starvationTrackCreator = logicModule.starvationTrackCreator,
-        starvationPlanDurationMapper = logicModule.starvationPlanDurationResolver
+        starvationCurrentTrackManager = logicModule.starvationCurrentTrackManager,
+        starvationPlanDurationMapper = logicModule.starvationPlanDurationResolver,
+        starvationPlanProvider = logicModule.starvationPlanProvider
     )
 
     fun createStarvationHistoryViewModel() = StarvationHistoryViewModel(

@@ -214,7 +214,7 @@
     <string name="starvation_finish_title_topBar">Конец голодания</string>
     <string name="starvation_finish_image_contentDescription">Изображение победы</string>
     <string name="starvation_finish_success_results_text">Прекрасные результаты! Вы завершили голодание и не срывались до самого конца! Так держать, у вас всё получится!</string>
-    <string name="starvation_finish_fail_results_text">Отличные результаты! Вы старались изо всех сил и смогли продержаться целых %d %s %d %s! Не сдавайтесь и старайтесь ещё больше, и у вас обязательно получится завершить план полностью!</string>
-    <string name="starvation_finish_custom_results_text">Невероятно! Вы голодали аж %d %s %d %s! Не забывайте, главное голодать без вреда здоровью!</string>
+    <string name="starvation_finish_fail_results_text">Отличные результаты! Вы старались изо всех сил и смогли продержаться %s! Не сдавайтесь и старайтесь ещё больше, и у вас обязательно получится завершить план полностью!</string>
+    <string name="starvation_finish_custom_results_text">Невероятно! Вы голодали аж %s! Не забывайте, главное голодать без вреда здоровью!</string>
     <string name="starvation_finish_goNext_buttonText">Хорошо, спасибо!</string>
 </resources>

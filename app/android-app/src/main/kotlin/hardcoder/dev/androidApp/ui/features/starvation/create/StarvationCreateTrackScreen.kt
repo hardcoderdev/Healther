@@ -44,7 +44,7 @@ fun StarvationCreationTrackScreen(onGoBack: () -> Unit) {
                 state = state.value,
                 onUpdateSelectedPlan = viewModel::updateStarvationPlan,
                 onStartStarvation = {
-                    viewModel.saveTrack()
+                    viewModel.startStarvation()
                     onGoBack()
                 }
             )

@@ -2,10 +2,9 @@ package hardcoder.dev.androidApp.ui
 
 import androidx.compose.runtime.compositionLocalOf
 import hardcoder.dev.androidApp.di.PresentationModule
-import hardcoder.dev.androidApp.ui.features.starvation.TimeUnitMapper
 import hardcoder.dev.androidApp.ui.features.starvation.plans.StarvationPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.features.waterBalance.DrinkTypeResourcesProvider
-import hardcoder.dev.androidApp.ui.features.starvation.StarvationStatisticLabelResolver
+import hardcoder.dev.datetime.TimeUnitMapper
 
 val LocalPresentationModule = compositionLocalOf<PresentationModule> {
     error("LocalPresentationModule not provided")
@@ -25,10 +24,6 @@ val LocalDateTimeFormatter = compositionLocalOf<DateTimeFormatter> {
 
 val LocalStarvationPlanResourcesProvider = compositionLocalOf<StarvationPlanResourcesProvider> {
     error("LocalStarvationPlanResourcesProvider not provided")
-}
-
-val LocalStarvationStatisticLabelResolver = compositionLocalOf<StarvationStatisticLabelResolver> {
-    error("LocalStarvationStatisticLabelResolver not provided")
 }
 
 val LocalTimeUnitMapper = compositionLocalOf<TimeUnitMapper> {

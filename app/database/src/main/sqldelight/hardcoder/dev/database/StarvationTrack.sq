@@ -16,11 +16,14 @@ UPDATE StarvationTrack SET interruptedTimeInMillis = ?, duration = ? WHERE id = 
 selectStarvationTrackById:
 SELECT * FROM StarvationTrack WHERE id = ?;
 
-selectStarvationTrackByDay:
+selectStarvationTrackByStartTime:
 SELECT * FROM StarvationTrack WHERE startTime BETWEEN ? AND ?;
 
 selectAllStarvationTracks:
 SELECT * FROM StarvationTrack;
+
+selectLastStarvationTracks:
+SELECT * FROM StarvationTrack ORDER BY id DESC LIMIT :limit;
 
 selectStarvationDuration:
 SELECT MIN(duration), AVG(duration), MAX(duration) FROM StarvationTrack;

@@ -15,6 +15,8 @@ import com.patrykandpatrick.vico.compose.component.shape.shader.fromBrush
 import com.patrykandpatrick.vico.compose.component.shapeComponent
 import com.patrykandpatrick.vico.compose.component.textComponent
 import com.patrykandpatrick.vico.compose.style.currentChartStyle
+import com.patrykandpatrick.vico.core.axis.AxisPosition
+import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
 import com.patrykandpatrick.vico.core.chart.copy
 import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.component.shape.shader.DynamicShaders
@@ -24,7 +26,8 @@ import com.patrykandpatrick.vico.core.entry.entryModelOf
 @Composable
 fun ActivityChartSection(
     modifier: Modifier = Modifier,
-    chartEntries: List<Pair<Number, Number>>
+    chartEntries: List<Pair<Number, Number>>,
+    valueFormatter: AxisValueFormatter<AxisPosition.Vertical.Start>? = null
 ) {
     val chartEntryModel = entryModelOf(entriesOf(*chartEntries.toTypedArray()))
     Chart(

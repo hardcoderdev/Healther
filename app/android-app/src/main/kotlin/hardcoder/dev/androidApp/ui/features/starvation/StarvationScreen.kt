@@ -1,5 +1,6 @@
 package hardcoder.dev.androidApp.ui.features.starvation
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,12 +20,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -36,9 +40,8 @@ import hardcoder.dev.androidApp.ui.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.LocalStarvationPlanResourcesProvider
-import hardcoder.dev.androidApp.ui.LocalStarvationStatisticLabelResolver
-import hardcoder.dev.androidApp.ui.LocalTimeUnitMapper
 import hardcoder.dev.entities.features.starvation.StarvationPlan
+import hardcoder.dev.entities.features.starvation.statistic.StarvationStatistic
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.starvation.StarvationViewModel
@@ -82,7 +85,7 @@ fun StarvationScreen(
                 is StarvationViewModel.StarvationState.Finished.State -> {
                     FinishStarvingContent(
                         state = starvationState,
-                        onClose = viewModel::clearCurrentTrack
+                        onClose = viewModel::clearStarvation
                     )
                 }
             }
@@ -116,38 +119,57 @@ fun StarvationScreen(
     )
 }
 
+private fun StarvationStatistic.toStarvationStatistic(
+    context: Context,
+    favouritePlanResId: Int?
+): List<StatisticData> {
+    return listOf(
+        StatisticData(
+            name = context.getString(R.string.starvation_statistic_max_hours_label),
+            value = starvationDurationStatistic?.maximumDurationInHours?.toString()
+                ?: context.getString(R.string.starvation_statistic_not_enough_data)
+        ),
+        StatisticData(
+            name = context.getString(R.string.starvation_statistic_min_hours_label),
+            value = starvationDurationStatistic?.minimumDurationInHours?.toString()
+                ?: context.getString(R.string.starvation_statistic_not_enough_data)
+        ),
+        StatisticData(
+            name = context.getString(R.string.starvation_statistic_average_hours_label),
+            value = starvationDurationStatistic?.averageDurationInHours?.toString()
+                ?: context.getString(R.string.starvation_statistic_not_enough_data)
+        ),
+        StatisticData(
+            name = context.getString(R.string.starvation_statistic_completion_percentage_label),
+            value = percentageCompleted?.toString()
+                ?: context.getString(R.string.starvation_statistic_not_enough_data)
+        ),
+        StatisticData(
+            name = context.getString(R.string.starvation_statistic_favorite_plan_label),
+            value = favouritePlanResId?.let { context.getString(favouritePlanResId) }
+                ?: context.getString(R.string.starvation_statistic_not_enough_data)
+        )
+    )
+}
+
 @Composable
 private fun NotStarvingContent(
     state: StarvationViewModel.StarvationState.NotStarving.State,
     onCreateStarvationTrack: () -> Unit
 ) {
+    val context = LocalContext.current
     val starvationPlanResourcesProvider = LocalStarvationPlanResourcesProvider.current
-    val starvationStatisticLabelResolver = LocalStarvationStatisticLabelResolver.current
 
-    val statisticData = state.statistic.statisticEntries.toMutableList().map {
-        val rowLabel = stringResource(id = starvationStatisticLabelResolver.resolve(it.first))
-        val rowValue = if (it.second != null) {
-            it.second
-        } else {
-            stringResource(R.string.starvation_statistic_not_enough_data)
-        }
-
-        StatisticData(name = rowLabel, value = checkNotNull(rowValue))
-    }.toMutableList()
-
-    val favoritePlan = state.statistic.favoritePlan?.let {
-        StatisticData(
-            name = stringResource(id = R.string.starvation_statistic_favorite_plan_label),
-            value = stringResource(id = starvationPlanResourcesProvider.provide(it).nameResId)
-        )
-    } ?: run {
-        StatisticData(
-            name = stringResource(id = R.string.starvation_statistic_favorite_plan_label),
-            value = stringResource(id = R.string.starvation_statistic_not_enough_data)
+    val statisticData by remember {
+        mutableStateOf(
+            state.starvationStatistic.toStarvationStatistic(
+                context = context,
+                favouritePlanResId = state.starvationStatistic.favouritePlan?.let {
+                    starvationPlanResourcesProvider.provide(it).nameResId
+                }
+            )
         )
     }
-
-    statisticData.add(favoritePlan)
 
     Column(
         modifier = Modifier
@@ -165,13 +187,13 @@ private fun NotStarvingContent(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                if (state.lastThreeStarvationTracks.isEmpty()) {
+                if (state.lastStarvationTracks.isEmpty()) {
                     Text(
                         text = stringResource(id = R.string.starvation_noEnoughDataToShowLastTracks_text),
                         style = MaterialTheme.typography.titleMedium
                     )
                 } else {
-                    state.lastThreeStarvationTracks.forEach {
+                    state.lastStarvationTracks.forEach {
                         StarvationItem(starvationTrack = it)
                     }
                 }
@@ -201,35 +223,21 @@ private fun StarvingContent(
     state: StarvationViewModel.StarvationState.Starving.State,
     onEndStarvation: () -> Unit
 ) {
+    val context = LocalContext.current
     val starvationPlanResourcesProvider = LocalStarvationPlanResourcesProvider.current
     val dateTimeFormatter = LocalDateTimeFormatter.current
-    val starvationStatisticLabelResolver = LocalStarvationStatisticLabelResolver.current
-
-    val starvationPlanResources =
-        starvationPlanResourcesProvider.provide(state.selectedPlan)
-
     val formattedDate = dateTimeFormatter.formatDateTime(state.startTimeInMillis)
-    val statisticData = state.statistic.statisticEntries.toMutableList().map {
-        val rowLabel = stringResource(id = starvationStatisticLabelResolver.resolve(it.first))
-        val rowValue = it.second ?: run { stringResource(R.string.starvation_statistic_not_enough_data) }
 
-        StatisticData(name = rowLabel, value = rowValue)
-    }.toMutableList()
-
-    val favoritePlan = state.statistic.favoritePlan?.let {
-        StatisticData(
-            name = stringResource(id = R.string.starvation_statistic_favorite_plan_label),
-            value = stringResource(id = starvationPlanResourcesProvider.provide(it).nameResId)
-        )
-    } ?: run {
-        StatisticData(
-            name = stringResource(id = R.string.starvation_statistic_favorite_plan_label),
-            value = stringResource(id = R.string.starvation_statistic_not_enough_data)
+    val statisticData by remember {
+        mutableStateOf(
+            state.starvationStatistic.toStarvationStatistic(
+                context = context,
+                favouritePlanResId = state.starvationStatistic.favouritePlan?.let {
+                    starvationPlanResourcesProvider.provide(it).nameResId
+                }
+            )
         )
     }
-
-    statisticData.add(favoritePlan)
-
 
     Column(
         modifier = Modifier
@@ -278,7 +286,13 @@ private fun StarvingContent(
                 style = MaterialTheme.typography.titleMedium,
                 text = stringResource(
                     id = R.string.starvation_yourSelectedPlan_formatText,
-                    formatArgs = arrayOf(stringResource(id = starvationPlanResources.nameResId))
+                    formatArgs = arrayOf(
+                        stringResource(
+                            id = starvationPlanResourcesProvider.provide(
+                                state.selectedPlan
+                            ).nameResId
+                        )
+                    )
                 )
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -306,57 +320,36 @@ fun FinishStarvingContent(
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val starvationPlanResourcesProvider = LocalStarvationPlanResourcesProvider.current
-    val timeUnitMapper = LocalTimeUnitMapper.current
+    val dateTimeFormatter = LocalDateTimeFormatter.current
 
     val isCustomPlan = state.starvationPlan == StarvationPlan.CUSTOM_PLAN
     val isInterrupted = state.interruptedMillis != null
 
-    val hoursInMillis = state.interruptedMillis?.let {
-        it - state.startTimeInMillis
+    val formattedStarvationTime = state.interruptedMillis?.let {
+        dateTimeFormatter.formatMillisDistance(
+            distanceInMillis = it - state.startTimeInMillis,
+            accuracy = DateTimeFormatter.Accuracy.MINUTES,
+            usePlurals = true
+        )
     } ?: run {
-        timeUnitMapper.hoursToMillis(
-            starvationPlanResourcesProvider.provide(state.starvationPlan).starvingHoursCount.toLong()
+        dateTimeFormatter.formatMillisDistance(
+            distanceInMillis = starvationPlanResourcesProvider.provide(
+                state.starvationPlan
+            ).starvingHoursCount.toLong(),
+            accuracy = DateTimeFormatter.Accuracy.HOURS,
+            usePlurals = true
         )
     }
-
-    val minutesInMillis = state.interruptedMillis?.let {
-        it - state.startTimeInMillis
-    } ?: run {
-        0
-    }
-
-    val hoursCount = if (!isCustomPlan) {
-        if (!isInterrupted) {
-            starvationPlanResourcesProvider.provide(state.starvationPlan).starvingHoursCount.toLong()
-        } else {
-            timeUnitMapper.millisToHours(hoursInMillis)
-        }
-    } else {
-        timeUnitMapper.millisToHours(hoursInMillis)
-    }
-
-    val minutesCount = if (!isCustomPlan) {
-        if (!isInterrupted) {
-            0
-        } else {
-            timeUnitMapper.millisToMinutes(minutesInMillis) - (hoursCount * 60)
-        }
-    } else {
-        timeUnitMapper.millisToMinutes(minutesInMillis) - (hoursCount * 60)
-    }
-
-    val hoursPlurals = pluralStringResource(id = R.plurals.hours, count = hoursCount.toInt())
-    val minutesPlurals = pluralStringResource(id = R.plurals.minutes, count = minutesCount.toInt())
 
     val advicesStringResource = if (isCustomPlan) {
         stringResource(
             id = R.string.starvation_finish_custom_results_text,
-            formatArgs = arrayOf(hoursCount, hoursPlurals, minutesCount, minutesPlurals)
+            formatArgs = arrayOf(formattedStarvationTime)
         )
     } else if (isInterrupted) {
         stringResource(
             R.string.starvation_finish_fail_results_text,
-            formatArgs = arrayOf(hoursCount, hoursPlurals, minutesCount, minutesPlurals)
+            formatArgs = arrayOf(formattedStarvationTime)
         )
     } else {
         stringResource(

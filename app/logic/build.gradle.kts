@@ -19,6 +19,7 @@ android {
 dependencies {
     api(project(Modules.Paths.database))
     api(project(Modules.Paths.extensions))
+    api(project(Modules.Paths.datetime))
     implementation(Dependencies.dateTime)
     implementation(Dependencies.dataStore)
     implementation(Dependencies.composeCalendarDateTime)

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <plurals name="days">
+        <item quantity="zero">дней</item>
+        <item quantity="one">день</item>
+        <item quantity="two">дня</item>
+        <item quantity="few">дня</item>
+        <item quantity="many">дней</item>
+        <item quantity="other">день</item>
+    </plurals>
+
     <plurals name="hours">
         <item quantity="zero">часов</item>
         <item quantity="one">час</item>
@@ -16,5 +25,14 @@
         <item quantity="few">минуты</item>
         <item quantity="many">минут</item>
         <item quantity="other">минута</item>
+    </plurals>
+
+    <plurals name="seconds">
+        <item quantity="zero">секунд</item>
+        <item quantity="one">секунду</item>
+        <item quantity="two">секунды</item>
+        <item quantity="few">секунды</item>
+        <item quantity="many">секунд</item>
+        <item quantity="other">секунда</item>
     </plurals>
 </resources>

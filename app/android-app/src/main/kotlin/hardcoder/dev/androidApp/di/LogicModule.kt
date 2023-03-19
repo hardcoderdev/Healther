@@ -5,6 +5,7 @@ import hardcoder.dev.androidApp.ui.features.pedometer.logic.BatteryRequirements
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.PedometerManagerImpl
 import hardcoder.dev.database.AppDatabaseFactory
 import hardcoder.dev.database.IdGenerator
+import hardcoder.dev.datetime.TimeUnitMapper
 import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
@@ -16,13 +17,10 @@ import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
 import hardcoder.dev.logic.features.starvation.DateTimeProvider
 import hardcoder.dev.logic.features.starvation.plan.StarvationPlanDurationResolver
 import hardcoder.dev.logic.features.starvation.plan.StarvationPlanIdMapper
-import hardcoder.dev.logic.features.starvation.plan.StarvationPlanMillisResolver
 import hardcoder.dev.logic.features.starvation.plan.StarvationPlanProvider
 import hardcoder.dev.logic.features.starvation.statistic.StarvationStatisticProvider
-import hardcoder.dev.logic.features.starvation.track.StarvationCurrentIdManager
-import hardcoder.dev.logic.features.starvation.track.StarvationTrackCreator
+import hardcoder.dev.logic.features.starvation.track.StarvationCurrentTrackManager
 import hardcoder.dev.logic.features.starvation.track.StarvationTrackProvider
-import hardcoder.dev.logic.features.starvation.track.StarvationTrackUpdater
 import hardcoder.dev.logic.features.waterBalance.DrinkTypeIdMapper
 import hardcoder.dev.logic.features.waterBalance.DrinkTypeProvider
 import hardcoder.dev.logic.features.waterBalance.WaterTrackCreator
@@ -48,8 +46,12 @@ class LogicModule(private val context: Context) {
         )
     }
 
-    val idGenerator by lazy {
+    private val idGenerator by lazy {
         IdGenerator(context)
+    }
+
+    private val timeUnitMapper by lazy {
+        TimeUnitMapper()
     }
 
     val waterPercentageResolver by lazy {
@@ -164,15 +166,8 @@ class LogicModule(private val context: Context) {
     val starvationStatisticProvider by lazy {
         StarvationStatisticProvider(
             appDatabase = appDatabase,
-            starvationPlanIdMapper = starvationPlanIdMapper
-        )
-    }
-
-    val starvationTrackCreator by lazy {
-        StarvationTrackCreator(
-            appDatabase = appDatabase,
             starvationPlanIdMapper = starvationPlanIdMapper,
-            dispatcher = Dispatchers.IO
+            timeUnitMapper = timeUnitMapper
         )
     }
 
@@ -183,15 +178,14 @@ class LogicModule(private val context: Context) {
         )
     }
 
-    val starvationTrackUpdater by lazy {
-        StarvationTrackUpdater(
+    val starvationCurrentTrackManager by lazy {
+        StarvationCurrentTrackManager(
+            context = context,
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            starvationPlanIdMapper = starvationPlanIdMapper,
+            dispatcher = Dispatchers.IO,
+            idGenerator = idGenerator
         )
-    }
-
-    val starvationCurrentIdManager by lazy {
-        StarvationCurrentIdManager(context = context)
     }
 
     val starvationPlanProvider by lazy {
@@ -199,11 +193,9 @@ class LogicModule(private val context: Context) {
     }
 
     val starvationPlanDurationResolver by lazy {
-        StarvationPlanDurationResolver()
-    }
-
-    val starvationPlanMillisResolver by lazy {
-        StarvationPlanMillisResolver()
+        StarvationPlanDurationResolver(
+            timeUnitMapper = timeUnitMapper
+        )
     }
 
     val heroCreator by lazy {

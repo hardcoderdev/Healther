@@ -22,8 +22,17 @@ class StarvationTrackProvider(
             }
         }
 
+    fun provideLastStarvationTracks(limitCount: Long) = appDatabase.starvationTrackQueries
+        .selectLastStarvationTracks(limitCount)
+        .asFlow()
+        .map { lastStarvationTracksQuery ->
+            lastStarvationTracksQuery.executeAsList().map { starvationTrackDatabase ->
+                starvationTrackDatabase.toEntity()
+            }
+        }
+
     fun provideStarvationTracksByStartTime(dayRange: LongRange) = appDatabase.starvationTrackQueries
-        .selectStarvationTrackByDay(dayRange.first, dayRange.last)
+        .selectStarvationTrackByStartTime(dayRange.first, dayRange.last)
         .asFlow()
         .map {
             it.executeAsList().map { starvationTrackDatabase ->
