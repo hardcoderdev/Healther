@@ -82,11 +82,11 @@ class PresentationModule(
         dateTimeProvider = logicModule.dateTimeProvider,
         starvationTrackProvider = logicModule.starvationTrackProvider,
         statisticProvider = logicModule.starvationStatisticProvider,
-        starvationCurrentTrackManager = logicModule.starvationCurrentTrackManager
+        currentStarvationManager = logicModule.currentStarvationManager
     )
 
     fun createStarvationCreateTrackViewModel() = StarvationCreateTrackViewModel(
-        starvationCurrentTrackManager = logicModule.starvationCurrentTrackManager,
+        currentStarvationManager = logicModule.currentStarvationManager,
         starvationPlanDurationMapper = logicModule.starvationPlanDurationResolver,
         starvationPlanProvider = logicModule.starvationPlanProvider
     )

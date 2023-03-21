@@ -20,12 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
@@ -40,7 +37,6 @@ import hardcoder.dev.androidApp.ui.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.LocalStarvationPlanResourcesProvider
-import hardcoder.dev.entities.features.starvation.StarvationPlan
 import hardcoder.dev.entities.features.starvation.statistic.StarvationStatistic
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
@@ -68,21 +64,21 @@ fun StarvationScreen(
     ScaffoldWrapper(
         content = {
             when (val starvationState = state.value) {
-                is StarvationViewModel.StarvationState.NotStarving.State -> {
+                is StarvationViewModel.StarvationState.NotStarving -> {
                     NotStarvingContent(
                         state = starvationState,
                         onCreateStarvationTrack = onCreateStarvationTrack
                     )
                 }
 
-                is StarvationViewModel.StarvationState.Starving.State -> {
+                is StarvationViewModel.StarvationState.Starving -> {
                     StarvingContent(
                         state = starvationState,
                         onEndStarvation = viewModel::interruptTrack
                     )
                 }
 
-                is StarvationViewModel.StarvationState.Finished.State -> {
+                is StarvationViewModel.StarvationState.Finished -> {
                     FinishStarvingContent(
                         state = starvationState,
                         onClose = viewModel::clearStarvation
@@ -90,7 +86,7 @@ fun StarvationScreen(
                 }
             }
         },
-        actionConfig = if (state.value is StarvationViewModel.StarvationState.NotStarving.State) {
+        actionConfig = if (state.value is StarvationViewModel.StarvationState.NotStarving) {
             ActionConfig(
                 actions = listOf(
                     Action(
@@ -102,7 +98,7 @@ fun StarvationScreen(
         } else {
             null
         },
-        topBarConfig = if (state.value is StarvationViewModel.StarvationState.Finished.State) {
+        topBarConfig = if (state.value is StarvationViewModel.StarvationState.Finished) {
             TopBarConfig(
                 type = TopBarType.TitleTopBar(
                     titleResId = R.string.starvation_finish_title_topBar
@@ -154,20 +150,18 @@ private fun StarvationStatistic.toStarvationStatistic(
 
 @Composable
 private fun NotStarvingContent(
-    state: StarvationViewModel.StarvationState.NotStarving.State,
+    state: StarvationViewModel.StarvationState.NotStarving,
     onCreateStarvationTrack: () -> Unit
 ) {
     val context = LocalContext.current
     val starvationPlanResourcesProvider = LocalStarvationPlanResourcesProvider.current
 
-    val statisticData by remember {
-        mutableStateOf(
-            state.starvationStatistic.toStarvationStatistic(
-                context = context,
-                favouritePlanResId = state.starvationStatistic.favouritePlan?.let {
-                    starvationPlanResourcesProvider.provide(it).nameResId
-                }
-            )
+    val statisticData = remember(state.starvationStatistic) {
+        state.starvationStatistic.toStarvationStatistic(
+            context = context,
+            favouritePlanResId = state.starvationStatistic.favouritePlan?.let {
+                starvationPlanResourcesProvider.provide(it).nameResId
+            }
         )
     }
 
@@ -220,7 +214,7 @@ private fun NotStarvingContent(
 
 @Composable
 private fun StarvingContent(
-    state: StarvationViewModel.StarvationState.Starving.State,
+    state: StarvationViewModel.StarvationState.Starving,
     onEndStarvation: () -> Unit
 ) {
     val context = LocalContext.current
@@ -228,14 +222,14 @@ private fun StarvingContent(
     val dateTimeFormatter = LocalDateTimeFormatter.current
     val formattedDate = dateTimeFormatter.formatDateTime(state.startTimeInMillis)
 
-    val statisticData by remember {
-        mutableStateOf(
-            state.starvationStatistic.toStarvationStatistic(
-                context = context,
-                favouritePlanResId = state.starvationStatistic.favouritePlan?.let {
-                    starvationPlanResourcesProvider.provide(it).nameResId
-                }
-            )
+    val starvationPlanResources = starvationPlanResourcesProvider.provide(state.selectedPlan)
+
+    val statisticData = remember(state.starvationStatistic) {
+        state.starvationStatistic.toStarvationStatistic(
+            context = context,
+            favouritePlanResId = state.starvationStatistic.favouritePlan?.let {
+                starvationPlanResourcesProvider.provide(it).nameResId
+            }
         )
     }
 
@@ -263,15 +257,11 @@ private fun StarvingContent(
                 shadowColor = MaterialTheme.colorScheme.primaryContainer,
                 strokeWidth = 12.dp,
                 percentage = state.timeLeftInMillis safeDiv state.durationInMillis,
+                color = MaterialTheme.colorScheme.primary,
                 innerText = dateTimeFormatter.formatMillisDistance(
                     distanceInMillis = state.timeLeftInMillis,
                     accuracy = DateTimeFormatter.Accuracy.SECONDS
-                ),
-                color = if (state.selectedPlan == StarvationPlan.CUSTOM_PLAN) {
-                    Color.Companion.Transparent
-                } else {
-                    MaterialTheme.colorScheme.primary
-                }
+                )
             )
             Spacer(modifier = Modifier.height(64.dp))
             Text(
@@ -286,13 +276,7 @@ private fun StarvingContent(
                 style = MaterialTheme.typography.titleMedium,
                 text = stringResource(
                     id = R.string.starvation_yourSelectedPlan_formatText,
-                    formatArgs = arrayOf(
-                        stringResource(
-                            id = starvationPlanResourcesProvider.provide(
-                                state.selectedPlan
-                            ).nameResId
-                        )
-                    )
+                    formatArgs = arrayOf(stringResource(id = starvationPlanResources.nameResId))
                 )
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -315,46 +299,29 @@ private fun StarvingContent(
 
 @Composable
 fun FinishStarvingContent(
-    state: StarvationViewModel.StarvationState.Finished.State,
+    state: StarvationViewModel.StarvationState.Finished,
     onClose: () -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    val starvationPlanResourcesProvider = LocalStarvationPlanResourcesProvider.current
     val dateTimeFormatter = LocalDateTimeFormatter.current
 
-    val isCustomPlan = state.starvationPlan == StarvationPlan.CUSTOM_PLAN
-    val isInterrupted = state.interruptedMillis != null
+    val formattedStarvationTime = dateTimeFormatter.formatMillisDistance(
+        distanceInMillis = state.timeLeftInMillis,
+        usePlurals = true,
+        accuracy = if (state.isInterrupted) {
+            DateTimeFormatter.Accuracy.MINUTES
+        } else {
+            DateTimeFormatter.Accuracy.HOURS
+        }
+    )
 
-    val formattedStarvationTime = state.interruptedMillis?.let {
-        dateTimeFormatter.formatMillisDistance(
-            distanceInMillis = it - state.startTimeInMillis,
-            accuracy = DateTimeFormatter.Accuracy.MINUTES,
-            usePlurals = true
-        )
-    } ?: run {
-        dateTimeFormatter.formatMillisDistance(
-            distanceInMillis = starvationPlanResourcesProvider.provide(
-                state.starvationPlan
-            ).starvingHoursCount.toLong(),
-            accuracy = DateTimeFormatter.Accuracy.HOURS,
-            usePlurals = true
-        )
-    }
-
-    val advicesStringResource = if (isCustomPlan) {
+    val advicesStringResource = if (state.isInterrupted) {
         stringResource(
-            id = R.string.starvation_finish_custom_results_text,
-            formatArgs = arrayOf(formattedStarvationTime)
-        )
-    } else if (isInterrupted) {
-        stringResource(
-            R.string.starvation_finish_fail_results_text,
+            id = R.string.starvation_finish_fail_results_text,
             formatArgs = arrayOf(formattedStarvationTime)
         )
     } else {
-        stringResource(
-            R.string.starvation_finish_success_results_text
-        )
+        stringResource(id = R.string.starvation_finish_success_results_text)
     }
 
     DisposableEffect(key1 = Unit) {

@@ -2,15 +2,16 @@ CREATE TABLE IF NOT EXISTS StarvationTrack(
     id INTEGER AS Int NOT NULL PRIMARY KEY,
     startTime INTEGER NOT NULL,
     duration INTEGER NOT NULL,
+    fullDuration INTEGER NOT NULL,
     starvationPlanId INTEGER AS Int NOT NULL,
     interruptedTimeInMillis INTEGER
 );
 
 insert:
-INSERT INTO StarvationTrack (id, startTime, duration, starvationPlanId, interruptedTimeInMillis)
-VALUES (?, ?, ?, ?, ?);
+INSERT INTO StarvationTrack (id, startTime, duration, fullDuration, starvationPlanId, interruptedTimeInMillis)
+VALUES (?, ?, ?, ?, ?, ?);
 
-interruptStarvation:
+update:
 UPDATE StarvationTrack SET interruptedTimeInMillis = ?, duration = ? WHERE id = ?;
 
 selectStarvationTrackById:
@@ -24,6 +25,3 @@ SELECT * FROM StarvationTrack;
 
 selectLastStarvationTracks:
 SELECT * FROM StarvationTrack ORDER BY id DESC LIMIT :limit;
-
-selectStarvationDuration:
-SELECT MIN(duration), AVG(duration), MAX(duration) FROM StarvationTrack;

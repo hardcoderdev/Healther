@@ -8,62 +8,26 @@ import hardcoder.dev.entities.features.starvation.statistic.StarvationStatistic
 import hardcoder.dev.extensions.toMillis
 import hardcoder.dev.logic.features.starvation.DateTimeProvider
 import hardcoder.dev.logic.features.starvation.statistic.StarvationStatisticProvider
-import hardcoder.dev.logic.features.starvation.track.StarvationCurrentTrackManager
+import hardcoder.dev.logic.features.starvation.track.CurrentStarvationManager
 import hardcoder.dev.logic.features.starvation.track.StarvationTrackProvider
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class StarvationViewModel(
-    private val starvationCurrentTrackManager: StarvationCurrentTrackManager,
+    private val currentStarvationManager: CurrentStarvationManager,
     starvationTrackProvider: StarvationTrackProvider,
     statisticProvider: StarvationStatisticProvider,
     dateTimeProvider: DateTimeProvider
 ) : ViewModel() {
 
-    private val currentTrackId = starvationCurrentTrackManager.starvationCurrentTrackId.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = 0
-    )
-
-    private val selectedPlan = currentTrackId.flatMapLatest {
-        starvationTrackProvider.provideStarvationTrackById(currentTrackId.value).map {
-            it?.starvationPlan
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
-    )
-
-    private val currentTrack = currentTrackId.flatMapLatest {
-        starvationTrackProvider.provideStarvationTrackById(currentTrackId.value)
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
-    )
-
-    private val allStarvationTracks = starvationTrackProvider.provideAllStarvationTracks()
-        .stateIn(
+    private val currentTrack =
+        currentStarvationManager.provideCurrentStarvationTrack().stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
-            initialValue = emptyList()
+            initialValue = null
         )
-
-    private val allCompletedStarvationTracks =
-        starvationTrackProvider.provideAllCompletedStarvationTracks()
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.Eagerly,
-                initialValue = emptyList()
-            )
 
     private val lastThreeStarvationTracks = starvationTrackProvider.provideLastStarvationTracks(
         limitCount = 3
@@ -85,16 +49,7 @@ class StarvationViewModel(
         initialValue = null
     )
 
-    private val percentageCompleted = combine(
-        allStarvationTracks,
-        allCompletedStarvationTracks
-    ) { allStarvationTracks, allCompletedStarvationTracks ->
-        if (allCompletedStarvationTracks.isNotEmpty()) {
-            (allStarvationTracks.count() / allCompletedStarvationTracks.count()) * 10
-        } else {
-            null
-        }
-    }.stateIn(
+    private val percentageCompleted = statisticProvider.providePercentageCompleted().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = null
@@ -123,22 +78,25 @@ class StarvationViewModel(
     val state = combine(
         dateTimeProvider.currentTimeFlow(),
         currentTrack,
-        selectedPlan,
-    ) { currentTime, currentTrack, selectedPlan ->
+    ) { currentTime, currentTrack ->
         currentTrack?.let {
             val timeSinceStartOfStarvation = currentTime.toMillis() - currentTrack.startTime
             val isFinished =
                 timeSinceStartOfStarvation >= currentTrack.duration || currentTrack.interruptedTime != null
 
             if (isFinished) {
-                StarvationState.Finished.State(
+                StarvationState.Finished(
                     starvationPlan = currentTrack.starvationPlan,
-                    interruptedMillis = currentTrack.interruptedTime,
-                    startTimeInMillis = currentTrack.startTime
+                    isInterrupted = currentTrack.interruptedTime != null,
+                    timeLeftInMillis = currentTrack.interruptedTime?.let {
+                        it - currentTrack.startTime
+                    } ?: run {
+                        currentTime.toMillis() - currentTrack.startTime
+                    }
                 )
             } else {
-                StarvationState.Starving.State(
-                    selectedPlan = requireNotNull(selectedPlan),
+                StarvationState.Starving(
+                    selectedPlan = currentTrack.starvationPlan,
                     durationInMillis = currentTrack.duration,
                     startTimeInMillis = currentTrack.startTime,
                     timeLeftInMillis = timeSinceStartOfStarvation,
@@ -146,7 +104,7 @@ class StarvationViewModel(
                 )
             }
         } ?: run {
-            StarvationState.NotStarving.State(
+            StarvationState.NotStarving(
                 lastStarvationTracks = lastThreeStarvationTracks.value,
                 starvationStatistic = statisticEntries.value
             )
@@ -154,7 +112,7 @@ class StarvationViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
-        initialValue = StarvationState.NotStarving.State(
+        initialValue = StarvationState.NotStarving(
             lastStarvationTracks = emptyList(),
             starvationStatistic = statisticEntries.value
         )
@@ -162,7 +120,7 @@ class StarvationViewModel(
 
     fun interruptTrack() {
         viewModelScope.launch {
-            starvationCurrentTrackManager.interruptStarvation(
+            currentStarvationManager.interruptStarvation(
                 duration = System.currentTimeMillis() - currentTrack.value!!.startTime
             )
         }
@@ -170,34 +128,28 @@ class StarvationViewModel(
 
     fun clearStarvation() {
         viewModelScope.launch {
-            starvationCurrentTrackManager.clearStarvation()
+            currentStarvationManager.clearStarvation()
         }
     }
 
     sealed class StarvationState {
-        data class Starving(val state: State) : StarvationState() {
-            data class State(
-                val starvationStatistic: StarvationStatistic,
-                val selectedPlan: StarvationPlan,
-                val startTimeInMillis: Long,
-                val durationInMillis: Long,
-                val timeLeftInMillis: Long
-            )
-        }
+        data class Starving(
+            val starvationStatistic: StarvationStatistic,
+            val selectedPlan: StarvationPlan,
+            val startTimeInMillis: Long,
+            val durationInMillis: Long,
+            val timeLeftInMillis: Long
+        ) : StarvationState()
 
-        data class NotStarving(val state: State) : StarvationState() {
-            data class State(
-                val starvationStatistic: StarvationStatistic,
-                val lastStarvationTracks: List<StarvationTrack>
-            )
-        }
+        data class NotStarving(
+            val starvationStatistic: StarvationStatistic,
+            val lastStarvationTracks: List<StarvationTrack>
+        ) : StarvationState()
 
-        data class Finished(val state: State) : StarvationState() {
-            data class State(
-                val startTimeInMillis: Long,
-                val starvationPlan: StarvationPlan,
-                val interruptedMillis: Long?
-            )
-        }
+        data class Finished(
+            val timeLeftInMillis: Long,
+            val isInterrupted: Boolean,
+            val starvationPlan: StarvationPlan,
+        ) : StarvationState()
     }
 }

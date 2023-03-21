@@ -11,22 +11,30 @@ import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.entities.features.starvation.StarvationPlan
 import hardcoder.dev.logic.features.starvation.plan.StarvationPlanIdMapper
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class StarvationCurrentTrackManager(
+@OptIn(ExperimentalCoroutinesApi::class)
+class CurrentStarvationManager(
     private val idGenerator: IdGenerator,
     private val context: Context,
     private val dispatcher: CoroutineDispatcher,
     private val appDatabase: AppDatabase,
-    private val starvationPlanIdMapper: StarvationPlanIdMapper
+    private val starvationPlanIdMapper: StarvationPlanIdMapper,
+    private val starvationTrackProvider: StarvationTrackProvider
 ) {
 
     private val Context.starvationDataStore: DataStore<Preferences> by preferencesDataStore(name = STARVATION_DATA)
     private val STARVATION_CURRENT_TRACK_KEY = intPreferencesKey(STARVATION_CURRENT_TRACK_ID)
-    val starvationCurrentTrackId = context.starvationDataStore.data.map {
+    private val starvationCurrentTrackId = context.starvationDataStore.data.map {
         it[STARVATION_CURRENT_TRACK_KEY] ?: 0
+    }
+
+    fun provideCurrentStarvationTrack() = starvationCurrentTrackId.flatMapLatest {
+        starvationTrackProvider.provideStarvationTrackById(it)
     }
 
     suspend fun startStarvation(
@@ -41,13 +49,14 @@ class StarvationCurrentTrackManager(
             id = id,
             startTime = startTime,
             duration = duration,
+            fullDuration = duration,
             starvationPlanId = starvationPlanIdMapper.mapToId(starvationPlan),
             interruptedTimeInMillis = null
         )
     }
 
     suspend fun interruptStarvation(duration: Long) = withContext(dispatcher) {
-        appDatabase.starvationTrackQueries.interruptStarvation(
+        appDatabase.starvationTrackQueries.update(
             id = starvationCurrentTrackId.first(),
             interruptedTimeInMillis = System.currentTimeMillis(),
             duration = duration

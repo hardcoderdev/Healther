@@ -19,7 +19,7 @@ import hardcoder.dev.logic.features.starvation.plan.StarvationPlanDurationResolv
 import hardcoder.dev.logic.features.starvation.plan.StarvationPlanIdMapper
 import hardcoder.dev.logic.features.starvation.plan.StarvationPlanProvider
 import hardcoder.dev.logic.features.starvation.statistic.StarvationStatisticProvider
-import hardcoder.dev.logic.features.starvation.track.StarvationCurrentTrackManager
+import hardcoder.dev.logic.features.starvation.track.CurrentStarvationManager
 import hardcoder.dev.logic.features.starvation.track.StarvationTrackProvider
 import hardcoder.dev.logic.features.waterBalance.DrinkTypeIdMapper
 import hardcoder.dev.logic.features.waterBalance.DrinkTypeProvider
@@ -167,7 +167,9 @@ class LogicModule(private val context: Context) {
         StarvationStatisticProvider(
             appDatabase = appDatabase,
             starvationPlanIdMapper = starvationPlanIdMapper,
-            timeUnitMapper = timeUnitMapper
+            timeUnitMapper = timeUnitMapper,
+            starvationTrackProvider = starvationTrackProvider,
+            dateTimeProvider = dateTimeProvider
         )
     }
 
@@ -178,13 +180,14 @@ class LogicModule(private val context: Context) {
         )
     }
 
-    val starvationCurrentTrackManager by lazy {
-        StarvationCurrentTrackManager(
+    val currentStarvationManager by lazy {
+        CurrentStarvationManager(
             context = context,
             appDatabase = appDatabase,
             starvationPlanIdMapper = starvationPlanIdMapper,
             dispatcher = Dispatchers.IO,
-            idGenerator = idGenerator
+            idGenerator = idGenerator,
+            starvationTrackProvider = starvationTrackProvider
         )
     }
 

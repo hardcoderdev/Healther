@@ -61,7 +61,7 @@ fun StarvationCreationTrackScreen(onGoBack: () -> Unit) {
 @Composable
 private fun StarvationCreationTrackContent(
     state: StarvationCreateTrackViewModel.State,
-    onUpdateSelectedPlan: (StarvationPlan) -> Unit,
+    onUpdateSelectedPlan: (StarvationPlan, Int?) -> Unit,
     onStartStarvation: () -> Unit
 ) {
     Column(
@@ -76,7 +76,8 @@ private fun StarvationCreationTrackContent(
         IconTextButton(
             imageVector = Icons.Filled.Start,
             labelResId = R.string.starvationScreen_startStarvation_buttonText,
-            onClick = onStartStarvation
+            onClick = onStartStarvation,
+            isEnabled = state.creationAllowed
         )
     }
 }
@@ -84,7 +85,7 @@ private fun StarvationCreationTrackContent(
 @Composable
 private fun SelectPlanSection(
     state: StarvationCreateTrackViewModel.State,
-    onUpdateSelectedPlan: (StarvationPlan) -> Unit
+    onUpdateSelectedPlan: (StarvationPlan, Int?) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
@@ -102,12 +103,12 @@ private fun SelectPlanSection(
             contentPadding = PaddingValues(vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(state.starvationPlanList) {
+            items(state.starvationPlanList) { starvationPlan ->
                 StarvationPlanItem(
                     modifier = Modifier.fillMaxWidth(),
-                    starvationPlan = it,
+                    starvationPlan = starvationPlan,
                     selectedPlan = state.selectedPlan,
-                    onSelect = { onUpdateSelectedPlan(it) }
+                    onSelect = { onUpdateSelectedPlan(starvationPlan, it) }
                 )
             }
         }
@@ -121,7 +122,7 @@ fun StarvationCreationTrackScreenPreview() {
         content = {
             StarvationCreationTrackContent(
                 onStartStarvation = {},
-                onUpdateSelectedPlan = {},
+                onUpdateSelectedPlan = { _, _ -> },
                 state = StarvationCreateTrackViewModel.State(
                     selectedPlan = StarvationPlan.PLAN_14_10,
                     starvationPlanList = listOf(
@@ -129,7 +130,8 @@ fun StarvationCreationTrackScreenPreview() {
                         StarvationPlan.PLAN_16_8,
                         StarvationPlan.PLAN_18_6,
                         StarvationPlan.PLAN_20_4
-                    )
+                    ),
+                    creationAllowed = false
                 )
             )
         }, topBarConfig = TopBarConfig(

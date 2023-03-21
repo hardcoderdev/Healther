@@ -20,7 +20,6 @@ import hardcoder.dev.androidApp.ui.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalStarvationPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.LocalTimeUnitMapper
-import hardcoder.dev.entities.features.starvation.StarvationPlan
 import hardcoder.dev.entities.features.starvation.StarvationTrack
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
@@ -57,12 +56,6 @@ fun StarvationItem(starvationTrack: StarvationTrack) {
         starvationDurationInMillis
     }
 
-    val progressColor = if (starvationTrack.starvationPlan == StarvationPlan.CUSTOM_PLAN) {
-        Color.Transparent
-    } else {
-        MaterialTheme.colorScheme.primary
-    }
-
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp, pressedElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
@@ -73,7 +66,7 @@ fun StarvationItem(starvationTrack: StarvationTrack) {
                 .padding(16.dp)
         ) {
             CircularProgressBar(
-                color = progressColor,
+                color = MaterialTheme.colorScheme.primary,
                 shadowColor = MaterialTheme.colorScheme.primaryContainer,
                 fontSize = 16.sp,
                 radius = 35.dp,
