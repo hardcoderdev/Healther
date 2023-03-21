@@ -3,7 +3,6 @@ package hardcoder.dev.logic.features.starvation.track
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.StarvationTrack
-import hardcoder.dev.entities.features.starvation.StarvationPlan
 import hardcoder.dev.logic.features.starvation.plan.StarvationPlanIdMapper
 import kotlinx.coroutines.flow.map
 import hardcoder.dev.entities.features.starvation.StarvationTrack as StarvationTrackEntity
@@ -52,9 +51,7 @@ class StarvationTrackProvider(
         .asFlow()
         .map {
             it.executeAsList().filter { starvationTrack ->
-                starvationTrack.starvationPlanId != starvationPlanIdMapper.mapToId(
-                    StarvationPlan.CUSTOM_PLAN
-                ) && starvationTrack.interruptedTimeInMillis == null
+                starvationTrack.interruptedTimeInMillis == null
             }.map { starvationTrackDatabase ->
                 starvationTrackDatabase.toEntity()
             }

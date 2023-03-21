@@ -10,6 +10,7 @@ import hardcoder.dev.logic.features.starvation.plan.StarvationPlanIdMapper
 import hardcoder.dev.logic.features.starvation.track.StarvationTrackProvider
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 class StarvationStatisticProvider(
@@ -54,9 +55,12 @@ class StarvationStatisticProvider(
         .map {
             it.executeAsList().takeIf { list ->
                 list.isNotEmpty()
+            }?.dropLastWhile { starvationTrack ->
+                dateTimeProvider.getCurrentTime()
+                    .toMillis() - starvationTrack.startTime < starvationTrack.duration
             }?.groupingBy { starvationTrackDatabase ->
                 starvationPlanIdMapper.mapToStarvationPlan(starvationTrackDatabase.starvationPlanId)
-            }?.eachCount()?.maxBy { entry ->
+            }?.eachCount()?.maxByOrNull { entry ->
                 entry.value
             }?.key
         }
@@ -65,8 +69,17 @@ class StarvationStatisticProvider(
         starvationTrackProvider.provideAllStarvationTracks(),
         starvationTrackProvider.provideAllCompletedStarvationTracks()
     ) { allStarvationTracks, allCompletedStarvationTracks ->
+        val allCount = allStarvationTracks.dropLastWhile {
+            dateTimeProvider.getCurrentTime()
+                .toMillis() - it.startTime < it.duration
+        }.count()
+        val allCompletedCount = allCompletedStarvationTracks.dropLastWhile {
+            dateTimeProvider.getCurrentTime()
+                .toMillis() - it.startTime < it.duration
+        }.count()
+
         if (allCompletedStarvationTracks.isNotEmpty()) {
-            (allStarvationTracks.count() / allCompletedStarvationTracks.count()) * 10
+            (allCompletedCount.toFloat()/ allCount.toFloat() * 100).roundToInt()
         } else {
             null
         }

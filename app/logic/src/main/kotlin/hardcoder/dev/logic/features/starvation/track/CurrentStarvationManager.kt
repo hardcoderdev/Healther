@@ -49,7 +49,6 @@ class CurrentStarvationManager(
             id = id,
             startTime = startTime,
             duration = duration,
-            fullDuration = duration,
             starvationPlanId = starvationPlanIdMapper.mapToId(starvationPlan),
             interruptedTimeInMillis = null
         )

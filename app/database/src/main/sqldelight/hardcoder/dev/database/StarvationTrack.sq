@@ -2,14 +2,13 @@ CREATE TABLE IF NOT EXISTS StarvationTrack(
     id INTEGER AS Int NOT NULL PRIMARY KEY,
     startTime INTEGER NOT NULL,
     duration INTEGER NOT NULL,
-    fullDuration INTEGER NOT NULL,
     starvationPlanId INTEGER AS Int NOT NULL,
     interruptedTimeInMillis INTEGER
 );
 
 insert:
-INSERT INTO StarvationTrack (id, startTime, duration, fullDuration, starvationPlanId, interruptedTimeInMillis)
-VALUES (?, ?, ?, ?, ?, ?);
+INSERT INTO StarvationTrack (id, startTime, duration, starvationPlanId, interruptedTimeInMillis)
+VALUES (?, ?, ?, ?, ?);
 
 update:
 UPDATE StarvationTrack SET interruptedTimeInMillis = ?, duration = ? WHERE id = ?;
