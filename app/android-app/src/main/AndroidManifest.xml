@@ -10,6 +10,7 @@
     <application
         android:name="hardcoder.dev.androidApp.ui.App"
         android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"

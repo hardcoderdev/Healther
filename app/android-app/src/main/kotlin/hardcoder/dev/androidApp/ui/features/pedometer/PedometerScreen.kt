@@ -31,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
@@ -39,9 +38,10 @@ import hardcoder.dev.androidApp.ui.LocalFloatFormatter
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.pedometer.PedometerViewModel
+import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
+import hardcoder.dev.uikit.ActivityChartSection
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.Text
 import hardcoder.dev.uikit.TopBarConfig
@@ -131,7 +131,7 @@ private fun PedometerContent(
             state.chartEntries.isNotEmpty() &&
             state.chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART
         ) {
-            PedometerActivityChart(
+            ActivityChartSection(
                 modifier = Modifier.weight(2f),
                 chartEntries = state.chartEntries
             )
@@ -203,37 +203,4 @@ private fun DailyRateSection(
     )
 }
 
-@Preview
-@Composable
-fun PedometerContentPreview() {
-    ScaffoldWrapper(
-        content = {
-            PedometerContent(
-                state = PedometerViewModel.State(
-                    isTrackingNow = false,
-                    totalStepsCount = 300,
-                    dailyRateStepsCount = 3000,
-                    totalKilometersCount = 10.0f,
-                    totalCaloriesBurned = 60.2f,
-                    totalTrackingTime = 20,
-                    chartEntries = listOf(0 to 0)
-                ),
-                onTogglePedometerTrackingService = {}
-            )
-        },
-        topBarConfig = TopBarConfig(
-            type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.pedometer_title_topBar,
-                onGoBack = {}
-            )
-        ),
-        actionConfig = ActionConfig(
-            actions = listOf(
-                Action(
-                    iconImageVector = Icons.Filled.MoreVert,
-                    onActionClick = {}
-                )
-            )
-        )
-    )
-}
+const val MINIMUM_ENTRIES_FOR_SHOWING_CHART = 2

@@ -27,14 +27,15 @@ import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.RegexHolder
 import hardcoder.dev.androidApp.ui.features.waterBalance.DrinkItem
 import hardcoder.dev.entities.waterTracking.DrinkType
 import hardcoder.dev.extensions.toDate
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.waterBalance.validators.IncorrectMillilitersInput
-import hardcoder.dev.presentation.waterBalance.SaveWaterTrackViewModel
+import hardcoder.dev.logic.features.waterBalance.validators.IncorrectMillilitersInput
+import hardcoder.dev.presentation.features.waterBalance.SaveWaterTrackViewModel
 import hardcoder.dev.uikit.ButtonStyles
 import hardcoder.dev.uikit.ErrorText
 import hardcoder.dev.uikit.FilledTextField
@@ -45,7 +46,6 @@ import hardcoder.dev.uikit.TopBarType
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
-import java.text.DateFormat
 
 @Composable
 fun SaveWaterTrackScreen(
@@ -230,8 +230,9 @@ private fun SelectDateSection(
     state: SaveWaterTrackViewModel.State,
     dateDialogState: MaterialDialogState
 ) {
+    val dateTimeFormatter = LocalDateTimeFormatter.current
     val selectedDate = state.selectedDate.toDate()
-    val formattedDate = DateFormat.getDateInstance().format(selectedDate)
+    val formattedDate = dateTimeFormatter.formatDateTime(selectedDate)
 
     Text(
         text = stringResource(id = R.string.saveWaterTrack_selectAnotherDate_text),

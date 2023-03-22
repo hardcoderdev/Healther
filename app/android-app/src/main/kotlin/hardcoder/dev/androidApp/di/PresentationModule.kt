@@ -1,16 +1,19 @@
 package hardcoder.dev.androidApp.di
 
-import hardcoder.dev.presentation.pedometer.PedometerHistoryViewModel
-import hardcoder.dev.presentation.pedometer.PedometerViewModel
+import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
+import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
+import hardcoder.dev.presentation.features.starvation.StarvationCreateTrackViewModel
+import hardcoder.dev.presentation.features.starvation.StarvationHistoryViewModel
+import hardcoder.dev.presentation.features.starvation.StarvationViewModel
+import hardcoder.dev.presentation.features.waterBalance.SaveWaterTrackViewModel
+import hardcoder.dev.presentation.features.waterBalance.UpdateWaterTrackViewModel
+import hardcoder.dev.presentation.features.waterBalance.WaterTrackingHistoryViewModel
+import hardcoder.dev.presentation.features.waterBalance.WaterTrackingViewModel
 import hardcoder.dev.presentation.setUpFlow.EnterExerciseStressTimeViewModel
 import hardcoder.dev.presentation.setUpFlow.EnterWeightViewModel
 import hardcoder.dev.presentation.setUpFlow.HeroCreateViewModel
 import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
 import hardcoder.dev.presentation.setUpFlow.SplashViewModel
-import hardcoder.dev.presentation.waterBalance.SaveWaterTrackViewModel
-import hardcoder.dev.presentation.waterBalance.UpdateWaterTrackViewModel
-import hardcoder.dev.presentation.waterBalance.WaterTrackingHistoryViewModel
-import hardcoder.dev.presentation.waterBalance.WaterTrackingViewModel
 
 class PresentationModule(
     val logicModule: LogicModule
@@ -73,5 +76,22 @@ class PresentationModule(
         kilometersResolver = logicModule.kilometersResolver,
         caloriesResolver = logicModule.caloriesResolver,
         pedometerTrackProvider = logicModule.pedometerTrackProvider
+    )
+
+    fun createStarvationViewModel() = StarvationViewModel(
+        dateTimeProvider = logicModule.dateTimeProvider,
+        starvationTrackProvider = logicModule.starvationTrackProvider,
+        statisticProvider = logicModule.starvationStatisticProvider,
+        currentStarvationManager = logicModule.currentStarvationManager
+    )
+
+    fun createStarvationCreateTrackViewModel() = StarvationCreateTrackViewModel(
+        currentStarvationManager = logicModule.currentStarvationManager,
+        starvationPlanDurationMapper = logicModule.starvationPlanDurationResolver,
+        starvationPlanProvider = logicModule.starvationPlanProvider
+    )
+
+    fun createStarvationHistoryViewModel() = StarvationHistoryViewModel(
+        starvationTrackProvider = logicModule.starvationTrackProvider
     )
 }
