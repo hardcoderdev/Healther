@@ -8,6 +8,7 @@ import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.datetime.TimeUnitMapper
 import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
+import hardcoder.dev.logic.appPreferences.PredefinedTracksManager
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
 import hardcoder.dev.logic.features.pedometer.PedometerStepHandler
@@ -21,15 +22,19 @@ import hardcoder.dev.logic.features.starvation.plan.StarvationPlanProvider
 import hardcoder.dev.logic.features.starvation.statistic.StarvationStatisticProvider
 import hardcoder.dev.logic.features.starvation.track.CurrentStarvationManager
 import hardcoder.dev.logic.features.starvation.track.StarvationTrackProvider
-import hardcoder.dev.logic.features.waterBalance.DrinkTypeIdMapper
-import hardcoder.dev.logic.features.waterBalance.DrinkTypeProvider
+import hardcoder.dev.logic.features.waterBalance.WaterIntakeResolver
+import hardcoder.dev.logic.features.waterBalance.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterBalance.WaterTrackCreator
 import hardcoder.dev.logic.features.waterBalance.WaterTrackDeleter
+import hardcoder.dev.logic.features.waterBalance.WaterTrackMillilitersValidator
 import hardcoder.dev.logic.features.waterBalance.WaterTrackProvider
 import hardcoder.dev.logic.features.waterBalance.WaterTrackUpdater
-import hardcoder.dev.logic.features.waterBalance.resolvers.WaterIntakeResolver
-import hardcoder.dev.logic.features.waterBalance.resolvers.WaterPercentageResolver
-import hardcoder.dev.logic.features.waterBalance.validators.WaterTrackMillilitersValidator
+import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeCreator
+import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeDeleter
+import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeProvider
+import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeUpdater
+import hardcoder.dev.logic.features.waterBalance.drinkType.IconResourceValidator
+import hardcoder.dev.logic.features.waterBalance.drinkType.NameValidator
 import hardcoder.dev.logic.hero.GenderIdMapper
 import hardcoder.dev.logic.hero.HeroCreator
 import hardcoder.dev.logic.hero.HeroProvider
@@ -50,6 +55,13 @@ class LogicModule(private val context: Context) {
         IdGenerator(context)
     }
 
+    val predefinedTracksManager by lazy {
+        PredefinedTracksManager(
+            context = context,
+            drinkTypeCreator = drinkTypeCreator
+        )
+    }
+
     private val timeUnitMapper by lazy {
         TimeUnitMapper()
     }
@@ -66,23 +78,18 @@ class LogicModule(private val context: Context) {
         WaterTrackMillilitersValidator()
     }
 
-    private val drinkTypeIdMapper by lazy {
-        DrinkTypeIdMapper()
-    }
-
     val waterTrackCreator by lazy {
         WaterTrackCreator(
+            idGenerator = idGenerator,
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
-            drinkTypeIdMapper = drinkTypeIdMapper
+            dispatcher = Dispatchers.IO
         )
     }
 
     val waterTrackUpdater by lazy {
         WaterTrackUpdater(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
-            drinkTypeIdMapper = drinkTypeIdMapper
+            dispatcher = Dispatchers.IO
         )
     }
 
@@ -96,12 +103,45 @@ class LogicModule(private val context: Context) {
     val waterTrackProvider by lazy {
         WaterTrackProvider(
             appDatabase = appDatabase,
-            drinkTypeIdMapper = drinkTypeIdMapper
+            drinkTypeProvider = drinkTypeProvider
+        )
+    }
+
+    val nameValidator by lazy {
+        NameValidator()
+    }
+
+    val iconResourceValidator by lazy {
+        IconResourceValidator()
+    }
+
+    val drinkTypeCreator by lazy {
+        DrinkTypeCreator(
+            context = context,
+            idGenerator = idGenerator,
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val drinkTypeUpdater by lazy {
+        DrinkTypeUpdater(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val drinkTypeDeleter by lazy {
+        DrinkTypeDeleter(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
         )
     }
 
     val drinkTypeProvider by lazy {
-        DrinkTypeProvider()
+        DrinkTypeProvider(
+            appDatabase = appDatabase
+        )
     }
 
     private val genderIdMapper by lazy {

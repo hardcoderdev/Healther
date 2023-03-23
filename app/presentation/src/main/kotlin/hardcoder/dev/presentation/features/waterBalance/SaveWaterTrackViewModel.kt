@@ -3,16 +3,16 @@ package hardcoder.dev.presentation.features.waterBalance
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.entities.waterTracking.DrinkType
+import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.extensions.getStartOfDay
-import hardcoder.dev.logic.hero.HeroProvider
-import hardcoder.dev.logic.features.waterBalance.DrinkTypeProvider
+import hardcoder.dev.logic.features.waterBalance.CorrectMillilitersInput
+import hardcoder.dev.logic.features.waterBalance.MillilitersCount
+import hardcoder.dev.logic.features.waterBalance.ValidatedMillilitersCount
+import hardcoder.dev.logic.features.waterBalance.WaterIntakeResolver
 import hardcoder.dev.logic.features.waterBalance.WaterTrackCreator
-import hardcoder.dev.logic.features.waterBalance.resolvers.WaterIntakeResolver
-import hardcoder.dev.logic.features.waterBalance.validators.CorrectMillilitersInput
-import hardcoder.dev.logic.features.waterBalance.validators.MillilitersCount
-import hardcoder.dev.logic.features.waterBalance.validators.ValidatedMillilitersCount
-import hardcoder.dev.logic.features.waterBalance.validators.WaterTrackMillilitersValidator
+import hardcoder.dev.logic.features.waterBalance.WaterTrackMillilitersValidator
+import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeProvider
+import hardcoder.dev.logic.hero.HeroProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,10 +30,14 @@ class SaveWaterTrackViewModel(
     private val waterTrackMillilitersValidator: WaterTrackMillilitersValidator,
 ) : ViewModel() {
 
+    private val drinkTypes = drinkTypeProvider.provideAllDrinkTypes().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = emptyList()
+    )
+    private val selectedDrink = MutableStateFlow<DrinkType?>(null)
     private val selectedDate = MutableStateFlow(LocalDate.now())
     private val millilitersDrunk = MutableStateFlow<Int?>(null)
-    private val selectedDrink = MutableStateFlow(DrinkType.WATER)
-    private val drinkTypes = drinkTypeProvider.getAllDrinkTypes()
     private val hero = heroProvider.requireHero()
     private val creationState = MutableStateFlow<CreationState>(CreationState.NotExecuted)
     private val validatedMillilitersCountState = millilitersDrunk.map {
@@ -53,6 +57,12 @@ class SaveWaterTrackViewModel(
         started = SharingStarted.Eagerly,
         initialValue = null
     )
+
+    init {
+        viewModelScope.launch {
+            selectedDrink.value = drinkTypes.value.first()
+        }
+    }
 
     val state = combine(
         creationState,
@@ -79,7 +89,7 @@ class SaveWaterTrackViewModel(
             selectedDate = selectedDate.value,
             millilitersCount = millilitersDrunk.value,
             drinks = emptyList(),
-            selectedDrink = selectedDrink.value,
+            selectedDrink = null,
             validatedMillilitersCount = null,
             creationAllowed = false
         )
@@ -88,10 +98,12 @@ class SaveWaterTrackViewModel(
     fun createWaterTrack() {
         viewModelScope.launch {
             require(validatedMillilitersCountState.value is CorrectMillilitersInput)
+            val selectedDrink = requireNotNull(selectedDrink.value)
+
             waterTrackCreator.createWaterTrack(
                 date = selectedDate.value.getStartOfDay(),
                 millilitersCount = millilitersDrunk.value!!,
-                drinkType = selectedDrink.value
+                drinkType = selectedDrink
             )
             creationState.value = CreationState.Executed
         }
@@ -120,7 +132,7 @@ class SaveWaterTrackViewModel(
         val millilitersCount: Int?,
         val validatedMillilitersCount: ValidatedMillilitersCount?,
         val drinks: List<DrinkType>,
-        val selectedDrink: DrinkType,
+        val selectedDrink: DrinkType?,
         val selectedDate: LocalDate
     )
 }

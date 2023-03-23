@@ -1,14 +1,12 @@
 package hardcoder.dev.logic.features.starvation.track
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.entities.features.starvation.StarvationPlan
+import hardcoder.dev.logic.dataStore.healtherDataStore
 import hardcoder.dev.logic.features.starvation.plan.StarvationPlanIdMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,10 +25,9 @@ class CurrentStarvationManager(
     private val starvationTrackProvider: StarvationTrackProvider
 ) {
 
-    private val Context.starvationDataStore: DataStore<Preferences> by preferencesDataStore(name = STARVATION_DATA)
-    private val STARVATION_CURRENT_TRACK_KEY = intPreferencesKey(STARVATION_CURRENT_TRACK_ID)
-    private val starvationCurrentTrackId = context.starvationDataStore.data.map {
-        it[STARVATION_CURRENT_TRACK_KEY] ?: 0
+    private val starvationCurrentTrackIdPreferenceKey = intPreferencesKey(STARVATION_CURRENT_TRACK_ID)
+    private val starvationCurrentTrackId = context.healtherDataStore.data.map {
+        it[starvationCurrentTrackIdPreferenceKey] ?: 0
     }
 
     fun provideCurrentStarvationTrack() = starvationCurrentTrackId.flatMapLatest {
@@ -67,9 +64,9 @@ class CurrentStarvationManager(
     }
 
     private suspend fun setCurrentId(id: Int?) {
-        context.starvationDataStore.edit { starvationData ->
+        context.healtherDataStore.edit { starvationData ->
             id?.let {
-                starvationData[STARVATION_CURRENT_TRACK_KEY] = it
+                starvationData[starvationCurrentTrackIdPreferenceKey] = it
             } ?: run {
                 starvationData.clear()
             }
@@ -77,7 +74,6 @@ class CurrentStarvationManager(
     }
 
     private companion object {
-        private const val STARVATION_DATA = "HEALTHER_STARVATION_DATA"
         private const val STARVATION_CURRENT_TRACK_ID = "starvation_currentTrack_id"
     }
 }

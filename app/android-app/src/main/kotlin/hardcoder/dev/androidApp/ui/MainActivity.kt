@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
 import hardcoder.dev.androidApp.ui.features.starvation.plans.StarvationPlanResourcesProvider
-import hardcoder.dev.androidApp.ui.features.waterBalance.DrinkTypeResourcesProvider
 import hardcoder.dev.androidApp.ui.navigation.RootScreen
 import hardcoder.dev.androidApp.ui.theme.HealtherTheme
 import hardcoder.dev.datetime.TimeUnitMapper
@@ -24,7 +23,8 @@ class MainActivity : ComponentActivity() {
             HealtherTheme {
                 CompositionLocalProvider(
                     LocalPresentationModule provides App.instance.presentationModule,
-                    LocalDrinkTypeResourcesProvider provides DrinkTypeResourcesProvider(),
+                    LocalIconProvider provides IconProvider(this),
+                    LocalIconResolver provides IconResolver(this),
                     LocalFloatFormatter provides FloatFormatter(),
                     LocalDateTimeFormatter provides DateTimeFormatter(
                         context = this,

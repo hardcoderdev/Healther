@@ -11,13 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,21 +21,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.LocalDrinkTypeResourcesProvider
-import hardcoder.dev.entities.waterTracking.DrinkType
+import hardcoder.dev.androidApp.ui.LocalIconResolver
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.waterBalance.WaterTrackItem
 
 @Composable
 fun WaterTrackItem(
     waterTrackItem: WaterTrackItem,
-    onDelete: (Int) -> Unit,
     onUpdate: (WaterTrackItem) -> Unit
 ) {
-    val drinkTypeResourcesProvider = LocalDrinkTypeResourcesProvider.current
-    val drinkTypeResources = drinkTypeResourcesProvider.provide(waterTrackItem.drinkType)
+    val iconResolver = LocalIconResolver.current
+    val drinkType = waterTrackItem.drinkType
 
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, pressedElevation = 16.dp),
@@ -54,7 +47,7 @@ fun WaterTrackItem(
                 .fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(id = drinkTypeResources.image),
+                painter = painterResource(id = iconResolver.toResourceId(drinkType.iconResourceName)),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp)
             )
@@ -65,8 +58,8 @@ fun WaterTrackItem(
                     .weight(2f)
             ) {
                 Text(
-                    text = stringResource(id = drinkTypeResources.title),
-                    style = MaterialTheme.typography.headlineSmall
+                    text = drinkType.name,
+                    style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -78,31 +71,6 @@ fun WaterTrackItem(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
-            IconButton(
-                modifier = Modifier.weight(0.5f),
-                onClick = { onDelete(waterTrackItem.id) }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(id = R.string.waterTrackItem_deleteTrack_iconContentDescription)
-                )
-            }
         }
     }
-}
-
-@Preview
-@Composable
-fun WaterTrackItemPreview() {
-    WaterTrackItem(
-        waterTrackItem = WaterTrackItem(
-            id = 1,
-            drinkType = DrinkType.WATER,
-            timeInMillis = System.currentTimeMillis(),
-            millilitersCount = 200,
-            resolvedMillilitersCount = 200
-        ),
-        onDelete = {},
-        onUpdate = {}
-    )
 }

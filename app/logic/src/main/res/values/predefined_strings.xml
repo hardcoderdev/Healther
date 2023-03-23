@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="predefined_drinkType_name_water">Вода</string>
+    <string name="predefined_drinkType_name_coffee">Кофе</string>
+    <string name="predefined_drinkType_name_beer">Пиво</string>
+    <string name="predefined_drinkType_name_milk">Молоко</string>
+    <string name="predefined_drinkType_name_tea">Чай</string>
+    <string name="predefined_drinkType_name_juice">Сок</string>
+    <string name="predefined_drinkType_name_soda">Газировка</string>
+    <string name="predefined_drinkType_name_soup">Суп</string>
+</resources>

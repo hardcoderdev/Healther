@@ -78,8 +78,8 @@ class StarvationStatisticProvider(
                 .toMillis() - it.startTime < it.duration
         }.count()
 
-        if (allCompletedStarvationTracks.isNotEmpty()) {
-            (allCompletedCount.toFloat()/ allCount.toFloat() * 100).roundToInt()
+        if (allCompletedCount != 0 && allCount != 0) {
+            (allCompletedCount.toFloat() / allCount.toFloat() * 100).roundToInt()
         } else {
             null
         }

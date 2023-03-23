@@ -35,6 +35,7 @@ sealed class Screen(val route: String) {
 
     object WaterTrackingFeature : Screen("water_tracking_feature")
     object WaterTrackingHistory : Screen("water_tracking_history")
+    object CreateDrinkType : Screen("create_drink_type")
     object SaveWaterTrack : Screen("save_water_track")
     object UpdateWaterTrack : Screen("update_water_track/{waterTrackId}") {
         fun buildRoute(waterTrackId: Int) = "update_water_track/$waterTrackId"

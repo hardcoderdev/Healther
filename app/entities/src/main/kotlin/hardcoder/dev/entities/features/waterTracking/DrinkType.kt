@@ -1,12 +1,8 @@
-package hardcoder.dev.entities.waterTracking
+package hardcoder.dev.entities.features.waterTracking
 
-enum class DrinkType {
-    WATER,
-    COFFEE,
-    BEER,
-    MILK,
-    TEA,
-    JUICE,
-    SODA,
-    SOUP
-}
+data class DrinkType(
+    val id: Int,
+    val name: String,
+    val iconResourceName: String,
+    val hydrationIndexPercentage: Int
+)

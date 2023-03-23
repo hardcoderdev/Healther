@@ -6,13 +6,11 @@ import hardcoder.dev.entities.hero.Hero
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.extensions.mapItems
-import hardcoder.dev.logic.hero.HeroProvider
-import hardcoder.dev.logic.features.waterBalance.WaterTrackDeleter
+import hardcoder.dev.logic.features.waterBalance.WaterIntakeResolver
+import hardcoder.dev.logic.features.waterBalance.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterBalance.WaterTrackProvider
-import hardcoder.dev.logic.features.waterBalance.resolvers.WaterIntakeResolver
-import hardcoder.dev.logic.features.waterBalance.resolvers.WaterPercentageResolver
+import hardcoder.dev.logic.hero.HeroProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -25,7 +23,6 @@ import kotlinx.datetime.LocalDate
 class WaterTrackingViewModel(
     heroProvider: HeroProvider,
     private val waterTrackProvider: WaterTrackProvider,
-    private val waterTrackDeleter: WaterTrackDeleter,
     private val waterIntakeResolver: WaterIntakeResolver,
     private val waterPercentageResolver: WaterPercentageResolver
 ) : ViewModel() {
@@ -91,12 +88,6 @@ class WaterTrackingViewModel(
                 currentHero.exerciseStressTime,
                 currentHero.gender
             )
-        }
-    }
-
-    fun delete(waterTrackId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            waterTrackDeleter.deleteById(waterTrackId)
         }
     }
 

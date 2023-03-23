@@ -27,6 +27,12 @@ class StarvationCreateTrackViewModel(
         initialValue = emptyList()
     )
 
+    init {
+        viewModelScope.launch {
+            selectedPlan.value = starvationPlanList.value.first()
+        }
+    }
+
     val state = combine(
         starvationPlanList,
         selectedPlan

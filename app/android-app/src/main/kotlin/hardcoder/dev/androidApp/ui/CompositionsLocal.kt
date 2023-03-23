@@ -3,15 +3,18 @@ package hardcoder.dev.androidApp.ui
 import androidx.compose.runtime.compositionLocalOf
 import hardcoder.dev.androidApp.di.PresentationModule
 import hardcoder.dev.androidApp.ui.features.starvation.plans.StarvationPlanResourcesProvider
-import hardcoder.dev.androidApp.ui.features.waterBalance.DrinkTypeResourcesProvider
 import hardcoder.dev.datetime.TimeUnitMapper
 
 val LocalPresentationModule = compositionLocalOf<PresentationModule> {
     error("LocalPresentationModule not provided")
 }
 
-val LocalDrinkTypeResourcesProvider = compositionLocalOf<DrinkTypeResourcesProvider> {
-    error("LocalDrinkTypeResources not provided")
+val LocalIconProvider = compositionLocalOf<IconProvider> {
+    error("LocalIconProvider not provided")
+}
+
+val LocalIconResolver = compositionLocalOf<IconResolver> {
+    error("LocalIconResolver not provided")
 }
 
 val LocalFloatFormatter = compositionLocalOf<FloatFormatter> {

@@ -1,6 +1,6 @@
 package hardcoder.dev.presentation.features.waterBalance
 
-import hardcoder.dev.entities.waterTracking.DrinkType
+import hardcoder.dev.entities.features.waterTracking.DrinkType
 
 data class WaterTrackItem(
     val id: Int,

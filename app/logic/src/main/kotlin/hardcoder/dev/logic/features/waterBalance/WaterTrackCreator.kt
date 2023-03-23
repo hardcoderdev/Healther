@@ -1,14 +1,15 @@
 package hardcoder.dev.logic.features.waterBalance
 
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.entities.waterTracking.DrinkType
+import hardcoder.dev.database.IdGenerator
+import hardcoder.dev.entities.features.waterTracking.DrinkType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 class WaterTrackCreator(
+    private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher,
-    private val drinkTypeIdMapper: DrinkTypeIdMapper
+    private val dispatcher: CoroutineDispatcher
 ) {
 
     suspend fun createWaterTrack(
@@ -17,10 +18,10 @@ class WaterTrackCreator(
         drinkType: DrinkType
     ) = withContext(dispatcher) {
         appDatabase.waterTrackQueries.insert(
-            id = null,
+            id = idGenerator.nextId(),
             date = date,
             millilitersCount = millilitersCount,
-            drinkTypeId = drinkTypeIdMapper.mapToId(drinkType)
+            drinkTypeId = drinkType.id
         )
     }
 }

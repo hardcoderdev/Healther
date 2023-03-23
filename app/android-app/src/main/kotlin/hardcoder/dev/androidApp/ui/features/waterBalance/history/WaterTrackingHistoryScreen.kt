@@ -24,7 +24,6 @@ import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.waterBalance.WaterTrackItem
-import hardcoder.dev.androidApp.ui.features.waterBalance.WaterTrackItem as WaterTrackItemRow
 import hardcoder.dev.presentation.features.waterBalance.WaterTrackingHistoryViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
@@ -35,6 +34,7 @@ import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
+import hardcoder.dev.androidApp.ui.features.waterBalance.WaterTrackItem as WaterTrackItemRow
 
 @Composable
 fun WaterTrackingHistoryScreen(
@@ -54,7 +54,6 @@ fun WaterTrackingHistoryScreen(
             WaterTrackingContent(
                 state = state.value,
                 onTrackUpdate = onTrackUpdate,
-                onTrackDelete = viewModel::deleteTrack,
                 onFetchWaterTracks = {
                     viewModel.selectRange(it.getStartOfDay()..it.getEndOfDay())
                 }
@@ -73,8 +72,7 @@ fun WaterTrackingHistoryScreen(
 private fun WaterTrackingContent(
     state: WaterTrackingHistoryViewModel.State,
     onFetchWaterTracks: (LocalDate) -> Unit,
-    onTrackUpdate: (WaterTrackItem) -> Unit,
-    onTrackDelete: (Int) -> Unit
+    onTrackUpdate: (WaterTrackItem) -> Unit
 ) {
     val calendarState = rememberSelectableCalendarState(initialSelectionMode = SelectionMode.Single)
 
@@ -91,8 +89,7 @@ private fun WaterTrackingContent(
         Spacer(modifier = Modifier.height(16.dp))
         WaterTracksHistory(
             waterTrackItems = state.waterTrackItems,
-            onTrackUpdate = onTrackUpdate,
-            onTrackDelete = onTrackDelete
+            onTrackUpdate = onTrackUpdate
         )
     }
 }
@@ -100,7 +97,6 @@ private fun WaterTrackingContent(
 @Composable
 private fun WaterTracksHistory(
     waterTrackItems: List<WaterTrackItem>,
-    onTrackDelete: (Int) -> Unit,
     onTrackUpdate: (WaterTrackItem) -> Unit
 ) {
     if (waterTrackItems.isNotEmpty()) {
@@ -112,7 +108,6 @@ private fun WaterTracksHistory(
             items(waterTrackItems) { track ->
                 WaterTrackItemRow(
                     waterTrackItem = track,
-                    onDelete = onTrackDelete,
                     onUpdate = onTrackUpdate
                 )
             }

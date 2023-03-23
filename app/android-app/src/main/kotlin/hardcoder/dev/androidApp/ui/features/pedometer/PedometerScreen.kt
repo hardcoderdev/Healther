@@ -160,35 +160,33 @@ private fun DailyRateSection(
         }
     )
 
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = stringResource(
-                    id = R.string.pedometer_stepCountFormat_text,
-                    state.totalStepsCount,
-                    state.dailyRateStepsCount
-                ),
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            AnimatedVisibility(visible = state.totalStepsCount <= state.dailyRateStepsCount) {
-                IconButton(onClick = onTogglePedometerTrackingService) {
-                    Icon(
-                        imageVector = toggleServiceButtonIcon,
-                        contentDescription = toggleServiceButtonContentDescription,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = RoundedCornerShape(16.dp),
-                            )
-                            .padding(8.dp)
-                    )
-                }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = stringResource(
+                id = R.string.pedometer_stepCountFormat_text,
+                state.totalStepsCount,
+                state.dailyRateStepsCount
+            ),
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        AnimatedVisibility(visible = state.totalStepsCount <= state.dailyRateStepsCount) {
+            IconButton(onClick = onTogglePedometerTrackingService) {
+                Icon(
+                    imageVector = toggleServiceButtonIcon,
+                    contentDescription = toggleServiceButtonContentDescription,
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .background(
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = RoundedCornerShape(16.dp),
+                        )
+                        .padding(8.dp)
+                )
             }
         }
     }

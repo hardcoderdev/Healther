@@ -23,6 +23,7 @@ object Dependencies {
         const val activityKtx = "1.3.0-alpha04"
         const val accompanist = "0.29.1-alpha"
         const val dataStore = "1.0.0"
+        const val coil = "2.2.2"
     }
 
     const val sqlDelightCoroutinesExt =
@@ -71,6 +72,7 @@ object Dependencies {
     const val flowRow = "com.google.accompanist:accompanist-flowlayout:${Versions.accompanist}"
 
     const val dataStore = "androidx.datastore:datastore-preferences:${Versions.dataStore}"
+    const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil}"
 }
 
 fun DependencyHandler.addCommonAndroid() {
@@ -115,4 +117,5 @@ fun DependencyHandler.addCompose() {
     implementation(Dependencies.accompanistPager)
     implementation(Dependencies.accompanistPagerIndicators)
     implementation(Dependencies.flowRow)
+    implementation(Dependencies.coilCompose)
 }

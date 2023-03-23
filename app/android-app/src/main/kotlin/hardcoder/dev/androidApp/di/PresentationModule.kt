@@ -5,6 +5,7 @@ import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
 import hardcoder.dev.presentation.features.starvation.StarvationCreateTrackViewModel
 import hardcoder.dev.presentation.features.starvation.StarvationHistoryViewModel
 import hardcoder.dev.presentation.features.starvation.StarvationViewModel
+import hardcoder.dev.presentation.features.waterBalance.CreateDrinkTypeViewModel
 import hardcoder.dev.presentation.features.waterBalance.SaveWaterTrackViewModel
 import hardcoder.dev.presentation.features.waterBalance.UpdateWaterTrackViewModel
 import hardcoder.dev.presentation.features.waterBalance.WaterTrackingHistoryViewModel
@@ -35,10 +36,15 @@ class PresentationModule(
 
     fun createWaterTrackingViewModel() = WaterTrackingViewModel(
         heroProvider = logicModule.heroProvider,
-        waterTrackDeleter = logicModule.waterTrackDeleter,
         waterTrackProvider = logicModule.waterTrackProvider,
         waterIntakeResolver = logicModule.waterIntakeResolver,
         waterPercentageResolver = logicModule.waterPercentageResolver
+    )
+
+    fun createDrinkTypeViewModel() = CreateDrinkTypeViewModel(
+        drinkTypeCreator = logicModule.drinkTypeCreator,
+        nameValidator = logicModule.nameValidator,
+        iconResourceValidator = logicModule.iconResourceValidator
     )
 
     fun createSaveWaterTrackViewModel() = SaveWaterTrackViewModel(
@@ -56,12 +62,12 @@ class PresentationModule(
         waterTrackProvider = logicModule.waterTrackProvider,
         drinkTypeProvider = logicModule.drinkTypeProvider,
         waterTrackMillilitersValidator = logicModule.waterTrackMillilitersValidator,
-        waterIntakeResolver = logicModule.waterIntakeResolver
+        waterIntakeResolver = logicModule.waterIntakeResolver,
+        waterTrackDeleter = logicModule.waterTrackDeleter
     )
 
     fun createWaterTrackingHistoryViewModel() = WaterTrackingHistoryViewModel(
         waterTrackProvider = logicModule.waterTrackProvider,
-        waterTrackDeleter = logicModule.waterTrackDeleter,
         waterPercentageResolver = logicModule.waterPercentageResolver
     )
 

@@ -9,6 +9,7 @@ import hardcoder.dev.androidApp.ui.features.starvation.StarvationScreen
 import hardcoder.dev.androidApp.ui.features.starvation.create.StarvationCreationTrackScreen
 import hardcoder.dev.androidApp.ui.features.starvation.history.StarvationHistoryScreen
 import hardcoder.dev.androidApp.ui.features.waterBalance.WaterTrackingScreen
+import hardcoder.dev.androidApp.ui.features.waterBalance.create.CreateDrinkTypeScreen
 import hardcoder.dev.androidApp.ui.features.waterBalance.create.SaveWaterTrackScreen
 import hardcoder.dev.androidApp.ui.features.waterBalance.history.WaterTrackingHistoryScreen
 import hardcoder.dev.androidApp.ui.features.waterBalance.update.UpdateWaterTrackScreen
@@ -87,10 +88,15 @@ fun NavGraphBuilder.addWaterTrackingDestinations(navController: NavController) {
             }
         )
     }
+    composable(route = Screen.CreateDrinkType.route) {
+        CreateDrinkTypeScreen(
+            onGoBack = navController::popBackStack
+        )
+    }
     composable(route = Screen.SaveWaterTrack.route) {
         SaveWaterTrackScreen(
             onGoBack = navController::popBackStack,
-            onSaved = navController::popBackStack
+            onCreateDrinkType = { navController.navigate(Screen.CreateDrinkType.route) }
         )
     }
     composable(
@@ -100,7 +106,7 @@ fun NavGraphBuilder.addWaterTrackingDestinations(navController: NavController) {
         UpdateWaterTrackScreen(
             waterTrackId = Screen.UpdateWaterTrack.getWaterTrackId(backStackEntry.arguments),
             onGoBack = navController::popBackStack,
-            onSaved = navController::popBackStack
+            onCreateDrinkType = { navController.navigate(Screen.CreateDrinkType.route) }
         )
     }
     composable(route = Screen.WaterTrackingHistory.route) {

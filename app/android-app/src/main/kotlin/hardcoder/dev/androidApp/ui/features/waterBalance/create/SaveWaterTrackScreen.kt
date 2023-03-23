@@ -1,17 +1,24 @@
+@file:OptIn(ExperimentalLayoutApi::class)
+
 package hardcoder.dev.androidApp.ui.features.waterBalance.create
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,11 +37,11 @@ import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.RegexHolder
-import hardcoder.dev.androidApp.ui.features.waterBalance.DrinkItem
-import hardcoder.dev.entities.waterTracking.DrinkType
+import hardcoder.dev.androidApp.ui.features.waterBalance.DrinkTypeItem
+import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.extensions.toDate
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.features.waterBalance.validators.IncorrectMillilitersInput
+import hardcoder.dev.logic.features.waterBalance.IncorrectMillilitersInput
 import hardcoder.dev.presentation.features.waterBalance.SaveWaterTrackViewModel
 import hardcoder.dev.uikit.ButtonStyles
 import hardcoder.dev.uikit.ErrorText
@@ -50,7 +57,7 @@ import kotlinx.datetime.toKotlinLocalDate
 @Composable
 fun SaveWaterTrackScreen(
     onGoBack: () -> Unit,
-    onSaved: () -> Unit
+    onCreateDrinkType: () -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel {
@@ -60,7 +67,7 @@ fun SaveWaterTrackScreen(
 
     LaunchedEffect(key1 = state.value.creationState) {
         if (state.value.creationState is SaveWaterTrackViewModel.CreationState.Executed) {
-            onSaved()
+            onGoBack()
         }
     }
 
@@ -71,7 +78,8 @@ fun SaveWaterTrackScreen(
                 updateWaterDrunk = viewModel::updateWaterDrunk,
                 updateSelectedDate = viewModel::updateSelectedDate,
                 updateSelectedDrink = viewModel::updateSelectedDrink,
-                createWaterTrack = viewModel::createWaterTrack
+                createWaterTrack = viewModel::createWaterTrack,
+                onCreateDrinkType = onCreateDrinkType
             )
         },
         topBarConfig = TopBarConfig(
@@ -85,30 +93,35 @@ fun SaveWaterTrackScreen(
 
 @Composable
 private fun SaveWaterTrackContent(
+    state: SaveWaterTrackViewModel.State,
     createWaterTrack: () -> Unit,
     updateSelectedDrink: (DrinkType) -> Unit,
     updateSelectedDate: (LocalDate) -> Unit,
     updateWaterDrunk: (Int) -> Unit,
-    state: SaveWaterTrackViewModel.State
+    onCreateDrinkType: () -> Unit
 ) {
     val dateDialogState = rememberMaterialDialogState()
 
-    Column(
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Column(Modifier.weight(2f)) {
+    Column(Modifier.padding(16.dp)) {
+        Column(
+            Modifier
+                .weight(2f)
+                .verticalScroll(rememberScrollState())
+        ) {
             EnterDrunkMillilitersSection(
                 updateWaterDrunk = updateWaterDrunk,
                 state = state
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             SelectDrinkTypeSection(
                 state = state,
-                updateSelectedDrink = updateSelectedDrink
+                updateSelectedDrink = updateSelectedDrink,
+                onCreateDrinkType = onCreateDrinkType
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             SelectDateSection(dateDialogState = dateDialogState, state = state)
         }
+        Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             imageVector = Icons.Default.Done,
             labelResId = R.string.saveWaterTrack_saveEntry_button,
@@ -198,31 +211,35 @@ private fun EnterDrunkMillilitersSection(
 @Composable
 private fun SelectDrinkTypeSection(
     state: SaveWaterTrackViewModel.State,
-    updateSelectedDrink: (DrinkType) -> Unit
+    updateSelectedDrink: (DrinkType) -> Unit,
+    onCreateDrinkType: () -> Unit
 ) {
     Text(
         text = stringResource(id = R.string.saveWaterTrack_enterDrinkType_text),
         style = MaterialTheme.typography.titleLarge
     )
-    Spacer(modifier = Modifier.height(16.dp))
-    ScrollableTabRow(
-        modifier = Modifier.fillMaxWidth(),
-        selectedTabIndex = state.drinks.indexOf(state.selectedDrink),
-        indicator = {},
-        divider = {},
-        edgePadding = 0.dp
+    Spacer(modifier = Modifier.height(8.dp))
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState()),
+        maxItemsInEachRow = 8
     ) {
         state.drinks.forEach { drink ->
-            DrinkItem(
-                modifier = Modifier.padding(12.dp),
+            DrinkTypeItem(
+                modifier = Modifier.padding(4.dp),
                 drinkType = drink,
-                selectedDrink = state.selectedDrink,
-                onUpdateSelectedDrink = {
-                    updateSelectedDrink(it.drinkType)
-                }
+                selectedDrinkType = state.selectedDrink,
+                onSelect = updateSelectedDrink
             )
         }
     }
+    Spacer(modifier = Modifier.height(16.dp))
+    IconTextButton(
+        imageVector = Icons.Filled.Create,
+        labelResId = R.string.saveWaterTrack_createCustomDrinkType_buttonText,
+        onClick = onCreateDrinkType
+    )
 }
 
 @Composable
@@ -239,15 +256,18 @@ private fun SelectDateSection(
         style = MaterialTheme.typography.titleLarge
     )
     Spacer(modifier = Modifier.height(16.dp))
+    Text(
+        style = MaterialTheme.typography.titleMedium,
+        text = stringResource(
+            id = R.string.saveWaterTrack_selectedDateFormat_text,
+            formattedDate
+        )
+    )
+    Spacer(modifier = Modifier.height(16.dp))
     IconTextButton(
         imageVector = Icons.Rounded.DateRange,
         labelResId = R.string.saveWaterTrack_selectDateRange_button,
         style = ButtonStyles.OUTLINED,
         onClick = dateDialogState::show
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    Text(
-        text = stringResource(id = R.string.saveWaterTrack_selectedDateFormat_text, formattedDate),
-        style = MaterialTheme.typography.titleLarge
     )
 }

@@ -1,0 +1,22 @@
+CREATE TABLE DrinkType (
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    iconResourceName TEXT NOT NULL,
+    hydrationIndexPercentage INTEGER AS Int NOT NULL
+);
+
+insert:
+INSERT INTO DrinkType (id, name, iconResourceName, hydrationIndexPercentage)
+VALUES (?, ?, ?, ?);
+
+update:
+UPDATE DrinkType SET name = ?, iconResourceName = ?, hydrationIndexPercentage = ? WHERE id = ?;
+
+deleteById:
+DELETE FROM DrinkType WHERE id = ?;
+
+selectAllDrinkTypes:
+SELECT * FROM DrinkType;
+
+selectDrinkTypeById:
+SELECT * FROM DrinkType WHERE id = ?;
