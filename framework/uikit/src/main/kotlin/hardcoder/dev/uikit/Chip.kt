@@ -34,14 +34,15 @@ fun <T> Chip(
     onClick: (() -> Unit)? = null,
     textStyle: TextStyle = MaterialTheme.typography.labelLarge,
     text: String,
-    isSelected: Boolean,
+    item: T,
+    selectedItem: T,
     height: Dp = 15.dp,
     padding: PaddingValues = PaddingValues(16.dp),
     @DrawableRes iconResId: Int? = null,
     overflow: TextOverflow = TextOverflow.Ellipsis,
     shape: RoundedCornerShape = RoundedCornerShape(bottomEnd = 16.dp)
 ) {
-    val selectedBorder = if (isSelected) BorderStroke(
+    val selectedBorder = if (item == selectedItem) BorderStroke(
         width = 2.dp,
         color = MaterialTheme.colorScheme.primary
     ) else BorderStroke(

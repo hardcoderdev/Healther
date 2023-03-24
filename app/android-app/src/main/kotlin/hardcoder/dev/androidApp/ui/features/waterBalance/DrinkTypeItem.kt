@@ -23,7 +23,7 @@ fun DrinkTypeItem(
         text = drinkType.name,
         iconResId = iconResolver.toResourceId(drinkType.iconResourceName),
         shape = RoundedCornerShape(32.dp),
-        isSelected = drinkType == selectedDrinkType,
+        selectedItem = selectedDrinkType,
         item = drinkType
     )
 }
