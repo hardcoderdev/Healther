@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="starvation_lastStarvationTracks_text">Недавние голодания:</string>
+    <string name="starvation_yourSelectedPlan_formatText">Выбранный план голодания: %s</string>
+    <string name="starvation_noEnoughDataToShowLastTracks_text">Недостаточно данных для отображения последних записей о голодании.</string>
+    <string name="starvation_startStarvation_buttonText">Начать голодание</string>
+    <string name="starvation_you_starving_text">Вы голодаете!</string>
+    <string name="starvation_startDate_text">Вы начали голодание: %s</string>
+    <string name="starvation_endStarvation_buttonText">Сорвать голодание</string>
+    <string name="starvation_statistic_text">Общая статистика:</string>
+    <string name="starvation_statistic_not_enough_data_text">Мало инфы</string>
+    <string name="starvation_statistic_max_hours_text">Максимум часов</string>
+    <string name="starvation_statistic_average_hours_text">Часов в среднем</string>
+    <string name="starvation_statistic_min_hours_text">Минимум часов</string>
+    <string name="starvation_statistic_completion_percentage_text">Процент выполнения</string>
+    <string name="starvation_statistic_favorite_plan_text">Любимый план</string>
+    <string name="starvation_finish_text">Голодание завершено!</string>
+    <string name="starvation_finish_title_topBar">Конец голодания</string>
+    <string name="starvation_finish_image_contentDescription">Изображение победы</string>
+    <string name="starvation_finish_success_results_text">Прекрасные результаты! Вы завершили голодание и не срывались до самого конца! Так держать, у вас всё получится!</string>
+    <string name="starvation_finish_fail_results_text">Отличные результаты! Вы старались изо всех сил и смогли продержаться %s! Не сдавайтесь и старайтесь ещё больше, и у вас обязательно получится завершить план полностью!</string>
+    <string name="starvation_finish_goNext_buttonText">Хорошо, спасибо!</string>
+    <string name="starvationCreation_title_topBar">Старт голодания</string>
+    <string name="starvationHistory_title_topBar">Подробная история</string>
+    <string name="starvationHistory_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
+
+    <string name="starvationPlanItem_description_formatText">Вы будете голодать на протяжении %s и после этого у вас будет %s на приём пищи.</string>
+    <string name="starvationPlanItem_selectStarvingHours_text">Выберите количество часов, по истечению которых закончится голодание:</string>
+    <string name="starvationPlanItem_planDifficulty_text">Все планы ниже расположены в порядке возрастания сложности.</string>
+    <string name="starvationPlanItem_selectStarvationPlan_text">Выбор плана:</string>
+    <string name="starvationPlanItem_14_10" translatable="false">14–10</string>
+    <string name="starvationPlanItem_16_8" translatable="false">16–8</string>
+    <string name="starvationPlanItem_18_6" translatable="false">18–6</string>
+    <string name="starvationPlanItem_20_4" translatable="false">20–4</string>
+    <string name="starvationPlanItem_customPlan">Свой план</string>
+    <string name="starvationItem_starvation_startTime_formatText">Начало голодания: %s</string>
+    <string name="starvationItem_starvation_endTime_formatText">Конец голодания: %s</string>
+    <string name="starvationItem_starvationPlan_formatText">План голодания: %s</string>
+</resources>

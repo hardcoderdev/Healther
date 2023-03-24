@@ -50,7 +50,7 @@ fun WaterTrackItem(
                 Spacer(modifier = Modifier.height(8.dp))
                 Description(
                     text = stringResource(
-                        id = R.string.waterTrackItem_formatMilliliters_text,
+                        id = R.string.waterTrackItem_milliliters_formatText,
                         formatArgs = arrayOf(
                             waterTrackItem.millilitersCount,
                             waterTrackItem.resolvedMillilitersCount

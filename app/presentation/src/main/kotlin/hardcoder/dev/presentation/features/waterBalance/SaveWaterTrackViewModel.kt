@@ -97,12 +97,13 @@ class SaveWaterTrackViewModel(
 
     fun createWaterTrack() {
         viewModelScope.launch {
-            require(validatedMillilitersCountState.value is CorrectMillilitersInput)
+            val validatedMillilitersCount = validatedMillilitersCountState.value
+            require(validatedMillilitersCount is CorrectMillilitersInput)
             val selectedDrink = requireNotNull(selectedDrink.value)
 
             waterTrackCreator.createWaterTrack(
                 date = selectedDate.value.getStartOfDay(),
-                millilitersCount = millilitersDrunk.value!!,
+                millilitersCount = validatedMillilitersCount.data.value,
                 drinkType = selectedDrink
             )
             creationState.value = CreationState.Executed

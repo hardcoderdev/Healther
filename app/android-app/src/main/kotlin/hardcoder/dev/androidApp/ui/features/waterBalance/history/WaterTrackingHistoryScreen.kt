@@ -57,7 +57,7 @@ fun WaterTrackingHistoryScreen(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.featureHistory_title_topBar,
+                titleResId = R.string.waterTrackingHistory_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -110,7 +110,7 @@ private fun WaterTracksHistory(
         }
     } else {
         Spacer(modifier = Modifier.height(16.dp))
-        Title(text = stringResource(id = R.string.featureHistory_emptyDayHistory_text))
+        Title(text = stringResource(id = R.string.waterTrackingHistory_emptyDayHistory_text))
     }
 }
 

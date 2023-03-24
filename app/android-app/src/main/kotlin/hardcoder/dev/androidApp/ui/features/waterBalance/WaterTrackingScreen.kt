@@ -73,7 +73,7 @@ fun WaterTrackingScreen(
                 ),
                 topBarConfig = TopBarConfig(
                     type = TopBarType.TopBarWithNavigationBack(
-                        titleResId = R.string.waterTrackingFeature_title_topBar,
+                        titleResId = R.string.waterTracking_title_topBar,
                         onGoBack = onGoBack
                     )
                 )
@@ -98,7 +98,7 @@ private fun WaterTrackingContent(
     ) {
         Headline(
             text = stringResource(
-                id = R.string.waterTracking_millilitersCount_format,
+                id = R.string.waterTracking_millilitersCount_formatText,
                 formatArgs = arrayOf(
                     state.millisCount,
                     state.dailyWaterIntake

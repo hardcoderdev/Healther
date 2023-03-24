@@ -63,7 +63,7 @@ fun StarvationPlanItem(
                     Spacer(modifier = Modifier.height(32.dp))
                     Description(
                         text = stringResource(
-                            id = R.string.starvationPlan_description_formatText,
+                            id = R.string.starvationPlanItem_description_formatText,
                             formatArgs = arrayOf(
                                 dateTimeFormatter.formatMillisDistance(
                                     distanceInMillis = starvingHoursInMillis,
@@ -79,7 +79,7 @@ fun StarvationPlanItem(
                     )
                 } else {
                     Spacer(modifier = Modifier.height(16.dp))
-                    Description(text = stringResource(id = R.string.starvationPlan_selectStarvingHours_text))
+                    Description(text = stringResource(id = R.string.starvationPlanItem_selectStarvingHours_text))
                     NumberPicker(
                         value = customStarvingHours ?: 4,
                         range = 4..50,

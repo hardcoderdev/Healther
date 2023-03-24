@@ -52,7 +52,7 @@ fun PedometerHistoryScreen(onGoBack: () -> Unit) {
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.featureHistory_title_topBar,
+                titleResId = R.string.pedometerHistory_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -91,7 +91,7 @@ private fun PedometerHistoryContent(
             )
         } else {
             Spacer(modifier = Modifier.height(16.dp))
-            Title(text = stringResource(id = R.string.pedometerHistory_weDontHaveEnoughDataToShowChart))
+            Title(text = stringResource(id = R.string.pedometerHistory_weDontHaveEnoughDataToShowChart_text))
         }
     }
 }

@@ -38,7 +38,7 @@ private fun WelcomeContent(onStart: () -> Unit) {
         }
         Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
-            labelResId = R.string.welcome_letsStart_button,
+            labelResId = R.string.welcome_letsStart_buttonText,
             iconResId = R.drawable.ic_play,
             onClick = onStart
         )

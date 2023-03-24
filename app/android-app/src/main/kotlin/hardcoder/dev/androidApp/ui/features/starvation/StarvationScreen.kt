@@ -116,29 +116,29 @@ private fun StarvationStatistic.toStarvationStatistic(
 ): List<StatisticData> {
     return listOf(
         StatisticData(
-            name = context.getString(R.string.starvation_statistic_max_hours_label),
+            name = context.getString(R.string.starvation_statistic_max_hours_text),
             value = starvationDurationStatistic?.maximumDurationInHours?.toString()
-                ?: context.getString(R.string.starvation_statistic_not_enough_data)
+                ?: context.getString(R.string.starvation_statistic_not_enough_data_text)
         ),
         StatisticData(
-            name = context.getString(R.string.starvation_statistic_min_hours_label),
+            name = context.getString(R.string.starvation_statistic_min_hours_text),
             value = starvationDurationStatistic?.minimumDurationInHours?.toString()
-                ?: context.getString(R.string.starvation_statistic_not_enough_data)
+                ?: context.getString(R.string.starvation_statistic_not_enough_data_text)
         ),
         StatisticData(
-            name = context.getString(R.string.starvation_statistic_average_hours_label),
+            name = context.getString(R.string.starvation_statistic_average_hours_text),
             value = starvationDurationStatistic?.averageDurationInHours?.toString()
-                ?: context.getString(R.string.starvation_statistic_not_enough_data)
+                ?: context.getString(R.string.starvation_statistic_not_enough_data_text)
         ),
         StatisticData(
-            name = context.getString(R.string.starvation_statistic_completion_percentage_label),
+            name = context.getString(R.string.starvation_statistic_completion_percentage_text),
             value = percentageCompleted?.toString()
-                ?: context.getString(R.string.starvation_statistic_not_enough_data)
+                ?: context.getString(R.string.starvation_statistic_not_enough_data_text)
         ),
         StatisticData(
-            name = context.getString(R.string.starvation_statistic_favorite_plan_label),
+            name = context.getString(R.string.starvation_statistic_favorite_plan_text),
             value = favouritePlanResId?.let { context.getString(favouritePlanResId) }
-                ?: context.getString(R.string.starvation_statistic_not_enough_data)
+                ?: context.getString(R.string.starvation_statistic_not_enough_data_text)
         )
     )
 }
@@ -192,7 +192,7 @@ private fun NotStarvingContent(
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             iconResId = R.drawable.ic_play,
-            labelResId = R.string.starvationScreen_startStarvation_buttonText,
+            labelResId = R.string.starvation_startStarvation_buttonText,
             onClick = onCreateStarvationTrack
         )
     }
@@ -230,7 +230,7 @@ private fun StarvingContent(
                 .verticalScroll(rememberScrollState())
         ) {
             Headline(
-                text = stringResource(id = R.string.starvationScreen_you_starving_text),
+                text = stringResource(id = R.string.starvation_you_starving_text),
                 modifier = Modifier.align(CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -267,7 +267,7 @@ private fun StarvingContent(
         Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
             iconResId = R.drawable.ic_close,
-            labelResId = R.string.starvationScreen_endStarvation_buttonText,
+            labelResId = R.string.starvation_endStarvation_buttonText,
             onClick = onEndStarvation
         )
     }
@@ -326,7 +326,7 @@ private fun FinishStarvingContent(
                 contentDescription = stringResource(id = R.string.starvation_finish_image_contentDescription)
             )
             Spacer(modifier = Modifier.height(32.dp))
-            Headline(text = stringResource(id = R.string.starvation_finished_text))
+            Headline(text = stringResource(id = R.string.starvation_finish_text))
             Spacer(modifier = Modifier.height(16.dp))
             Description(text = advicesStringResource)
         }

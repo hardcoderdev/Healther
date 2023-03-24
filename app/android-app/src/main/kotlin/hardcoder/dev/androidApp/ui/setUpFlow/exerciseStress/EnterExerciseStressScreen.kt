@@ -106,7 +106,7 @@ private fun EnterExerciseStressContent(
         }
         IconTextButton(
             iconResId = R.drawable.ic_done,
-            labelResId = R.string.enterExerciseStress_next_button,
+            labelResId = R.string.enterExerciseStress_next_buttonText,
             onClick = onGoForward
         )
     }

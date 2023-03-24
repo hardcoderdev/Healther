@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pedometer_title_topBar">Шагомер</string>
+    <string name="pedometer_stepCountFormat_text">%d / %d шагов</string>
+    <string name="pedometer_playIcon_contentDescription">Начать запись шагов</string>
+    <string name="pedometer_kilometersLabel_text">км</string>
+    <string name="pedometer_yourIndicatorsForThisDay_text">Ваши показатели за день:</string>
+    <string name="pedometer_stopIcon_contentDescription">Закончить запись шагов</string>
+    <string name="pedometer_caloriesLabel_text">Калории</string>
+    <string name="pedometer_timeLabel_text">Время ходьбы</string>
+    <string name="pedometer_noHardwareSensorOnDevice_text">На вашем девайсе отсутствует сенсор.\nК сожалению вы не сможете воспользоваться этой фичей</string>
+    <string name="pedometer_stepsLabel_text">Шаги</string>
+    <string name="pedometer_emptyDayHistory_text">В этот день вы не включали шагомер.</string>
+    <string name="pedometer_weDontHaveEnoughDataToShowChart_text">У нас пока недостаточно данных для отображения графика. Используйте эту фичу на протяжении пары часов и график появится!</string>
+    <string name="pedometer_notification_notificationContentTitle_text">Шагомер</string>
+    <string name="pedometer_notification_contentStepFormat_text">Шагов пройдено: %d</string>
+    <string name="pedometer_notificationManagerChannelId" translatable="false">healther_pedometer_feature_id</string>
+    <string name="pedometer_notificationManager_channelName" translatable="false">pedometer</string>
+    <string name="pedometer_notificationManager_contentIntent_deeplinkPattern" translatable="false">healther://pedometer_feature</string>
+    <string name="pedometerHistory_weDontHaveEnoughDataToShowChart_text">За этот день недостаточно данных для отображения графика.</string>
+    <string name="pedometerHistory_title_topBar">Подробная история</string>
+    <string name="pedometerHistory_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
+</resources>

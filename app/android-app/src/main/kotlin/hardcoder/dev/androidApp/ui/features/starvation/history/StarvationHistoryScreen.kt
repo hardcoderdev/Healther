@@ -94,6 +94,6 @@ private fun StarvationTracksHistory(state: StarvationHistoryViewModel.State) {
         }
     } else {
         Spacer(modifier = Modifier.height(16.dp))
-        Title(text = stringResource(id = R.string.featureHistory_emptyDayHistory_text))
+        Title(text = stringResource(id = R.string.starvationHistory_title_topBar))
     }
 }

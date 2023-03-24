@@ -88,7 +88,7 @@ fun StarvationItem(starvationTrack: StarvationTrack) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Label(
                     text = stringResource(
-                        id = R.string.starvationItem_starvationPlan_text,
+                        id = R.string.starvationItem_starvationPlan_formatText,
                         formatArgs = arrayOf(
                             stringResource(
                                 id = starvationPlanResourcesProvider.provide(

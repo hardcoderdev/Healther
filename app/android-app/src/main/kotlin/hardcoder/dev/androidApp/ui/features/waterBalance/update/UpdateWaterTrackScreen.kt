@@ -153,7 +153,7 @@ private fun UpdateWaterTrackContent(
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             iconResId = R.drawable.ic_done,
-            labelResId = R.string.updateWaterTrack_updateEntry_button,
+            labelResId = R.string.updateWaterTrack_updateEntry_buttonText,
             onClick = onUpdateWaterTrack,
             isEnabled = state.creationAllowed
         )
@@ -187,7 +187,7 @@ private fun EnterDrunkMillilitersSection(
             }
         },
         regex = RegexHolder.textFieldDigitRegex,
-        label = R.string.saveWaterTrack_enterMillilitersCountHint_textField,
+        label = R.string.updateWaterTrack_enterMillilitersCountHint_textField,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done
@@ -204,11 +204,11 @@ private fun EnterDrunkMillilitersSection(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp),
                 text = when (validatedMillilitersCount.reason) {
                     is IncorrectMillilitersInput.Reason.Empty -> {
-                        stringResource(R.string.updateWaterTrack_millilitersEmpty_error)
+                        stringResource(R.string.updateWaterTrack_millilitersEmpty_text)
                     }
 
                     is IncorrectMillilitersInput.Reason.MoreThanDailyWaterIntake -> {
-                        stringResource(R.string.updateWaterTrack_millilitersMoreThanDailyWaterIntake_error)
+                        stringResource(R.string.updateWaterTrack_millilitersMoreThanDailyWaterIntake_text)
                     }
 
                     else -> {
@@ -263,14 +263,14 @@ private fun SelectDateSection(
     Spacer(modifier = Modifier.height(16.dp))
     Description(
         text = stringResource(
-            id = R.string.updateWaterTrack_selectedDateFormat_text,
+            id = R.string.updateWaterTrack_selectedDate_formatText,
             formatArgs = arrayOf(formattedDate)
         )
     )
     Spacer(modifier = Modifier.height(16.dp))
     IconTextButton(
         iconResId = R.drawable.ic_date_range,
-        labelResId = R.string.updateWaterTrack_selectDateRange_button,
+        labelResId = R.string.updateWaterTrack_selectDateRange_buttonText,
         style = ButtonStyles.OUTLINED,
         onClick = onShowDatePicker
     )

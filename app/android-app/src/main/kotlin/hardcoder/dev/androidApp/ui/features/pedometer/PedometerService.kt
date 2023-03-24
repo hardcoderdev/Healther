@@ -32,7 +32,7 @@ class PedometerService : Service(), SensorEventListener {
         val stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
 
         if (stepSensor == null) {
-            toast(msgResId = R.string.pedometer_noHardwareSensorOnDevice_error)
+            toast(msgResId = R.string.pedometer_noHardwareSensorOnDevice_text)
             return
         }
 

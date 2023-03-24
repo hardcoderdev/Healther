@@ -76,7 +76,7 @@ private fun StarvationCreationTrackContent(
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             iconResId = R.drawable.ic_play,
-            labelResId = R.string.starvationScreen_startStarvation_buttonText,
+            labelResId = R.string.starvation_startStarvation_buttonText,
             onClick = onStartStarvation,
             isEnabled = state.creationAllowed
         )
@@ -89,9 +89,9 @@ private fun SelectPlanSection(
     onUpdateSelectedPlan: (StarvationPlan, Int?) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Title(text = stringResource(id = R.string.starvationPlan_selectStarvationPlan_text))
+        Title(text = stringResource(id = R.string.starvationPlanItem_selectStarvationPlan_text))
         Spacer(modifier = Modifier.height(16.dp))
-        Description(text = stringResource(id = R.string.starvationPlan_planDifficulty_text))
+        Description(text = stringResource(id = R.string.starvationPlanItem_planDifficulty_text))
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),

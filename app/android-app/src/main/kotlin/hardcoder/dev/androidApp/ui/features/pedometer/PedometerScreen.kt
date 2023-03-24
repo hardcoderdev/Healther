@@ -127,7 +127,7 @@ private fun PedometerContent(
                 chartEntries = state.chartEntries
             )
         } else {
-            Description(text = stringResource(id = R.string.pedometer_weDontHaveEnoughDataToShowChart))
+            Description(text = stringResource(id = R.string.pedometer_weDontHaveEnoughDataToShowChart_text))
         }
     }
 }

@@ -99,7 +99,7 @@ private fun SelectGenderContent(
         }
         IconTextButton(
             iconResId = R.drawable.ic_done,
-            labelResId = R.string.selectGender_next_button,
+            labelResId = R.string.selectGender_next_buttonText,
             onClick = onGoForward
         )
     }

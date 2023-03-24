@@ -11,3 +11,7 @@ android {
         minSdk = Android.DefaultConfig.minSdk
     }
 }
+
+dependencies {
+    implementation(Dependencies.dateTime)
+}

@@ -99,7 +99,7 @@ private fun EnterWeightContent(
         Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
             iconResId = R.drawable.ic_done,
-            labelResId = R.string.enterWeight_next_button,
+            labelResId = R.string.enterWeight_next_buttonText,
             onClick = onGoForward
         )
     }

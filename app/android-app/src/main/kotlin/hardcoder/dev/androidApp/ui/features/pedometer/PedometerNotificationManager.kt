@@ -19,13 +19,13 @@ class PedometerNotificationManager(private val context: Context) {
     private var currentNotification: Notification? = null
     private var notificationBuilder: Notification.Builder? = null
     private val contentIntentDeepLinkUri by lazy {
-        context.getString(R.string.pedometerNotificationManager_contentIntent_deeplinkPattern).toUri()
+        context.getString(R.string.pedometer_notificationManager_contentIntent_deeplinkPattern).toUri()
     }
     private val pedometerChannelId by lazy {
-        context.getString(R.string.pedometerNotificationManagerChannelId)
+        context.getString(R.string.pedometer_notificationManagerChannelId)
     }
     private val pedometerChannelName by lazy {
-        context.getString(R.string.pedometerNotificationManager_channelName)
+        context.getString(R.string.pedometer_notificationManager_channelName)
     }
 
     fun getNotification(initialStepCount: Int): Notification? {
@@ -46,10 +46,10 @@ class PedometerNotificationManager(private val context: Context) {
         }
 
         notificationBuilder?.apply {
-            setContentTitle(context.getString(R.string.pedometerNotification_notificationContentTitle_text))
+            setContentTitle(context.getString(R.string.pedometer_notification_notificationContentTitle_text))
             setContentText(
                 context.getString(
-                    R.string.pedometerNotification_contentStepFormat_text,
+                    R.string.pedometer_notification_contentStepFormat_text,
                     initialStepCount
                 )
             )
@@ -71,7 +71,7 @@ class PedometerNotificationManager(private val context: Context) {
         notificationBuilder?.apply {
             setContentText(
                 context.getString(
-                    R.string.pedometerNotification_contentStepFormat_text,
+                    R.string.pedometer_notification_contentStepFormat_text,
                     newStepCount
                 )
             )
