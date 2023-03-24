@@ -14,13 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.rounded.DateRange
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,11 +27,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.MaterialDialogState
-import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
-import com.vanpra.composematerialdialogs.datetime.date.datepicker
-import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.RegexHolder
 import hardcoder.dev.androidApp.ui.features.DeleteTrackDialog
@@ -50,16 +38,17 @@ import hardcoder.dev.logic.features.waterBalance.IncorrectMillilitersInput
 import hardcoder.dev.presentation.features.waterBalance.UpdateWaterTrackViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
-import hardcoder.dev.uikit.ButtonStyles
-import hardcoder.dev.uikit.ErrorText
-import hardcoder.dev.uikit.FilledTextField
-import hardcoder.dev.uikit.IconTextButton
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
+import hardcoder.dev.uikit.buttons.ButtonStyles
+import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.dialogs.DatePicker
+import hardcoder.dev.uikit.text.Description
+import hardcoder.dev.uikit.text.ErrorText
+import hardcoder.dev.uikit.text.FilledTextField
+import hardcoder.dev.uikit.text.Title
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.toKotlinLocalDate
 import java.text.DateFormat
 
 @Composable
@@ -101,11 +90,11 @@ fun UpdateWaterTrackScreen(
         content = {
             UpdateWaterTrackContent(
                 state = state.value,
-                updateWaterDrunk = viewModel::updateWaterDrunk,
-                updateSelectedDate = viewModel::updateSelectedDate,
-                updateSelectedDrink = viewModel::updateSelectedDrink,
+                onUpdateWaterDrunk = viewModel::updateWaterDrunk,
+                onUpdateSelectedDate = viewModel::updateSelectedDate,
+                onUpdateSelectedDrink = viewModel::updateSelectedDrink,
                 onCreateDrinkType = onCreateDrinkType,
-                updateWaterTrack = viewModel::updateWaterTrack
+                onUpdateWaterTrack = viewModel::updateWaterTrack
             )
         },
         topBarConfig = TopBarConfig(
@@ -117,7 +106,7 @@ fun UpdateWaterTrackScreen(
         actionConfig = ActionConfig(
             actions = listOf(
                 Action(
-                    iconImageVector = Icons.Filled.Delete,
+                    iconResId = R.drawable.ic_delete,
                     onActionClick = { dialogOpen = true }
                 )
             )
@@ -128,13 +117,15 @@ fun UpdateWaterTrackScreen(
 @Composable
 private fun UpdateWaterTrackContent(
     state: UpdateWaterTrackViewModel.State,
-    updateWaterTrack: () -> Unit,
-    updateSelectedDrink: (DrinkType) -> Unit,
-    updateSelectedDate: (LocalDate) -> Unit,
-    updateWaterDrunk: (Int) -> Unit,
+    onUpdateWaterTrack: () -> Unit,
+    onUpdateSelectedDrink: (DrinkType) -> Unit,
+    onUpdateSelectedDate: (LocalDate) -> Unit,
+    onUpdateWaterDrunk: (Int) -> Unit,
     onCreateDrinkType: () -> Unit
 ) {
-    val dateDialogState = rememberMaterialDialogState()
+    var datePickerDialogVisibility by remember {
+        mutableStateOf(false)
+    }
 
     Column(
         modifier = Modifier.padding(16.dp)
@@ -145,49 +136,35 @@ private fun UpdateWaterTrackContent(
                 .verticalScroll(rememberScrollState())
         ) {
             EnterDrunkMillilitersSection(
-                updateWaterDrunk = updateWaterDrunk,
+                updateWaterDrunk = onUpdateWaterDrunk,
                 state = state
             )
             Spacer(modifier = Modifier.height(32.dp))
             SelectDrinkTypeSection(
                 state = state,
-                updateSelectedDrink = updateSelectedDrink,
+                updateSelectedDrink = onUpdateSelectedDrink,
                 onCreateDrinkType = onCreateDrinkType
             )
             Spacer(modifier = Modifier.height(32.dp))
-            SelectDateSection(
-                dateDialogState = dateDialogState,
-                state = state
-            )
+            SelectDateSection(state = state) {
+                datePickerDialogVisibility = !datePickerDialogVisibility
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
-            imageVector = Icons.Default.Done,
+            iconResId = R.drawable.ic_done,
             labelResId = R.string.updateWaterTrack_updateEntry_button,
-            onClick = updateWaterTrack,
+            onClick = onUpdateWaterTrack,
             isEnabled = state.creationAllowed
         )
-        MaterialDialog(
-            dialogState = dateDialogState,
-            buttons = {
-                positiveButton(text = stringResource(R.string.updateWaterTrack_selectDate_datePickerDialogButton))
-                negativeButton(text = stringResource(R.string.updateWaterTrack_cancel_datePickerDialogButton))
+
+        DatePicker(
+            onUpdateSelectedDate = onUpdateSelectedDate,
+            isShowing = datePickerDialogVisibility,
+            onClose = {
+                datePickerDialogVisibility = !datePickerDialogVisibility
             }
-        ) {
-            datepicker(
-                title = stringResource(R.string.updateWaterTrack_selectDateTitle_datePicker),
-                colors = DatePickerDefaults.colors(
-                    headerBackgroundColor = MaterialTheme.colorScheme.primary,
-                    headerTextColor = MaterialTheme.colorScheme.onPrimary,
-                    dateActiveBackgroundColor = MaterialTheme.colorScheme.secondary
-                ),
-                allowedDateValidator = { selectedDate ->
-                    selectedDate.toEpochDay() <= LocalDate.now().toEpochDays()
-                }
-            ) { selectedDate ->
-                updateSelectedDate(selectedDate.toKotlinLocalDate())
-            }
-        }
+        )
     }
 }
 
@@ -249,10 +226,7 @@ private fun SelectDrinkTypeSection(
     updateSelectedDrink: (DrinkType) -> Unit,
     onCreateDrinkType: () -> Unit
 ) {
-    Text(
-        text = stringResource(id = R.string.updateWaterTrack_enterDrinkType_text),
-        style = MaterialTheme.typography.titleLarge
-    )
+    Title(text = stringResource(id = R.string.updateWaterTrack_enterDrinkType_text))
     Spacer(modifier = Modifier.height(8.dp))
     FlowRow(
         modifier = Modifier
@@ -271,7 +245,7 @@ private fun SelectDrinkTypeSection(
     }
     Spacer(modifier = Modifier.height(16.dp))
     IconTextButton(
-        imageVector = Icons.Filled.Create,
+        iconResId = R.drawable.ic_create,
         labelResId = R.string.updateWaterTrack_createCustomDrinkType_buttonText,
         onClick = onCreateDrinkType
     )
@@ -280,28 +254,24 @@ private fun SelectDrinkTypeSection(
 @Composable
 private fun SelectDateSection(
     state: UpdateWaterTrackViewModel.State,
-    dateDialogState: MaterialDialogState
+    onShowDatePicker: () -> Unit
 ) {
     val selectedDate = state.selectedDate.toDate()
     val formattedDate = DateFormat.getDateInstance().format(selectedDate)
 
-    Text(
-        text = stringResource(id = R.string.updateWaterTrack_selectAnotherDate_text),
-        style = MaterialTheme.typography.titleLarge
-    )
+    Title(text = stringResource(id = R.string.updateWaterTrack_selectAnotherDate_text))
     Spacer(modifier = Modifier.height(16.dp))
-    Text(
-        style = MaterialTheme.typography.titleMedium,
+    Description(
         text = stringResource(
             id = R.string.updateWaterTrack_selectedDateFormat_text,
-            formattedDate
+            formatArgs = arrayOf(formattedDate)
         )
     )
     Spacer(modifier = Modifier.height(16.dp))
     IconTextButton(
-        imageVector = Icons.Rounded.DateRange,
+        iconResId = R.drawable.ic_date_range,
         labelResId = R.string.updateWaterTrack_selectDateRange_button,
         style = ButtonStyles.OUTLINED,
-        onClick = dateDialogState::show
+        onClick = onShowDatePicker
     )
 }

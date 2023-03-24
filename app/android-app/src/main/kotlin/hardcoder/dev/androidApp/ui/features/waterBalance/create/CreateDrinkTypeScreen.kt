@@ -13,12 +13,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.Save
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,13 +27,15 @@ import hardcoder.dev.androidApp.ui.LocalIconProvider
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.waterBalance.CreateDrinkTypeViewModel
-import hardcoder.dev.uikit.FilledTextField
-import hardcoder.dev.uikit.IconTextButton
 import hardcoder.dev.uikit.IntSlider
 import hardcoder.dev.uikit.ScaffoldWrapper
-import hardcoder.dev.uikit.Text
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
+import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.icons.Icon
+import hardcoder.dev.uikit.text.Description
+import hardcoder.dev.uikit.text.FilledTextField
+import hardcoder.dev.uikit.text.Title
 
 @Composable
 fun CreateDrinkTypeScreen(onGoBack: () -> Unit) {
@@ -102,7 +98,7 @@ private fun CreateDrinkTypeContent(
         }
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
-            imageVector = Icons.Filled.Save,
+            iconResId = R.drawable.ic_save,
             labelResId = R.string.createDrinkType_createTrack_buttonText,
             onClick = onCreateDrinkType,
             isEnabled = state.allowCreation
@@ -115,10 +111,7 @@ private fun EnterDrinkTypeNameSection(
     state: CreateDrinkTypeViewModel.State,
     onUpdateName: (String) -> Unit
 ) {
-    Text(
-        text = stringResource(id = R.string.createDrinkType_enterName_text),
-        style = MaterialTheme.typography.titleLarge
-    )
+    Title(text = stringResource(id = R.string.createDrinkType_enterName_text))
     Spacer(modifier = Modifier.height(16.dp))
     FilledTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -131,7 +124,7 @@ private fun EnterDrinkTypeNameSection(
         ),
         leadingIcon = {
             Icon(
-                imageVector = Icons.Filled.Description,
+                iconResId = R.drawable.ic_description,
                 contentDescription = stringResource(
                     id = R.string.createDrinkType_nameIcon_contentDescription
                 )
@@ -147,10 +140,7 @@ private fun SelectIconSection(
 ) {
     val iconProvider = LocalIconProvider.current
 
-    Text(
-        text = stringResource(id = R.string.createDrinkType_selectIcon_text),
-        style = MaterialTheme.typography.titleLarge
-    )
+    Title(text = stringResource(id = R.string.createDrinkType_selectIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
     LazyHorizontalGrid(
         modifier = Modifier.height(200.dp),
@@ -175,13 +165,9 @@ private fun EnterDrinkHydrationIndexPercentageSection(
     state: CreateDrinkTypeViewModel.State,
     onUpdateHydrationIndex: (Int) -> Unit
 ) {
-    Text(
-        text = stringResource(id = R.string.createDrinkType_selectHydrationIndex_text),
-        style = MaterialTheme.typography.titleLarge
-    )
+    Title(text = stringResource(id = R.string.createDrinkType_selectHydrationIndex_text))
     Spacer(modifier = Modifier.height(16.dp))
-    Text(
-        style = MaterialTheme.typography.titleMedium,
+    Description(
         text = stringResource(
             id = R.string.createDrinkType_selectedIndex_formatText,
             formatArgs = arrayOf(state.hydrationIndexPercentage)
@@ -191,9 +177,6 @@ private fun EnterDrinkHydrationIndexPercentageSection(
     IntSlider(
         selectedValue = state.hydrationIndexPercentage,
         onValueChange = onUpdateHydrationIndex,
-        valueRange = 30..100,
-        sliderColors = SliderDefaults.colors(
-            inactiveTrackColor = MaterialTheme.colorScheme.primaryContainer
-        )
+        valueRange = 30..100
     )
 }

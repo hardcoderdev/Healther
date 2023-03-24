@@ -16,16 +16,17 @@ import hardcoder.dev.presentation.setUpFlow.HeroCreateViewModel
 import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
 import hardcoder.dev.presentation.setUpFlow.SplashViewModel
 
-class PresentationModule(
-    val logicModule: LogicModule
-) {
+class PresentationModule(val logicModule: LogicModule) {
+
     fun createSplashViewModel() = SplashViewModel(
         appPreferenceProvider = logicModule.appPreferenceProvider
     )
 
     fun createEnterWeightViewModel() = EnterWeightViewModel()
 
-    fun createSelectGenderViewModel() = SelectGenderViewModel()
+    fun createSelectGenderViewModel() = SelectGenderViewModel(
+        genderProvider = logicModule.genderProvider
+    )
 
     fun createEnterExerciseStressTimeViewModel() = EnterExerciseStressTimeViewModel()
 

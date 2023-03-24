@@ -1,4 +1,4 @@
-package hardcoder.dev.androidApp.ui.theme
+package hardcoder.dev.uikit
 
 import androidx.compose.ui.graphics.Color
 
@@ -28,7 +28,6 @@ val md_theme_light_outline = Color(0xFF76786B)
 val md_theme_light_inverseOnSurface = Color(0xFFF3F1E9)
 val md_theme_light_inverseSurface = Color(0xFF30312C)
 val md_theme_light_inversePrimary = Color(0xFFB6D168)
-val md_theme_light_shadow = Color(0xFF000000)
 val md_theme_light_surfaceTint = Color(0xFF506601)
 val md_theme_light_outlineVariant = Color(0xFFC6C8B8)
 val md_theme_light_scrim = Color(0xFF000000)
@@ -59,7 +58,6 @@ val md_theme_dark_outline = Color(0xFF909284)
 val md_theme_dark_inverseOnSurface = Color(0xFF1B1C17)
 val md_theme_dark_inverseSurface = Color(0xFFE4E3DB)
 val md_theme_dark_inversePrimary = Color(0xFF506601)
-val md_theme_dark_shadow = Color(0xFF000000)
 val md_theme_dark_surfaceTint = Color(0xFFB6D168)
 val md_theme_dark_outlineVariant = Color(0xFF46483C)
 val md_theme_dark_scrim = Color(0xFF000000)

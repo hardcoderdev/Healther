@@ -1,7 +1,5 @@
 package hardcoder.dev.androidApp.ui.setUpFlow.gender
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,29 +8,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import hardcoder.dev.androidApp.ui.LocalGenderResourcesProvider
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.entities.hero.Gender
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
-import hardcoder.dev.uikit.IconTextButton
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
+import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.card.SelectionCard
+import hardcoder.dev.uikit.icons.Image
+import hardcoder.dev.uikit.text.Description
+import hardcoder.dev.uikit.text.Title
 
 @Composable
 fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: (Gender) -> Unit) {
@@ -48,7 +43,7 @@ fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: (Gender) -> Unit) {
                 state = state.value,
                 onUpdateGender = selectedGenderViewModel::updateGender,
                 onGoForward = {
-                    onGoForward(state.value.gender)
+                    onGoForward(state.value.selectedGender)
                 }
             )
         },
@@ -67,77 +62,45 @@ private fun SelectGenderContent(
     onUpdateGender: (Gender) -> Unit,
     onGoForward: () -> Unit
 ) {
+    val genderResourcesProvider = LocalGenderResourcesProvider.current
+
     Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxSize()
     ) {
-        Text(
-            text = stringResource(id = R.string.selectGender_selectYourGender_text),
-            style = MaterialTheme.typography.headlineSmall
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Card(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .height(200.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                border = if (state.gender == Gender.MALE) BorderStroke(
-                    width = 3.dp,
-                    color = MaterialTheme.colorScheme.primary
-                ) else null
-            ) {
-                IconButton(
-                    onClick = { onUpdateGender(Gender.MALE) },
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.male),
-                        contentDescription = ""
-                    )
+        Column(Modifier.weight(2f)) {
+            Title(text = stringResource(id = R.string.selectGender_selectYourGender_text))
+            Spacer(modifier = Modifier.height(32.dp))
+            Row(modifier = Modifier.fillMaxWidth()) {
+                state.availableGenderList.forEach { gender ->
+                    SelectionCard(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .height(230.dp),
+                        selectedItem = state.selectedGender,
+                        item = gender,
+                        onSelect = onUpdateGender
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Image(
+                                modifier = Modifier.height(190.dp),
+                                imageResId = genderResourcesProvider.provide(gender).imageResId
+                            )
+                            Title(text = stringResource(id = genderResourcesProvider.provide(gender).nameResId))
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
                 }
             }
-            Spacer(modifier = Modifier.width(16.dp))
-            Card(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .height(200.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                border = if (state.gender == Gender.FEMALE) BorderStroke(
-                    width = 3.dp,
-                    color = MaterialTheme.colorScheme.primary
-                ) else null
-            ) {
-                IconButton(
-                    onClick = { onUpdateGender(Gender.FEMALE) },
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.female),
-                        contentDescription = ""
-                    )
-                }
-            }
+            Spacer(modifier = Modifier.height(32.dp))
+            Description(text = stringResource(id = R.string.selectGender_forWhatGender_text))
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = stringResource(id = R.string.selectGender_forWhatGender_text),
-            style = MaterialTheme.typography.titleLarge
-        )
-        Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
-            imageVector = Icons.Default.Done,
+            iconResId = R.drawable.ic_done,
             labelResId = R.string.selectGender_next_button,
             onClick = onGoForward
         )
     }
-}
-
-@Preview
-@Composable
-fun SelectGenderScreenPreview() {
-    SelectGenderScreen(onGoBack = {}, onGoForward = {})
 }

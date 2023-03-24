@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
-package hardcoder.dev.uikit
+package hardcoder.dev.uikit.text
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.text.KeyboardActions

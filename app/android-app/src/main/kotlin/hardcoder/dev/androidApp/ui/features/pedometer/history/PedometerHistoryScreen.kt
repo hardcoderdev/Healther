@@ -4,12 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DirectionsWalk
-import androidx.compose.material.icons.filled.Fireplace
-import androidx.compose.material.icons.filled.MyLocation
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,20 +15,23 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.ui.LocalFloatFormatter
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.pedometer.InfoItem
-import hardcoder.dev.uikit.ActivityChartSection
 import hardcoder.dev.androidApp.ui.features.pedometer.PedometerInfoSection
 import hardcoder.dev.extensions.createRangeForCurrentDay
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
+import hardcoder.dev.uikit.ActivityChartSection
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
+import hardcoder.dev.uikit.text.Title
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
+
+const val MINIMUM_ENTRIES_FOR_SHOWING_CHART = 2
 
 @Composable
 fun PedometerHistoryScreen(onGoBack: () -> Unit) {
@@ -93,10 +90,8 @@ private fun PedometerHistoryContent(
                 chartEntries = state.chartEntries
             )
         } else {
-            Text(
-                text = stringResource(id = R.string.pedometerHistory_weDontHaveEnoughDataToShowChart),
-                style = MaterialTheme.typography.titleMedium
-            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Title(text = stringResource(id = R.string.pedometerHistory_weDontHaveEnoughDataToShowChart))
         }
     }
 }
@@ -112,28 +107,24 @@ private fun PedometerTracksHistory(
         PedometerInfoSection(
             infoItemList = listOf(
                 InfoItem(
-                    icon = Icons.Filled.DirectionsWalk,
+                    iconResId = R.drawable.ic_directions_walk,
                     nameResId = R.string.pedometer_stepsLabel_text,
                     value = state.totalStepsCount.toString()
                 ),
                 InfoItem(
-                    icon = Icons.Filled.MyLocation,
+                    iconResId = R.drawable.ic_my_location,
                     nameResId = R.string.pedometer_kilometersLabel_text,
                     value = floatFormatter.format(state.totalKilometersCount)
                 ),
                 InfoItem(
-                    icon = Icons.Filled.Fireplace,
+                    iconResId = R.drawable.ic_fire,
                     nameResId = R.string.pedometer_caloriesLabel_text,
                     value = floatFormatter.format(state.totalCaloriesBurned)
                 )
             )
         )
     } else {
-        Text(
-            text = stringResource(id = R.string.pedometer_emptyDayHistory_text),
-            style = MaterialTheme.typography.titleMedium
-        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Title(text = stringResource(id = R.string.pedometer_emptyDayHistory_text))
     }
 }
-
-const val MINIMUM_ENTRIES_FOR_SHOWING_CHART = 2

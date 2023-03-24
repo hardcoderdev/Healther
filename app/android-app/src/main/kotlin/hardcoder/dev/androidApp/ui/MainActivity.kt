@@ -6,8 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
 import hardcoder.dev.androidApp.ui.features.starvation.plans.StarvationPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.navigation.RootScreen
-import hardcoder.dev.androidApp.ui.theme.HealtherTheme
+import hardcoder.dev.androidApp.ui.setUpFlow.gender.GenderResourcesProvider
 import hardcoder.dev.datetime.TimeUnitMapper
+import hardcoder.dev.uikit.HealtherTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
                         context = this,
                         defaultAccuracy = DateTimeFormatter.Accuracy.MINUTES
                     ),
+                    LocalGenderResourcesProvider provides GenderResourcesProvider(),
                     LocalStarvationPlanResourcesProvider provides StarvationPlanResourcesProvider(),
                     LocalTimeUnitMapper provides TimeUnitMapper()
                 ) {

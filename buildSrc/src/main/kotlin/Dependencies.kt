@@ -24,6 +24,7 @@ object Dependencies {
         const val accompanist = "0.29.1-alpha"
         const val dataStore = "1.0.0"
         const val coil = "2.2.2"
+        const val lottieCompose = "6.0.0"
     }
 
     const val sqlDelightCoroutinesExt =
@@ -73,6 +74,7 @@ object Dependencies {
 
     const val dataStore = "androidx.datastore:datastore-preferences:${Versions.dataStore}"
     const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil}"
+    const val lottieCompose = "com.airbnb.android:lottie-compose:${Versions.lottieCompose}"
 }
 
 fun DependencyHandler.addCommonAndroid() {
@@ -101,21 +103,27 @@ fun DependencyHandler.addRetrofit() {
 
 fun DependencyHandler.addCompose() {
     implementation(platform(Dependencies.composeBom))
-    implementation(Dependencies.activityCompose)
-    implementation(Dependencies.composeUi)
     implementation(Dependencies.composeGraphics)
-    implementation(Dependencies.composeMaterial)
     implementation(Dependencies.composeNavigation)
     implementation(Dependencies.composeTooling)
-    implementation(Dependencies.composeExtendedIcons)
     debugImplementation(Dependencies.debugTooling)
-    implementation(Dependencies.numberPicker)
+    implementation(Dependencies.flowRow)
     implementation(Dependencies.composeCalendar)
     implementation(Dependencies.composeCalendarDateTime)
-    implementation(Dependencies.composeMaterialDialogs)
+    implementation(Dependencies.coilCompose)
+    implementation(Dependencies.lottieCompose)
+}
+
+fun DependencyHandler.addComposeMaterial() {
+    implementation(platform(Dependencies.composeBom))
+    implementation(Dependencies.activityCompose)
+    implementation(Dependencies.composeMaterial)
+    implementation(Dependencies.composeUi)
+    implementation(Dependencies.composeExtendedIcons)
     implementation(Dependencies.composeCharts)
+    implementation(Dependencies.composeTooling)
+    implementation(Dependencies.numberPicker)
+    implementation(Dependencies.composeMaterialDialogs)
     implementation(Dependencies.accompanistPager)
     implementation(Dependencies.accompanistPagerIndicators)
-    implementation(Dependencies.flowRow)
-    implementation(Dependencies.coilCompose)
 }

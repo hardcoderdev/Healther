@@ -10,19 +10,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
@@ -31,9 +30,11 @@ import hardcoder.dev.presentation.features.waterBalance.WaterTrackingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.ScaffoldWrapper
-import hardcoder.dev.uikit.Text
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
+import hardcoder.dev.uikit.progressBar.LinearProgressBar
+import hardcoder.dev.uikit.text.Headline
+import hardcoder.dev.uikit.text.Title
 
 @Composable
 fun WaterTrackingScreen(
@@ -65,7 +66,7 @@ fun WaterTrackingScreen(
                 actionConfig = ActionConfig(
                     actions = listOf(
                         Action(
-                            iconImageVector = Icons.Filled.MoreVert,
+                            iconResId = R.drawable.ic_more,
                             onActionClick = onHistoryDetails
                         )
                     )
@@ -95,39 +96,43 @@ private fun WaterTrackingContent(
             .padding(16.dp)
             .fillMaxSize()
     ) {
-        Text(
-            style = MaterialTheme.typography.headlineSmall,
+        Headline(
             text = stringResource(
                 id = R.string.waterTracking_millilitersCount_format,
-                state.millisCount,
-                state.dailyWaterIntake
-            ),
-            fontWeight = FontWeight.Bold
+                formatArgs = arrayOf(
+                    state.millisCount,
+                    state.dailyWaterIntake
+                )
+            )
         )
         Spacer(modifier = Modifier.height(16.dp))
-        LinearProgressIndicator(
-            progress = state.millisCount safeDiv state.dailyWaterIntake,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(14.dp))
-                .height(16.dp),
-            color = MaterialTheme.colorScheme.primary
-        )
-
+        LinearProgressBar(progress = state.millisCount safeDiv state.dailyWaterIntake)
         Spacer(modifier = Modifier.height(32.dp))
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(2f),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(vertical = 16.dp)
-        ) {
-            items(state.waterTracks) { track ->
-                WaterTrackItem(
-                    waterTrackItem = track,
-                    onUpdate = onUpdateWaterTrack
-                )
+        if (state.waterTracks.isNotEmpty()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(2f),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(vertical = 16.dp)
+            ) {
+                items(state.waterTracks) { track ->
+                    WaterTrackItem(
+                        waterTrackItem = track,
+                        onUpdate = onUpdateWaterTrack
+                    )
+                }
             }
+        } else {
+            Title(text = stringResource(id = R.string.waterTracking_nowEmpty_text))
+            val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty_shake_box))
+            val progress by animateLottieCompositionAsState(composition, iterations = LottieConstants.IterateForever)
+            Spacer(modifier = Modifier.height(16.dp))
+            LottieAnimation(
+                modifier = Modifier.fillMaxWidth().height(400.dp),
+                composition = composition,
+                progress = { progress },
+            )
         }
     }
 }

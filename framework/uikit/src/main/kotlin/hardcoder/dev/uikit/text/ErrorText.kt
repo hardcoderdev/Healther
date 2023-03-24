@@ -1,4 +1,4 @@
-package hardcoder.dev.uikit
+package hardcoder.dev.uikit.text
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error

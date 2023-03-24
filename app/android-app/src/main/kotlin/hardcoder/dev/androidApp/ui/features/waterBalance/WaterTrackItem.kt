@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package hardcoder.dev.androidApp.ui.features.waterBalance
 
 import androidx.compose.foundation.Image
@@ -11,20 +9,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.LocalIconResolver
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.waterBalance.WaterTrackItem
+import hardcoder.dev.uikit.card.Card
+import hardcoder.dev.uikit.text.Description
+import hardcoder.dev.uikit.text.Title
 
 @Composable
 fun WaterTrackItem(
@@ -34,13 +29,7 @@ fun WaterTrackItem(
     val iconResolver = LocalIconResolver.current
     val drinkType = waterTrackItem.drinkType
 
-    Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, pressedElevation = 16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = Modifier
-            .fillMaxWidth(),
-        onClick = { onUpdate(waterTrackItem) }
-    ) {
+    Card(onClick = { onUpdate(waterTrackItem) }) {
         Row(
             modifier = Modifier
                 .padding(16.dp)
@@ -57,18 +46,16 @@ fun WaterTrackItem(
                     .fillMaxWidth()
                     .weight(2f)
             ) {
-                Text(
-                    text = drinkType.name,
-                    style = MaterialTheme.typography.titleLarge
-                )
+                Title(text = drinkType.name)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
+                Description(
                     text = stringResource(
                         id = R.string.waterTrackItem_formatMilliliters_text,
-                        waterTrackItem.millilitersCount,
-                        waterTrackItem.resolvedMillilitersCount
-                    ),
-                    style = MaterialTheme.typography.titleMedium
+                        formatArgs = arrayOf(
+                            waterTrackItem.millilitersCount,
+                            waterTrackItem.resolvedMillilitersCount
+                        )
+                    )
                 )
             }
         }

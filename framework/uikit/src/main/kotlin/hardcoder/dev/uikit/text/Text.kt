@@ -1,4 +1,4 @@
-package hardcoder.dev.uikit
+package hardcoder.dev.uikit.text
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -53,6 +53,7 @@ fun Text(
             color = color,
             fontWeight = fontWeight,
             fontSize = fontSize,
+            fontFamily = rubikFontFamily,
             textAlign = textAlign,
             overflow = overflow
         )

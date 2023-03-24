@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,6 +23,7 @@ import hardcoder.dev.presentation.features.starvation.StarvationHistoryViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
+import hardcoder.dev.uikit.text.Title
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
@@ -57,7 +56,7 @@ fun StarvationHistoryScreen(onGoBack: () -> Unit) {
 }
 
 @Composable
-fun StarvationHistoryContent(
+private fun StarvationHistoryContent(
     state: StarvationHistoryViewModel.State,
     onFetchStarvationTracks: (LocalDate) -> Unit
 ) {
@@ -81,11 +80,8 @@ fun StarvationHistoryContent(
 }
 
 @Composable
-private fun StarvationTracksHistory(
-    state: StarvationHistoryViewModel.State
-) {
+private fun StarvationTracksHistory(state: StarvationHistoryViewModel.State) {
     Spacer(modifier = Modifier.height(16.dp))
-
     if (state.starvationTracks.isNotEmpty()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -97,9 +93,7 @@ private fun StarvationTracksHistory(
             }
         }
     } else {
-        Text(
-            text = stringResource(id = R.string.featureHistory_emptyDayHistory_text),
-            style = MaterialTheme.typography.titleMedium
-        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Title(text = stringResource(id = R.string.featureHistory_emptyDayHistory_text))
     }
 }

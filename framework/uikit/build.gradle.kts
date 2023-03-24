@@ -20,8 +20,14 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Android.ComposeOptions.kotlinCompilerExtensionVersion
     }
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
 }
 
 dependencies {
-    addCompose()
+    addComposeMaterial()
+    implementation(Dependencies.dateTime)
+    implementation(Dependencies.composeCalendarDateTime)
 }

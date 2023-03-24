@@ -34,10 +34,12 @@ class StarvationCreateTrackViewModel(
     }
 
     val state = combine(
+        creationState,
         starvationPlanList,
         selectedPlan
-    ) { starvationPlanList, selectedPlan ->
+    ) { creationState, starvationPlanList, selectedPlan ->
         State(
+            creationState = creationState,
             creationAllowed = selectedPlan != null,
             selectedPlan = selectedPlan,
             starvationPlanList = starvationPlanList
@@ -46,6 +48,7 @@ class StarvationCreateTrackViewModel(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
+            creationState = creationState.value,
             creationAllowed = false,
             selectedPlan = selectedPlan.value,
             starvationPlanList = starvationPlanList.value
@@ -74,6 +77,7 @@ class StarvationCreateTrackViewModel(
     }
 
     data class State(
+        val creationState: CreationState,
         val creationAllowed: Boolean,
         val selectedPlan: StarvationPlan?,
         val starvationPlanList: List<StarvationPlan>

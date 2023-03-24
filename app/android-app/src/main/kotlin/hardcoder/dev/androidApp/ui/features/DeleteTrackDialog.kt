@@ -1,5 +1,6 @@
 package hardcoder.dev.androidApp.ui.features
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,23 +12,22 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import hardcoder.dev.healther.R
-import hardcoder.dev.uikit.ButtonStyles
-import hardcoder.dev.uikit.TextButton
+import hardcoder.dev.uikit.buttons.ButtonStyles
+import hardcoder.dev.uikit.buttons.TextButton
+import hardcoder.dev.uikit.icons.Icon
+import hardcoder.dev.uikit.text.Label
+import hardcoder.dev.uikit.text.Title
 
 @Composable
 fun DeleteTrackDialog(
@@ -41,11 +41,12 @@ fun DeleteTrackDialog(
             onDismissRequest = { onUpdateDialogOpen(false) },
             properties = DialogProperties(dismissOnClickOutside = false)
         ) {
-            Surface(
+            Row(
                 modifier = Modifier
+                    .background(color = Color.White, shape = RoundedCornerShape(16.dp))
                     .fillMaxWidth()
-                    .wrapContentHeight(),
-                shape = RoundedCornerShape(size = 10.dp)
+                    .wrapContentHeight()
+                    .clip(RoundedCornerShape(16.dp)),
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
@@ -55,20 +56,14 @@ fun DeleteTrackDialog(
                     ) {
                         Icon(
                             modifier = Modifier.size(34.dp),
-                            imageVector = Icons.Filled.Delete,
+                            iconResId = R.drawable.ic_delete,
                             contentDescription = stringResource(id = R.string.deleteDialog_iconContentDescription)
                         )
                         Spacer(modifier = Modifier.width(16.dp))
-                        Text(
-                            text = stringResource(R.string.deleteDialog_trackDeletionTitle_text),
-                            style = MaterialTheme.typography.titleLarge
-                        )
+                        Title(text = stringResource(R.string.deleteDialog_trackDeletionTitle_text))
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = stringResource(R.string.deleteDialog_trackDeletionDescription_text),
-                        style = MaterialTheme.typography.titleSmall
-                    )
+                    Label(text = stringResource(R.string.deleteDialog_trackDeletionDescription_text))
                     Spacer(modifier = Modifier.height(16.dp))
                     Row(horizontalArrangement = Arrangement.End) {
                         TextButton(

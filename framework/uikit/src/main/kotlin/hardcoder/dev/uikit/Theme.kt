@@ -1,4 +1,4 @@
-package hardcoder.dev.androidApp.ui.theme
+package hardcoder.dev.uikit
 
 import android.app.Activity
 import android.os.Build
@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import hardcoder.dev.uikit.text.Typography
 
 private val LightColors = lightColorScheme(
     primary = md_theme_light_primary,

@@ -3,6 +3,7 @@ package hardcoder.dev.androidApp.ui
 import androidx.compose.runtime.compositionLocalOf
 import hardcoder.dev.androidApp.di.PresentationModule
 import hardcoder.dev.androidApp.ui.features.starvation.plans.StarvationPlanResourcesProvider
+import hardcoder.dev.androidApp.ui.setUpFlow.gender.GenderResourcesProvider
 import hardcoder.dev.datetime.TimeUnitMapper
 
 val LocalPresentationModule = compositionLocalOf<PresentationModule> {
@@ -23,6 +24,10 @@ val LocalFloatFormatter = compositionLocalOf<FloatFormatter> {
 
 val LocalDateTimeFormatter = compositionLocalOf<DateTimeFormatter> {
     error("LocalDateTimeFormatter not provided")
+}
+
+val LocalGenderResourcesProvider = compositionLocalOf<GenderResourcesProvider> {
+    error("LocalGenderResourcesProvider not provided")
 }
 
 val LocalStarvationPlanResourcesProvider = compositionLocalOf<StarvationPlanResourcesProvider> {

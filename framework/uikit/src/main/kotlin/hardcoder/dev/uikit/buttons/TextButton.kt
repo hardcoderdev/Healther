@@ -1,4 +1,4 @@
-package hardcoder.dev.uikit
+package hardcoder.dev.uikit.buttons
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.RowScope

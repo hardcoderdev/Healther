@@ -1,10 +1,6 @@
-@file:OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class,
-    ExperimentalMaterial3Api::class
-)
-
 package hardcoder.dev.androidApp.ui.features.pedometer
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,46 +9,28 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Fireplace
-import androidx.compose.material.icons.filled.LockClock
-import androidx.compose.material.icons.filled.MyLocation
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.healther.R
+import hardcoder.dev.uikit.card.Card
+import hardcoder.dev.uikit.icons.Icon
+import hardcoder.dev.uikit.text.Label
+import hardcoder.dev.uikit.text.Title
 
 data class InfoItem(
-    val icon: ImageVector,
+    @DrawableRes val iconResId: Int,
     @StringRes val nameResId: Int,
     val value: String
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PedometerInfoSection(infoItemList: List<InfoItem>) {
-    Text(
-        text = stringResource(id = R.string.pedometer_yourIndicatorsForThisDay_text),
-        style = MaterialTheme.typography.titleLarge
-    )
+    Title(text = stringResource(id = R.string.pedometer_yourIndicatorsForThisDay_text))
     Spacer(modifier = Modifier.height(16.dp))
-    Card(
-        onClick = {},
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(
-            contentColor = MaterialTheme.colorScheme.primaryContainer
-        )
-    ) {
+    Card {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,7 +39,7 @@ fun PedometerInfoSection(infoItemList: List<InfoItem>) {
         ) {
             infoItemList.forEach {
                 ItemInfo(
-                    imageVector = it.icon,
+                    iconResId = it.iconResId,
                     valueLabelResId = it.nameResId,
                     value = it.value
                 )
@@ -72,24 +50,15 @@ fun PedometerInfoSection(infoItemList: List<InfoItem>) {
 
 @Composable
 private fun ItemInfo(
-    imageVector: ImageVector,
+    @DrawableRes iconResId: Int,
     @StringRes valueLabelResId: Int,
     value: String
 ) {
     Column {
-        Icon(imageVector = imageVector, contentDescription = null)
+        Icon(iconResId = iconResId, contentDescription = stringResource(id = valueLabelResId))
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = value,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
-        )
-        Text(
-            text = stringResource(id = valueLabelResId),
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
-        )
+        Title(text = value)
+        Label(text = stringResource(id = valueLabelResId))
     }
 }
 
@@ -104,17 +73,17 @@ fun PedometerTrackItemPreview() {
     PedometerInfoSection(
         infoItemList = listOf(
             InfoItem(
-                icon = Icons.Filled.LockClock,
+                iconResId = R.drawable.ic_time,
                 nameResId = R.string.pedometer_stepsLabel_text,
                 value = stepsCount.toString()
             ),
             InfoItem(
-                icon = Icons.Filled.MyLocation,
+                iconResId = R.drawable.ic_my_location,
                 nameResId = R.string.pedometer_kilometersLabel_text,
                 value = kilometersCount.toString()
             ),
             InfoItem(
-                icon = Icons.Filled.Fireplace,
+                iconResId = R.drawable.ic_fire,
                 nameResId = R.string.pedometer_caloriesLabel_text,
                 value = caloriesBurnt.toString()
             )

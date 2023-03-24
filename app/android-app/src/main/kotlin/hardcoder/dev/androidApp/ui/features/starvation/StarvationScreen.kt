@@ -10,13 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.NavigateNext
-import androidx.compose.material.icons.filled.Start
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
@@ -27,7 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -44,12 +36,15 @@ import hardcoder.dev.presentation.features.starvation.StarvationViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.CircularProgressBar
-import hardcoder.dev.uikit.IconTextButton
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.StatisticData
 import hardcoder.dev.uikit.Statistics
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
+import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.text.Description
+import hardcoder.dev.uikit.text.Headline
+import hardcoder.dev.uikit.text.Title
 
 @Composable
 fun StarvationScreen(
@@ -90,7 +85,7 @@ fun StarvationScreen(
             ActionConfig(
                 actions = listOf(
                     Action(
-                        iconImageVector = Icons.Filled.MoreVert,
+                        iconResId = R.drawable.ic_more,
                         onActionClick = onHistoryDetails
                     )
                 )
@@ -175,17 +170,11 @@ private fun NotStarvingContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState())
         ) {
-            Text(
-                text = stringResource(id = R.string.starvation_lastStarvationTracks_text),
-                style = MaterialTheme.typography.titleLarge
-            )
+            Title(text = stringResource(id = R.string.starvation_lastStarvationTracks_text))
             Spacer(modifier = Modifier.height(16.dp))
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 if (state.lastStarvationTracks.isEmpty()) {
-                    Text(
-                        text = stringResource(id = R.string.starvation_noEnoughDataToShowLastTracks_text),
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                    Description(text = stringResource(id = R.string.starvation_noEnoughDataToShowLastTracks_text))
                 } else {
                     state.lastStarvationTracks.forEach {
                         StarvationItem(starvationTrack = it)
@@ -193,10 +182,7 @@ private fun NotStarvingContent(
                 }
             }
             Spacer(modifier = Modifier.height(32.dp))
-            Text(
-                text = stringResource(id = R.string.starvation_statistic_text),
-                style = MaterialTheme.typography.titleLarge
-            )
+            Title(text = stringResource(id = R.string.starvation_statistic_text))
             Spacer(modifier = Modifier.height(24.dp))
             Statistics(
                 modifier = Modifier.fillMaxWidth(),
@@ -205,7 +191,7 @@ private fun NotStarvingContent(
         }
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
-            imageVector = Icons.Filled.Start,
+            iconResId = R.drawable.ic_play,
             labelResId = R.string.starvationScreen_startStarvation_buttonText,
             onClick = onCreateStarvationTrack
         )
@@ -243,10 +229,8 @@ private fun StarvingContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState())
         ) {
-            Text(
+            Headline(
                 text = stringResource(id = R.string.starvationScreen_you_starving_text),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
                 modifier = Modifier.align(CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -254,43 +238,35 @@ private fun StarvingContent(
                 modifier = Modifier.align(CenterHorizontally),
                 radius = 100.dp,
                 fontSize = 24.sp,
-                shadowColor = MaterialTheme.colorScheme.primaryContainer,
                 strokeWidth = 12.dp,
                 percentage = state.timeLeftInMillis safeDiv state.durationInMillis,
-                color = MaterialTheme.colorScheme.primary,
                 innerText = dateTimeFormatter.formatMillisDistance(
                     distanceInMillis = state.timeLeftInMillis,
                     accuracy = DateTimeFormatter.Accuracy.SECONDS
                 )
             )
             Spacer(modifier = Modifier.height(64.dp))
-            Text(
-                style = MaterialTheme.typography.titleMedium,
+            Description(
                 text = stringResource(
                     id = R.string.starvation_startDate_text,
                     formatArgs = arrayOf(formattedDate)
                 )
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                style = MaterialTheme.typography.titleMedium,
+            Spacer(modifier = Modifier.height(12.dp))
+            Description(
                 text = stringResource(
                     id = R.string.starvation_yourSelectedPlan_formatText,
                     formatArgs = arrayOf(stringResource(id = starvationPlanResources.nameResId))
                 )
             )
             Spacer(modifier = Modifier.height(32.dp))
-            Text(
-                text = stringResource(id = R.string.starvation_statistic_text),
-                style = MaterialTheme.typography.titleLarge
-            )
+            Title(text = stringResource(id = R.string.starvation_statistic_text))
             Spacer(modifier = Modifier.height(32.dp))
             Statistics(statistics = statisticData)
         }
-
         Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
-            imageVector = Icons.Filled.Close,
+            iconResId = R.drawable.ic_close,
             labelResId = R.string.starvationScreen_endStarvation_buttonText,
             onClick = onEndStarvation
         )
@@ -298,7 +274,7 @@ private fun StarvingContent(
 }
 
 @Composable
-fun FinishStarvingContent(
+private fun FinishStarvingContent(
     state: StarvationViewModel.StarvationState.Finished,
     onClose: () -> Unit
 ) {
@@ -343,28 +319,19 @@ fun FinishStarvingContent(
     ) {
         Column(Modifier.weight(2f)) {
             Image(
-                painter = painterResource(id = R.drawable.starvation_finish_image),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(250.dp),
-                contentDescription = stringResource(
-                    id = R.string.starvation_finish_image_contentDescription
-                )
+                painter = painterResource(id = R.drawable.starvation_finish_image),
+                contentDescription = stringResource(id = R.string.starvation_finish_image_contentDescription)
             )
             Spacer(modifier = Modifier.height(32.dp))
-            Text(
-                text = stringResource(id = R.string.starvation_finished_text),
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
-            )
+            Headline(text = stringResource(id = R.string.starvation_finished_text))
             Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = advicesStringResource,
-                style = MaterialTheme.typography.titleMedium
-            )
+            Description(text = advicesStringResource)
         }
         IconTextButton(
-            imageVector = Icons.Filled.NavigateNext,
+            iconResId = R.drawable.ic_navigate_next,
             labelResId = R.string.starvation_finish_goNext_buttonText,
             onClick = onClose
         )

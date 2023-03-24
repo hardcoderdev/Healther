@@ -1,17 +1,18 @@
-package hardcoder.dev.uikit
+package hardcoder.dev.uikit.buttons
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 
 enum class ButtonStyles { FILLED, OUTLINED }
@@ -20,11 +21,10 @@ enum class ButtonStyles { FILLED, OUTLINED }
 fun IconTextButton(
     modifier: Modifier = Modifier,
     style: ButtonStyles = ButtonStyles.FILLED,
-    imageVector: ImageVector,
+    @DrawableRes iconResId: Int,
     @StringRes labelResId: Int,
     onClick: () -> Unit,
-    isEnabled: Boolean = true,
-    @StringRes contentDescription: Int? = null
+    isEnabled: Boolean = true
 ) {
     when (style) {
         ButtonStyles.FILLED -> {
@@ -35,8 +35,9 @@ fun IconTextButton(
             ) {
                 IconButtonContent(
                     labelResId = labelResId,
-                    iconResourceId = imageVector,
-                    contentDescription = contentDescription
+                    iconResourceId = iconResId,
+                    contentDescription = labelResId,
+                    style = ButtonStyles.FILLED
                 )
             }
         }
@@ -49,8 +50,9 @@ fun IconTextButton(
             ) {
                 IconButtonContent(
                     labelResId = labelResId,
-                    iconResourceId = imageVector,
-                    contentDescription = contentDescription
+                    iconResourceId = iconResId,
+                    contentDescription = labelResId,
+                    style = ButtonStyles.OUTLINED
                 )
             }
         }
@@ -59,19 +61,29 @@ fun IconTextButton(
 
 @Composable
 private fun RowScope.IconButtonContent(
+    style: ButtonStyles,
     @StringRes labelResId: Int,
-    iconResourceId: ImageVector,
-    @StringRes contentDescription: Int? = null
+    @DrawableRes iconResourceId: Int,
+    @StringRes contentDescription: Int
 ) {
+    val color = if (style == ButtonStyles.FILLED) {
+        MaterialTheme.colorScheme.onPrimary
+    } else {
+        MaterialTheme.colorScheme.onBackground
+    }
+
     Text(
         text = stringResource(id = labelResId),
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.titleMedium,
-        modifier = Modifier.weight(2f)
+        fontWeight = FontWeight.W500,
+        modifier = Modifier.weight(2f),
+        color = color
     )
-    Icon(
-        imageVector = iconResourceId,
-        contentDescription = contentDescription?.let { stringResource(id = it) },
-        modifier = Modifier.weight(0.3f)
+    androidx.compose.material.Icon(
+        painter = painterResource(id = iconResourceId),
+        contentDescription = stringResource(id = contentDescription),
+        modifier = Modifier.weight(0.3f),
+        tint = color
     )
 }

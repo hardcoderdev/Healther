@@ -9,15 +9,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Start
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
@@ -25,10 +21,12 @@ import hardcoder.dev.androidApp.ui.features.starvation.plans.StarvationPlanItem
 import hardcoder.dev.entities.features.starvation.StarvationPlan
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.starvation.StarvationCreateTrackViewModel
-import hardcoder.dev.uikit.IconTextButton
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
+import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.text.Description
+import hardcoder.dev.uikit.text.Title
 
 @Composable
 fun StarvationCreationTrackScreen(onGoBack: () -> Unit) {
@@ -38,15 +36,18 @@ fun StarvationCreationTrackScreen(onGoBack: () -> Unit) {
     }
     val state = viewModel.state.collectAsState()
 
+    LaunchedEffect(key1 = state.value.creationState) {
+        if (state.value.creationState is StarvationCreateTrackViewModel.CreationState.Executed) {
+            onGoBack()
+        }
+    }
+
     ScaffoldWrapper(
         content = {
             StarvationCreationTrackContent(
                 state = state.value,
                 onUpdateSelectedPlan = viewModel::updateStarvationPlan,
-                onStartStarvation = {
-                    viewModel.startStarvation()
-                    onGoBack()
-                }
+                onStartStarvation = viewModel::startStarvation
             )
         },
         topBarConfig = TopBarConfig(
@@ -74,7 +75,7 @@ private fun StarvationCreationTrackContent(
         }
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
-            imageVector = Icons.Filled.Start,
+            iconResId = R.drawable.ic_play,
             labelResId = R.string.starvationScreen_startStarvation_buttonText,
             onClick = onStartStarvation,
             isEnabled = state.creationAllowed
@@ -88,15 +89,9 @@ private fun SelectPlanSection(
     onUpdateSelectedPlan: (StarvationPlan, Int?) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = stringResource(id = R.string.starvationPlan_selectStarvationPlan_text),
-            style = MaterialTheme.typography.titleLarge
-        )
+        Title(text = stringResource(id = R.string.starvationPlan_selectStarvationPlan_text))
         Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = stringResource(id = R.string.starvationPlan_planDifficulty_text),
-            style = MaterialTheme.typography.titleMedium
-        )
+        Description(text = stringResource(id = R.string.starvationPlan_planDifficulty_text))
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
@@ -113,32 +108,4 @@ private fun SelectPlanSection(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun StarvationCreationTrackScreenPreview() {
-    ScaffoldWrapper(
-        content = {
-            StarvationCreationTrackContent(
-                onStartStarvation = {},
-                onUpdateSelectedPlan = { _, _ -> },
-                state = StarvationCreateTrackViewModel.State(
-                    selectedPlan = StarvationPlan.PLAN_14_10,
-                    starvationPlanList = listOf(
-                        StarvationPlan.PLAN_14_10,
-                        StarvationPlan.PLAN_16_8,
-                        StarvationPlan.PLAN_18_6,
-                        StarvationPlan.PLAN_20_4
-                    ),
-                    creationAllowed = false
-                )
-            )
-        }, topBarConfig = TopBarConfig(
-            type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.starvationCreation_title_topBar,
-                onGoBack = {}
-            )
-        )
-    )
 }

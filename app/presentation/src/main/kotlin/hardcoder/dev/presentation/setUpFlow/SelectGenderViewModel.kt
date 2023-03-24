@@ -3,25 +3,44 @@ package hardcoder.dev.presentation.setUpFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.entities.hero.Gender
+import hardcoder.dev.logic.hero.GenderProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-class SelectGenderViewModel : ViewModel() {
+class SelectGenderViewModel(genderProvider: GenderProvider) : ViewModel() {
 
-    private val gender = MutableStateFlow(Gender.MALE)
-    val state = gender.map {
-        State(it)
+    private val selectedGender = MutableStateFlow(Gender.MALE)
+    private val availableGenders = genderProvider.provideAllGenders().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = emptyList()
+    )
+
+    val state = combine(
+        selectedGender,
+        availableGenders
+    ) { selectedGender, availableGenders ->
+        State(
+            selectedGender = selectedGender,
+            availableGenderList = availableGenders
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
-        initialValue = State(Gender.MALE)
+        initialValue = State(
+            selectedGender = selectedGender.value,
+            availableGenderList = availableGenders.value
+        )
     )
 
-    fun updateGender(selectedGender: Gender) {
-        gender.value = selectedGender
+    fun updateGender(newGender: Gender) {
+        selectedGender.value = newGender
     }
 
-    data class State(val gender: Gender)
+    data class State(
+        val selectedGender: Gender,
+        val availableGenderList: List<Gender>
+    )
 }

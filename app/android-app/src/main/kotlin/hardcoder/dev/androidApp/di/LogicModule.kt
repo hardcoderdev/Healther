@@ -36,6 +36,7 @@ import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeUpdater
 import hardcoder.dev.logic.features.waterBalance.drinkType.IconResourceValidator
 import hardcoder.dev.logic.features.waterBalance.drinkType.NameValidator
 import hardcoder.dev.logic.hero.GenderIdMapper
+import hardcoder.dev.logic.hero.GenderProvider
 import hardcoder.dev.logic.hero.HeroCreator
 import hardcoder.dev.logic.hero.HeroProvider
 import hardcoder.dev.logic.hero.HeroUpdater
@@ -64,6 +65,10 @@ class LogicModule(private val context: Context) {
 
     private val timeUnitMapper by lazy {
         TimeUnitMapper()
+    }
+
+    val genderProvider by lazy {
+        GenderProvider()
     }
 
     val waterPercentageResolver by lazy {
