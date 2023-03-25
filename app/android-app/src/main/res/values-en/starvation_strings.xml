@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="starvation_lastStarvationTracks_text">Recent fasts:</string>
+    <string name="starvation_yourSelectedPlan_formatText">Selected fasting plan: %s</string>
+    <string name="starvation_noEnoughDataToShowLastTracks_text">There is not enough data to display recent fasting records.</string>
+    <string name="starvation_startStarvation_buttonText">Start fasting</string>
+    <string name="starvation_you_starving_text">You are fasting!</string>
+    <string name="starvation_startDate_text">You started a fast: %s</string>
+    <string name="starvation_endStarvation_buttonText">Break fasting</string>
+    <string name="starvation_statistic_text">General statistics:</string>
+    <string name="starvation_statistic_not_enough_data_text">Too little information</string>
+    <string name="starvation_statistic_max_hours_text">Maximum hours</string>
+    <string name="starvation_statistic_average_hours_text">Hours on average</string>
+    <string name="starvation_statistic_min_hours_text">Minimum hours</string>
+    <string name="starvation_statistic_completion_percentage_text">Percent complete</string>
+    <string name="starvation_statistic_favorite_plan_text">Favorite plan</string>
+    <string name="starvation_finish_text">Fasting is over!</string>
+    <string name="starvation_finish_title_topBar">End of fasting</string>
+    <string name="starvation_finish_image_contentDescription">Image of victory</string>
+    <string name="starvation_finish_success_results_text">Excellent results! You completed the fast and did not break down until the very end! Keep it up, you will succeed!</string>
+    <string name="starvation_finish_fail_results_text">Excellent results! You tried your best and managed to survive %s! Do not give up and try even harder, and you will definitely be able to complete the plan completely!</string>
+    <string name="starvation_finish_goNext_buttonText">Great, thanks!</string>
+    <string name="starvationCreation_title_topBar">Start fasting</string>
+    <string name="starvationHistory_title_topBar">Detailed history</string>
+    <string name="starvationHistory_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
+    <string name="starvationPlanItem_description_formatText">You will fast for %s and after that you will have %s to eat.</string>
+    <string name="starvationPlanItem_selectStarvingHours_text">Select the number of hours after which the fast will end:</string>
+    <string name="starvationPlanItem_planDifficulty_text">All plans below are arranged in ascending order of difficulty.</string>
+    <string name="starvationPlanItem_selectStarvationPlan_text">Plan selection:</string>
+    <string name="starvationPlanItem_customPlan">Your plan</string>
+    <string name="starvationItem_starvation_startTime_formatText">Start of fasting: %s</string>
+    <string name="starvationItem_starvation_endTime_formatText">End of fasting: %s</string>
+    <string name="starvationItem_starvationPlan_formatText">Fasting plan: %s</string>
+</resources>

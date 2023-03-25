@@ -16,5 +16,4 @@
     <string name="selectGender_forWhatGender_text">• Ваш гендер нужен для различных рассчётов в приложении, например рассчёта нормы потребляемой воды.</string>
     <string name="selectGender_selectYourGender_text">Выбери свой гендер для более точных расчётов.</string>
     <string name="selectGender_next_buttonText">Далее</string>
-
 </resources>

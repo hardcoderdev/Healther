@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Healther</string>
+
+    <string name="dashboard_featureType_starvation">Fasting</string>
+
+    <string name="datetime_seconds">%ds</string>
+    <string name="datetime_minutes">%dm</string>
+    <string name="datetime_hours">%dh</string>
+    <string name="datetime_days">%dd</string>
+
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+
+    <string name="deleteDialog_iconContentDescription">Delete icon</string>
+    <string name="deleteDialog_no_option">Cancel</string>
+    <string name="deleteDialog_yes_option">Delete</string>
+    <string name="deleteDialog_trackDeletionTitle_text">Deleting an entry</string>
+    <string name="deleteDialog_trackDeletionDescription_text">Are you sure you want to delete this entry?</string>
 
 </resources>

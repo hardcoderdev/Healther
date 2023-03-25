@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pedometer_title_topBar">Pedometer</string>
+    <string name="pedometer_stepCountFormat_text">%d / %d steps</string>
+    <string name="pedometer_playIcon_contentDescription">Start step recording</string>
+    <string name="pedometer_kilometersLabel_text">km</string>
+    <string name="pedometer_yourIndicatorsForThisDay_text">Your scores for the day:</string>
+    <string name="pedometer_stopIcon_contentDescription">Stop step recording</string>
+    <string name="pedometer_caloriesLabel_text">Calories</string>
+    <string name="pedometer_timeLabel_text">Walking time</string>
+    <string name="pedometer_noHardwareSensorOnDevice_text">Your device is missing a sensor. Unfortunately, you won\'t be able to use this feature.</string>
+    <string name="pedometer_stepsLabel_text">Steps</string>
+    <string name="pedometer_emptyDayHistory_text">On this day, you didn\'t turn on the pedometer.</string>
+    <string name="pedometer_weDontHaveEnoughDataToShowChart_text">We don\'t have enough data yet to display a graph. Use this feature for a couple of hours and the graph will appear!</string>
+    <string name="pedometer_notification_notificationContentTitle_text">Pedometer</string>
+    <string name="pedometer_notification_contentStepFormat_text">Steps passed: %d</string>
+    <string name="pedometerHistory_weDontHaveEnoughDataToShowChart_text">There is not enough data for this day to display a graph.</string>
+    <string name="pedometerHistory_title_topBar">Detailed history</string>
+    <string name="pedometerHistory_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
+</resources>

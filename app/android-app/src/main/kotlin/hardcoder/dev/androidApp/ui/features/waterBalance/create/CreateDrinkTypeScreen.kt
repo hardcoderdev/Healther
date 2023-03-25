@@ -152,7 +152,7 @@ private fun SelectIconSection(
         items(iconProvider.provideWaterTrackingIcons()) {
             IconItem(
                 iconResourceName = it,
-                contentDescriptionResId = R.string.createDrinkType_drinkTypeIconContentDesription,
+                contentDescriptionResId = R.string.createDrinkType_drinkTypeIconContentDescription,
                 selectedIconResourceName = state.selectedIconResource ?: "",
                 onSelectIcon = onUpdateIconResource
             )
