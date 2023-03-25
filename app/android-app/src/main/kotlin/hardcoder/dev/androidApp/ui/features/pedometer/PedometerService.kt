@@ -1,6 +1,7 @@
 package hardcoder.dev.androidApp.ui.features.pedometer
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -8,8 +9,6 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import hardcoder.dev.androidApp.ui.App
 import hardcoder.dev.androidApp.ui.features.pedometer.PedometerNotificationManager.Companion.NOTIFICATION_ID
-import hardcoder.dev.extensions.toast
-import hardcoder.dev.healther.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -30,14 +29,9 @@ class PedometerService : Service(), SensorEventListener {
     override fun onCreate() {
         super.onCreate()
         val stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
-
-        if (stepSensor == null) {
-            toast(msgResId = R.string.pedometer_noHardwareSensorOnDevice_text)
-            return
-        }
+        checkNotNull(stepSensor)
 
         sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
-
         val notification = pedometerNotificationManager.getNotification(initialStepCount = 0)
         startForeground(NOTIFICATION_ID, notification)
 
@@ -64,5 +58,13 @@ class PedometerService : Service(), SensorEventListener {
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         /* no-op */
+    }
+
+    companion object {
+        fun isAvailable(context: Context): Boolean {
+            val sensorManager = context.getSystemService(SENSOR_SERVICE) as SensorManager
+            val stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
+            return stepSensor != null
+        }
     }
 }

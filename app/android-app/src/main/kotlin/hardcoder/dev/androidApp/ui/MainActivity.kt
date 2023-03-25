@@ -12,13 +12,11 @@ import hardcoder.dev.uikit.HealtherTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val permissionsController by lazy {
-        App.instance.presentationModule.logicModule.permissionsController
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        permissionsController.bind(this)
+        val logicModule = App.instance.presentationModule.logicModule
+        logicModule.permissionsController.bind(this)
+        logicModule.batteryRequirementsController.bind(this)
 
         setContent {
             HealtherTheme {

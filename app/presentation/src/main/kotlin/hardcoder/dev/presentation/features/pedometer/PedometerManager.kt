@@ -1,9 +1,15 @@
 package hardcoder.dev.presentation.features.pedometer
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface PedometerManager {
-    fun isTrackingNow(): Flow<Boolean>
-    suspend fun startTracking()
+    val isTracking: StateFlow<Boolean>
+    suspend fun startTracking(): TrackingRejectReason?
     fun stopTracking()
+}
+
+enum class TrackingRejectReason {
+    BatteryRequirements,
+    Permissions,
+    ServiceAvailability
 }

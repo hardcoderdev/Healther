@@ -25,16 +25,19 @@ import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
+import hardcoder.dev.presentation.features.pedometer.TrackingRejectReason
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.ActivityChartSection
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
+import hardcoder.dev.uikit.card.Card
 import hardcoder.dev.uikit.icons.IconButton
 import hardcoder.dev.uikit.progressBar.LinearProgressBar
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Headline
+import hardcoder.dev.uikit.text.Text
 
 const val MINIMUM_ENTRIES_FOR_SHOWING_CHART = 2
 
@@ -97,6 +100,15 @@ private fun PedometerContent(
             state = state,
             onTogglePedometerTrackingService = onTogglePedometerTrackingService
         )
+
+        AnimatedVisibility(visible = state.trackingRejectReason != null) {
+            val reason = state.trackingRejectReason ?: return@AnimatedVisibility
+            Column {
+                Spacer(modifier = Modifier.height(16.dp))
+                TrackingRejectReasonSection(reason)
+            }
+        }
+
         Spacer(modifier = Modifier.height(64.dp))
         PedometerInfoSection(
             infoItemList = listOf(
@@ -166,4 +178,18 @@ private fun DailyRateSection(
     }
     Spacer(modifier = Modifier.height(16.dp))
     LinearProgressBar(progress = state.totalStepsCount safeDiv state.dailyRateStepsCount)
+}
+
+@Composable
+private fun TrackingRejectReasonSection(reason: TrackingRejectReason) {
+    Card {
+        Text(
+            modifier = Modifier.padding(16.dp),
+            text = when (reason) {
+                TrackingRejectReason.BatteryRequirements -> "Сними ограничения на батарею скатина!"
+                TrackingRejectReason.Permissions -> "А пермишены кто давать будет м?"
+                TrackingRejectReason.ServiceAvailability -> "У тебя нет педометра лол"
+            },
+        )
+    }
 }

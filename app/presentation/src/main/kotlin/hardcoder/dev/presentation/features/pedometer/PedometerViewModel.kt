@@ -25,11 +25,6 @@ class PedometerViewModel(
 ) : ViewModel() {
 
     private val dailyRateStepsCount = MutableStateFlow(DAILY_RATE_PEDOMETER)
-    private val isTrackingNow = pedometerManager.isTrackingNow().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = false
-    )
 
     private val tracks = pedometerTrackProvider.providePedometerTracksByRange(
         LocalDate.now().createRangeForCurrentDay(timeZone = TimeZone.currentSystemDefault())
@@ -83,16 +78,19 @@ class PedometerViewModel(
         initialValue = listOf(0 to 0)
     )
 
+    private val trackingRejectReason = MutableStateFlow<TrackingRejectReason?>(null)
+
     val state = combine(
-        isTrackingNow,
+        pedometerManager.isTracking,
         totalStepCount,
         totalKilometersCount,
         totalCaloriesCount,
         totalTrackingTime,
         dailyRateStepsCount,
-        chartEntries
+        chartEntries,
+        trackingRejectReason
     ) { isTrackingNow, totalStepsCount, totalKilometersCount, totalCaloriesCount,
-        totalTrackingTime, dailyRateStepsCount, chartEntries ->
+        totalTrackingTime, dailyRateStepsCount, chartEntries, trackingRejectReason ->
         LoadingState.Loaded(
             State(
                 isTrackingNow,
@@ -101,7 +99,8 @@ class PedometerViewModel(
                 totalCaloriesCount,
                 totalTrackingTime,
                 dailyRateStepsCount,
-                chartEntries
+                chartEntries,
+                trackingRejectReason
             )
         )
     }.stateIn(
@@ -112,10 +111,10 @@ class PedometerViewModel(
 
     fun togglePedometerTracking() {
         viewModelScope.launch {
-            if (isTrackingNow.value) {
+            if (pedometerManager.isTracking.value) {
                 pedometerManager.stopTracking()
             } else {
-                pedometerManager.startTracking()
+                trackingRejectReason.value = pedometerManager.startTracking()
             }
         }
     }
@@ -132,7 +131,8 @@ class PedometerViewModel(
         val totalCaloriesBurned: Float,
         val totalTrackingTime: Long,
         val dailyRateStepsCount: Int,
-        val chartEntries: List<Pair<Int, Int>>
+        val chartEntries: List<Pair<Int, Int>>,
+        val trackingRejectReason: TrackingRejectReason?
     )
 
     internal companion object {
