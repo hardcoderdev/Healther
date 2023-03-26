@@ -1,6 +1,7 @@
 package hardcoder.dev.uikit.icons
 
 import androidx.annotation.DrawableRes
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -14,6 +15,7 @@ fun Icon(
     androidx.compose.material.Icon(
         modifier = modifier,
         painter = painterResource(id = iconResId),
-        contentDescription = contentDescription
+        contentDescription = contentDescription,
+        tint = MaterialTheme.colorScheme.onBackground
     )
 }

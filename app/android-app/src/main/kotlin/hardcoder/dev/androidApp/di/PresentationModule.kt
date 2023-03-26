@@ -1,15 +1,17 @@
 package hardcoder.dev.androidApp.di
 
+import hardcoder.dev.presentation.features.fasting.FastingHistoryViewModel
+import hardcoder.dev.presentation.features.fasting.FastingTrackCreateViewModel
+import hardcoder.dev.presentation.features.fasting.FastingViewModel
 import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
 import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
-import hardcoder.dev.presentation.features.starvation.StarvationCreateTrackViewModel
-import hardcoder.dev.presentation.features.starvation.StarvationHistoryViewModel
-import hardcoder.dev.presentation.features.starvation.StarvationViewModel
-import hardcoder.dev.presentation.features.waterBalance.CreateDrinkTypeViewModel
-import hardcoder.dev.presentation.features.waterBalance.SaveWaterTrackViewModel
-import hardcoder.dev.presentation.features.waterBalance.UpdateWaterTrackViewModel
+import hardcoder.dev.presentation.features.waterBalance.WaterTrackCreateViewModel
+import hardcoder.dev.presentation.features.waterBalance.WaterTrackUpdateViewModel
 import hardcoder.dev.presentation.features.waterBalance.WaterTrackingHistoryViewModel
 import hardcoder.dev.presentation.features.waterBalance.WaterTrackingViewModel
+import hardcoder.dev.presentation.features.waterBalance.drinkType.DrinkTypeCreateViewModel
+import hardcoder.dev.presentation.features.waterBalance.drinkType.DrinkTypeUpdateViewModel
+import hardcoder.dev.presentation.features.waterBalance.drinkType.DrinkTypeViewModel
 import hardcoder.dev.presentation.setUpFlow.EnterExerciseStressTimeViewModel
 import hardcoder.dev.presentation.setUpFlow.EnterWeightViewModel
 import hardcoder.dev.presentation.setUpFlow.HeroCreateViewModel
@@ -18,37 +20,52 @@ import hardcoder.dev.presentation.setUpFlow.SplashViewModel
 
 class PresentationModule(val logicModule: LogicModule) {
 
-    fun createSplashViewModel() = SplashViewModel(
+    fun getSplashViewModel() = SplashViewModel(
         appPreferenceProvider = logicModule.appPreferenceProvider
     )
 
-    fun createEnterWeightViewModel() = EnterWeightViewModel()
+    fun getEnterWeightViewModel() = EnterWeightViewModel()
 
-    fun createSelectGenderViewModel() = SelectGenderViewModel(
+    fun getSelectGenderViewModel() = SelectGenderViewModel(
         genderProvider = logicModule.genderProvider
     )
 
-    fun createEnterExerciseStressTimeViewModel() = EnterExerciseStressTimeViewModel()
+    fun getEnterExerciseStressTimeViewModel() = EnterExerciseStressTimeViewModel()
 
-    fun createHeroCreateViewModel() = HeroCreateViewModel(
+    fun getHeroCreateViewModel() = HeroCreateViewModel(
         heroCreator = logicModule.heroCreator,
         appPreferenceUpdater = logicModule.appPreferenceUpdater
     )
 
-    fun createWaterTrackingViewModel() = WaterTrackingViewModel(
+    fun getWaterTrackingViewModel() = WaterTrackingViewModel(
         heroProvider = logicModule.heroProvider,
         waterTrackProvider = logicModule.waterTrackProvider,
         waterIntakeResolver = logicModule.waterIntakeResolver,
         waterPercentageResolver = logicModule.waterPercentageResolver
     )
 
-    fun createDrinkTypeViewModel() = CreateDrinkTypeViewModel(
-        drinkTypeCreator = logicModule.drinkTypeCreator,
-        nameValidator = logicModule.nameValidator,
-        iconResourceValidator = logicModule.iconResourceValidator
+    fun getDrinkTypeViewModel() = DrinkTypeViewModel(
+        drinkTypeProvider = logicModule.drinkTypeProvider
     )
 
-    fun createSaveWaterTrackViewModel() = SaveWaterTrackViewModel(
+    fun getDrinkTypeCreateViewModel() = DrinkTypeCreateViewModel(
+        iconResourceProvider = logicModule.iconResourceProvider,
+        drinkTypeCreator = logicModule.drinkTypeCreator,
+        drinkTypeNameValidator = logicModule.drinkTypeNameValidator,
+        drinkTypeIconResourceValidator = logicModule.drinkTypeIconResourceValidator
+    )
+
+    fun getDrinkTypeUpdateViewModel(drinkTypeId: Int) = DrinkTypeUpdateViewModel(
+        drinkTypeId = drinkTypeId,
+        drinkTypeUpdater = logicModule.drinkTypeUpdater,
+        drinkTypeDeleter = logicModule.drinkTypeDeleter,
+        drinkTypeProvider = logicModule.drinkTypeProvider,
+        drinkTypeNameValidator = logicModule.drinkTypeNameValidator,
+        drinkTypeIconResourceValidator = logicModule.drinkTypeIconResourceValidator,
+        iconResourceProvider = logicModule.iconResourceProvider
+    )
+
+    fun getWaterTrackCreateViewModel() = WaterTrackCreateViewModel(
         heroProvider = logicModule.heroProvider,
         waterTrackCreator = logicModule.waterTrackCreator,
         drinkTypeProvider = logicModule.drinkTypeProvider,
@@ -56,7 +73,7 @@ class PresentationModule(val logicModule: LogicModule) {
         waterTrackMillilitersValidator = logicModule.waterTrackMillilitersValidator
     )
 
-    fun createUpdateWaterTrackViewModel(waterTrackId: Int) = UpdateWaterTrackViewModel(
+    fun getWaterTrackUpdateViewModel(waterTrackId: Int) = WaterTrackUpdateViewModel(
         waterTrackId = waterTrackId,
         heroProvider = logicModule.heroProvider,
         waterTrackUpdater = logicModule.waterTrackUpdater,
@@ -67,38 +84,38 @@ class PresentationModule(val logicModule: LogicModule) {
         waterTrackDeleter = logicModule.waterTrackDeleter
     )
 
-    fun createWaterTrackingHistoryViewModel() = WaterTrackingHistoryViewModel(
+    fun getWaterTrackingHistoryViewModel() = WaterTrackingHistoryViewModel(
         waterTrackProvider = logicModule.waterTrackProvider,
         waterPercentageResolver = logicModule.waterPercentageResolver
     )
 
-    fun createPedometerViewModel() = PedometerViewModel(
+    fun getPedometerViewModel() = PedometerViewModel(
         pedometerManager = logicModule.pedometerManager,
         kilometersResolver = logicModule.kilometersResolver,
         caloriesResolver = logicModule.caloriesResolver,
         pedometerTrackProvider = logicModule.pedometerTrackProvider
     )
 
-    fun createPedometerHistoryViewModel() = PedometerHistoryViewModel(
+    fun getPedometerHistoryViewModel() = PedometerHistoryViewModel(
         kilometersResolver = logicModule.kilometersResolver,
         caloriesResolver = logicModule.caloriesResolver,
         pedometerTrackProvider = logicModule.pedometerTrackProvider
     )
 
-    fun createStarvationViewModel() = StarvationViewModel(
+    fun getFastingViewModel() = FastingViewModel(
         dateTimeProvider = logicModule.dateTimeProvider,
-        starvationTrackProvider = logicModule.starvationTrackProvider,
-        statisticProvider = logicModule.starvationStatisticProvider,
-        currentStarvationManager = logicModule.currentStarvationManager
+        fastingTrackProvider = logicModule.fastingTrackProvider,
+        statisticProvider = logicModule.fastingStatisticProvider,
+        currentFastingManager = logicModule.currentFastingManager
     )
 
-    fun createStarvationCreateTrackViewModel() = StarvationCreateTrackViewModel(
-        currentStarvationManager = logicModule.currentStarvationManager,
-        starvationPlanDurationMapper = logicModule.starvationPlanDurationResolver,
-        starvationPlanProvider = logicModule.starvationPlanProvider
+    fun getFastingTrackCreateViewModel() = FastingTrackCreateViewModel(
+        currentFastingManager = logicModule.currentFastingManager,
+        fastingPlanDurationMapper = logicModule.fastingPlanDurationResolver,
+        fastingPlanProvider = logicModule.fastingPlanProvider
     )
 
-    fun createStarvationHistoryViewModel() = StarvationHistoryViewModel(
-        starvationTrackProvider = logicModule.starvationTrackProvider
+    fun getFastingHistoryViewModel() = FastingHistoryViewModel(
+        fastingTrackProvider = logicModule.fastingTrackProvider
     )
 }

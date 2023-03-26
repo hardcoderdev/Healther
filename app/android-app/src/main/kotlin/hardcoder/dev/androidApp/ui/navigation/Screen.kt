@@ -35,12 +35,19 @@ sealed class Screen(val route: String) {
 
     object WaterTrackingFeature : Screen("water_tracking_feature")
     object WaterTrackingHistory : Screen("water_tracking_history")
-    object CreateDrinkType : Screen("create_drink_type")
     object SaveWaterTrack : Screen("save_water_track")
     object UpdateWaterTrack : Screen("update_water_track/{waterTrackId}") {
         fun buildRoute(waterTrackId: Int) = "update_water_track/$waterTrackId"
         fun getWaterTrackId(arguments: Bundle?) = requireNotNull(arguments).getInt("waterTrackId")
         val arguments = listOf(navArgument("waterTrackId") { type = NavType.IntType })
+    }
+
+    object ManageDrinkTypes : Screen("manage_drink_type")
+    object CreateDrinkType : Screen("create_drink_type")
+    object UpdateDrinkType : Screen("update_drink_type/{drinkTypeId}") {
+        fun buildRoute(drinkTypeId: Int) = "update_drink_type/$drinkTypeId"
+        fun getDrinkTypeId(arguments: Bundle?) = requireNotNull(arguments).getInt("drinkTypeId")
+        val arguments = listOf(navArgument("drinkTypeId") { type = NavType.IntType })
     }
 
     object PedometerFeature : Screen("pedometer_feature") {
@@ -53,7 +60,7 @@ sealed class Screen(val route: String) {
 
     object PedometerHistory : Screen("pedometer_history")
 
-    object StarvationFeature : Screen("starvation_feature")
-    object StarvationCreateTrack : Screen("starvation_create_track")
-    object StarvationHistory : Screen("starvation_history")
+    object FastingFeature : Screen("fasting_feature")
+    object FastingCreateTrack : Screen("fasting_create_track")
+    object FastingHistory : Screen("fasting_history")
 }

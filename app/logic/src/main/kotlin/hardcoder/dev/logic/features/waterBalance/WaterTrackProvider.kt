@@ -20,7 +20,7 @@ class WaterTrackProvider(
 ) {
 
     fun provideWaterTracksByDayRange(dayRange: LongRange) = appDatabase.waterTrackQueries
-        .selectWaterTracksByDayRange(dayRange.first, dayRange.last)
+        .provideWaterTracksByDayRange(dayRange.first, dayRange.last)
         .asFlow()
         .map {
             it.executeAsList()
@@ -36,17 +36,21 @@ class WaterTrackProvider(
         }
 
     fun provideWaterTrackById(id: Int) = appDatabase.waterTrackQueries
-        .selectWaterTrackById(id)
+        .provideWaterTrackById(id)
         .asFlow()
         .map {
-            it.executeAsOne()
+            it.executeAsOneOrNull()
         }.flatMapLatest {
-            provideDrinkTypeById(it)
+            if (it == null) {
+                flowOf(null)
+            } else {
+                provideDrinkTypeById(it)
+            }
         }
 
     private fun provideDrinkTypeById(waterTrack: WaterTrack): Flow<WaterTrackEntity> {
         return drinkTypeProvider.provideDrinkTypeById(waterTrack.drinkTypeId).map { drinkType ->
-            waterTrack.toEntity(drinkType)
+            waterTrack.toEntity(drinkType!!)
         }
     }
 

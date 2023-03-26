@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.healther.R
+import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.card.Card
 import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.text.Label
@@ -30,7 +31,7 @@ data class InfoItem(
 fun PedometerInfoSection(infoItemList: List<InfoItem>) {
     Title(text = stringResource(id = R.string.pedometer_yourIndicatorsForThisDay_text))
     Spacer(modifier = Modifier.height(16.dp))
-    Card {
+    Card<InfoItem>(interactionType = InteractionType.STATIC) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

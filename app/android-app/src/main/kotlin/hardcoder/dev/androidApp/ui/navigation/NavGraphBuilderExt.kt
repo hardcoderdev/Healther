@@ -3,16 +3,18 @@ package hardcoder.dev.androidApp.ui.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import hardcoder.dev.androidApp.ui.features.fasting.FastingScreen
+import hardcoder.dev.androidApp.ui.features.fasting.create.FastingCreationTrackScreen
+import hardcoder.dev.androidApp.ui.features.fasting.history.FastingHistoryScreen
 import hardcoder.dev.androidApp.ui.features.pedometer.PedometerScreen
 import hardcoder.dev.androidApp.ui.features.pedometer.history.PedometerHistoryScreen
-import hardcoder.dev.androidApp.ui.features.starvation.StarvationScreen
-import hardcoder.dev.androidApp.ui.features.starvation.create.StarvationCreationTrackScreen
-import hardcoder.dev.androidApp.ui.features.starvation.history.StarvationHistoryScreen
-import hardcoder.dev.androidApp.ui.features.waterBalance.WaterTrackingScreen
-import hardcoder.dev.androidApp.ui.features.waterBalance.create.CreateDrinkTypeScreen
-import hardcoder.dev.androidApp.ui.features.waterBalance.create.SaveWaterTrackScreen
-import hardcoder.dev.androidApp.ui.features.waterBalance.history.WaterTrackingHistoryScreen
-import hardcoder.dev.androidApp.ui.features.waterBalance.update.UpdateWaterTrackScreen
+import hardcoder.dev.androidApp.ui.features.waterBalance.drinkType.DrinkTypeManageScreen
+import hardcoder.dev.androidApp.ui.features.waterBalance.drinkType.create.CreateDrinkTypeScreen
+import hardcoder.dev.androidApp.ui.features.waterBalance.drinkType.update.UpdateDrinkTypeScreen
+import hardcoder.dev.androidApp.ui.features.waterBalance.waterTrack.WaterTrackingScreen
+import hardcoder.dev.androidApp.ui.features.waterBalance.waterTrack.create.SaveWaterTrackScreen
+import hardcoder.dev.androidApp.ui.features.waterBalance.waterTrack.history.WaterTrackingHistoryScreen
+import hardcoder.dev.androidApp.ui.features.waterBalance.waterTrack.update.UpdateWaterTrackScreen
 import hardcoder.dev.androidApp.ui.setUpFlow.exerciseStress.EnterExerciseStressScreen
 import hardcoder.dev.androidApp.ui.setUpFlow.gender.SelectGenderScreen
 import hardcoder.dev.androidApp.ui.setUpFlow.weight.EnterWeightScreen
@@ -67,7 +69,7 @@ fun NavGraphBuilder.addSetUpDestinations(navController: NavController) {
             onGoBack = navController::popBackStack,
             onGoForward = {
                 //navController.navigate(Screen.Dashboard.route)
-                navController.navigate(Screen.StarvationFeature.route)
+                navController.navigate(Screen.WaterTrackingFeature.route)
             }
         )
     }
@@ -88,15 +90,10 @@ fun NavGraphBuilder.addWaterTrackingDestinations(navController: NavController) {
             }
         )
     }
-    composable(route = Screen.CreateDrinkType.route) {
-        CreateDrinkTypeScreen(
-            onGoBack = navController::popBackStack
-        )
-    }
     composable(route = Screen.SaveWaterTrack.route) {
         SaveWaterTrackScreen(
             onGoBack = navController::popBackStack,
-            onCreateDrinkType = { navController.navigate(Screen.CreateDrinkType.route) }
+            onManageDrinkType = { navController.navigate(Screen.ManageDrinkTypes.route) }
         )
     }
     composable(
@@ -106,7 +103,7 @@ fun NavGraphBuilder.addWaterTrackingDestinations(navController: NavController) {
         UpdateWaterTrackScreen(
             waterTrackId = Screen.UpdateWaterTrack.getWaterTrackId(backStackEntry.arguments),
             onGoBack = navController::popBackStack,
-            onCreateDrinkType = { navController.navigate(Screen.CreateDrinkType.route) }
+            onManageDrinkType = { navController.navigate(Screen.ManageDrinkTypes.route) }
         )
     }
     composable(route = Screen.WaterTrackingHistory.route) {
@@ -115,6 +112,27 @@ fun NavGraphBuilder.addWaterTrackingDestinations(navController: NavController) {
             onTrackUpdate = {
                 navController.navigate(Screen.UpdateWaterTrack.buildRoute(it.id))
             }
+        )
+    }
+    composable(route = Screen.ManageDrinkTypes.route) {
+        DrinkTypeManageScreen(
+            onGoBack = navController::popBackStack,
+            onCreateDrinkType = { navController.navigate(Screen.CreateDrinkType.route) },
+            onUpdateDrinkType = { navController.navigate(Screen.UpdateDrinkType.buildRoute(it.id)) }
+        )
+    }
+    composable(route = Screen.CreateDrinkType.route) {
+        CreateDrinkTypeScreen(
+            onGoBack = navController::popBackStack
+        )
+    }
+    composable(
+        route = Screen.UpdateDrinkType.route,
+        arguments = Screen.UpdateDrinkType.arguments
+    ) {
+        UpdateDrinkTypeScreen(
+            drinkTypeId = Screen.UpdateDrinkType.getDrinkTypeId(it.arguments),
+            onGoBack = navController::popBackStack
         )
     }
 }
@@ -136,21 +154,21 @@ fun NavGraphBuilder.addPedometerDestinations(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.addStarvationDestinations(navController: NavController) {
-    composable(route = Screen.StarvationFeature.route) {
-        StarvationScreen(
+fun NavGraphBuilder.addFastingDestinations(navController: NavController) {
+    composable(route = Screen.FastingFeature.route) {
+        FastingScreen(
             onGoBack = navController::popBackStack,
-            onCreateStarvationTrack = { navController.navigate(Screen.StarvationCreateTrack.route) },
-            onHistoryDetails = { navController.navigate(Screen.StarvationHistory.route) }
+            onCreateTrack = { navController.navigate(Screen.FastingCreateTrack.route) },
+            onHistoryDetails = { navController.navigate(Screen.FastingHistory.route) }
         )
     }
-    composable(route = Screen.StarvationCreateTrack.route) {
-        StarvationCreationTrackScreen(
+    composable(route = Screen.FastingCreateTrack.route) {
+        FastingCreationTrackScreen(
             onGoBack = navController::popBackStack
         )
     }
-    composable(route = Screen.StarvationHistory.route) {
-        StarvationHistoryScreen(
+    composable(route = Screen.FastingHistory.route) {
+        FastingHistoryScreen(
             onGoBack = navController::popBackStack
         )
     }

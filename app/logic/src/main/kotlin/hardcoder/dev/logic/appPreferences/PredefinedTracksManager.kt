@@ -20,7 +20,7 @@ class PredefinedTracksManager(
 
     suspend fun createPredefinedTracksIfNeeded() {
         when {
-            isDrinkTypeSaved.first().not() -> createPredefinedDrinkTypes()
+            !isDrinkTypeSaved.first() -> createPredefinedDrinkTypes()
         }
     }
 

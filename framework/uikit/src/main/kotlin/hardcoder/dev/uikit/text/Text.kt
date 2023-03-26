@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.Text as MaterialText
 
 @Composable
 fun Text(
@@ -47,7 +48,7 @@ fun Text(
             )
         }
 
-        androidx.compose.material3.Text(
+        MaterialText(
             text = text,
             style = style,
             color = color,

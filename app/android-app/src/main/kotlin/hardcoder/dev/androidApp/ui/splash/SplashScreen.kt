@@ -11,7 +11,7 @@ import hardcoder.dev.presentation.setUpFlow.SplashViewModel
 fun SplashScreen(onStartSetUp: () -> Unit, onNavigateToDashboard: () -> Unit) {
     val presentationModule = LocalPresentationModule.current
     val splashViewModel = viewModel {
-        presentationModule.createSplashViewModel()
+        presentationModule.getSplashViewModel()
     }
     val state = splashViewModel.state.collectAsState()
 

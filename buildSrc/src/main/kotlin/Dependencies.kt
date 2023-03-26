@@ -16,7 +16,6 @@ object Dependencies {
         const val composeBom = "2022.10.00"
         const val numberPicker = "1.0.3"
         const val composeCalendar = "1.0.2"
-        const val composeMaterialDialogs = "0.8.1-rc"
         const val coreDesugaring = "2.0.0"
         const val dateTime = "0.4.0"
         const val composeCharts = "1.6.4"
@@ -61,8 +60,6 @@ object Dependencies {
         "io.github.boguszpawlowski.composecalendar:composecalendar:${Versions.composeCalendar}"
     const val composeCalendarDateTime =
         "io.github.boguszpawlowski.composecalendar:kotlinx-datetime:${Versions.composeCalendar}"
-    const val composeMaterialDialogs =
-        "io.github.vanpra.compose-material-dialogs:datetime:${Versions.composeMaterialDialogs}"
     const val composeCharts = "com.patrykandpatrick.vico:compose-m3:${Versions.composeCharts}"
     const val coreDesugaring = "com.android.tools:desugar_jdk_libs:${Versions.coreDesugaring}"
     const val dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.dateTime}"
@@ -123,7 +120,9 @@ fun DependencyHandler.addComposeMaterial() {
     implementation(Dependencies.composeCharts)
     implementation(Dependencies.composeTooling)
     implementation(Dependencies.numberPicker)
-    implementation(Dependencies.composeMaterialDialogs)
+    implementation(Dependencies.composeCalendar)
+    implementation(Dependencies.composeCalendar)
+    implementation(Dependencies.composeCalendarDateTime)
     implementation(Dependencies.accompanistPager)
     implementation(Dependencies.accompanistPagerIndicators)
 }

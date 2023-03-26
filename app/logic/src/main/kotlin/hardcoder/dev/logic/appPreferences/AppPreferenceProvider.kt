@@ -9,7 +9,7 @@ import hardcoder.dev.entities.appPreferences.AppPreference as AppPreferenceEntit
 class AppPreferenceProvider(private val appDatabase: AppDatabase) {
 
     fun provideAppPreference() = appDatabase.appPreferenceQueries
-        .selectPreferences()
+        .providePreferences()
         .asFlow()
         .map {
             it.executeAsOneOrNull()?.toEntity()

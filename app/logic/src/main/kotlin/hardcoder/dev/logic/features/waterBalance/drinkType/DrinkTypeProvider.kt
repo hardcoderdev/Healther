@@ -9,7 +9,7 @@ import hardcoder.dev.entities.features.waterTracking.DrinkType as DrinkTypeEntit
 class DrinkTypeProvider(private val appDatabase: AppDatabase) {
 
     fun provideAllDrinkTypes() = appDatabase.drinkTypeQueries
-        .selectAllDrinkTypes()
+        .provideAllDrinkTypes()
         .asFlow()
         .map {
             it.executeAsList().map { drinkTypeDatabase ->
@@ -18,10 +18,10 @@ class DrinkTypeProvider(private val appDatabase: AppDatabase) {
         }
 
     fun provideDrinkTypeById(id: Int) = appDatabase.drinkTypeQueries
-        .selectDrinkTypeById(id)
+        .provideDrinkTypeById(id)
         .asFlow()
         .map {
-            it.executeAsOne().toEntity()
+            it.executeAsOneOrNull()?.toEntity()
         }
 
     private fun DrinkType.toEntity() = DrinkTypeEntity(

@@ -1,7 +1,7 @@
 package hardcoder.dev.logic.features.waterBalance.drinkType
 
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.DrinkType
+import hardcoder.dev.entities.features.waterTracking.DrinkType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

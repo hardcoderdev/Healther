@@ -7,5 +7,5 @@ upsert:
 INSERT OR REPLACE INTO AppPreference (id, firstLaunchTime)
 VALUES (?, ?);
 
-selectPreferences:
+providePreferences:
 SELECT * FROM AppPreference;

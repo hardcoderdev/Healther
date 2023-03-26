@@ -15,8 +15,8 @@ UPDATE DrinkType SET name = ?, iconResourceName = ?, hydrationIndexPercentage = 
 deleteById:
 DELETE FROM DrinkType WHERE id = ?;
 
-selectAllDrinkTypes:
+provideAllDrinkTypes:
 SELECT * FROM DrinkType;
 
-selectDrinkTypeById:
+provideDrinkTypeById:
 SELECT * FROM DrinkType WHERE id = ?;

@@ -1,27 +1,28 @@
 package hardcoder.dev.androidApp.di
 
 import android.content.Context
+import hardcoder.dev.androidApp.ui.IconProvider
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.BatteryRequirements
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.PedometerManagerImpl
 import hardcoder.dev.database.AppDatabaseFactory
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.datetime.TimeUnitMapper
+import hardcoder.dev.logic.DateTimeProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
 import hardcoder.dev.logic.appPreferences.PredefinedTracksManager
+import hardcoder.dev.logic.features.fasting.plan.FastingPlanDurationResolver
+import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
+import hardcoder.dev.logic.features.fasting.plan.FastingPlanProvider
+import hardcoder.dev.logic.features.fasting.statistic.FastingStatisticProvider
+import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
+import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
 import hardcoder.dev.logic.features.pedometer.PedometerStepHandler
 import hardcoder.dev.logic.features.pedometer.PedometerStepProvider
 import hardcoder.dev.logic.features.pedometer.PedometerTrackCreator
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
-import hardcoder.dev.logic.features.starvation.DateTimeProvider
-import hardcoder.dev.logic.features.starvation.plan.StarvationPlanDurationResolver
-import hardcoder.dev.logic.features.starvation.plan.StarvationPlanIdMapper
-import hardcoder.dev.logic.features.starvation.plan.StarvationPlanProvider
-import hardcoder.dev.logic.features.starvation.statistic.StarvationStatisticProvider
-import hardcoder.dev.logic.features.starvation.track.CurrentStarvationManager
-import hardcoder.dev.logic.features.starvation.track.StarvationTrackProvider
 import hardcoder.dev.logic.features.waterBalance.WaterIntakeResolver
 import hardcoder.dev.logic.features.waterBalance.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterBalance.WaterTrackCreator
@@ -31,10 +32,10 @@ import hardcoder.dev.logic.features.waterBalance.WaterTrackProvider
 import hardcoder.dev.logic.features.waterBalance.WaterTrackUpdater
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeCreator
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeDeleter
+import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeIconResourceValidator
+import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeNameValidator
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeUpdater
-import hardcoder.dev.logic.features.waterBalance.drinkType.IconResourceValidator
-import hardcoder.dev.logic.features.waterBalance.drinkType.NameValidator
 import hardcoder.dev.logic.hero.GenderIdMapper
 import hardcoder.dev.logic.hero.GenderProvider
 import hardcoder.dev.logic.hero.HeroCreator
@@ -61,6 +62,10 @@ class LogicModule(private val context: Context) {
             context = context,
             drinkTypeCreator = drinkTypeCreator
         )
+    }
+
+    val iconResourceProvider by lazy {
+        IconProvider(context = context)
     }
 
     private val timeUnitMapper by lazy {
@@ -112,12 +117,12 @@ class LogicModule(private val context: Context) {
         )
     }
 
-    val nameValidator by lazy {
-        NameValidator()
+    val drinkTypeNameValidator by lazy {
+        DrinkTypeNameValidator()
     }
 
-    val iconResourceValidator by lazy {
-        IconResourceValidator()
+    val drinkTypeIconResourceValidator by lazy {
+        DrinkTypeIconResourceValidator()
     }
 
     val drinkTypeCreator by lazy {
@@ -139,6 +144,7 @@ class LogicModule(private val context: Context) {
     val drinkTypeDeleter by lazy {
         DrinkTypeDeleter(
             appDatabase = appDatabase,
+            waterTrackDeleter = waterTrackDeleter,
             dispatcher = Dispatchers.IO
         )
     }
@@ -203,45 +209,44 @@ class LogicModule(private val context: Context) {
         )
     }
 
-
-    private val starvationPlanIdMapper by lazy {
-        StarvationPlanIdMapper()
+    private val fastingPlanIdMapper by lazy {
+        FastingPlanIdMapper()
     }
 
-    val starvationStatisticProvider by lazy {
-        StarvationStatisticProvider(
+    val fastingStatisticProvider by lazy {
+        FastingStatisticProvider(
             appDatabase = appDatabase,
-            starvationPlanIdMapper = starvationPlanIdMapper,
+            fastingPlanIdMapper = fastingPlanIdMapper,
             timeUnitMapper = timeUnitMapper,
-            starvationTrackProvider = starvationTrackProvider,
+            fastingTrackProvider = fastingTrackProvider,
             dateTimeProvider = dateTimeProvider
         )
     }
 
-    val starvationTrackProvider by lazy {
-        StarvationTrackProvider(
+    val fastingTrackProvider by lazy {
+        FastingTrackProvider(
             appDatabase = appDatabase,
-            starvationPlanIdMapper = starvationPlanIdMapper
+            fastingPlanIdMapper = fastingPlanIdMapper
         )
     }
 
-    val currentStarvationManager by lazy {
-        CurrentStarvationManager(
+    val currentFastingManager by lazy {
+        CurrentFastingManager(
             context = context,
             appDatabase = appDatabase,
-            starvationPlanIdMapper = starvationPlanIdMapper,
+            fastingPlanIdMapper = fastingPlanIdMapper,
             dispatcher = Dispatchers.IO,
             idGenerator = idGenerator,
-            starvationTrackProvider = starvationTrackProvider
+            fastingTrackProvider = fastingTrackProvider
         )
     }
 
-    val starvationPlanProvider by lazy {
-        StarvationPlanProvider()
+    val fastingPlanProvider by lazy {
+        FastingPlanProvider()
     }
 
-    val starvationPlanDurationResolver by lazy {
-        StarvationPlanDurationResolver(
+    val fastingPlanDurationResolver by lazy {
+        FastingPlanDurationResolver(
             timeUnitMapper = timeUnitMapper
         )
     }

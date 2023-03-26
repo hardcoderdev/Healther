@@ -42,7 +42,7 @@ fun EnterWeightScreen(
     val presentationModule = LocalPresentationModule.current
 
     val enterWeightViewModel = viewModel {
-        presentationModule.createEnterWeightViewModel()
+        presentationModule.getEnterWeightViewModel()
     }
     val state = enterWeightViewModel.state.collectAsState()
 
@@ -74,29 +74,30 @@ private fun EnterWeightContent(
             .padding(16.dp)
             .fillMaxSize()
     ) {
-        Title(text = stringResource(id = R.string.enterWeight_enterYourWeightInKg_text))
-        Spacer(modifier = Modifier.height(32.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            NumberPicker(
-                value = state.weight,
-                range = MINIMUM_WEIGHT..MAXIMUM_WEIGHT,
-                onValueChange = onUpdateWeight,
-                modifier = Modifier.weight(1.8f)
-            )
-            Spacer(modifier = Modifier.width(32.dp))
-            Image(
-                painter = painterResource(id = R.drawable.weight_measurement),
-                contentDescription = null,
-                modifier = Modifier
-                    .weight(1.2f)
-                    .size(60.dp)
-            )
+        Column(Modifier.weight(2f)) {
+            Title(text = stringResource(id = R.string.enterWeight_enterYourWeightInKg_text))
+            Spacer(modifier = Modifier.height(32.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                NumberPicker(
+                    value = state.weight,
+                    range = MINIMUM_WEIGHT..MAXIMUM_WEIGHT,
+                    onValueChange = onUpdateWeight,
+                    modifier = Modifier.weight(1.8f)
+                )
+                Spacer(modifier = Modifier.width(32.dp))
+                Image(
+                    painter = painterResource(id = R.drawable.weight_measurement),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .weight(1.2f)
+                        .size(60.dp)
+                )
+            }
         }
-        Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
             iconResId = R.drawable.ic_done,
             labelResId = R.string.enterWeight_next_buttonText,

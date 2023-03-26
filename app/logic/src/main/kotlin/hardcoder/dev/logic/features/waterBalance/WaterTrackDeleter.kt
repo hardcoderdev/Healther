@@ -12,4 +12,8 @@ class WaterTrackDeleter(
     suspend fun deleteById(id: Int) = withContext(dispatcher) {
         appDatabase.waterTrackQueries.deleteById(id)
     }
+
+    suspend fun deleteAllTracksByDrinkTypeId(id: Int) = withContext(dispatcher){
+        appDatabase.waterTrackQueries.deleteAllTracksByDrinkTypeId(id)
+    }
 }

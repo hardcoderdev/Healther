@@ -1,4 +1,4 @@
-package hardcoder.dev.entities.pedometer
+package hardcoder.dev.entities.features.pedometer
 
 data class PedometerTrack(
     val id: Int,

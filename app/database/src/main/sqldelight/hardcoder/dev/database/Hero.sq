@@ -13,6 +13,6 @@ update:
 UPDATE Hero SET weight = ?, exerciseStressTime = ?, genderId = ?
 WHERE id = ?;
 
-selectCurrentHero:
+provideCurrentHero:
 SELECT * FROM Hero;
 

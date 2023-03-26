@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="days">
+        <item quantity="one">day</item>
+        <item quantity="other">day</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">hour</item>
+        <item quantity="other">hour</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">minute</item>
+        <item quantity="other">minute</item>
+    </plurals>
+
+    <plurals name="seconds">
+        <item quantity="one">second</item>
+        <item quantity="other">second</item>
+    </plurals>
+</resources>

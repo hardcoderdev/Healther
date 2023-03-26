@@ -44,7 +44,7 @@ fun ScaffoldWrapper(
                 LargeFloatingActionButton(onClick = it) {
                     Icon(
                         iconResId = R.drawable.ic_fab_add,
-                        contentDescription = null,
+                        contentDescription = null
                     )
                 }
             } ?: Unit

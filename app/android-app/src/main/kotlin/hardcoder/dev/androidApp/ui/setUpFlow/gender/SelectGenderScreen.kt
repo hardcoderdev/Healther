@@ -20,11 +20,12 @@ import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.entities.hero.Gender
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
+import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.IconTextButton
-import hardcoder.dev.uikit.card.SelectionCard
+import hardcoder.dev.uikit.card.Card
 import hardcoder.dev.uikit.icons.Image
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
@@ -33,7 +34,7 @@ import hardcoder.dev.uikit.text.Title
 fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: (Gender) -> Unit) {
     val presentationModule = LocalPresentationModule.current
     val selectedGenderViewModel = viewModel {
-        presentationModule.createSelectGenderViewModel()
+        presentationModule.getSelectGenderViewModel()
     }
     val state = selectedGenderViewModel.state.collectAsState()
 
@@ -74,14 +75,15 @@ private fun SelectGenderContent(
             Spacer(modifier = Modifier.height(32.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
                 state.availableGenderList.forEach { gender ->
-                    SelectionCard(
+                    Card(
+                        interactionType = InteractionType.SELECTION,
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
                             .height(230.dp),
                         selectedItem = state.selectedGender,
                         item = gender,
-                        onSelect = onUpdateGender
+                        onClick = { onUpdateGender(gender) }
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Image(

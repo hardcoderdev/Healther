@@ -2,8 +2,13 @@ package hardcoder.dev.androidApp.ui
 
 import android.content.Context
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.icons.IconResourceProvider
 
-class IconProvider(private val context: Context) {
+class IconProvider(private val context: Context) : IconResourceProvider {
+
+    override fun provideWaterTrackingIconResources(): List<String> {
+        return provideWaterTrackingIcons()
+    }
 
     // TODO DIVIDE OTHER ICONS AND ADD MORE ICONS
 

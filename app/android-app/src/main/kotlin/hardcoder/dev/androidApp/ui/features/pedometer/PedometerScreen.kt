@@ -44,7 +44,7 @@ fun PedometerScreen(
     onGoToPedometerHistory: () -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.createPedometerViewModel() }
+    val viewModel = viewModel { presentationModule.getPedometerViewModel() }
     val state by viewModel.state.collectAsState()
 
     when (val loadingState = state) {
@@ -65,7 +65,7 @@ fun PedometerScreen(
                 actionConfig = ActionConfig(
                     actions = listOf(
                         Action(
-                            iconResId = R.drawable.ic_more,
+                            iconResId = R.drawable.ic_history,
                             onActionClick = onGoToPedometerHistory
                         )
                     )

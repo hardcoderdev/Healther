@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS waterTrack (
+CREATE TABLE IF NOT EXISTS WaterTrack (
     id INTEGER AS Int NOT NULL PRIMARY KEY AUTOINCREMENT,
     date INTEGER NOT NULL,
     millilitersCount INTEGER AS Int NOT NULL,
@@ -6,21 +6,24 @@ CREATE TABLE IF NOT EXISTS waterTrack (
 );
 
 insert:
-INSERT INTO waterTrack (id, date, millilitersCount, drinkTypeId)
+INSERT INTO WaterTrack (id, date, millilitersCount, drinkTypeId)
 VALUES (?, ?, ?, ?);
 
 update:
-UPDATE waterTrack SET date = ?, millilitersCount = ?, drinkTypeId = ?
+UPDATE WaterTrack SET date = ?, millilitersCount = ?, drinkTypeId = ?
 WHERE id = ?;
 
 deleteById:
-DELETE FROM waterTrack WHERE id = ?;
+DELETE FROM WaterTrack WHERE id = ?;
 
-selectWaterTrackById:
-SELECT * FROM waterTrack WHERE id = ?;
+deleteAllTracksByDrinkTypeId:
+DELETE FROM WaterTrack WHERE drinkTypeId = ?;
 
-selectWaterTracksByDayRange:
-SELECT * FROM waterTrack WHERE date BETWEEN ? AND ?;
+provideWaterTrackById:
+SELECT * FROM WaterTrack WHERE id = ?;
+
+provideWaterTracksByDayRange:
+SELECT * FROM WaterTrack WHERE date BETWEEN ? AND ?;
 
 
 

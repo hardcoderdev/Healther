@@ -17,7 +17,9 @@ fun NumberPicker(
         value = value,
         range = range,
         dividersColor = MaterialTheme.colorScheme.primary,
-        textStyle = MaterialTheme.typography.titleMedium,
-        onValueChange = onValueChange
+        onValueChange = onValueChange,
+        textStyle = MaterialTheme.typography.titleMedium.copy(
+            color = MaterialTheme.colorScheme.onBackground
+        )
     )
 }

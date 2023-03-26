@@ -12,7 +12,7 @@ class HeroProvider(
 ) {
 
     fun requireHero() = appDatabase.heroQueries
-        .selectCurrentHero()
+        .provideCurrentHero()
         .asFlow()
         .map {
             it.executeAsOne().toEntity()

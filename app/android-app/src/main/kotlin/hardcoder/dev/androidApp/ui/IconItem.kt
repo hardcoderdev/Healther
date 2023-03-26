@@ -9,7 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.uikit.card.SelectionCard
+import hardcoder.dev.uikit.InteractionType
+import hardcoder.dev.uikit.card.Card
 import hardcoder.dev.uikit.icons.Icon
 
 @Composable
@@ -21,8 +22,9 @@ fun IconItem(
 ) {
     val iconResolver = LocalIconResolver.current
 
-    SelectionCard(
-        onSelect = onSelectIcon,
+    Card(
+        interactionType = InteractionType.SELECTION,
+        onClick = { onSelectIcon(iconResourceName) },
         item = iconResourceName,
         selectedItem = selectedIconResourceName,
         modifier = Modifier.size(60.dp)
@@ -33,7 +35,7 @@ fun IconItem(
                 contentDescription = stringResource(id = contentDescriptionResId),
                 modifier = Modifier
                     .size(60.dp)
-                    .padding(12.dp),
+                    .padding(12.dp)
             )
         }
     }

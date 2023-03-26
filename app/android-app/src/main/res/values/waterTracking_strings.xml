@@ -15,7 +15,7 @@
     <string name="saveWaterTrack_millilitersEmpty_text">Это поле не может быть пустым!</string>
     <string name="saveWaterTrack_selectedDate_formatText">Выбранная дата: %s</string>
     <string name="saveWaterTrack_millilitersMoreThanDailyWaterIntake_text">Введёные вами мл больше, чем дневная норма!</string>
-    <string name="saveWaterTrack_createCustomDrinkType_buttonText">Создать свой напиток</string>
+    <string name="saveWaterTrack_createDrinkType_management_text">Управление напитками</string>
 
     <string name="updateWaterTrack_updateEntry_buttonText">Обновить запись</string>
     <string name="updateWaterTrack_update_title_topBar">Обновление записи</string>
@@ -28,6 +28,12 @@
     <string name="updateWaterTrack_millilitersMoreThanDailyWaterIntake_text">Введёные вами мл больше, чем дневная норма!</string>
     <string name="updateWaterTrack_createCustomDrinkType_buttonText">Создать свой напиток</string>
 
+    <string name="waterTrackingHistory_title_topBar">Подробная история</string>
+    <string name="waterTrackingHistory_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
+
+    <string name="drinkTypeManage_title_topBar">Управление напитками</string>
+    <string name="drinkTypeManage_nowEmpty_text">Сейчас здесь пусто. Для того, чтобы добавить кастомный напиток воспользуйтесь кнопкой в правом нижнем углу!</string>
+
     <string name="createDrinkType_title_topBar">Создание напитка</string>
     <string name="createDrinkType_enterName_text">Введите название напитка:</string>
     <string name="createDrinkType_nameIcon_contentDescription">Иконка ввода названия</string>
@@ -38,6 +44,14 @@
     <string name="createDrinkType_selectedIndex_formatText">Выбранный индекс: %d%%</string>
     <string name="createDrinkType_createTrack_buttonText">Сохранить напиток</string>
 
-    <string name="waterTrackingHistory_title_topBar">Подробная история</string>
-    <string name="waterTrackingHistory_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
+    <string name="updateDrinkType_title_topBar">Обновление напитка</string>
+    <string name="updateDrinkType_selectedIndex_formatText">Выбранный индекс: %d%%</string>
+    <string name="updateDrinkType_selectHydrationIndex_text">Укажите индекс гидратации напитка:</string>
+    <string name="updateDrinkType_drinkTypeIconContentDescription">Иконка напитка</string>
+    <string name="updateDrinkType_selectIcon_text">Выберите иконку напитка:</string>
+    <string name="updateDrinkType_nameIcon_contentDescription">Иконка ввода названия</string>
+    <string name="updateDrinkType_enterName_textField">Например, Джин-тоник…</string>
+    <string name="updateDrinkType_enterName_text">Введите название напитка:</string>
+    <string name="updateDrinkType_createTrack_buttonText">Обновить напиток</string>
+
 </resources>

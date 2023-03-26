@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fasting_lastFastingTracks_text">Recent fasts:</string>
+    <string name="fasting_yourSelectedPlan_formatText">Selected fasting plan: %s</string>
+    <string name="fasting_noEnoughDataToShowLastTracks_text">There is not enough data to display recent fasting records.</string>
+    <string name="fasting_start_buttonText">Start fasting</string>
+    <string name="fasting_in_progress_text">You are fasting!</string>
+    <string name="fasting_startDate_text">You started a fast: %s</string>
+    <string name="fasting_interrupt_buttonText">Break fasting</string>
+    <string name="fasting_statistic_text">General statistics:</string>
+    <string name="fasting_statistic_not_enough_data_text">Too little information</string>
+    <string name="fasting_statistic_max_hours_text">Maximum hours</string>
+    <string name="fasting_statistic_average_hours_text">Hours on average</string>
+    <string name="fasting_statistic_min_hours_text">Minimum hours</string>
+    <string name="fasting_statistic_completion_percentage_text">Percent complete</string>
+    <string name="fasting_statistic_favorite_plan_text">Favorite plan</string>
+    <string name="fasting_finish_text">Fasting is over!</string>
+    <string name="fasting_finish_title_topBar">End of fasting</string>
+    <string name="fasting_finish_image_contentDescription">Image of victory</string>
+    <string name="fasting_finish_success_results_text">Excellent results! You completed the fast and did not break down until the very end! Keep it up, you will succeed!</string>
+    <string name="fasting_finish_fail_results_text">Excellent results! You tried your best and managed to survive %s! Do not give up and try even harder, and you will definitely be able to complete the plan completely!</string>
+    <string name="fasting_finish_goNext_buttonText">Great, thanks!</string>
+    <string name="fastingCreation_title_topBar">Start fasting</string>
+    <string name="fastingHistory_title_topBar">Detailed history</string>
+    <string name="fastingHistory_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
+    <string name="fastingPlanItem_description_formatText">You will fast for %s and after that you will have %s to eat.</string>
+    <string name="fastingPlanItem_selectFastingHours_text">Select the number of hours after which the fast will end:</string>
+    <string name="fastingPlanItem_planDifficulty_text">All plans below are arranged in ascending order of difficulty.</string>
+    <string name="fastingPlanItem_selectPlan_text">Plan selection:</string>
+    <string name="fastingPlanItem_customPlan">Your plan</string>
+    <string name="fastingItem_fasting_startTime_formatText">Start of fasting: %s</string>
+    <string name="fastingItem_fasting_endTime_formatText">End of fasting: %s</string>
+    <string name="fastingItem_fastingPlan_formatText">Fasting plan: %s</string>
+</resources>

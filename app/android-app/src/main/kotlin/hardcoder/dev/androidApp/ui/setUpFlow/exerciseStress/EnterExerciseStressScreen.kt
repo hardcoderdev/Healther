@@ -42,10 +42,10 @@ fun EnterExerciseStressScreen(
     val presentationModule = LocalPresentationModule.current
 
     val enterExerciseStressTimeViewModel = viewModel {
-        presentationModule.createEnterExerciseStressTimeViewModel()
+        presentationModule.getEnterExerciseStressTimeViewModel()
     }
     val heroCreateViewModel = viewModel {
-        presentationModule.createHeroCreateViewModel()
+        presentationModule.getHeroCreateViewModel()
     }
     val state = enterExerciseStressTimeViewModel.state.collectAsState()
 

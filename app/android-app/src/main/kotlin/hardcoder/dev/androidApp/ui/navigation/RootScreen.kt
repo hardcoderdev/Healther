@@ -15,7 +15,7 @@ fun RootScreen() {
         composable(route = Screen.Root.route) {
             SplashScreen(
                 onStartSetUp = { navController.navigate(Screen.Welcome.route) },
-                onNavigateToDashboard = { navController.navigate(Screen.PedometerFeature.route) }
+                onNavigateToDashboard = { navController.navigate(Screen.WaterTrackingFeature.route) }
             )
         }
         navigation(
@@ -44,10 +44,10 @@ fun RootScreen() {
         }
 
         navigation(
-            startDestination = Flow.StarvationFlow.startDestination,
-            route = Flow.StarvationFlow.route
+            startDestination = Flow.FastingFlow.startDestination,
+            route = Flow.FastingFlow.route
         ) {
-            addStarvationDestinations(navController)
+            addFastingDestinations(navController)
         }
     }
 }

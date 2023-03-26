@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Healther</string>
 
-    <string name="dashboard_featureType_starvation">Голодание</string>
+    <string name="dashboard_featureType_fasting">Голодание</string>
 
     <string name="datetime_seconds">%dс</string>
     <string name="datetime_minutes">%dм</string>

@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS FastingTrack(
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    startTime INTEGER NOT NULL,
+    duration INTEGER NOT NULL,
+    fastingPlanId INTEGER AS Int NOT NULL,
+    interruptedTimeInMillis INTEGER
+);
+
+insert:
+INSERT INTO FastingTrack (id, startTime, duration, fastingPlanId, interruptedTimeInMillis)
+VALUES (?, ?, ?, ?, ?);
+
+update:
+UPDATE FastingTrack SET interruptedTimeInMillis = ?, duration = ? WHERE id = ?;
+
+provideFastingTrackById:
+SELECT * FROM FastingTrack WHERE id = ?;
+
+provideFastingTrackByStartTime:
+SELECT * FROM FastingTrack WHERE startTime BETWEEN ? AND ?;
+
+provideAllFastingTracks:
+SELECT * FROM FastingTrack;
+
+provideLastFastingTracks:
+SELECT * FROM FastingTrack ORDER BY id DESC LIMIT :limit;

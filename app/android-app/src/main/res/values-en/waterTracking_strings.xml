@@ -4,6 +4,7 @@
     <string name="waterTracking_millilitersCount_formatText">%d / %d ml</string>
     <string name="waterTracking_title_topBar">Water balance</string>
     <string name="waterTracking_nowEmpty_text">Now it\'s empty. In order to add an entry, use the button in the lower right corner!</string>
+
     <string name="saveWaterTrack_create_title_topBar">Create an entry</string>
     <string name="saveWaterTrack_selectDateRange_buttonText">Select date</string>
     <string name="saveWaterTrack_enterMillilitersCount_text">Enter the amount of drink you have drunk (in ml):</string>
@@ -14,7 +15,8 @@
     <string name="saveWaterTrack_millilitersEmpty_text">This field can\'t be empty!</string>
     <string name="saveWaterTrack_selectedDate_formatText">Selected date: %s</string>
     <string name="saveWaterTrack_millilitersMoreThanDailyWaterIntake_text">The ml entered by you is more, than daily rate!</string>
-    <string name="saveWaterTrack_createCustomDrinkType_buttonText">Create your drink</string>
+    <string name="saveWaterTrack_createDrinkType_management_text">Create your drink</string>
+
     <string name="updateWaterTrack_updateEntry_buttonText">Update entry</string>
     <string name="updateWaterTrack_update_title_topBar">Entry update</string>
     <string name="updateWaterTrack_selectDateRange_buttonText">Select date</string>
@@ -25,6 +27,13 @@
     <string name="updateWaterTrack_millilitersEmpty_text">This field cannot be empty!</string>
     <string name="updateWaterTrack_millilitersMoreThanDailyWaterIntake_text">The ml entered by you is more, than daily rate!</string>
     <string name="updateWaterTrack_createCustomDrinkType_buttonText">Create your drink</string>
+
+    <string name="waterTrackingHistory_title_topBar">Detailed history</string>
+    <string name="waterTrackingHistory_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
+
+    <string name="drinkTypeManage_title_topBar">Drink type management</string>
+    <string name="drinkTypeManage_nowEmpty_text">Now it\'s empty. In order to add a custom drink, it appears in the right corner!</string>
+
     <string name="createDrinkType_title_topBar">Creating a drink</string>
     <string name="createDrinkType_enterName_text">Enter the name of the drink:</string>
     <string name="createDrinkType_nameIcon_contentDescription">Name input icon</string>
@@ -34,6 +43,15 @@
     <string name="createDrinkType_selectHydrationIndex_text">Specify the drink hydration index:</string>
     <string name="createDrinkType_selectedIndex_formatText">Selected index: %d%%</string>
     <string name="createDrinkType_createTrack_buttonText">Save a drink</string>
-    <string name="waterTrackingHistory_title_topBar">Detailed history</string>
-    <string name="waterTrackingHistory_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
+
+    <string name="updateDrinkType_title_topBar">Drink type update</string>
+    <string name="updateDrinkType_selectedIndex_formatText">Selected index: %d%%</string>
+    <string name="updateDrinkType_selectHydrationIndex_text">Specify the drink hydration index:</string>
+    <string name="updateDrinkType_drinkTypeIconContentDescription">Drink type icon</string>
+    <string name="updateDrinkType_selectIcon_text">Select a drink icon:</string>
+    <string name="updateDrinkType_nameIcon_contentDescription">Name input icon</string>
+    <string name="updateDrinkType_enterName_textField">Like a gin tonic…</string>
+    <string name="updateDrinkType_enterName_text">Enter the name of the drink:</string>
+    <string name="updateDrinkType_createTrack_buttonText">Update drink type</string>
+
 </resources>

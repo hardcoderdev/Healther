@@ -4,12 +4,12 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.PedometerTrack
 import kotlinx.coroutines.flow.map
-import hardcoder.dev.entities.pedometer.PedometerTrack as PedometerTrackEntity
+import hardcoder.dev.entities.features.pedometer.PedometerTrack as PedometerTrackEntity
 
 class PedometerTrackProvider(private val appDatabase: AppDatabase) {
 
     fun providePedometerTracksByRange(range: LongRange) = appDatabase.pedometerTrackQueries
-        .selectPedometerTracksByRange(
+        .providePedometerTracksByRange(
             range.first,
             range.last,
             range.first,

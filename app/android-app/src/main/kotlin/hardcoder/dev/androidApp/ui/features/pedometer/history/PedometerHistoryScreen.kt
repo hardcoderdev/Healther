@@ -23,7 +23,8 @@ import hardcoder.dev.uikit.ActivityChartSection
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.text.Title
+import hardcoder.dev.uikit.calendar.CustomMonthHeader
+import hardcoder.dev.uikit.text.Description
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
@@ -37,7 +38,7 @@ const val MINIMUM_ENTRIES_FOR_SHOWING_CHART = 2
 fun PedometerHistoryScreen(onGoBack: () -> Unit) {
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel {
-        presentationModule.createPedometerHistoryViewModel()
+        presentationModule.getPedometerHistoryViewModel()
     }
     val state by viewModel.state.collectAsState()
 
@@ -77,7 +78,13 @@ private fun PedometerHistoryContent(
     }
 
     Column(Modifier.padding(16.dp)) {
-        SelectableCalendar(calendarState = calendarState)
+        SelectableCalendar(
+            calendarState = calendarState,
+            monthHeader = { monthState ->
+                CustomMonthHeader(monthState = monthState)
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        )
         Spacer(modifier = Modifier.height(16.dp))
         PedometerTracksHistory(state = state)
         Spacer(modifier = Modifier.height(16.dp))
@@ -91,7 +98,7 @@ private fun PedometerHistoryContent(
             )
         } else {
             Spacer(modifier = Modifier.height(16.dp))
-            Title(text = stringResource(id = R.string.pedometerHistory_weDontHaveEnoughDataToShowChart_text))
+            Description(text = stringResource(id = R.string.pedometerHistory_weDontHaveEnoughDataToShowChart_text))
         }
     }
 }
@@ -125,6 +132,6 @@ private fun PedometerTracksHistory(
         )
     } else {
         Spacer(modifier = Modifier.height(16.dp))
-        Title(text = stringResource(id = R.string.pedometer_emptyDayHistory_text))
+        Description(text = stringResource(id = R.string.pedometer_emptyDayHistory_text))
     }
 }

@@ -1,3 +1,6 @@
 package hardcoder.dev.entities.hero
 
-enum class Gender { MALE, FEMALE }
+enum class Gender {
+    MALE,
+    FEMALE
+}

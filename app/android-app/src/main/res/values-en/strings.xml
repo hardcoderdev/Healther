@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Healther</string>
 
-    <string name="dashboard_featureType_starvation">Fasting</string>
+    <string name="dashboard_featureType_fasting">Fasting</string>
 
     <string name="datetime_seconds">%ds</string>
     <string name="datetime_minutes">%dm</string>
