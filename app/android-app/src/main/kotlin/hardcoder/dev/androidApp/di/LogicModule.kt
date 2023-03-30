@@ -6,7 +6,6 @@ import hardcoder.dev.androidApp.ui.features.pedometer.logic.BatteryRequirements
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.PedometerManagerImpl
 import hardcoder.dev.database.AppDatabaseFactory
 import hardcoder.dev.database.IdGenerator
-import hardcoder.dev.datetime.TimeUnitMapper
 import hardcoder.dev.logic.DateTimeProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
@@ -23,6 +22,7 @@ import hardcoder.dev.logic.features.pedometer.PedometerStepHandler
 import hardcoder.dev.logic.features.pedometer.PedometerStepProvider
 import hardcoder.dev.logic.features.pedometer.PedometerTrackCreator
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
+import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatisticProvider
 import hardcoder.dev.logic.features.waterBalance.WaterIntakeResolver
 import hardcoder.dev.logic.features.waterBalance.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterBalance.WaterTrackCreator
@@ -36,6 +36,7 @@ import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeIconResource
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeNameValidator
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeUpdater
+import hardcoder.dev.logic.features.waterBalance.statistic.WaterTrackingStatisticProvider
 import hardcoder.dev.logic.hero.GenderIdMapper
 import hardcoder.dev.logic.hero.GenderProvider
 import hardcoder.dev.logic.hero.HeroCreator
@@ -66,10 +67,6 @@ class LogicModule(private val context: Context) {
 
     val iconResourceProvider by lazy {
         IconProvider(context = context)
-    }
-
-    private val timeUnitMapper by lazy {
-        TimeUnitMapper()
     }
 
     val genderProvider by lazy {
@@ -112,6 +109,13 @@ class LogicModule(private val context: Context) {
 
     val waterTrackProvider by lazy {
         WaterTrackProvider(
+            appDatabase = appDatabase,
+            drinkTypeProvider = drinkTypeProvider
+        )
+    }
+
+    val waterTrackingStatisticProvider by lazy {
+        WaterTrackingStatisticProvider(
             appDatabase = appDatabase,
             drinkTypeProvider = drinkTypeProvider
         )
@@ -209,6 +213,14 @@ class LogicModule(private val context: Context) {
         )
     }
 
+    val pedometerStatisticProvider by lazy {
+        PedometerStatisticProvider(
+            appDatabase = appDatabase,
+            kilometersResolver = kilometersResolver,
+            caloriesResolver = caloriesResolver
+        )
+    }
+
     private val fastingPlanIdMapper by lazy {
         FastingPlanIdMapper()
     }
@@ -217,7 +229,6 @@ class LogicModule(private val context: Context) {
         FastingStatisticProvider(
             appDatabase = appDatabase,
             fastingPlanIdMapper = fastingPlanIdMapper,
-            timeUnitMapper = timeUnitMapper,
             fastingTrackProvider = fastingTrackProvider,
             dateTimeProvider = dateTimeProvider
         )
@@ -246,9 +257,7 @@ class LogicModule(private val context: Context) {
     }
 
     val fastingPlanDurationResolver by lazy {
-        FastingPlanDurationResolver(
-            timeUnitMapper = timeUnitMapper
-        )
+        FastingPlanDurationResolver()
     }
 
     val heroCreator by lazy {

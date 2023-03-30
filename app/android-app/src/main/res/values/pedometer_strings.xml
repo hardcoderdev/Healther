@@ -17,6 +17,18 @@
     <string name="pedometer_notificationManagerChannelId" translatable="false">healther_pedometer_feature_id</string>
     <string name="pedometer_notificationManager_channelName" translatable="false">pedometer</string>
     <string name="pedometer_notificationManager_contentIntent_deeplinkPattern" translatable="false">healther://pedometer_feature</string>
+    <string name="pedometer_statistic_text">Общая статистика:</string>
+    <string name="pedometer_statistic_not_enough_data_text">Мало инфы</string>
+    <string name="pedometer_statistic_total_steps">Всего шагов</string>
+    <string name="pedometer_statistic_total_kilometers">Всего километров</string>
+    <string name="pedometer_statistic_total_time">Всего времени</string>
+    <string name="pedometer_statistic_total_calories">Всего калорий</string>
+    <string name="pedometer_statistic_average_calories">Калорий в среднем</string>
+    <string name="pedometer_statistic_average_time">Времени в среднем</string>
+    <string name="pedometer_statistic_average_kilometers">Километров в среднем</string>
+    <string name="pedometer_statistic_average_steps">Шагов в среднем</string>
+    <string name="pedometer_nowEmpty_text">Сейчас здесь пусто. Чтобы начать отслеживать шаги, нажмите на кнопку справа вверху и выдайте необходимые разрешения. Статистика и графика появятся спустя пару часов.</string>
+    <string name="pedometerHistory_yourIndicatorsForThisDay_text">Ваши показатели за день:</string>
     <string name="pedometerHistory_weDontHaveEnoughDataToShowChart_text">За этот день недостаточно данных для отображения графика.</string>
     <string name="pedometerHistory_title_topBar">Подробная история</string>
     <string name="pedometerHistory_emptyDayHistory_text">В этот день вы не добавляли записей.</string>

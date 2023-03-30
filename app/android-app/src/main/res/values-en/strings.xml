@@ -9,6 +9,11 @@
     <string name="datetime_hours">%dh</string>
     <string name="datetime_days">%dd</string>
 
+    <string name="liquid_hectoliters">%dhl</string>
+    <string name="liquid_decaliters">%ddkl</string>
+    <string name="liquid_liters">%dl</string>
+    <string name="liquid_milliliters">%dml</string>
+
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
 

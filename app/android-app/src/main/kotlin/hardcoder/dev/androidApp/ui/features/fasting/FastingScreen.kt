@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,7 +14,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,10 +25,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.ui.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalFastingPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
+import hardcoder.dev.entities.features.fasting.FastingTrack
 import hardcoder.dev.entities.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
@@ -41,10 +42,15 @@ import hardcoder.dev.uikit.Statistics
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.charts.ActivityColumnChart
+import hardcoder.dev.uikit.charts.MINIMUM_ENTRIES_FOR_SHOWING_CHART
 import hardcoder.dev.uikit.progressBar.CircularProgressBar
+import hardcoder.dev.uikit.sections.EmptyBlock
+import hardcoder.dev.uikit.sections.EmptySection
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Headline
 import hardcoder.dev.uikit.text.Title
+import kotlin.math.roundToInt
 
 @Composable
 fun FastingScreen(
@@ -59,14 +65,14 @@ fun FastingScreen(
     ScaffoldWrapper(
         content = {
             when (val fastingState = state.value) {
-                is FastingViewModel.FastingState.NotStarving -> {
+                is FastingViewModel.FastingState.NotFasting -> {
                     NotFastingContent(
                         state = fastingState,
                         onCreateFastingTrack = onCreateTrack
                     )
                 }
 
-                is FastingViewModel.FastingState.Starving -> {
+                is FastingViewModel.FastingState.Fasting -> {
                     FastingContent(
                         state = fastingState,
                         onEndFasting = viewModel::interruptTrack
@@ -81,7 +87,7 @@ fun FastingScreen(
                 }
             }
         },
-        actionConfig = if (state.value is FastingViewModel.FastingState.NotStarving) {
+        actionConfig = if (state.value is FastingViewModel.FastingState.NotFasting) {
             ActionConfig(
                 actions = listOf(
                     Action(
@@ -145,21 +151,9 @@ private fun FastingStatistic.toGroupedStatistic(
 
 @Composable
 private fun NotFastingContent(
-    state: FastingViewModel.FastingState.NotStarving,
+    state: FastingViewModel.FastingState.NotFasting,
     onCreateFastingTrack: () -> Unit
 ) {
-    val context = LocalContext.current
-    val fastingPlanResourcesProvider = LocalFastingPlanResourcesProvider.current
-
-    val statisticData = remember(state.fastingStatistic) {
-        state.fastingStatistic.toGroupedStatistic(
-            context = context,
-            favouritePlanResId = state.fastingStatistic.favouritePlan?.let {
-                fastingPlanResourcesProvider.provide(it).nameResId
-            }
-        )
-    }
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -170,24 +164,15 @@ private fun NotFastingContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState())
         ) {
-            Title(text = stringResource(id = R.string.fasting_lastFastingTracks_text))
-            Spacer(modifier = Modifier.height(16.dp))
-            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                if (state.lastFastingTracks.isEmpty()) {
-                    Description(text = stringResource(id = R.string.fasting_noEnoughDataToShowLastTracks_text))
-                } else {
-                    state.lastFastingTracks.forEach {
-                        FastingItem(fastingTrack = it)
-                    }
-                }
-            }
+            FastingLastTracksSection(lastFastingTrackList = state.lastFastingTracks)
             Spacer(modifier = Modifier.height(32.dp))
-            Title(text = stringResource(id = R.string.fasting_statistic_text))
-            Spacer(modifier = Modifier.height(24.dp))
-            Statistics(
-                modifier = Modifier.fillMaxWidth(),
-                statistics = statisticData
-            )
+            state.fastingStatistic?.let { statistic ->
+                FastingStatisticSection(fastingStatistic = statistic)
+                Spacer(modifier = Modifier.height(32.dp))
+                FastingChartSection(fastingChartEntries = state.chartEntries)
+            } ?: run {
+                EmptySection(emptyTitleResId = R.string.fasting_nowEmpty_text)
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
@@ -200,25 +185,9 @@ private fun NotFastingContent(
 
 @Composable
 private fun FastingContent(
-    state: FastingViewModel.FastingState.Starving,
+    state: FastingViewModel.FastingState.Fasting,
     onEndFasting: () -> Unit
 ) {
-    val context = LocalContext.current
-    val fastingPlanResourcesProvider = LocalFastingPlanResourcesProvider.current
-    val dateTimeFormatter = LocalDateTimeFormatter.current
-    val formattedDate = dateTimeFormatter.formatDateTime(state.startTimeInMillis)
-
-    val fastingPlanResources = fastingPlanResourcesProvider.provide(state.selectedPlan)
-
-    val statisticData = remember(state.fastingStatistic) {
-        state.fastingStatistic.toGroupedStatistic(
-            context = context,
-            favouritePlanResId = state.fastingStatistic.favouritePlan?.let {
-                fastingPlanResourcesProvider.provide(it).nameResId
-            }
-        )
-    }
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -229,40 +198,18 @@ private fun FastingContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState())
         ) {
-            Headline(
-                text = stringResource(id = R.string.fasting_in_progress_text),
-                modifier = Modifier.align(CenterHorizontally)
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            CircularProgressBar(
-                modifier = Modifier.align(CenterHorizontally),
-                radius = 100.dp,
-                fontSize = 24.sp,
-                strokeWidth = 12.dp,
-                percentage = state.timeLeftInMillis safeDiv state.durationInMillis,
-                innerText = dateTimeFormatter.formatMillisDistance(
-                    distanceInMillis = state.timeLeftInMillis,
-                    accuracy = DateTimeFormatter.Accuracy.SECONDS
-                )
-            )
+            FastingProgressSection(state = state)
             Spacer(modifier = Modifier.height(64.dp))
-            Description(
-                text = stringResource(
-                    id = R.string.fasting_startDate_text,
-                    formatArgs = arrayOf(formattedDate)
+            FastingInfoSection(state = state)
+            Spacer(modifier = Modifier.height(16.dp))
+            state.fastingStatistic?.let { statistic ->
+                FastingStatisticSection(fastingStatistic = statistic)
+            } ?: run {
+                EmptyBlock(
+                    emptyTitleResId = R.string.fasting_nowEmpty_text,
+                    lottieAnimationResId = R.raw.empty_astronaut
                 )
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            Description(
-                text = stringResource(
-                    id = R.string.fasting_yourSelectedPlan_formatText,
-                    formatArgs = arrayOf(stringResource(id = fastingPlanResources.nameResId))
-                )
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            Title(text = stringResource(id = R.string.fasting_statistic_text))
-            Spacer(modifier = Modifier.height(32.dp))
-            Statistics(statistics = statisticData)
+            }
         }
         Spacer(modifier = Modifier.height(32.dp))
         IconTextButton(
@@ -282,7 +229,7 @@ private fun FinishFastingContent(
     val dateTimeFormatter = LocalDateTimeFormatter.current
 
     val formattedFastingTime = dateTimeFormatter.formatMillisDistance(
-        distanceInMillis = state.timeLeftInMillis,
+        distanceInMillis = state.timeLeftInMillis.inWholeMilliseconds,
         usePlurals = true,
         accuracy = if (state.isInterrupted) {
             DateTimeFormatter.Accuracy.MINUTES
@@ -335,5 +282,105 @@ private fun FinishFastingContent(
             labelResId = R.string.fasting_finish_goNext_buttonText,
             onClick = onClose
         )
+    }
+}
+
+@Composable
+private fun ColumnScope.FastingProgressSection(state: FastingViewModel.FastingState.Fasting) {
+    val dateTimeFormatter = LocalDateTimeFormatter.current
+
+    Headline(
+        text = stringResource(id = R.string.fasting_in_progress_text),
+        modifier = Modifier.align(CenterHorizontally)
+    )
+    Spacer(modifier = Modifier.height(32.dp))
+    CircularProgressBar(
+        modifier = Modifier.align(CenterHorizontally),
+        radius = 100.dp,
+        fontSize = 24.sp,
+        strokeWidth = 12.dp,
+        percentage = state.timeLeftInMillis.inWholeMilliseconds safeDiv state.durationInMillis.inWholeMilliseconds,
+        innerText = dateTimeFormatter.formatMillisDistance(
+            distanceInMillis = state.timeLeftInMillis.inWholeMilliseconds,
+            accuracy = DateTimeFormatter.Accuracy.SECONDS
+        )
+    )
+}
+
+@Composable
+private fun FastingInfoSection(state: FastingViewModel.FastingState.Fasting) {
+    val fastingPlanResourcesProvider = LocalFastingPlanResourcesProvider.current
+    val dateTimeFormatter = LocalDateTimeFormatter.current
+    val formattedDate =
+        dateTimeFormatter.formatDateTime(state.startTimeInMillis.toEpochMilliseconds())
+
+    val fastingPlanResources = fastingPlanResourcesProvider.provide(state.selectedPlan)
+
+    Description(
+        text = stringResource(
+            id = R.string.fasting_startDate_text,
+            formatArgs = arrayOf(formattedDate)
+        )
+    )
+    Spacer(modifier = Modifier.height(12.dp))
+    Description(
+        text = stringResource(
+            id = R.string.fasting_yourSelectedPlan_formatText,
+            formatArgs = arrayOf(stringResource(id = fastingPlanResources.nameResId))
+        )
+    )
+}
+
+@Composable
+private fun FastingLastTracksSection(lastFastingTrackList: List<FastingTrack>) {
+    Title(text = stringResource(id = R.string.fasting_lastFastingTracks_text))
+    Spacer(modifier = Modifier.height(16.dp))
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        if (lastFastingTrackList.isEmpty()) {
+            Description(text = stringResource(id = R.string.fasting_noEnoughDataToShowLastTracks_text))
+        } else {
+            lastFastingTrackList.forEach {
+                FastingItem(fastingTrack = it)
+            }
+        }
+    }
+}
+
+@Composable
+private fun FastingStatisticSection(fastingStatistic: FastingStatistic) {
+    val context = LocalContext.current
+    val fastingPlanResourcesProvider = LocalFastingPlanResourcesProvider.current
+
+    Title(text = stringResource(id = R.string.fasting_statistic_text))
+    Spacer(modifier = Modifier.height(24.dp))
+    Statistics(
+        modifier = Modifier.fillMaxWidth(),
+        statistics = fastingStatistic.toGroupedStatistic(
+            context = context,
+            favouritePlanResId = fastingStatistic.favouritePlan?.let {
+                fastingPlanResourcesProvider.provide(it).nameResId
+            }
+        )
+    )
+}
+
+@Composable
+private fun FastingChartSection(fastingChartEntries: List<Pair<Int, Long>>) {
+    Title(text = stringResource(id = R.string.fasting_activity_chart))
+    Spacer(modifier = Modifier.height(16.dp))
+    if (fastingChartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
+        ActivityColumnChart(
+            isZoomEnabled = true,
+            modifier = Modifier.height(200.dp),
+            chartEntries = fastingChartEntries,
+            xAxisValueFormatter = { value, _ ->
+                value.roundToInt().toString()
+            },
+            yAxisValueFormatter = { value, _ ->
+                value.roundToInt().toString()
+            }
+        )
+    } else {
+        Description(text = stringResource(id = R.string.pedometer_weDontHaveEnoughDataToShowChart_text))
     }
 }

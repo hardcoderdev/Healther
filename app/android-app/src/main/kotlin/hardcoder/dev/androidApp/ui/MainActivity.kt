@@ -5,9 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
 import hardcoder.dev.androidApp.ui.features.fasting.plans.FastingPlanResourcesProvider
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
+import hardcoder.dev.androidApp.ui.formatters.LiquidFormatter
 import hardcoder.dev.androidApp.ui.navigation.RootScreen
 import hardcoder.dev.androidApp.ui.setUpFlow.gender.GenderResourcesProvider
-import hardcoder.dev.datetime.TimeUnitMapper
 import hardcoder.dev.uikit.HealtherTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,14 +26,16 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(
                     LocalPresentationModule provides App.instance.presentationModule,
                     LocalIconResolver provides IconResolver(this),
-                    LocalFloatFormatter provides FloatFormatter(),
+                    LocalLiquidFormatter provides LiquidFormatter(
+                        context = this,
+                        defaultAccuracy = LiquidFormatter.Accuracy.MILLILITERS
+                    ),
                     LocalDateTimeFormatter provides DateTimeFormatter(
                         context = this,
                         defaultAccuracy = DateTimeFormatter.Accuracy.MINUTES
                     ),
                     LocalGenderResourcesProvider provides GenderResourcesProvider(),
-                    LocalFastingPlanResourcesProvider provides FastingPlanResourcesProvider(),
-                    LocalTimeUnitMapper provides TimeUnitMapper()
+                    LocalFastingPlanResourcesProvider provides FastingPlanResourcesProvider()
                 ) {
                     RootScreen()
                 }

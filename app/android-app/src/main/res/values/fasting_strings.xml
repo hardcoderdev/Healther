@@ -20,6 +20,8 @@
     <string name="fasting_finish_success_results_text">Прекрасные результаты! Вы завершили голодание и не срывались до самого конца! Так держать, у вас всё получится!</string>
     <string name="fasting_finish_fail_results_text">Отличные результаты! Вы старались изо всех сил и смогли продержаться %s! Не сдавайтесь и старайтесь ещё больше, и у вас обязательно получится завершить план полностью!</string>
     <string name="fasting_finish_goNext_buttonText">Хорошо, спасибо!</string>
+    <string name="fasting_activity_chart">График голодания (за месяц):</string>
+    <string name="fasting_nowEmpty_text">Сейчас здесь пусто. Завершите (или прервите) голодание и вы увидите график и статистику.</string>
     <string name="fastingCreation_title_topBar">Старт голодания</string>
     <string name="fastingHistory_title_topBar">Подробная история</string>
     <string name="fastingHistory_emptyDayHistory_text">В этот день вы не добавляли записей.</string>

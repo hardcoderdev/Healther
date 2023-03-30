@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
 import hardcoder.dev.entities.features.waterTracking.DrinkType
-import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.logic.features.waterBalance.CorrectMillilitersInput
 import hardcoder.dev.logic.features.waterBalance.MillilitersCount
 import hardcoder.dev.logic.features.waterBalance.ValidatedMillilitersCount
@@ -13,14 +12,16 @@ import hardcoder.dev.logic.features.waterBalance.WaterTrackCreator
 import hardcoder.dev.logic.features.waterBalance.WaterTrackMillilitersValidator
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.hero.HeroProvider
-import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class WaterTrackCreateViewModel(
     private val waterTrackCreator: WaterTrackCreator,
@@ -36,7 +37,8 @@ class WaterTrackCreateViewModel(
         initialValue = emptyList()
     )
     private val selectedDrink = MutableStateFlow<DrinkType?>(null)
-    private val selectedDate = MutableStateFlow(LocalDate.now())
+    private val selectedDate =
+        MutableStateFlow(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
     private val millilitersDrunk = MutableStateFlow<Int?>(null)
     private val hero = heroProvider.requireHero()
     private val creationState = MutableStateFlow<CreationState>(CreationState.NotExecuted)
@@ -102,7 +104,7 @@ class WaterTrackCreateViewModel(
             val selectedDrink = requireNotNull(selectedDrink.value)
 
             waterTrackCreator.createWaterTrack(
-                date = selectedDate.value.getStartOfDay(),
+                date = selectedDate.value,
                 millilitersCount = validatedMillilitersCount.data.value,
                 drinkType = selectedDrink
             )
@@ -118,8 +120,8 @@ class WaterTrackCreateViewModel(
         selectedDrink.value = drink
     }
 
-    fun updateSelectedDate(localDate: LocalDate) {
-        selectedDate.value = localDate
+    fun updateSelectedDate(localDateTime: LocalDateTime) {
+        selectedDate.value = localDateTime
     }
 
     sealed class CreationState {
@@ -134,6 +136,6 @@ class WaterTrackCreateViewModel(
         val validatedMillilitersCount: ValidatedMillilitersCount?,
         val drinks: List<DrinkType>,
         val selectedDrink: DrinkType?,
-        val selectedDate: LocalDate
+        val selectedDate: LocalDateTime
     )
 }

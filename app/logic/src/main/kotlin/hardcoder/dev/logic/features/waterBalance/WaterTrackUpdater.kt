@@ -12,7 +12,7 @@ class WaterTrackUpdater(
 
     suspend fun update(waterTrack: WaterTrack) = withContext(dispatcher) {
         appDatabase.waterTrackQueries.update(
-            date = waterTrack.date,
+            date = waterTrack.date.toEpochMilliseconds(),
             millilitersCount = waterTrack.millilitersCount,
             drinkTypeId = waterTrack.drinkType.id,
             id = waterTrack.id

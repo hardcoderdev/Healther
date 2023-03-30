@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
 import hardcoder.dev.entities.features.waterTracking.DrinkType
-import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.logic.features.waterBalance.CorrectMillilitersInput
 import hardcoder.dev.logic.features.waterBalance.MillilitersCount
 import hardcoder.dev.logic.features.waterBalance.ValidatedMillilitersCount
@@ -16,7 +15,6 @@ import hardcoder.dev.logic.features.waterBalance.WaterTrackProvider
 import hardcoder.dev.logic.features.waterBalance.WaterTrackUpdater
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.hero.HeroProvider
-import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
@@ -24,7 +22,11 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 
 class WaterTrackUpdateViewModel(
     private val waterTrackId: Int,
@@ -37,7 +39,8 @@ class WaterTrackUpdateViewModel(
     private val waterIntakeResolver: WaterIntakeResolver
 ) : ViewModel() {
 
-    private val selectedDate = MutableStateFlow(LocalDate.now())
+    private val selectedDate =
+        MutableStateFlow(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
     private val millilitersDrunk = MutableStateFlow(0)
     private val selectedDrink = MutableStateFlow<DrinkType?>(null)
     private val drinkTypes = drinkTypeProvider.provideAllDrinkTypes().stateIn(
@@ -110,8 +113,8 @@ class WaterTrackUpdateViewModel(
         selectedDrink.value = drink
     }
 
-    fun updateSelectedDate(localDate: LocalDate) {
-        selectedDate.value = localDate
+    fun updateSelectedDate(localDateTime: LocalDateTime) {
+        selectedDate.value = localDateTime
     }
 
     fun updateWaterTrack() {
@@ -121,7 +124,7 @@ class WaterTrackUpdateViewModel(
 
             waterTrackProvider.provideWaterTrackById(waterTrackId).firstOrNull()?.let {
                 val updatedTrack = it.copy(
-                    date = selectedDate.value.getStartOfDay(),
+                    date = selectedDate.value.toInstant(TimeZone.currentSystemDefault()),
                     millilitersCount = millilitersDrunk.value,
                     drinkType = selectedDrink
                 )
@@ -165,7 +168,7 @@ class WaterTrackUpdateViewModel(
         val updateState: UpdateState,
         val deleteState: DeleteState,
         val validatedMillilitersCount: ValidatedMillilitersCount?,
-        val selectedDate: LocalDate,
+        val selectedDate: LocalDateTime,
         val millilitersCount: Int,
         val drinks: List<DrinkType>,
         val selectedDrink: DrinkType?,

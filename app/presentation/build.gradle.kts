@@ -10,6 +10,10 @@ android {
     defaultConfig {
         minSdk = Android.DefaultConfig.minSdk
     }
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
 }
 
 dependencies {

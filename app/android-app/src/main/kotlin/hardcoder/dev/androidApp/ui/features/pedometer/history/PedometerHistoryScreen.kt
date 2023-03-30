@@ -1,7 +1,10 @@
 package hardcoder.dev.androidApp.ui.features.pedometer.history
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -12,27 +15,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.ui.LocalFloatFormatter
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
-import hardcoder.dev.androidApp.ui.features.pedometer.InfoItem
-import hardcoder.dev.androidApp.ui.features.pedometer.PedometerInfoSection
 import hardcoder.dev.extensions.createRangeForCurrentDay
+import hardcoder.dev.extensions.roundAndFormatToString
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
-import hardcoder.dev.uikit.ActivityChartSection
+import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.calendar.CustomMonthHeader
+import hardcoder.dev.uikit.card.Card
+import hardcoder.dev.uikit.card.CardInfo
+import hardcoder.dev.uikit.card.CardInfoItem
+import hardcoder.dev.uikit.charts.ActivityLineChart
+import hardcoder.dev.uikit.charts.MINIMUM_ENTRIES_FOR_SHOWING_CHART
 import hardcoder.dev.uikit.text.Description
+import hardcoder.dev.uikit.text.Title
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
-
-const val MINIMUM_ENTRIES_FOR_SHOWING_CHART = 2
+import kotlin.math.roundToInt
 
 @Composable
 fun PedometerHistoryScreen(onGoBack: () -> Unit) {
@@ -88,13 +94,16 @@ private fun PedometerHistoryContent(
         Spacer(modifier = Modifier.height(16.dp))
         PedometerTracksHistory(state = state)
         Spacer(modifier = Modifier.height(16.dp))
-        if (
-            state.chartEntries.isNotEmpty() &&
-            state.chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART
-        ) {
-            ActivityChartSection(
+        if (state.chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
+            ActivityLineChart(
                 modifier = Modifier.weight(2f),
-                chartEntries = state.chartEntries
+                chartEntries = state.chartEntries,
+                xAxisValueFormatter = { value, _ ->
+                    value.roundToInt().toString()
+                },
+                yAxisValueFormatter = { value, _ ->
+                    value.roundToInt().toString()
+                }
             )
         } else {
             Spacer(modifier = Modifier.height(16.dp))
@@ -107,29 +116,34 @@ private fun PedometerHistoryContent(
 private fun PedometerTracksHistory(
     state: PedometerHistoryViewModel.State
 ) {
-    val floatFormatter = LocalFloatFormatter.current
     Spacer(modifier = Modifier.height(16.dp))
-
     if (state.totalStepsCount != 0) {
-        PedometerInfoSection(
-            infoItemList = listOf(
-                InfoItem(
+        Title(text = stringResource(id = R.string.pedometerHistory_yourIndicatorsForThisDay_text))
+        Spacer(modifier = Modifier.height(16.dp))
+        Card<CardInfo>(interactionType = InteractionType.STATIC) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                CardInfoItem(
                     iconResId = R.drawable.ic_directions_walk,
                     nameResId = R.string.pedometer_stepsLabel_text,
                     value = state.totalStepsCount.toString()
-                ),
-                InfoItem(
+                )
+                CardInfoItem(
                     iconResId = R.drawable.ic_my_location,
                     nameResId = R.string.pedometer_kilometersLabel_text,
-                    value = floatFormatter.format(state.totalKilometersCount)
-                ),
-                InfoItem(
+                    value = state.totalKilometersCount.roundAndFormatToString()
+                )
+                CardInfoItem(
                     iconResId = R.drawable.ic_fire,
                     nameResId = R.string.pedometer_caloriesLabel_text,
-                    value = floatFormatter.format(state.totalCaloriesBurned)
+                    value = state.totalCaloriesBurned.roundAndFormatToString()
                 )
-            )
-        )
+            }
+        }
     } else {
         Spacer(modifier = Modifier.height(16.dp))
         Description(text = stringResource(id = R.string.pedometer_emptyDayHistory_text))

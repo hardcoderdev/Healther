@@ -11,7 +11,6 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -33,7 +32,7 @@ fun <T> Card(
     val selectedBorder = if (
         interactionType == InteractionType.SELECTION
         && item == selectedItem
-        ) {
+    ) {
         BorderStroke(
             width = 3.dp,
             color = MaterialTheme.colorScheme.primary
@@ -45,32 +44,25 @@ fun <T> Card(
         )
     }
 
-    Surface(
-        shadowElevation = 4.dp,
-        color = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(16.dp),
+    androidx.compose.material3.Card(
+        modifier = modifier
+            .border(selectedBorder, RoundedCornerShape(16.dp))
+            .conditional(onClick != null && interactionType == InteractionType.STATIC) {
+                clip(RoundedCornerShape(16.dp))
+            }
+            .clickable(
+                enabled = onClick != null,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(bounded = true),
+            ) {
+                onClick?.invoke()
+            },
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp,
+            pressedElevation = 8.dp
+        ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
-        androidx.compose.material3.Card(
-            modifier = modifier
-                .border(selectedBorder, RoundedCornerShape(16.dp))
-                .conditional(onClick != null) {
-                    clip(RoundedCornerShape(16.dp))
-                }
-                .clickable(
-                    enabled = onClick != null,
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(bounded = true),
-                ) {
-                    onClick?.invoke()
-                },
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 4.dp,
-                pressedElevation = 8.dp
-            ),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-
-        ) {
-            cardContent()
-        }
+        cardContent()
     }
 }

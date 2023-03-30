@@ -108,7 +108,6 @@ fun DependencyHandler.addCompose() {
     implementation(Dependencies.composeCalendar)
     implementation(Dependencies.composeCalendarDateTime)
     implementation(Dependencies.coilCompose)
-    implementation(Dependencies.lottieCompose)
 }
 
 fun DependencyHandler.addComposeMaterial() {
@@ -125,4 +124,5 @@ fun DependencyHandler.addComposeMaterial() {
     implementation(Dependencies.composeCalendarDateTime)
     implementation(Dependencies.accompanistPager)
     implementation(Dependencies.accompanistPagerIndicators)
+    implementation(Dependencies.lottieCompose)
 }

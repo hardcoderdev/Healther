@@ -41,7 +41,8 @@ class PresentationModule(val logicModule: LogicModule) {
         heroProvider = logicModule.heroProvider,
         waterTrackProvider = logicModule.waterTrackProvider,
         waterIntakeResolver = logicModule.waterIntakeResolver,
-        waterPercentageResolver = logicModule.waterPercentageResolver
+        waterPercentageResolver = logicModule.waterPercentageResolver,
+        waterTrackingStatisticProvider = logicModule.waterTrackingStatisticProvider
     )
 
     fun getDrinkTypeViewModel() = DrinkTypeViewModel(
@@ -93,7 +94,8 @@ class PresentationModule(val logicModule: LogicModule) {
         pedometerManager = logicModule.pedometerManager,
         kilometersResolver = logicModule.kilometersResolver,
         caloriesResolver = logicModule.caloriesResolver,
-        pedometerTrackProvider = logicModule.pedometerTrackProvider
+        pedometerTrackProvider = logicModule.pedometerTrackProvider,
+        pedometerStatisticProvider = logicModule.pedometerStatisticProvider
     )
 
     fun getPedometerHistoryViewModel() = PedometerHistoryViewModel(

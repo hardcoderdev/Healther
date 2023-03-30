@@ -8,6 +8,11 @@
     <string name="datetime_hours">%dч</string>
     <string name="datetime_days">%dд</string>
 
+    <string name="liquid_hectoliters">%dгл</string>
+    <string name="liquid_decaliters">%dдал</string>
+    <string name="liquid_liters">%dл</string>
+    <string name="liquid_milliliters">%dмл</string>
+
     <string name="gender_male">Мужской</string>
     <string name="gender_female">Женский</string>
 

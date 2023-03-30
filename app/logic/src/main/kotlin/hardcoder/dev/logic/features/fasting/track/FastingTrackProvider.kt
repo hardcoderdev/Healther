@@ -5,6 +5,9 @@ import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.FastingTrack
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Instant
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 import hardcoder.dev.entities.features.fasting.FastingTrack as FastingTrackEntity
 
 class FastingTrackProvider(
@@ -58,10 +61,10 @@ class FastingTrackProvider(
         }
 
     private fun FastingTrack.toEntity() = FastingTrackEntity(
-        id,
-        startTime,
-        duration,
-        fastingPlanIdMapper.mapToFastingPlan(fastingPlanId),
-        interruptedTimeInMillis
+        id = id,
+        startTime = Instant.fromEpochMilliseconds(startTime),
+        duration = duration.toDuration(DurationUnit.HOURS),
+        fastingPlan = fastingPlanIdMapper.mapToFastingPlan(fastingPlanId),
+        interruptedTime = interruptedTimeInMillis?.let { Instant.fromEpochMilliseconds(it) }
     )
 }

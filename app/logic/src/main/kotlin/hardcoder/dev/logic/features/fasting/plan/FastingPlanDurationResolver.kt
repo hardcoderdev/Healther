@@ -1,27 +1,17 @@
 package hardcoder.dev.logic.features.fasting.plan
 
-import hardcoder.dev.datetime.TimeUnitMapper
 import hardcoder.dev.entities.features.fasting.FastingPlan
+import kotlin.time.Duration.Companion.hours
 
-class FastingPlanDurationResolver(private val timeUnitMapper: TimeUnitMapper) {
+class FastingPlanDurationResolver {
 
     fun resolve(fastingPlan: FastingPlan, customStarvingHoursCount: Int?): Long {
         return when (fastingPlan) {
-            FastingPlan.PLAN_14_10 -> {
-                timeUnitMapper.hoursToMillis(14)
-            }
-            FastingPlan.PLAN_16_8 -> {
-                timeUnitMapper.hoursToMillis(16)
-            }
-            FastingPlan.PLAN_18_6 -> {
-                timeUnitMapper.hoursToMillis(18)
-            }
-            FastingPlan.PLAN_20_4 -> {
-                timeUnitMapper.hoursToMillis(20)
-            }
-            FastingPlan.CUSTOM_PLAN -> {
-                timeUnitMapper.hoursToMillis(requireNotNull(customStarvingHoursCount).toLong())
-            }
+            FastingPlan.PLAN_14_10 -> 14.hours.inWholeHours
+            FastingPlan.PLAN_16_8 -> 16.hours.inWholeHours
+            FastingPlan.PLAN_18_6 -> 18.hours.inWholeHours
+            FastingPlan.PLAN_20_4 -> 20.hours.inWholeHours
+            FastingPlan.CUSTOM_PLAN -> requireNotNull(customStarvingHoursCount).hours.inWholeHours
         }
     }
 }

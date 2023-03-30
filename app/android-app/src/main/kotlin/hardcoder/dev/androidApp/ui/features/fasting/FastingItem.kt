@@ -12,10 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import hardcoder.dev.androidApp.ui.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalFastingPlanResourcesProvider
-import hardcoder.dev.androidApp.ui.LocalTimeUnitMapper
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.entities.features.fasting.FastingTrack
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
@@ -26,32 +25,28 @@ import hardcoder.dev.uikit.text.Label
 
 @Composable
 fun FastingItem(fastingTrack: FastingTrack) {
-    val timeUnitMapper = LocalTimeUnitMapper.current
-
     val dateTimeFormatter = LocalDateTimeFormatter.current
     val fastingPlanResourcesProvider = LocalFastingPlanResourcesProvider.current
-    val fastingPlanResources =
-        fastingPlanResourcesProvider.provide(fastingTrack.fastingPlan)
 
-    val fastingEndDateAndTimeMillis = fastingTrack.interruptedTime?.let {
-        fastingTrack.interruptedTime
-    } ?: run {
-        fastingTrack.startTime * fastingPlanResources.fastingHoursCount
+    val fastingEndDateAndTimeMillis = fastingTrack.interruptedTime ?: run {
+        fastingTrack.startTime + fastingTrack.duration
     }
 
-    val fastingStartDateAndTime = dateTimeFormatter.formatDateTime(fastingTrack.startTime)
-    val fastingEndDateAndTime = dateTimeFormatter.formatDateTime(fastingEndDateAndTimeMillis)
+    val fastingStartDateAndTime =
+        dateTimeFormatter.formatDateTime(fastingTrack.startTime.toEpochMilliseconds())
+    val fastingEndDateAndTime =
+        dateTimeFormatter.formatDateTime(fastingEndDateAndTimeMillis.toEpochMilliseconds())
 
     val fastingDurationInMillis = fastingTrack.interruptedTime?.let {
         it - fastingTrack.startTime
     } ?: run {
-        timeUnitMapper.hoursToMillis(fastingPlanResources.fastingHoursCount.toLong())
+        fastingTrack.duration
     }
 
     val fastingProgressInMillis = fastingTrack.interruptedTime?.let {
         it - fastingTrack.startTime
     } ?: run {
-        fastingDurationInMillis
+        fastingTrack.duration
     }
 
     Card<FastingTrack>(interactionType = InteractionType.STATIC) {
@@ -63,11 +58,9 @@ fun FastingItem(fastingTrack: FastingTrack) {
             CircularProgressBar(
                 fontSize = 16.sp,
                 radius = 35.dp,
-                percentage = fastingProgressInMillis safeDiv timeUnitMapper.hoursToMillis(
-                    fastingPlanResources.fastingHoursCount.toLong()
-                ),
+                percentage = fastingProgressInMillis.inWholeMilliseconds safeDiv fastingTrack.duration.inWholeMilliseconds,
                 innerText = dateTimeFormatter.formatMillisDistance(
-                    distanceInMillis = fastingDurationInMillis,
+                    distanceInMillis = fastingDurationInMillis.inWholeMilliseconds,
                     accuracy = DateTimeFormatter.Accuracy.MINUTES
                 )
             )

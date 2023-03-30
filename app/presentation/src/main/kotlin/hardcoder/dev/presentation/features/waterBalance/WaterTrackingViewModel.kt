@@ -2,29 +2,34 @@ package hardcoder.dev.presentation.features.waterBalance
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import hardcoder.dev.coroutines.combine
+import hardcoder.dev.entities.features.waterTracking.statistic.WaterTrackingStatistic
 import hardcoder.dev.entities.hero.Hero
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.extensions.mapItems
+import hardcoder.dev.extensions.millisToLocalDateTime
 import hardcoder.dev.logic.features.waterBalance.WaterIntakeResolver
 import hardcoder.dev.logic.features.waterBalance.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterBalance.WaterTrackProvider
+import hardcoder.dev.logic.features.waterBalance.statistic.WaterTrackingStatisticProvider
 import hardcoder.dev.logic.hero.HeroProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
 class WaterTrackingViewModel(
-    heroProvider: HeroProvider,
     private val waterTrackProvider: WaterTrackProvider,
     private val waterIntakeResolver: WaterIntakeResolver,
-    private val waterPercentageResolver: WaterPercentageResolver
+    private val waterPercentageResolver: WaterPercentageResolver,
+    heroProvider: HeroProvider,
+    waterTrackingStatisticProvider: WaterTrackingStatisticProvider
 ) : ViewModel() {
 
     private val millilitersDrunk = MutableStateFlow(0)
@@ -32,18 +37,41 @@ class WaterTrackingViewModel(
     private val waterTracksList = MutableStateFlow<List<WaterTrackItem>>(emptyList())
     private val hero = heroProvider.requireHero()
 
+    private val waterTrackingStatistic =
+        waterTrackingStatisticProvider.provideWaterTrackingStatistic().stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = null
+        )
+
+    private val chartEntries = waterTracksList.map { waterTrackList ->
+        waterTrackList.groupBy {
+            it.timeInMillis.millisToLocalDateTime().hour
+        }.map { entry ->
+            entry.key to entry.value.sumOf { it.millilitersCount }
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = listOf(0 to 0)
+    )
+
     val state = combine(
         millilitersDrunk,
         waterTracksList,
         dailyWaterIntake,
-        hero
-    ) { millilitersDrunk, waterTracks, dailyWaterIntake, hero ->
+        hero,
+        chartEntries,
+        waterTrackingStatistic
+    ) { millilitersDrunk, waterTracks, dailyWaterIntake, hero, chartEntries, statistic ->
         LoadingState.Loaded(
             State(
                 millisCount = millilitersDrunk,
                 waterTracks = waterTracks,
                 dailyWaterIntake = dailyWaterIntake,
-                hero = hero
+                hero = hero,
+                chartEntries = chartEntries,
+                statistic = statistic
             )
         )
     }.stateIn(
@@ -95,7 +123,9 @@ class WaterTrackingViewModel(
         val hero: Hero,
         val millisCount: Int,
         val dailyWaterIntake: Int,
-        val waterTracks: List<WaterTrackItem>
+        val waterTracks: List<WaterTrackItem>,
+        val chartEntries: List<Pair<Int, Int>>,
+        val statistic: List<WaterTrackingStatistic>?
     )
 
     sealed class LoadingState {

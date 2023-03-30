@@ -25,6 +25,9 @@ SELECT * FROM WaterTrack WHERE id = ?;
 provideWaterTracksByDayRange:
 SELECT * FROM WaterTrack WHERE date BETWEEN ? AND ?;
 
+provideAllWaterTracks:
+SELECT * FROM WaterTrack;
+
 
 
 

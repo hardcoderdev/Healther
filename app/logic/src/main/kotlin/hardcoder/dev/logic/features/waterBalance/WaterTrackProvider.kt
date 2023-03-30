@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Instant
 import hardcoder.dev.entities.features.waterTracking.WaterTrack as WaterTrackEntity
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -55,6 +56,9 @@ class WaterTrackProvider(
     }
 
     private fun WaterTrack.toEntity(drinkType: DrinkType) = WaterTrackEntity(
-        id, date, millilitersCount, drinkType
+        id = id,
+        date = Instant.fromEpochMilliseconds(date),
+        millilitersCount = millilitersCount,
+        drinkType = drinkType
     )
 }

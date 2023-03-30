@@ -19,4 +19,24 @@
         <item quantity="one">second</item>
         <item quantity="other">second</item>
     </plurals>
+
+    <plurals name="hectoliters">
+        <item quantity="one">hectoliter</item>
+        <item quantity="other">hectoliters</item>
+    </plurals>
+
+    <plurals name="decaliters">
+        <item quantity="one">decaliter</item>
+        <item quantity="other">decaliters</item>
+    </plurals>
+
+    <plurals name="liters">
+        <item quantity="one">liter</item>
+        <item quantity="other">liters</item>
+    </plurals>
+
+    <plurals name="milliliters">
+        <item quantity="one">milliliter</item>
+        <item quantity="other">milliliters</item>
+    </plurals>
 </resources>

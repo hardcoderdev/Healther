@@ -5,22 +5,13 @@ package hardcoder.dev.androidApp.ui.features.waterBalance.drinkType
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
 import hardcoder.dev.androidApp.ui.LocalPresentationModule
 import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.healther.R
@@ -28,7 +19,7 @@ import hardcoder.dev.presentation.features.waterBalance.drinkType.DrinkTypeViewM
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.text.Title
+import hardcoder.dev.uikit.sections.EmptySection
 
 @Composable
 fun DrinkTypeManageScreen(
@@ -84,18 +75,9 @@ private fun DrinkTypeManageContent(
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(16.dp)) {
-            Title(text = stringResource(id = R.string.drinkTypeManage_nowEmpty_text))
-            val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty_astronaut))
-            val progress by animateLottieCompositionAsState(composition, iterations = LottieConstants.IterateForever)
-            Spacer(modifier = Modifier.height(16.dp))
-            LottieAnimation(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(400.dp),
-                composition = composition,
-                progress = { progress },
-            )
+                .padding(16.dp)
+        ) {
+            EmptySection(emptyTitleResId = R.string.waterTracking_nowEmpty_text)
         }
     }
 }

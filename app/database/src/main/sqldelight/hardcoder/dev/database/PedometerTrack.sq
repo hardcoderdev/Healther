@@ -11,3 +11,6 @@ VALUES (?, ?, ?, ?);
 
 providePedometerTracksByRange:
 SELECT * FROM PedometerTrack WHERE startTime >= ? AND startTime <= ? AND endTime >= ? AND endTime <= ?;
+
+provideAllPedometerTracks:
+SELECT * FROM PedometerTrack;

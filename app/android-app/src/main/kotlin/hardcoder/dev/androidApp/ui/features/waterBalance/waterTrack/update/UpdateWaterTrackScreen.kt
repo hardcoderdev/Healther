@@ -49,7 +49,7 @@ import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.ErrorText
 import hardcoder.dev.uikit.text.FilledTextField
 import hardcoder.dev.uikit.text.Title
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import java.text.DateFormat
 
 @Composable
@@ -120,7 +120,7 @@ private fun UpdateWaterTrackContent(
     state: WaterTrackUpdateViewModel.State,
     onUpdateWaterTrack: () -> Unit,
     onUpdateSelectedDrink: (DrinkType) -> Unit,
-    onUpdateSelectedDate: (LocalDate) -> Unit,
+    onUpdateSelectedDate: (LocalDateTime) -> Unit,
     onUpdateWaterDrunk: (Int) -> Unit,
     onManageDrinkType: () -> Unit
 ) {
@@ -265,7 +265,7 @@ private fun SelectDateSection(
     state: WaterTrackUpdateViewModel.State,
     onShowDatePicker: () -> Unit
 ) {
-    val selectedDate = state.selectedDate.toDate()
+    val selectedDate = state.selectedDate.date.toDate()
     val formattedDate = DateFormat.getDateInstance().format(selectedDate)
 
     Title(text = stringResource(id = R.string.updateWaterTrack_selectAnotherDate_text))

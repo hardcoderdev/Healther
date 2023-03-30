@@ -20,6 +20,8 @@
     <string name="fasting_finish_success_results_text">Excellent results! You completed the fast and did not break down until the very end! Keep it up, you will succeed!</string>
     <string name="fasting_finish_fail_results_text">Excellent results! You tried your best and managed to survive %s! Do not give up and try even harder, and you will definitely be able to complete the plan completely!</string>
     <string name="fasting_finish_goNext_buttonText">Great, thanks!</string>
+    <string name="fasting_activity_chart">Fasting chart (per month):</string>
+    <string name="fasting_nowEmpty_text">Now it\'s empty. End (or interrupt) the fast and you will see the graph and statistics.</string>
     <string name="fastingCreation_title_topBar">Start fasting</string>
     <string name="fastingHistory_title_topBar">Detailed history</string>
     <string name="fastingHistory_emptyDayHistory_text">You haven\'t added any entries on this day.</string>

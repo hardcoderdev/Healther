@@ -13,10 +13,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
 import hardcoder.dev.androidApp.ui.LocalFastingPlanResourcesProvider
-import hardcoder.dev.androidApp.ui.LocalTimeUnitMapper
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.entities.features.fasting.FastingPlan
 import hardcoder.dev.healther.R
 import hardcoder.dev.uikit.InteractionType
@@ -24,6 +23,7 @@ import hardcoder.dev.uikit.NumberPicker
 import hardcoder.dev.uikit.card.Card
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Headline
+import kotlin.time.Duration.Companion.hours
 
 @Composable
 fun FastingPlanItem(
@@ -32,7 +32,6 @@ fun FastingPlanItem(
     fastingPlan: FastingPlan,
     onSelect: (Int?) -> Unit
 ) {
-    val timeUnitMapper = LocalTimeUnitMapper.current
     val fastingPlanResourcesProvider = LocalFastingPlanResourcesProvider.current
     val dateTimeFormatter = LocalDateTimeFormatter.current
     val fastingPlanResources = fastingPlanResourcesProvider.provide(fastingPlan)
@@ -41,10 +40,8 @@ fun FastingPlanItem(
         mutableStateOf(4)
     }
 
-    val fastingHoursInMillis =
-        timeUnitMapper.hoursToMillis(fastingPlanResources.fastingHoursCount.toLong())
-    val eatingHoursInMillis =
-        timeUnitMapper.hoursToMillis(fastingPlanResources.eatingHoursCount.toLong())
+    val fastingHoursInMillis = fastingPlanResources.fastingHoursCount.hours.inWholeMilliseconds
+    val eatingHoursInMillis = fastingPlanResources.eatingHoursCount.hours.inWholeMilliseconds
 
     Card(
         interactionType = InteractionType.SELECTION,

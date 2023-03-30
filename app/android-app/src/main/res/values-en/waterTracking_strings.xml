@@ -4,6 +4,12 @@
     <string name="waterTracking_millilitersCount_formatText">%d / %d ml</string>
     <string name="waterTracking_title_topBar">Water balance</string>
     <string name="waterTracking_nowEmpty_text">Now it\'s empty. In order to add an entry, use the button in the lower right corner!</string>
+    <string name="waterTracking_statistic_text">General statistic:</string>
+    <string name="waterTracking_statistic_water_total_drinked">Total drunk</string>
+    <string name="waterTracking_favourite_drink_type">Favourite drink type</string>
+    <string name="waterTracking_statistic_not_enough_data_text">Not enough info</string>
+    <string name="waterTracking_activity_chart">Activity chart (by hours):</string>
+    <string name="waterTracking_diary_text">Drunk diary:</string>
 
     <string name="saveWaterTrack_create_title_topBar">Create an entry</string>
     <string name="saveWaterTrack_selectDateRange_buttonText">Select date</string>

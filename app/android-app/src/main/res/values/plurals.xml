@@ -35,4 +35,40 @@
         <item quantity="many">секунд</item>
         <item quantity="other">секунда</item>
     </plurals>
+
+    <plurals name="hectoliters">
+        <item quantity="zero">гектолитров</item>
+        <item quantity="one">гектолитр</item>
+        <item quantity="two">гектолитра</item>
+        <item quantity="few">гектолитра</item>
+        <item quantity="many">гектолитров</item>
+        <item quantity="other">гектолитров</item>
+    </plurals>
+
+    <plurals name="decaliters">
+        <item quantity="zero">декалитров</item>
+        <item quantity="one">декалитр</item>
+        <item quantity="two">декалитра</item>
+        <item quantity="few">декалитра</item>
+        <item quantity="many">декалитров</item>
+        <item quantity="other">декалитров</item>
+    </plurals>
+
+    <plurals name="liters">
+        <item quantity="zero">литров</item>
+        <item quantity="one">литр</item>
+        <item quantity="two">литра</item>
+        <item quantity="few">литра</item>
+        <item quantity="many">литров</item>
+        <item quantity="other">литров</item>
+    </plurals>
+
+    <plurals name="milliliters">
+        <item quantity="zero">миллилитров</item>
+        <item quantity="one">миллилитр</item>
+        <item quantity="two">миллилитра</item>
+        <item quantity="few">миллилитра</item>
+        <item quantity="many">миллилитров</item>
+        <item quantity="other">миллилитров</item>
+    </plurals>
 </resources>

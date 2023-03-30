@@ -3,11 +3,13 @@ package hardcoder.dev.presentation.features.pedometer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
+import hardcoder.dev.entities.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.extensions.createRangeForCurrentDay
 import hardcoder.dev.extensions.millisToLocalDateTime
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
+import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatisticProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,12 +21,20 @@ import kotlinx.datetime.TimeZone
 
 class PedometerViewModel(
     private val pedometerManager: PedometerManager,
-    pedometerTrackProvider: PedometerTrackProvider,
     private val kilometersResolver: KilometersResolver,
-    private val caloriesResolver: CaloriesResolver
+    private val caloriesResolver: CaloriesResolver,
+    pedometerTrackProvider: PedometerTrackProvider,
+    pedometerStatisticProvider: PedometerStatisticProvider
 ) : ViewModel() {
 
     private val dailyRateStepsCount = MutableStateFlow(DAILY_RATE_PEDOMETER)
+
+    private val pedometerStatistic = pedometerStatisticProvider.providePedometerStatistic().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = null
+    )
+
     private val isTrackingNow = pedometerManager.isTrackingNow().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -90,9 +100,10 @@ class PedometerViewModel(
         totalCaloriesCount,
         totalTrackingTime,
         dailyRateStepsCount,
-        chartEntries
+        chartEntries,
+        pedometerStatistic
     ) { isTrackingNow, totalStepsCount, totalKilometersCount, totalCaloriesCount,
-        totalTrackingTime, dailyRateStepsCount, chartEntries ->
+        totalTrackingTime, dailyRateStepsCount, chartEntries, pedometerStatistic ->
         LoadingState.Loaded(
             State(
                 isTrackingNow,
@@ -101,7 +112,8 @@ class PedometerViewModel(
                 totalCaloriesCount,
                 totalTrackingTime,
                 dailyRateStepsCount,
-                chartEntries
+                chartEntries,
+                pedometerStatistic
             )
         )
     }.stateIn(
@@ -132,7 +144,8 @@ class PedometerViewModel(
         val totalCaloriesBurned: Float,
         val totalTrackingTime: Long,
         val dailyRateStepsCount: Int,
-        val chartEntries: List<Pair<Int, Int>>
+        val chartEntries: List<Pair<Int, Int>>,
+        val pedometerStatistic: PedometerStatistic?
     )
 
     internal companion object {

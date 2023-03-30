@@ -4,12 +4,12 @@ import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import java.util.Calendar
 
 @Composable
 fun DatePicker(
-    onUpdateSelectedDate: (LocalDate) -> Unit,
+    onUpdateSelectedDate: (LocalDateTime) -> Unit,
     isShowing: Boolean,
     onClose: () -> Unit
 ) {
@@ -22,7 +22,16 @@ fun DatePicker(
     val datePickerDialog = DatePickerDialog(
         LocalContext.current,
         { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
-            onUpdateSelectedDate(LocalDate(selectedYear, selectedMonth, selectedDayOfMonth))
+            onUpdateSelectedDate(
+                LocalDateTime(
+                    selectedYear,
+                    selectedMonth + 1,
+                    selectedDayOfMonth,
+                    12,
+                    0,
+                    0
+                )
+            )
             onClose()
         },
         year,
