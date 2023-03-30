@@ -29,6 +29,7 @@ import hardcoder.dev.extensions.roundAndFormatToString
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
+import hardcoder.dev.presentation.features.pedometer.TrackingRejectReason
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.InteractionType
@@ -42,6 +43,7 @@ import hardcoder.dev.uikit.card.CardInfo
 import hardcoder.dev.uikit.card.CardInfoItem
 import hardcoder.dev.uikit.charts.ActivityLineChart
 import hardcoder.dev.uikit.charts.MINIMUM_ENTRIES_FOR_SHOWING_CHART
+import hardcoder.dev.uikit.card.Card
 import hardcoder.dev.uikit.icons.IconButton
 import hardcoder.dev.uikit.progressBar.LinearProgressBar
 import hardcoder.dev.uikit.sections.EmptySection
@@ -49,6 +51,9 @@ import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Headline
 import hardcoder.dev.uikit.text.Title
 import kotlin.math.roundToInt
+import hardcoder.dev.uikit.text.Text
+
+const val MINIMUM_ENTRIES_FOR_SHOWING_CHART = 2
 
 @Composable
 fun PedometerScreen(
@@ -161,6 +166,35 @@ private fun PedometerContent(
         DailyRateSection(
             state = state,
             onTogglePedometerTrackingService = onTogglePedometerTrackingService
+        )
+
+        AnimatedVisibility(visible = state.trackingRejectReason != null) {
+            val reason = state.trackingRejectReason ?: return@AnimatedVisibility
+            Column {
+                Spacer(modifier = Modifier.height(16.dp))
+                TrackingRejectReasonSection(reason)
+            }
+        }
+
+        Spacer(modifier = Modifier.height(64.dp))
+        PedometerInfoSection(
+            infoItemList = listOf(
+                InfoItem(
+                    iconResId = R.drawable.ic_my_location,
+                    nameResId = R.string.pedometer_kilometersLabel_text,
+                    value = floatFormatter.format(state.totalKilometersCount)
+                ),
+                InfoItem(
+                    iconResId = R.drawable.ic_fire,
+                    nameResId = R.string.pedometer_caloriesLabel_text,
+                    value = floatFormatter.format(state.totalCaloriesBurned)
+                ),
+                InfoItem(
+                    iconResId = R.drawable.ic_time,
+                    nameResId = R.string.pedometer_timeLabel_text,
+                    value = dateTimeFormatter.formatMillisDistance(state.totalTrackingTime)
+                )
+            )
         )
         Spacer(modifier = Modifier.height(32.dp))
         if (state.pedometerStatistic != null) {
@@ -278,5 +312,20 @@ private fun PedometerActivityChart(state: PedometerViewModel.State) {
         )
     } else {
         Description(text = stringResource(id = R.string.pedometer_weDontHaveEnoughDataToShowChart_text))
+    }
+}
+
+
+@Composable
+private fun TrackingRejectReasonSection(reason: TrackingRejectReason) {
+    Card {
+        Text(
+            modifier = Modifier.padding(16.dp),
+            text = when (reason) {
+                TrackingRejectReason.BatteryRequirements -> "Сними ограничения на батарею скатина!"
+                TrackingRejectReason.Permissions -> "А пермишены кто давать будет м?"
+                TrackingRejectReason.ServiceAvailability -> "У тебя нет педометра лол"
+            },
+        )
     }
 }

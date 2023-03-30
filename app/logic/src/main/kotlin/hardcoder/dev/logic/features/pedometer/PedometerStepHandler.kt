@@ -8,7 +8,6 @@ class PedometerStepHandler(
     private val idGenerator: IdGenerator,
     private val pedometerTrackCreator: PedometerTrackCreator
 ) {
-    private var lastTrackUpsertTime = 0L
     private var currentTrackId = idGenerator.nextId()
     private var currentTrackStepCount = 0
     private var currentTrackStartTime = LocalDateTime.now()
@@ -23,17 +22,10 @@ class PedometerStepHandler(
 
         currentTrackStepCount += steps
 
-        if (System.currentTimeMillis() - lastTrackUpsertTime < UPDATE_DELAY) return
-        lastTrackUpsertTime = System.currentTimeMillis()
-
         pedometerTrackCreator.upsertPedometerTrack(
             id = currentTrackId,
             stepsCount = currentTrackStepCount,
             range = currentTrackStartTime.toKotlinLocalDateTime()..currentTrackEndTime.toKotlinLocalDateTime()
         )
-    }
-
-    companion object {
-        private const val UPDATE_DELAY = 5_000
     }
 }

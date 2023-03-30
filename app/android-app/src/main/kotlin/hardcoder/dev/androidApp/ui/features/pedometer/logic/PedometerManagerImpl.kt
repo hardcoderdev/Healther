@@ -6,17 +6,17 @@ import android.content.Intent
 import hardcoder.dev.androidApp.ui.features.pedometer.PedometerService
 import hardcoder.dev.permissions.PermissionsController
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
+import hardcoder.dev.presentation.features.pedometer.TrackingRejectReason
 import hardcoder.dev.utilities.VersionChecker
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class PedometerManagerImpl(
     private val context: Context,
     private val permissionsController: PermissionsController,
-    private val batteryRequirements: BatteryRequirements
+    private val batteryRequirementsController: BatteryRequirementsController
 ) : PedometerManager {
 
-    private val isTrackingNow = MutableStateFlow(false)
+    override val isTracking = MutableStateFlow(false)
     private val serviceIntent by lazy {
         Intent(context, PedometerService::class.java)
     }
@@ -29,24 +29,25 @@ class PedometerManagerImpl(
         )
     }
 
-    override fun isTrackingNow(): Flow<Boolean> {
-        return isTrackingNow
-    }
+    override suspend fun startTracking(): TrackingRejectReason? {
+        if (PedometerService.isAvailable(context).not())
+            return TrackingRejectReason.ServiceAvailability
 
-    override suspend fun startTracking() {
-        batteryRequirements.requestIgnoreBatteryOptimizations()
-        permissionsController.requestPermissions(permissions)
+        if (batteryRequirementsController.requestIgnoreBatteryOptimizations().not())
+            return TrackingRejectReason.BatteryRequirements
 
-        if (VersionChecker.isOreo()) {
-            context.startForegroundService(serviceIntent)
-        } else {
-            context.startService(serviceIntent)
-        }
-        isTrackingNow.value = true
+        if (permissionsController.requestPermissions(permissions).any { !it.value })
+            return TrackingRejectReason.Permissions
+
+        if (VersionChecker.isOreo()) context.startForegroundService(serviceIntent)
+        else context.startService(serviceIntent)
+
+        isTracking.value = true
+        return null
     }
 
     override fun stopTracking() {
         context.stopService(serviceIntent)
-        isTrackingNow.value = false
+        isTracking.value = false
     }
 }

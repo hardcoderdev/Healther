@@ -1,6 +1,7 @@
 package hardcoder.dev.androidApp.di
 
 import android.content.Context
+import hardcoder.dev.androidApp.ui.features.pedometer.logic.BatteryRequirementsController
 import hardcoder.dev.androidApp.ui.IconProvider
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.BatteryRequirements
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.PedometerManagerImpl
@@ -171,8 +172,8 @@ class LogicModule(private val context: Context) {
         CaloriesResolver()
     }
 
-    private val batteryRequirements by lazy {
-        BatteryRequirements(context)
+    val batteryRequirementsController by lazy {
+        BatteryRequirementsController()
     }
 
     val permissionsController by lazy {
@@ -183,7 +184,7 @@ class LogicModule(private val context: Context) {
         PedometerManagerImpl(
             context = context,
             permissionsController = permissionsController,
-            batteryRequirements = batteryRequirements
+            batteryRequirementsController = batteryRequirementsController
         )
     }
 

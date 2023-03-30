@@ -93,17 +93,21 @@ class PedometerViewModel(
         initialValue = listOf(0 to 0)
     )
 
+    private val trackingRejectReason = MutableStateFlow<TrackingRejectReason?>(null)
+
     val state = combine(
-        isTrackingNow,
+        pedometerManager.isTracking,
         totalStepCount,
         totalKilometersCount,
         totalCaloriesCount,
         totalTrackingTime,
         dailyRateStepsCount,
         chartEntries,
+        trackingRejectReason,
         pedometerStatistic
     ) { isTrackingNow, totalStepsCount, totalKilometersCount, totalCaloriesCount,
-        totalTrackingTime, dailyRateStepsCount, chartEntries, pedometerStatistic ->
+        totalTrackingTime, dailyRateStepsCount, chartEntries, pedometerStatistic,
+        trackingRejectReason ->
         LoadingState.Loaded(
             State(
                 isTrackingNow,
@@ -113,7 +117,8 @@ class PedometerViewModel(
                 totalTrackingTime,
                 dailyRateStepsCount,
                 chartEntries,
-                pedometerStatistic
+                pedometerStatistic,
+                trackingRejectReason
             )
         )
     }.stateIn(
@@ -124,10 +129,10 @@ class PedometerViewModel(
 
     fun togglePedometerTracking() {
         viewModelScope.launch {
-            if (isTrackingNow.value) {
+            if (pedometerManager.isTracking.value) {
                 pedometerManager.stopTracking()
             } else {
-                pedometerManager.startTracking()
+                trackingRejectReason.value = pedometerManager.startTracking()
             }
         }
     }
@@ -145,7 +150,8 @@ class PedometerViewModel(
         val totalTrackingTime: Long,
         val dailyRateStepsCount: Int,
         val chartEntries: List<Pair<Int, Int>>,
-        val pedometerStatistic: PedometerStatistic?
+        val pedometerStatistic: PedometerStatistic?,
+        val trackingRejectReason: TrackingRejectReason?
     )
 
     internal companion object {
