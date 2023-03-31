@@ -4,7 +4,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.LocalIconResolver
+import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.chip.Chip
@@ -17,7 +17,8 @@ fun DrinkTypeItem(
     selectedDrinkType: DrinkType?,
     onSelect: (DrinkType) -> Unit
 ) {
-    val iconResolver = LocalIconResolver.current
+    val uiModule = LocalUIModule.current
+    val iconResolver = uiModule.iconResolver
 
     Chip(
         modifier = modifier,

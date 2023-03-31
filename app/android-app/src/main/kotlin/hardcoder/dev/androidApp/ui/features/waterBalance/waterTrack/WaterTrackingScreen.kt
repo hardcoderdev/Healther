@@ -1,6 +1,5 @@
 package hardcoder.dev.androidApp.ui.features.waterBalance.waterTrack
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -14,13 +13,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.ui.LocalLiquidFormatter
-import hardcoder.dev.androidApp.ui.LocalPresentationModule
-import hardcoder.dev.androidApp.ui.formatters.LiquidFormatter
+import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.entities.features.waterTracking.statistic.WaterTrackingStatistic
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
@@ -29,7 +26,6 @@ import hardcoder.dev.presentation.features.waterBalance.WaterTrackingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.ScaffoldWrapper
-import hardcoder.dev.uikit.StatisticData
 import hardcoder.dev.uikit.Statistics
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -90,28 +86,6 @@ fun WaterTrackingScreen(
             /* no-op */
         }
     }
-}
-
-private fun WaterTrackingStatistic.toGroupedStatistic(
-    context: Context,
-    liquidFormatter: LiquidFormatter
-): List<StatisticData> {
-    return listOf(
-        StatisticData(
-            name = context.getString(R.string.waterTracking_statistic_water_total_drinked),
-            value = totalMilliliters?.let {
-                liquidFormatter.formatMillisDistance(
-                    defaultMilliliters = it,
-                    accuracy = LiquidFormatter.Accuracy.MILLILITERS
-                )
-            } ?: context.getString(R.string.waterTracking_statistic_not_enough_data_text)
-        ),
-        StatisticData(
-            name = context.getString(R.string.waterTracking_favourite_drink_type),
-            value = favouriteDrinkType?.name
-                ?: context.getString(R.string.waterTracking_statistic_not_enough_data_text)
-        )
-    )
 }
 
 @Composable
@@ -178,17 +152,12 @@ private fun WaterTrackingChartSection(state: WaterTrackingViewModel.State) {
 
 @Composable
 private fun WaterTrackingStatisticSection(waterTrackingStatistic: WaterTrackingStatistic) {
-    val context = LocalContext.current
-    val liquidFormatter = LocalLiquidFormatter.current
+    val uiModule = LocalUIModule.current
+    val waterTrackingStatisticResolver = uiModule.waterTrackingStatisticResolver
 
     Title(text = stringResource(id = R.string.waterTracking_statistic_text))
     Spacer(modifier = Modifier.height(16.dp))
-    Statistics(
-        statistics = waterTrackingStatistic.toGroupedStatistic(
-            context = context,
-            liquidFormatter = liquidFormatter
-        )
-    )
+    Statistics(statistics = waterTrackingStatisticResolver.resolve(statistic = waterTrackingStatistic))
 }
 
 @Composable

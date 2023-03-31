@@ -13,8 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
-import hardcoder.dev.androidApp.ui.LocalFastingPlanResourcesProvider
+import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.entities.features.fasting.FastingPlan
 import hardcoder.dev.healther.R
@@ -32,8 +31,9 @@ fun FastingPlanItem(
     fastingPlan: FastingPlan,
     onSelect: (Int?) -> Unit
 ) {
-    val fastingPlanResourcesProvider = LocalFastingPlanResourcesProvider.current
-    val dateTimeFormatter = LocalDateTimeFormatter.current
+    val uiModule = LocalUIModule.current
+    val fastingPlanResourcesProvider = uiModule.fastingPlanResourcesProvider
+    val dateTimeFormatter = uiModule.dateTimeFormatter
     val fastingPlanResources = fastingPlanResourcesProvider.provide(fastingPlan)
 
     var customFastingHours: Int? by remember {

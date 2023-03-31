@@ -27,7 +27,14 @@
     <string name="pedometer_statistic_average_time">Времени в среднем</string>
     <string name="pedometer_statistic_average_kilometers">Километров в среднем</string>
     <string name="pedometer_statistic_average_steps">Шагов в среднем</string>
-    <string name="pedometer_nowEmpty_text">Сейчас здесь пусто. Чтобы начать отслеживать шаги, нажмите на кнопку справа вверху и выдайте необходимые разрешения. Статистика и графика появятся спустя пару часов.</string>
+    <string name="pedometer_permissions_not_granted_title_text">Для использования фичи шагомера нужно разрешение отслеживания физической активности.\n\nНажмите кнопку внизу, чтобы выдать разрешения</string>
+    <string name="pedometer_reject_battery_title">Вы не сняли оптимизацию батареи</string>
+    <string name="pedometer_reject_permissions_title">Вы не выдали необходимые разрешения</string>
+    <string name="pedometer_reject_not_available_title">У вас отсутствует сенсор шагов</string>
+    <string name="pedometer_reject_battery_description">Вам нужно убрать оптимизацию батареи, чтобы система не препятствовала вам отслеживать шаги весь день.\n\nОднако, отслеживание шагов - ресурсозатратный процесс, из-за чего батарея вашего устройства будет разряжаться быстрее.\n\nНо вы всегда можете отключить отслеживание шагов в приложении, когда вы, например, не ходите или двигаетесь в транспорте.</string>
+    <string name="pedometer_reject_permissions_description">Разрешение на отслеживание физической активности нужно нам, чтобы иметь право получать от сенсоров с вашего устройства данные.</string>
+    <string name="pedometer_reject_not_available_description">Без сенсоров шагов у нас физически не получится отслеживать ваши шаги, так как информацию о шагах мы получаем с сенсоров вашего телефона, а так как у вас нет сенсоров, к сожалению вы не сможете воспользоваться этой фичей.</string>
+    <string name="pedometer_nowEmpty_text">Сейчас здесь пусто. Чтобы увидеть статистику и график, пройдите несколько десятков шагов.</string>
     <string name="pedometerHistory_yourIndicatorsForThisDay_text">Ваши показатели за день:</string>
     <string name="pedometerHistory_weDontHaveEnoughDataToShowChart_text">За этот день недостаточно данных для отображения графика.</string>
     <string name="pedometerHistory_title_topBar">Подробная история</string>

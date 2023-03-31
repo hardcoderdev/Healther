@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.ui.LocalPresentationModule
+import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.entities.hero.Gender
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.setUpFlow.EnterWeightViewModel

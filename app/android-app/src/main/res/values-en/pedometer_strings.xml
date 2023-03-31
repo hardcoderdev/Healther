@@ -24,6 +24,13 @@
     <string name="pedometer_statistic_average_kilometers">Average kilometers</string>
     <string name="pedometer_statistic_average_time">Average time</string>
     <string name="pedometer_statistic_average_calories">Average calories</string>
+    <string name="pedometer_permissions_not_granted_title_text">To use the pedometer feature, you need permission to track your activity.\n\nClick the button below to grant permissions</string>
+    <string name="pedometer_reject_battery_title">You have not unchecked battery optimization</string>
+    <string name="pedometer_reject_permissions_title">You haven\'t granted the necessary permissions</string>
+    <string name="pedometer_reject_not_available_title">You don\'t have a step sensor</string>
+    <string name="pedometer_reject_battery_description">You need to remove battery optimization so that the system doesn\'t prevent you from tracking your steps all day long.\n\nHowever, step tracking is resource intensive and will drain your device\'s battery faster.\n\nBut you can always turn off step tracking in the app when, for example, you are not walking or moving in transport.</string>
+    <string name="pedometer_reject_permissions_description">We need permission to track your activity in order to be able to receive data from the sensors on your device.</string>
+    <string name="pedometer_reject_not_available_description">Without step sensors, we will not be able to physically track your steps, since we receive information about steps from your phone\'s sensors, and since you do not have sensors, unfortunately you will not be able to use this feature.</string>
     <string name="pedometer_nowEmpty_text">Now it\'s empty. To start tracking steps, click on the button on the top right and grant the necessary permissions. Statistics and graphics will appear after a couple of hours.</string>
     <string name="pedometerHistory_yourIndicatorsForThisDay_text">Your scores for the day:</string>
     <string name="pedometerHistory_weDontHaveEnoughDataToShowChart_text">There is not enough data for this day to display a graph.</string>

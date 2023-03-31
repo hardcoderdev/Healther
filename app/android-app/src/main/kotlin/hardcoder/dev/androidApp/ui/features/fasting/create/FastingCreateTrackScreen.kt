@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.ui.LocalPresentationModule
+import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.fasting.plans.FastingPlanItem
 import hardcoder.dev.entities.features.fasting.FastingPlan
 import hardcoder.dev.healther.R

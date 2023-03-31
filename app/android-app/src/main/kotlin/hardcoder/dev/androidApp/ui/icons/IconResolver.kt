@@ -1,4 +1,4 @@
-package hardcoder.dev.androidApp.ui
+package hardcoder.dev.androidApp.ui.icons
 
 import android.annotation.SuppressLint
 import android.content.Context

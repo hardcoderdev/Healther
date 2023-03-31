@@ -1,4 +1,4 @@
-package hardcoder.dev.androidApp.ui
+package hardcoder.dev.androidApp.ui.icons
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.card.Card
 import hardcoder.dev.uikit.icons.Icon
@@ -20,7 +21,8 @@ fun IconItem(
     selectedIconResourceName: String,
     onSelectIcon: (String) -> Unit
 ) {
-    val iconResolver = LocalIconResolver.current
+    val uiModule = LocalUIModule.current
+    val iconResolver = uiModule.iconResolver
 
     Card(
         interactionType = InteractionType.SELECTION,

@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.ui.LocalGenderResourcesProvider
-import hardcoder.dev.androidApp.ui.LocalPresentationModule
+import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.entities.hero.Gender
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
@@ -63,7 +63,8 @@ private fun SelectGenderContent(
     onUpdateGender: (Gender) -> Unit,
     onGoForward: () -> Unit
 ) {
-    val genderResourcesProvider = LocalGenderResourcesProvider.current
+    val uiModule = LocalUIModule.current
+    val genderResourcesProvider = uiModule.genderResourcesProvider
 
     Column(
         modifier = Modifier

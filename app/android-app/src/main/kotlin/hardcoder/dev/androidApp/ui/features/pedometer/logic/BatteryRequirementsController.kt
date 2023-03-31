@@ -68,6 +68,6 @@ class BatteryRequirementsController {
         }
     }
 
-    private fun isIgnoringBatteryOptimizations() =
+    fun isIgnoringBatteryOptimizations() =
         powerManager.isIgnoringBatteryOptimizations(packageName)
 }

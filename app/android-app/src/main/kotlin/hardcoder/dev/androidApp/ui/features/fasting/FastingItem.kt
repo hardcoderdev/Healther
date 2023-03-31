@@ -12,8 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
-import hardcoder.dev.androidApp.ui.LocalFastingPlanResourcesProvider
+import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.entities.features.fasting.FastingTrack
 import hardcoder.dev.extensions.safeDiv
@@ -25,8 +24,9 @@ import hardcoder.dev.uikit.text.Label
 
 @Composable
 fun FastingItem(fastingTrack: FastingTrack) {
-    val dateTimeFormatter = LocalDateTimeFormatter.current
-    val fastingPlanResourcesProvider = LocalFastingPlanResourcesProvider.current
+    val uiModule = LocalUIModule.current
+    val dateTimeFormatter = uiModule.dateTimeFormatter
+    val fastingPlanResourcesProvider = uiModule.fastingPlanResourcesProvider
 
     val fastingEndDateAndTimeMillis = fastingTrack.interruptedTime ?: run {
         fastingTrack.startTime + fastingTrack.duration

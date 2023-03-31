@@ -1,6 +1,5 @@
 package hardcoder.dev.androidApp.ui.features.fasting
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +15,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,9 +23,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
-import hardcoder.dev.androidApp.ui.LocalFastingPlanResourcesProvider
-import hardcoder.dev.androidApp.ui.LocalPresentationModule
+import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.entities.features.fasting.FastingTrack
 import hardcoder.dev.entities.features.fasting.statistic.FastingStatistic
@@ -37,7 +34,6 @@ import hardcoder.dev.presentation.features.fasting.FastingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.ScaffoldWrapper
-import hardcoder.dev.uikit.StatisticData
 import hardcoder.dev.uikit.Statistics
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -116,39 +112,6 @@ fun FastingScreen(
     )
 }
 
-private fun FastingStatistic.toGroupedStatistic(
-    context: Context,
-    favouritePlanResId: Int?
-): List<StatisticData> {
-    return listOf(
-        StatisticData(
-            name = context.getString(R.string.fasting_statistic_max_hours_text),
-            value = fastingDurationStatistic?.maximumDurationInHours?.toString()
-                ?: context.getString(R.string.fasting_statistic_not_enough_data_text)
-        ),
-        StatisticData(
-            name = context.getString(R.string.fasting_statistic_min_hours_text),
-            value = fastingDurationStatistic?.minimumDurationInHours?.toString()
-                ?: context.getString(R.string.fasting_statistic_not_enough_data_text)
-        ),
-        StatisticData(
-            name = context.getString(R.string.fasting_statistic_average_hours_text),
-            value = fastingDurationStatistic?.averageDurationInHours?.toString()
-                ?: context.getString(R.string.fasting_statistic_not_enough_data_text)
-        ),
-        StatisticData(
-            name = context.getString(R.string.fasting_statistic_completion_percentage_text),
-            value = percentageCompleted?.toString()
-                ?: context.getString(R.string.fasting_statistic_not_enough_data_text)
-        ),
-        StatisticData(
-            name = context.getString(R.string.fasting_statistic_favorite_plan_text),
-            value = favouritePlanResId?.let { context.getString(favouritePlanResId) }
-                ?: context.getString(R.string.fasting_statistic_not_enough_data_text)
-        )
-    )
-}
-
 @Composable
 private fun NotFastingContent(
     state: FastingViewModel.FastingState.NotFasting,
@@ -167,7 +130,7 @@ private fun NotFastingContent(
             FastingLastTracksSection(lastFastingTrackList = state.lastFastingTracks)
             Spacer(modifier = Modifier.height(32.dp))
             state.fastingStatistic?.let { statistic ->
-                FastingStatisticSection(fastingStatistic = statistic)
+                FastingStatisticSection(statistic = statistic)
                 Spacer(modifier = Modifier.height(32.dp))
                 FastingChartSection(fastingChartEntries = state.chartEntries)
             } ?: run {
@@ -203,7 +166,7 @@ private fun FastingContent(
             FastingInfoSection(state = state)
             Spacer(modifier = Modifier.height(16.dp))
             state.fastingStatistic?.let { statistic ->
-                FastingStatisticSection(fastingStatistic = statistic)
+                FastingStatisticSection(statistic = statistic)
             } ?: run {
                 EmptyBlock(
                     emptyTitleResId = R.string.fasting_nowEmpty_text,
@@ -225,8 +188,9 @@ private fun FinishFastingContent(
     state: FastingViewModel.FastingState.Finished,
     onClose: () -> Unit
 ) {
+    val uiModule = LocalUIModule.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val dateTimeFormatter = LocalDateTimeFormatter.current
+    val dateTimeFormatter = uiModule.dateTimeFormatter
 
     val formattedFastingTime = dateTimeFormatter.formatMillisDistance(
         distanceInMillis = state.timeLeftInMillis.inWholeMilliseconds,
@@ -287,7 +251,8 @@ private fun FinishFastingContent(
 
 @Composable
 private fun ColumnScope.FastingProgressSection(state: FastingViewModel.FastingState.Fasting) {
-    val dateTimeFormatter = LocalDateTimeFormatter.current
+    val uiModule = LocalUIModule.current
+    val dateTimeFormatter = uiModule.dateTimeFormatter
 
     Headline(
         text = stringResource(id = R.string.fasting_in_progress_text),
@@ -309,11 +274,11 @@ private fun ColumnScope.FastingProgressSection(state: FastingViewModel.FastingSt
 
 @Composable
 private fun FastingInfoSection(state: FastingViewModel.FastingState.Fasting) {
-    val fastingPlanResourcesProvider = LocalFastingPlanResourcesProvider.current
-    val dateTimeFormatter = LocalDateTimeFormatter.current
+    val uiModule = LocalUIModule.current
+    val fastingPlanResourcesProvider = uiModule.fastingPlanResourcesProvider
+    val dateTimeFormatter = uiModule.dateTimeFormatter
     val formattedDate =
         dateTimeFormatter.formatDateTime(state.startTimeInMillis.toEpochMilliseconds())
-
     val fastingPlanResources = fastingPlanResourcesProvider.provide(state.selectedPlan)
 
     Description(
@@ -347,17 +312,18 @@ private fun FastingLastTracksSection(lastFastingTrackList: List<FastingTrack>) {
 }
 
 @Composable
-private fun FastingStatisticSection(fastingStatistic: FastingStatistic) {
-    val context = LocalContext.current
-    val fastingPlanResourcesProvider = LocalFastingPlanResourcesProvider.current
+private fun FastingStatisticSection(statistic: FastingStatistic) {
+    val uiModule = LocalUIModule.current
+    val fastingStatisticResolver = uiModule.fastingStatisticResolver
+    val fastingPlanResourcesProvider = uiModule.fastingPlanResourcesProvider
 
     Title(text = stringResource(id = R.string.fasting_statistic_text))
     Spacer(modifier = Modifier.height(24.dp))
     Statistics(
         modifier = Modifier.fillMaxWidth(),
-        statistics = fastingStatistic.toGroupedStatistic(
-            context = context,
-            favouritePlanResId = fastingStatistic.favouritePlan?.let {
+        statistics = fastingStatisticResolver.resolve(
+            statistic,
+            statistic.favouritePlan?.let {
                 fastingPlanResourcesProvider.provide(it).nameResId
             }
         )

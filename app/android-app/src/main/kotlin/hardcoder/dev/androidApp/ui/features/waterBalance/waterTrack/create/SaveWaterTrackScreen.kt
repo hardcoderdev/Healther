@@ -27,10 +27,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.ui.LocalDateTimeFormatter
-import hardcoder.dev.androidApp.ui.LocalPresentationModule
-import hardcoder.dev.androidApp.ui.RegexHolder
+import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.features.waterBalance.drinkType.DrinkTypeItem
+import hardcoder.dev.androidApp.ui.formatters.RegexHolder
 import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.extensions.toDate
 import hardcoder.dev.healther.R
@@ -235,7 +235,8 @@ private fun SelectDateSection(
     state: WaterTrackCreateViewModel.State,
     onShowDatePicker: () -> Unit
 ) {
-    val dateTimeFormatter = LocalDateTimeFormatter.current
+    val uiModule = LocalUIModule.current
+    val dateTimeFormatter = uiModule.dateTimeFormatter
     val selectedDate = state.selectedDate.date.toDate()
     val formattedDate = dateTimeFormatter.formatDateTime(selectedDate)
 

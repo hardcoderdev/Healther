@@ -12,7 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.ui.LocalPresentationModule
+import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.waterBalance.drinkType.DrinkTypeViewModel

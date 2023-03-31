@@ -22,8 +22,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.ui.IconItem
-import hardcoder.dev.androidApp.ui.LocalPresentationModule
+import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.androidApp.ui.icons.IconItem
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.waterBalance.drinkType.DrinkTypeCreateViewModel
 import hardcoder.dev.uikit.IntSlider

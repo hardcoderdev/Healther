@@ -35,12 +35,6 @@ class PedometerViewModel(
         initialValue = null
     )
 
-    private val isTrackingNow = pedometerManager.isTrackingNow().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = false
-    )
-
     private val tracks = pedometerTrackProvider.providePedometerTracksByRange(
         LocalDate.now().createRangeForCurrentDay(timeZone = TimeZone.currentSystemDefault())
     ).stateIn(
@@ -93,7 +87,7 @@ class PedometerViewModel(
         initialValue = listOf(0 to 0)
     )
 
-    private val trackingRejectReason = MutableStateFlow<TrackingRejectReason?>(null)
+    private val initialPermissionsScreenShowed = MutableStateFlow(false)
 
     val state = combine(
         pedometerManager.isTracking,
@@ -103,11 +97,12 @@ class PedometerViewModel(
         totalTrackingTime,
         dailyRateStepsCount,
         chartEntries,
-        trackingRejectReason,
-        pedometerStatistic
+        pedometerStatistic,
+        pedometerManager.availability,
+        initialPermissionsScreenShowed
     ) { isTrackingNow, totalStepsCount, totalKilometersCount, totalCaloriesCount,
         totalTrackingTime, dailyRateStepsCount, chartEntries, pedometerStatistic,
-        trackingRejectReason ->
+        availability, initialPermissionsScreenShowed ->
         LoadingState.Loaded(
             State(
                 isTrackingNow,
@@ -118,7 +113,8 @@ class PedometerViewModel(
                 dailyRateStepsCount,
                 chartEntries,
                 pedometerStatistic,
-                trackingRejectReason
+                availability,
+                initialPermissionsScreenShowed
             )
         )
     }.stateIn(
@@ -129,10 +125,15 @@ class PedometerViewModel(
 
     fun togglePedometerTracking() {
         viewModelScope.launch {
-            if (pedometerManager.isTracking.value) {
-                pedometerManager.stopTracking()
-            } else {
-                trackingRejectReason.value = pedometerManager.startTracking()
+            pedometerManager.apply {
+                requestBattery()
+                requestPermissions()
+                initialPermissionsScreenShowed.value = true
+                if (isTracking.value) {
+                    stopTracking()
+                } else {
+                    startTracking()
+                }
             }
         }
     }
@@ -151,7 +152,8 @@ class PedometerViewModel(
         val dailyRateStepsCount: Int,
         val chartEntries: List<Pair<Int, Int>>,
         val pedometerStatistic: PedometerStatistic?,
-        val trackingRejectReason: TrackingRejectReason?
+        val availability: PedometerManager.Availability,
+        val initialPermissionScreenShowed: Boolean
     )
 
     internal companion object {

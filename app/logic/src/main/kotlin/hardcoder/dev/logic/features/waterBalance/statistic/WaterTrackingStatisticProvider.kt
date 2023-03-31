@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.math.roundToInt
 import hardcoder.dev.entities.features.waterTracking.WaterTrack as WaterTrackEntity
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -26,21 +29,42 @@ class WaterTrackingStatisticProvider(
         .asFlow()
         .map {
             it.executeAsList()
-        }.flatMapLatest { waterTracksList ->
-            if (waterTracksList.isEmpty()) flowOf(emptyList())
+        }.flatMapLatest { waterTracksListDatabase ->
+            if (waterTracksListDatabase.isEmpty()) flowOf(emptyList())
             else combine(
-                waterTracksList.map { waterTrack ->
+                waterTracksListDatabase.map { waterTrack ->
                     provideDrinkTypeById(waterTrack)
                 }
             ) { waterTrackArray ->
                 val waterTrackList = waterTrackArray.toList()
-                val totalMilliliters = waterTrackList.sumOf { it.millilitersCount }
-                val favouriteDrinkType = waterTrackList.maxByOrNull { it.drinkType.id }?.drinkType
+
+                val totalMilliliters =
+                    waterTrackList.takeIf { it.isNotEmpty() }?.sumOf { it.millilitersCount }
+
+                val favouriteDrinkTypeId = waterTrackList.takeIf { list ->
+                    list.isNotEmpty()
+                }?.groupingBy { waterTrack ->
+                    waterTrack.drinkType
+                }?.eachCount()?.maxByOrNull { entry ->
+                    entry.value
+                }?.key
+
+                val averageHydrationIndex = waterTrackList.takeIf { it.isNotEmpty() }
+                    ?.map { it.drinkType.hydrationIndexPercentage }?.average()?.roundToInt()
+
+                val averageWaterIntakes = waterTrackList.takeIf { it.isNotEmpty() }
+                    ?.groupBy {
+                        it.date.toLocalDateTime(TimeZone.currentSystemDefault()).dayOfMonth
+                    }?.map {
+                        it.value.count()
+                    }?.average()?.roundToInt()
 
                 listOf(
                     WaterTrackingStatistic(
                         totalMilliliters = totalMilliliters,
-                        favouriteDrinkType = favouriteDrinkType
+                        favouriteDrinkTypeId = favouriteDrinkTypeId,
+                        averageHydrationIndex = averageHydrationIndex,
+                        averageWaterIntakes = averageWaterIntakes
                     )
                 )
             }

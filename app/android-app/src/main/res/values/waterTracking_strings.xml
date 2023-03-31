@@ -5,7 +5,9 @@
     <string name="waterTracking_title_topBar">Водный баланс</string>
     <string name="waterTracking_nowEmpty_text">Сейчас здесь пусто. Для того, чтобы добавить запись воспользуйтесь кнопкой в правом нижнем углу!</string>
     <string name="waterTracking_statistic_not_enough_data_text">Мало инфы</string>
-    <string name="waterTracking_statistic_water_total_drinked">Всего выпито</string>
+    <string name="waterTracking_statistic_water_total_drunk">Всего выпито</string>
+    <string name="waterTracking_average_hydration_index">Процент воды в напитках</string>
+    <string name="waterTracking_average_water_intakes">Среднее число приёмов воды в день</string>
     <string name="waterTracking_favourite_drink_type">Любимый напиток</string>
     <string name="waterTracking_statistic_text">Общая статистика:</string>
     <string name="waterTracking_activity_chart">График активности (по часам):</string>

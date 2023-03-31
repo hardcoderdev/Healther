@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.LocalIconResolver
+import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.waterBalance.WaterTrackItem
@@ -28,7 +28,8 @@ fun WaterTrackItem(
     waterTrackItem: WaterTrackItem,
     onUpdate: (WaterTrackItem) -> Unit
 ) {
-    val iconResolver = LocalIconResolver.current
+    val uiModule = LocalUIModule.current
+    val iconResolver = uiModule.iconResolver
     val drinkType = waterTrackItem.drinkType
 
     Card<DrinkType>(

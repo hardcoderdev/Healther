@@ -32,7 +32,7 @@ class FastingStatisticProvider(
         if (fastingDuration == null && favouritePlan == null && percentageCompleted == null) null
         else {
             FastingStatistic(
-                fastingDurationStatistic = fastingDuration,
+                duration = fastingDuration,
                 favouritePlan = favouritePlan,
                 percentageCompleted = percentageCompleted
             )

@@ -2,9 +2,8 @@ package hardcoder.dev.androidApp.di
 
 import android.content.Context
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.BatteryRequirementsController
-import hardcoder.dev.androidApp.ui.IconProvider
-import hardcoder.dev.androidApp.ui.features.pedometer.logic.BatteryRequirements
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.PedometerManagerImpl
+import hardcoder.dev.androidApp.ui.icons.IconProvider
 import hardcoder.dev.database.AppDatabaseFactory
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.logic.DateTimeProvider

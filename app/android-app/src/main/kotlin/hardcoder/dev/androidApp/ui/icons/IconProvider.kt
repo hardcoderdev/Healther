@@ -1,4 +1,4 @@
-package hardcoder.dev.androidApp.ui
+package hardcoder.dev.androidApp.ui.icons
 
 import android.content.Context
 import hardcoder.dev.healther.R

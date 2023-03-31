@@ -1,5 +1,6 @@
 package hardcoder.dev.androidApp.di
 
+import android.content.Context
 import hardcoder.dev.presentation.features.fasting.FastingHistoryViewModel
 import hardcoder.dev.presentation.features.fasting.FastingTrackCreateViewModel
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
@@ -18,7 +19,10 @@ import hardcoder.dev.presentation.setUpFlow.HeroCreateViewModel
 import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
 import hardcoder.dev.presentation.setUpFlow.SplashViewModel
 
-class PresentationModule(val logicModule: LogicModule) {
+class PresentationModule(
+    val context: Context,
+    val logicModule: LogicModule
+) {
 
     fun getSplashViewModel() = SplashViewModel(
         appPreferenceProvider = logicModule.appPreferenceProvider
