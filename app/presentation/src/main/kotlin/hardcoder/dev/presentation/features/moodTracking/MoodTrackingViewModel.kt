@@ -15,7 +15,6 @@ import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -43,24 +42,35 @@ class MoodTrackingViewModel(
         initialValue = emptyList()
     )
 
-    private val moodWithHobbyTrackList = moodTrackList.flatMapLatest { moodTrackList ->
-        if (moodTrackList.isEmpty()) flowOf(emptyList())
+    private val moodWithHobbyTrackList = moodTrackList.flatMapLatest { tracks ->
+        if (tracks.isEmpty()) flowOf(emptyList())
         else combine(
-            moodTrackList.map { moodTrack ->
+            tracks.map { moodTrack ->
                 moodWithHobbyProvider.provideMoodWithHobbyTracks(moodTrack.id)
+                    .flatMapLatest { moodWithHobbyTracks ->
+                        if (moodWithHobbyTracks.isEmpty()) {
+                            flowOf(
+                                MoodTrackWithHobbies(
+                                    moodTrack = moodTrack,
+                                    hobbyTrackList = emptyList()
+                                )
+                            )
+                        } else {
+                            combine(
+                                moodWithHobbyTracks.map {
+                                    hobbyTrackProvider.provideHobbyById(it.hobbyTrackId)
+                                }
+                            ) { hobbyTracks ->
+                                MoodTrackWithHobbies(
+                                    moodTrack = moodTrack,
+                                    hobbyTrackList = hobbyTracks.toList()
+                                )
+                            }
+                        }
+                    }
             }
-        ) { moodWithHobbyTrackListArray ->
-            moodTrackList.mapIndexed { index, moodTrack ->
-                MoodTrackWithHobbies(
-                    moodTrack = moodTrack,
-                    hobbyTrackList = if (moodWithHobbyTrackListArray.isEmpty()) emptyList() else combine(
-                        moodWithHobbyTrackListArray[index].map { moodWithHobbyTrack ->
-                            hobbyTrackProvider.provideHobbyById(moodWithHobbyTrack.hobbyTrackId)
-                        }) {
-                        it.toList()
-                    }.firstOrNull()
-                )
-            }
+        ) {
+            it.toList()
         }
     }.stateIn(
         scope = viewModelScope,

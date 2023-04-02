@@ -158,7 +158,7 @@ private fun SelectMoodSection(
     Column(modifier = Modifier.fillMaxWidth()) {
         Title(text = stringResource(id = R.string.moodTracking_saveTrack_howYouFeelYourself_text))
         Spacer(modifier = Modifier.height(16.dp))
-        ScrollableTabRow(selectedTabIndex = state.moodTypeList.indexOf(state.selectedMoodType)) {
+        ScrollableTabRow(selectedTabIndex = state.moodTypeList.indexOf(state.selectedMoodType) + 1) {
             MoodItem(
                 modifier = Modifier.padding(
                     start = 4.dp,
