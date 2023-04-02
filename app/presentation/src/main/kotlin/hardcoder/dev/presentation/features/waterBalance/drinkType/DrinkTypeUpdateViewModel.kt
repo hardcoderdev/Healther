@@ -4,17 +4,17 @@ import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.logic.features.waterBalance.drinkType.CorrectValidatedIconResource
-import hardcoder.dev.logic.features.waterBalance.drinkType.CorrectValidatedName
+import hardcoder.dev.logic.features.general.CorrectValidatedIconResource
+import hardcoder.dev.logic.features.general.IconResource
+import hardcoder.dev.logic.features.general.IconResourceValidator
+import hardcoder.dev.logic.features.general.ValidatedIconResource
+import hardcoder.dev.logic.features.waterBalance.drinkType.CorrectValidatedDrinkTypeName
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeDeleter
-import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeIconResourceValidator
+import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeName
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeNameValidator
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeUpdater
-import hardcoder.dev.logic.features.waterBalance.drinkType.IconResource
-import hardcoder.dev.logic.features.waterBalance.drinkType.Name
-import hardcoder.dev.logic.features.waterBalance.drinkType.ValidatedIconResource
-import hardcoder.dev.logic.features.waterBalance.drinkType.ValidatedName
+import hardcoder.dev.logic.features.waterBalance.drinkType.ValidatedDrinkTypeName
 import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 class DrinkTypeUpdateViewModel(
     private val drinkTypeId: Int,
     private val drinkTypeNameValidator: DrinkTypeNameValidator,
-    private val drinkTypeIconResourceValidator: DrinkTypeIconResourceValidator,
+    private val iconResourceValidator: IconResourceValidator,
     private val drinkTypeProvider: DrinkTypeProvider,
     private val drinkTypeUpdater: DrinkTypeUpdater,
     private val drinkTypeDeleter: DrinkTypeDeleter,
@@ -41,9 +41,9 @@ class DrinkTypeUpdateViewModel(
     private val selectedIconResource = MutableStateFlow<String?>(null)
     private val selectedHydrationIndexPercentage = MutableStateFlow(0)
     private val name = MutableStateFlow<String?>(null)
-    private val validatedName = name.map {
+    private val validatedDrinkTypeName = name.map {
         it?.let {
-            drinkTypeNameValidator.validate(Name(it))
+            drinkTypeNameValidator.validate(DrinkTypeName(it))
         }
     }.stateIn(
         scope = viewModelScope,
@@ -52,7 +52,7 @@ class DrinkTypeUpdateViewModel(
     )
     private val validatedIconResource = selectedIconResource.map {
         it?.let {
-            drinkTypeIconResourceValidator.validate(IconResource(it))
+            iconResourceValidator.validate(IconResource(it))
         }
     }.stateIn(
         scope = viewModelScope,
@@ -68,7 +68,7 @@ class DrinkTypeUpdateViewModel(
         updateState,
         deleteState,
         name,
-        validatedName,
+        validatedDrinkTypeName,
         availableIconResourceList,
         selectedIconResource,
         validatedIconResource,
@@ -79,12 +79,12 @@ class DrinkTypeUpdateViewModel(
             updateState = updateState,
             deleteState = deleteState,
             name = name,
-            validatedName = validatedName,
+            validatedDrinkTypeName = validatedName,
             availableIconResourceList = availableIconResourceList,
             selectedIconResource = selectedIconResource,
             validatedIconResource = validatedIconResource,
             hydrationIndexPercentage = selectedHydrationIndexPercentage,
-            allowUpdate = validatedName is CorrectValidatedName
+            allowUpdate = validatedName is CorrectValidatedDrinkTypeName
                     && validatedIconResource is CorrectValidatedIconResource,
         )
     }.stateIn(
@@ -94,7 +94,7 @@ class DrinkTypeUpdateViewModel(
             updateState = updateState.value,
             deleteState = deleteState.value,
             name = name.value,
-            validatedName = validatedName.value,
+            validatedDrinkTypeName = validatedDrinkTypeName.value,
             availableIconResourceList = availableIconResourceList.value,
             selectedIconResource = selectedIconResource.value,
             validatedIconResource = validatedIconResource.value,
@@ -117,8 +117,8 @@ class DrinkTypeUpdateViewModel(
 
     fun updateDrinkType() {
         viewModelScope.launch {
-            val validatedName = validatedName.value
-            require(validatedName is CorrectValidatedName)
+            val validatedName = validatedDrinkTypeName.value
+            require(validatedName is CorrectValidatedDrinkTypeName)
 
             val validatedIconResource = validatedIconResource.value
             require(validatedIconResource is CorrectValidatedIconResource)
@@ -160,7 +160,7 @@ class DrinkTypeUpdateViewModel(
         val deleteState: DeleteState,
         val allowUpdate: Boolean,
         val name: String?,
-        val validatedName: ValidatedName?,
+        val validatedDrinkTypeName: ValidatedDrinkTypeName?,
         val availableIconResourceList: List<String>,
         val selectedIconResource: String?,
         val validatedIconResource: ValidatedIconResource?,

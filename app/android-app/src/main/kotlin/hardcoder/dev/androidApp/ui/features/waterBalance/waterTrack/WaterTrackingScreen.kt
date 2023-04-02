@@ -129,7 +129,6 @@ private fun DailyRateSection(state: WaterTrackingViewModel.State) {
     LinearProgressBar(progress = state.millisCount safeDiv state.dailyWaterIntake)
 }
 
-
 @Composable
 private fun WaterTrackingChartSection(state: WaterTrackingViewModel.State) {
     Title(text = stringResource(id = R.string.waterTracking_activity_chart))

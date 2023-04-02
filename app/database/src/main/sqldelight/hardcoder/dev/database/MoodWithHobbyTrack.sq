@@ -1,0 +1,19 @@
+CREATE TABLE MoodWithHobbyTrack (
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    hobbyId INTEGER AS Int NOT NULL,
+    moodTrackId INTEGER AS Int NOT NULL
+);
+
+insert:
+INSERT INTO MoodWithHobbyTrack (id, hobbyId, moodTrackId)
+VALUES (?, ?, ?);
+
+upsert:
+INSERT OR REPLACE INTO MoodWithHobbyTrack (id, hobbyId, moodTrackId)
+VALUES (?, ?, ?);
+
+deleteAllHobbiesByMoodTrackId:
+DELETE FROM MoodWithHobbyTrack WHERE moodTrackId = ?;
+
+provideAllMoodWithHobbiesTrackByMoodTrackId:
+SELECT * FROM MoodWithHobbyTrack WHERE moodTrackId = ?;

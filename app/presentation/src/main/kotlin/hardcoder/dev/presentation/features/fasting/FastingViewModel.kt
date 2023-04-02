@@ -40,7 +40,7 @@ class FastingViewModel(
         initialValue = null
     )
 
-    private val fastingTracksForTheLastWeek =
+    private val fastingTracksForTheLastMonth =
         dateTimeProvider.currentTimeFlow().flatMapLatest { currentDateTime ->
             fastingTrackProvider.provideFastingTracksByStartTime(
                 currentDateTime.date.minus(
@@ -61,7 +61,7 @@ class FastingViewModel(
         initialValue = emptyList()
     )
 
-    private val chartEntries = fastingTracksForTheLastWeek.map { fastingTrackList ->
+    private val chartEntries = fastingTracksForTheLastMonth.map { fastingTrackList ->
         fastingTrackList.groupBy {
             it.startTime.toLocalDateTime(TimeZone.currentSystemDefault()).date.dayOfMonth
         }.map { entry ->

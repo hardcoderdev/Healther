@@ -2,16 +2,16 @@ package hardcoder.dev.logic.features.waterBalance.drinkType
 
 class DrinkTypeNameValidator {
 
-    fun validate(data: Name) = data.incorrectReason()?.let { reason ->
-        IncorrectValidatedName(data = data, reason = reason)
+    fun validate(data: DrinkTypeName) = data.incorrectReason()?.let { reason ->
+        IncorrectValidatedDrinkTypeName(data = data, reason = reason)
     } ?: run {
-        CorrectValidatedName(data = data)
+        CorrectValidatedDrinkTypeName(data = data)
     }
 
-    private fun Name.incorrectReason(): IncorrectValidatedName.Reason? {
+    private fun DrinkTypeName.incorrectReason(): IncorrectValidatedDrinkTypeName.Reason? {
         return when {
-            value.isEmpty() -> IncorrectValidatedName.Reason.Empty
-            value.length > DRINK_TYPE_NAME_MAX_CHARS -> IncorrectValidatedName.Reason.MoreThanMaxChars
+            value.isEmpty() -> IncorrectValidatedDrinkTypeName.Reason.Empty
+            value.length > DRINK_TYPE_NAME_MAX_CHARS -> IncorrectValidatedDrinkTypeName.Reason.MoreThanMaxChars
             else -> null
         }
     }
@@ -21,22 +21,22 @@ class DrinkTypeNameValidator {
     }
 }
 
-sealed class ValidatedName {
-    abstract val data: Name
+sealed class ValidatedDrinkTypeName {
+    abstract val data: DrinkTypeName
 }
 
-data class CorrectValidatedName(
-    override val data: Name
-) : ValidatedName()
+data class CorrectValidatedDrinkTypeName(
+    override val data: DrinkTypeName
+) : ValidatedDrinkTypeName()
 
-data class IncorrectValidatedName(
-    override val data: Name,
+data class IncorrectValidatedDrinkTypeName(
+    override val data: DrinkTypeName,
     val reason: Reason
-) : ValidatedName() {
+) : ValidatedDrinkTypeName() {
     sealed class Reason {
         object Empty : Reason()
         object MoreThanMaxChars : Reason()
     }
 }
 
-data class Name(val value: String)
+data class DrinkTypeName(val value: String)

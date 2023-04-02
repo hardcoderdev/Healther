@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
@@ -25,6 +26,7 @@ import com.patrykandpatrick.vico.core.entry.entryModelOf
 @Composable
 fun ActivityColumnChart(
     isZoomEnabled: Boolean,
+    spacing: Dp = 33.dp,
     modifier: Modifier = Modifier,
     chartEntries: List<Pair<Number, Number>>,
     xAxisValueFormatter: (Float, ChartValues) -> CharSequence,
@@ -35,7 +37,7 @@ fun ActivityColumnChart(
         isZoomEnabled = isZoomEnabled,
         modifier = modifier.fillMaxSize(),
         chart = columnChart(
-            spacing = 22.dp,
+            spacing = spacing,
             columns = listOf(
                 lineComponent(
                     color = MaterialTheme.colorScheme.primary,

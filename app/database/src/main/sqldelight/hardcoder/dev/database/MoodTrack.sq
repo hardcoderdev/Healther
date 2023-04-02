@@ -1,0 +1,27 @@
+CREATE TABLE MoodTrack (
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    moodTypeId INTEGER AS Int NOT NULL,
+    creationTime INTEGER NOT NULL
+);
+
+insert:
+INSERT INTO MoodTrack (id, moodTypeId, creationTime)
+VALUES (?, ?, ?);
+
+update:
+UPDATE MoodTrack SET moodTypeId = ?, creationTime = ? WHERE id = ?;
+
+deleteById:
+DELETE FROM MoodTrack WHERE id = ?;
+
+deleteAllTracksByMoodTypeId:
+DELETE FROM MoodTrack WHERE moodTypeId = ?;
+
+provideMoodTracksByDayRange:
+SELECT * FROM MoodTrack WHERE creationTime BETWEEN ? AND ?;
+
+provideAllMoodTracks:
+SELECT * FROM MoodTrack;
+
+provideMoodTrackById:
+SELECT * FROM MoodTrack WHERE id = ?;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="fasting_title_topBar">Голодание</string>
     <string name="fasting_lastFastingTracks_text">Недавние голодания:</string>
     <string name="fasting_yourSelectedPlan_formatText">Выбранный план голодания: %s</string>
     <string name="fasting_noEnoughDataToShowLastTracks_text">Недостаточно данных для отображения последних записей о голодании.</string>

@@ -1,0 +1,22 @@
+CREATE TABLE MoodType (
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    iconResourceName TEXT NOT NULL,
+    positivePercentage INTEGER AS Int NOT NULL
+);
+
+insert:
+INSERT INTO MoodType (id, name, iconResourceName, positivePercentage)
+VALUES (?, ?, ?, ?);
+
+update:
+UPDATE MoodType SET name = ?, iconResourceName = ?, positivePercentage = ? WHERE id = ?;
+
+deleteById:
+DELETE FROM MoodType WHERE id = ?;
+
+provideAllMoodTypes:
+SELECT * FROM MoodType;
+
+provideMoodTypeById:
+SELECT * FROM MoodType WHERE id = ?;

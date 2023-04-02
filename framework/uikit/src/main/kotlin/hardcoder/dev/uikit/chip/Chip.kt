@@ -21,10 +21,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.text.Text
@@ -33,11 +31,9 @@ import hardcoder.dev.uikit.text.Text
 fun Chip(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
-    textStyle: TextStyle = MaterialTheme.typography.titleSmall,
     text: String,
     isSelected: Boolean = false,
     interactionType: InteractionType = InteractionType.SELECTION,
-    height: Dp = 15.dp,
     padding: PaddingValues = PaddingValues(16.dp),
     @DrawableRes iconResId: Int? = null,
     overflow: TextOverflow = TextOverflow.Ellipsis,
@@ -63,6 +59,18 @@ fun Chip(
         InteractionType.STATIC -> MaterialTheme.colorScheme.onPrimary
     }
 
+    val textStyle = when (interactionType) {
+        InteractionType.STATIC -> MaterialTheme.typography.labelMedium
+        InteractionType.ACTION -> MaterialTheme.typography.titleSmall
+        InteractionType.SELECTION -> MaterialTheme.typography.titleSmall
+    }
+
+    val chipHeight = when (interactionType) {
+        InteractionType.STATIC -> 14.dp
+        InteractionType.ACTION -> 15.dp
+        InteractionType.SELECTION -> 15.dp
+    }
+
     Row(
         modifier = modifier
             .background(color = containerColor, shape = shape)
@@ -75,7 +83,7 @@ fun Chip(
             }
             .padding(padding)
             .wrapContentWidth()
-            .height(height)
+            .height(chipHeight)
     ) {
         iconResId?.let {
             Icon(

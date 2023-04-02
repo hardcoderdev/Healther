@@ -3,6 +3,7 @@ package hardcoder.dev.androidApp.di
 import android.content.Context
 import hardcoder.dev.androidApp.ui.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.features.fasting.statistic.FastingStatisticResolver
+import hardcoder.dev.androidApp.ui.features.moodTracking.statistic.MoodTrackingStatisticResolver
 import hardcoder.dev.androidApp.ui.features.pedometer.PedometerRejectedMapper
 import hardcoder.dev.androidApp.ui.features.pedometer.statistic.PedometerStatisticResolver
 import hardcoder.dev.androidApp.ui.features.waterBalance.waterTrack.statistic.WaterTrackingStatisticResolver
@@ -61,6 +62,12 @@ class UIModule(private val context: Context) {
 
     val fastingStatisticResolver by lazy {
         FastingStatisticResolver(
+            context = context
+        )
+    }
+
+    val moodTrackingStatisticResolver by lazy {
+        MoodTrackingStatisticResolver(
             context = context
         )
     }

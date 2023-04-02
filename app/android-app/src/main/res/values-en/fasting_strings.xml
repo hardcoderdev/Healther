@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="fasting_title_topBar">Fasting</string>
     <string name="fasting_lastFastingTracks_text">Recent fasts:</string>
     <string name="fasting_yourSelectedPlan_formatText">Selected fasting plan: %s</string>
     <string name="fasting_noEnoughDataToShowLastTracks_text">There is not enough data to display recent fasting records.</string>

@@ -16,6 +16,26 @@ import hardcoder.dev.logic.features.fasting.plan.FastingPlanProvider
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatisticProvider
 import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
+import hardcoder.dev.logic.features.general.IconResourceValidator
+import hardcoder.dev.logic.features.moodTracking.hobby.HobbyIconValidator
+import hardcoder.dev.logic.features.moodTracking.hobby.HobbyNameValidator
+import hardcoder.dev.logic.features.moodTracking.hobby.HobbyTrackCreator
+import hardcoder.dev.logic.features.moodTracking.hobby.HobbyTrackDeleter
+import hardcoder.dev.logic.features.moodTracking.hobby.HobbyTrackProvider
+import hardcoder.dev.logic.features.moodTracking.hobby.HobbyTrackUpdater
+import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackCreator
+import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDeleter
+import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
+import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackUpdater
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeCreator
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeDeleter
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeUpdater
+import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyCreator
+import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyDeleter
+import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyProvider
+import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatisticProvider
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
 import hardcoder.dev.logic.features.pedometer.PedometerStepHandler
@@ -32,7 +52,6 @@ import hardcoder.dev.logic.features.waterBalance.WaterTrackProvider
 import hardcoder.dev.logic.features.waterBalance.WaterTrackUpdater
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeCreator
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeDeleter
-import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeIconResourceValidator
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeNameValidator
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeUpdater
@@ -61,8 +80,47 @@ class LogicModule(private val context: Context) {
     val predefinedTracksManager by lazy {
         PredefinedTracksManager(
             context = context,
-            drinkTypeCreator = drinkTypeCreator
+            drinkTypeCreator = drinkTypeCreator,
+            moodTypeCreator = moodTypeCreator
         )
+    }
+
+    val heroCreator by lazy {
+        HeroCreator(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO,
+            genderIdMapper = genderIdMapper
+        )
+    }
+
+    val heroUpdater by lazy {
+        HeroUpdater(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO,
+            genderIdMapper = genderIdMapper
+        )
+    }
+
+    val heroProvider by lazy {
+        HeroProvider(
+            appDatabase = appDatabase,
+            genderIdMapper = genderIdMapper
+        )
+    }
+
+    val appPreferenceUpdater by lazy {
+        AppPreferenceUpdater(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val appPreferenceProvider by lazy {
+        AppPreferenceProvider(appDatabase = appDatabase)
+    }
+
+    val dateTimeProvider by lazy {
+        DateTimeProvider(updatePeriodMillis = 1000)
     }
 
     val iconResourceProvider by lazy {
@@ -125,8 +183,8 @@ class LogicModule(private val context: Context) {
         DrinkTypeNameValidator()
     }
 
-    val drinkTypeIconResourceValidator by lazy {
-        DrinkTypeIconResourceValidator()
+    val iconResourceValidator by lazy {
+        IconResourceValidator()
     }
 
     val drinkTypeCreator by lazy {
@@ -260,41 +318,126 @@ class LogicModule(private val context: Context) {
         FastingPlanDurationResolver()
     }
 
-    val heroCreator by lazy {
-        HeroCreator(
-            appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
-            genderIdMapper = genderIdMapper
-        )
-    }
-
-    val heroUpdater by lazy {
-        HeroUpdater(
-            appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
-            genderIdMapper = genderIdMapper
-        )
-    }
-
-    val heroProvider by lazy {
-        HeroProvider(
-            appDatabase = appDatabase,
-            genderIdMapper = genderIdMapper
-        )
-    }
-
-    val appPreferenceUpdater by lazy {
-        AppPreferenceUpdater(
+    val hobbyTrackCreator by lazy {
+        HobbyTrackCreator(
+            idGenerator = idGenerator,
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO
         )
     }
 
-    val appPreferenceProvider by lazy {
-        AppPreferenceProvider(appDatabase = appDatabase)
+    val hobbyTrackUpdater by lazy {
+        HobbyTrackUpdater(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
     }
 
-    val dateTimeProvider by lazy {
-        DateTimeProvider(updatePeriodMillis = 1000)
+    val hobbyTrackDeleter by lazy {
+        HobbyTrackDeleter(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val hobbyTrackProvider by lazy {
+        HobbyTrackProvider(appDatabase = appDatabase)
+    }
+
+    val hobbyNameValidator by lazy {
+        HobbyNameValidator()
+    }
+
+    val hobbyIconValidator by lazy {
+        HobbyIconValidator()
+    }
+
+    val moodWithHobbyProvider by lazy {
+        MoodWithHobbyProvider(appDatabase = appDatabase)
+    }
+
+    val moodWithHobbyCreator by lazy {
+        MoodWithHobbyCreator(
+            idGenerator = idGenerator,
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val moodWithHobbyDeleter by lazy {
+        MoodWithHobbyDeleter(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val moodTrackCreator by lazy {
+        MoodTrackCreator(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO,
+            idGenerator = idGenerator
+        )
+    }
+
+    val moodTrackUpdater by lazy {
+        MoodTrackUpdater(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val moodTrackDeleter by lazy {
+        MoodTrackDeleter(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val moodTrackProvider by lazy {
+        MoodTrackProvider(
+            appDatabase = appDatabase,
+            moodTypeProvider = moodTypeProvider
+        )
+    }
+
+    val moodTypeNameValidator by lazy {
+        MoodTypeNameValidator()
+    }
+
+    val moodTypeCreator by lazy {
+        MoodTypeCreator(
+            context = context,
+            idGenerator = idGenerator,
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val moodTypeUpdater by lazy {
+        MoodTypeUpdater(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val moodTypeDeleter by lazy {
+        MoodTypeDeleter(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO,
+            moodTrackDeleter = moodTrackDeleter
+        )
+    }
+
+    val moodTypeProvider by lazy {
+        MoodTypeProvider(
+            appDatabase = appDatabase
+        )
+    }
+
+    val moodTrackingStatisticProvider by lazy {
+        MoodTrackingStatisticProvider(
+            appDatabase = appDatabase,
+            moodTypeProvider = moodTypeProvider
+        )
     }
 }

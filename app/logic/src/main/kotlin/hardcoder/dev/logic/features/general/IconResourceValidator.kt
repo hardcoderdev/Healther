@@ -1,6 +1,6 @@
-package hardcoder.dev.logic.features.waterBalance.drinkType
+package hardcoder.dev.logic.features.general
 
-class DrinkTypeIconResourceValidator {
+class IconResourceValidator {
 
     fun validate(data: IconResource) = data.incorrectReason()?.let { reason ->
         IncorrectValidatedIconResource(data = data, reason = reason)

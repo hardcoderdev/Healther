@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="moodTracking_title_topBar">Трекер эмоций</string>
+    <string name="moodTracking_diaryNowEmpty_text">Сейчас здесь пусто. Чтобы добавить новую  запись, нажмите на кнопку справа внизу.</string>
+    <string name="moodTracking_statistic_happyMoodCount_text">Вы были счастливы</string>
+    <string name="moodTracking_statistic_neutralMoodCount_text">Вы были нейтральны</string>
+    <string name="moodTracking_statistic_notWellMoodCount_text">Вы были грустным</string>
+    <string name="moodTracking_statistic_angryMoodCount_text">Вы были злым</string>
+    <string name="moodTracking_statistic_averageMood_text">Ваше настроение в среднем</string>
+    <string name="moodTracking_statistic_not_enough_data_text">Мало инфы</string>
+    <string name="moodTracking_statistic_text">Общая статистика:</string>
+    <string name="moodTracking_activity_chart">График настроения (за месяц):</string>
+    <string name="moodTracking_diary_text">Дневник эмоций:</string>
+    <string name="moodTracking_nowEmpty_text">\nСейчас здесь пусто. Чтобы добавить новую запись, нажмите на кнопку справа внизу. Статистика и график появятся спустя пару часов использования фичи.</string>
+
+    <string name="moodTracking_saveTrack_title_topBar">Создание записи</string>
+    <string name="moodTracking_saveTrack_enterTitle_textField">Введите заголовок…</string>
+    <string name="moodTracking_saveTrack_enterNote_textField">Заметку вводите здесь…</string>
+    <string name="moodTracking_saveTrack_buttonText">Сохранить запись</string>
+    <string name="moodTracking_saveTrack_youCanAddNote_text">Вы можете добавить заметку:</string>
+    <string name="moodTracking_saveTrack_howYouFeelYourself_text">Как вы себя чувствуете прямо сейчас?</string>
+    <string name="moodTracking_saveTrack_youMaySelectHobbies_text">Вы можете отметить чем занимались:</string>
+    <string name="moodTracking_saveTrack_manageHobby_buttonText">Управление занятиями</string>
+    <string name="moodTracking_weDontHaveEnoughDataToShowChart_text">У нас пока недостаточно данных для отображения графика. Используйте эту фичу и график появится на следующий день!</string>
+
+    <string name="moodTracking_updateTrack_enterTitle_textField">Введите заголовок…</string>
+    <string name="moodTracking_updateTrack_enterNote_textField">Заметку вводите здесь…</string>
+    <string name="moodTracking_updateTrack_buttonText">Обновить запись</string>
+
+    <string name="moodTracking_history_title_topBar">Подробная история</string>
+    <string name="moodTracking_history_emptyDay_text">В этот день вы не добавляли записей.</string>
+
+
+    <string name="moodTrackingItem_feel_formatText">Вы чувствовали себя %s в %s сегодня.</string>
+
+    <string name="moodTracking_HobbyCreateTrack_title_topBar">Создание занятия</string>
+    <string name="moodTracking_HobbyCreateTrack_enter_name_text">Введите название занятия:</string>
+    <string name="moodTracking_HobbyCreateTrack_enterHobbyName_textField">Например: работа…</string>
+    <string name="moodTracking_HobbyCreateTrack_selectIcon_text">Выберите иконку занятию:</string>
+    <string name="moodTracking_HobbyCreateTrack_saveTrack_buttonText">Сохранить занятие</string>
+    <string name="moodTracking_HobbyCreateTrack_nameEmpty_error">Название не может быть пустым!</string>
+    <string name="moodTracking_HobbyCreateTrack_nameMoreThanMaxChars_error">Слишком много символов!</string>
+    <string name="moodTracking_HobbyCreateTrack_iconContentDescription">Иконка занятия</string>
+
+    <string name="moodTracking_HobbyUpdateTrack_title_topBar">Обновление занятия</string>
+    <string name="moodTracking_HobbyUpdateTrack_saveTrack_buttonText">Обновить занятие</string>
+    <string name="moodTracking_HobbyUpdateTrack_selectIcon_text">Выберите иконку занятию:</string>
+    <string name="moodTracking_HobbyUpdateTrack_nameMoreThanMaxChars_error">Слишком много символов!</string>
+    <string name="moodTracking_HobbyUpdateTrack_nameEmpty_error">Название не может быть пустым!</string>
+    <string name="moodTracking_HobbyUpdateTrack_enterHobbyName_textField">Например: работа…</string>
+    <string name="moodTracking_HobbyUpdateTrack_enter_name_text">Введите название занятия:</string>
+
+    <string name="moodTracking_HobbyManageTracks_title_topBar">Управление занятиями</string>
+    <string name="moodTracking_HobbyManageTracks_nowEmpty_text">Сейчас здесь пусто. Чтобы создать новое занятие и затем прикрепить его к записи эмоции, нажмите на кнопку справа внизу.</string>
+
+    <string name="moodTracking_MoodTypeManageTracks_title_topBar">Управление настроением</string>
+    <string name="moodTracking_MoodTypeManageTracks_nowEmpty_text">Сейчас здесь пусто. Чтобы создать новое настроение и затем использовать его в записи эмоции, нажмите на кнопку справа внизу.</string>
+
+    <string name="moodTracking_CreateMoodType_title_topBar">Создание настроения</string>
+    <string name="moodTracking_CreateMoodType_buttonText">Сохранить настроение</string>
+    <string name="moodTracking_CreateMoodType_enterName_text">Введите название настроения:</string>
+    <string name="moodTracking_CreateMoodType_enterName_textField">Например, воодушевляюще…</string>
+    <string name="moodTracking_CreateMoodType_selectIcon_text">Выберите иконку настроения:</string>
+    <string name="moodTracking_CreateMoodType_selectPositivePercentage_text">На сколько позитивна эта эмоция?</string>
+    <string name="moodTracking_CreateMoodType_selectedIndex_formatText">Выбранный процент: %d%%</string>
+    <string name="moodTracking_CreateMoodTrack_manageMoodTypes_buttonText">Менеджмент</string>
+    <string name="moodTracking_CreateMoodTrack_selectDateRange_buttonText">Выбрать дату</string>
+    <string name="moodTracking_CreateMoodTrack_selectedDate_formatText">Выбранная дата: %s</string>
+    <string name="moodTracking_CreateMoodTrack_selectAnotherDate_text">\nХотите сделать запись на другую дату?</string>
+
+    <string name="moodTracking_UpdateMoodType_title_topBar">Обновление настроения</string>
+    <string name="moodTracking_UpdateMoodType_createTrack_buttonText">Обновить настроение</string>
+    <string name="moodTracking_UpdateMoodType_enterName_text">Введите название настроения:</string>
+    <string name="moodTracking_UpdateMoodType_selectedPositivePercentage_formatText">Выбранный процент: %d%%</string>
+    <string name="moodTracking_UpdateMoodType_selectPositivePercentage_text">Насколько позитивна эта эмоция?</string>
+    <string name="moodTracking_UpdateMoodType_selectMoodIcon_text">Выберите иконку настроения:</string>
+    <string name="moodTracking_UpdateMoodType_enterName_textField">Например, воодушевляюще…</string>
+    <string name="moodTracking_UpdateMoodTrack_manageMoodTypes_buttonText">Управление настроением</string>
+    <string name="moodTracking_UpdateMoodTrack_selectAnotherDate_text">Хотите сделать запись на другую дату?</string>
+    <string name="moodTracking_UpdateMoodTrack_selectedDate_formatText">Выбранная дата: %s</string>
+    <string name="moodTracking_UpdateMoodTrack_selectDateRange_buttonText">Выбрать дату</string>
+</resources>

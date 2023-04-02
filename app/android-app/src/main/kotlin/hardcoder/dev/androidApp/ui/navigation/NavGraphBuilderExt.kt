@@ -6,6 +6,16 @@ import androidx.navigation.compose.composable
 import hardcoder.dev.androidApp.ui.features.fasting.FastingScreen
 import hardcoder.dev.androidApp.ui.features.fasting.create.FastingCreationTrackScreen
 import hardcoder.dev.androidApp.ui.features.fasting.history.FastingHistoryScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.MoodTrackingScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.create.CreateMoodTrackScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.history.MoodTrackingHistoryScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.hobby.ManageHobbyScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.hobby.create.CreateHobbyTrackScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.hobby.update.UpdateHobbyTrackScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.ManageMoodTypeScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.create.CreateMoodTypeScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.update.UpdateMoodTypeScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.update.UpdateMoodTrackScreen
 import hardcoder.dev.androidApp.ui.features.pedometer.PedometerScreen
 import hardcoder.dev.androidApp.ui.features.pedometer.history.PedometerHistoryScreen
 import hardcoder.dev.androidApp.ui.features.waterBalance.drinkType.DrinkTypeManageScreen
@@ -144,9 +154,7 @@ fun NavGraphBuilder.addPedometerDestinations(navController: NavController) {
     ) {
         PedometerScreen(
             onGoBack = navController::popBackStack,
-            onGoToPedometerHistory = {
-                navController.navigate(Screen.PedometerHistory.route)
-            }
+            onGoToPedometerHistory = { navController.navigate(Screen.PedometerHistory.route) }
         )
     }
     composable(route = Screen.PedometerHistory.route) {
@@ -169,6 +177,81 @@ fun NavGraphBuilder.addFastingDestinations(navController: NavController) {
     }
     composable(route = Screen.FastingHistory.route) {
         FastingHistoryScreen(
+            onGoBack = navController::popBackStack
+        )
+    }
+}
+
+fun NavGraphBuilder.addMoodTrackingDestinations(navController: NavController) {
+    composable(route = Screen.MoodTrackingFeature.route) {
+        MoodTrackingScreen(
+            onGoBack = navController::popBackStack,
+            onCreateMoodTrack = { navController.navigate(Screen.MoodTrackingCreate.route) },
+            onGoToHistory = { navController.navigate(Screen.MoodTrackingHistory.route) },
+            onUpdate = { navController.navigate(Screen.MoodTrackingUpdate.buildRoute(it.id)) }
+        )
+    }
+    composable(route = Screen.MoodTrackingHistory.route) {
+        MoodTrackingHistoryScreen(
+            onGoBack = navController::popBackStack,
+            onTrackUpdate = { navController.navigate(Screen.MoodTrackingUpdate.buildRoute(it.id)) }
+        )
+    }
+    composable(route = Screen.MoodTrackingCreate.route) {
+        CreateMoodTrackScreen(
+            onGoBack = navController::popBackStack,
+            onManageHobby = { navController.navigate(Screen.ManageHobbies.route) },
+            onManageMoodTypes = { navController.navigate(Screen.ManageMoodTypes.route) }
+        )
+    }
+    composable(
+        route = Screen.MoodTrackingUpdate.route,
+        arguments = Screen.MoodTrackingUpdate.arguments
+    ) {
+        UpdateMoodTrackScreen(
+            moodTrackId = Screen.MoodTrackingUpdate.getMoodTrackId(it.arguments),
+            onManageHobby = { navController.navigate(Screen.ManageHobbies.route) },
+            onManageMoodTypes = { navController.navigate(Screen.ManageMoodTypes.route) },
+            onGoBack = navController::popBackStack
+        )
+    }
+    composable(route = Screen.ManageMoodTypes.route) {
+        ManageMoodTypeScreen(
+            onGoBack = navController::popBackStack,
+            onCreateMoodType = { navController.navigate(Screen.MoodTypeCreate.route) },
+            onUpdateMoodType = { navController.navigate(Screen.MoodTypeUpdate.buildRoute(it.id)) }
+        )
+    }
+    composable(route = Screen.MoodTypeCreate.route) {
+        CreateMoodTypeScreen(onGoBack = navController::popBackStack)
+    }
+    composable(
+        route = Screen.MoodTypeUpdate.route,
+        arguments = Screen.MoodTypeUpdate.arguments
+    ) {
+        UpdateMoodTypeScreen(
+            moodTypeId = Screen.MoodTypeUpdate.getMoodTypeId(it.arguments),
+            onGoBack = navController::popBackStack
+        )
+    }
+    composable(route = Screen.ManageHobbies.route) {
+        ManageHobbyScreen(
+            onGoBack = navController::popBackStack,
+            onCreateHobbyTrack = { navController.navigate(Screen.HobbyCreate.route) },
+            onUpdateHobbyTrack = { navController.navigate(Screen.HobbyUpdate.buildRoute(it.id)) }
+        )
+    }
+    composable(route = Screen.HobbyCreate.route) {
+        CreateHobbyTrackScreen(
+            onGoBack = navController::popBackStack
+        )
+    }
+    composable(
+        route = Screen.HobbyUpdate.route,
+        arguments = Screen.HobbyUpdate.arguments
+    ) {
+        UpdateHobbyTrackScreen(
+            hobbyTrackId = Screen.HobbyUpdate.getHobbyTrackId(it.arguments),
             onGoBack = navController::popBackStack
         )
     }

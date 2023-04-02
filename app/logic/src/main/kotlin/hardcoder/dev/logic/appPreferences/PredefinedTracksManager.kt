@@ -4,16 +4,22 @@ import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import hardcoder.dev.logic.dataStore.healtherDataStore
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeCreator
 import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeCreator
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class PredefinedTracksManager(
     private val context: Context,
-    private val drinkTypeCreator: DrinkTypeCreator
+    private val drinkTypeCreator: DrinkTypeCreator,
+    private val moodTypeCreator: MoodTypeCreator
 ) {
 
     private val isDrinkTypeSavedPreferenceKey = booleanPreferencesKey(IS_DRINK_TYPES_SAVED)
+    private val isMoodTypesSavedPreferenceKey = booleanPreferencesKey(IS_MOOD_TYPES_SAVED)
+    private val isMoodTypesSaved = context.healtherDataStore.data.map {
+        it[isMoodTypesSavedPreferenceKey] ?: false
+    }
     private val isDrinkTypeSaved = context.healtherDataStore.data.map {
         it[isDrinkTypeSavedPreferenceKey] ?: false
     }
@@ -21,6 +27,7 @@ class PredefinedTracksManager(
     suspend fun createPredefinedTracksIfNeeded() {
         when {
             !isDrinkTypeSaved.first() -> createPredefinedDrinkTypes()
+            !isMoodTypesSaved.first() -> createPredefinedMoodTypes()
         }
     }
 
@@ -31,7 +38,15 @@ class PredefinedTracksManager(
         }
     }
 
+    private suspend fun createPredefinedMoodTypes() {
+        moodTypeCreator.createPredefined()
+        context.healtherDataStore.edit { predefinedData ->
+            predefinedData[isMoodTypesSavedPreferenceKey] = true
+        }
+    }
+
     private companion object {
         const val IS_DRINK_TYPES_SAVED = "predefined_isDrinkTypesSaved"
+        const val IS_MOOD_TYPES_SAVED = "predefined_isMoodTypesSaved"
     }
 }

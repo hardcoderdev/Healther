@@ -10,9 +10,29 @@ class IconProvider(private val context: Context) : IconResourceProvider {
         return provideWaterTrackingIcons()
     }
 
+    override fun provideMoodTrackingHobbyIconResources(): List<String> {
+        return provideMoodTrackingHobbyIcons()
+    }
+
+    override fun provideMoodTrackingMoodTypesIconsResources(): List<String> {
+        return provideMoodTrackingMoodTypeIcons()
+    }
+
     // TODO DIVIDE OTHER ICONS AND ADD MORE ICONS
 
-    fun provideWaterTrackingIcons() = listOf(
+    private fun provideWaterTrackingIcons() = listOf(
+        *provideAllSportiveIcons().toTypedArray()
+    ).map {
+        context.resources.getResourceEntryName(it)
+    }
+
+    private fun provideMoodTrackingHobbyIcons() = listOf(
+        *provideAllSportiveIcons().toTypedArray()
+    ).map {
+        context.resources.getResourceEntryName(it)
+    }
+
+    private fun provideMoodTrackingMoodTypeIcons() = listOf(
         *provideAllSportiveIcons().toTypedArray()
     ).map {
         context.resources.getResourceEntryName(it)

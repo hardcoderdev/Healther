@@ -104,7 +104,7 @@ fun FastingScreen(
         } else {
             TopBarConfig(
                 type = TopBarType.TopBarWithNavigationBack(
-                    titleResId = R.string.dashboard_featureType_fasting,
+                    titleResId = R.string.fasting_title_topBar,
                     onGoBack = onGoBack
                 )
             )

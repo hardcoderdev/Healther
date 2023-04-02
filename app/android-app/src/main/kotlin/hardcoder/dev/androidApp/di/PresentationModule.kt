@@ -4,6 +4,16 @@ import android.content.Context
 import hardcoder.dev.presentation.features.fasting.FastingHistoryViewModel
 import hardcoder.dev.presentation.features.fasting.FastingTrackCreateViewModel
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
+import hardcoder.dev.presentation.features.moodTracking.MoodTrackingHistoryViewModel
+import hardcoder.dev.presentation.features.moodTracking.MoodTrackingTrackCreateViewModel
+import hardcoder.dev.presentation.features.moodTracking.MoodTrackingTrackUpdateViewModel
+import hardcoder.dev.presentation.features.moodTracking.MoodTrackingViewModel
+import hardcoder.dev.presentation.features.moodTracking.hobby.HobbyManageTracksViewModel
+import hardcoder.dev.presentation.features.moodTracking.hobby.HobbyTrackCreateViewModel
+import hardcoder.dev.presentation.features.moodTracking.hobby.HobbyTrackUpdateViewModel
+import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeCreateViewModel
+import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeManageTracksViewModel
+import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeUpdateViewModel
 import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
 import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
 import hardcoder.dev.presentation.features.waterBalance.WaterTrackCreateViewModel
@@ -11,8 +21,8 @@ import hardcoder.dev.presentation.features.waterBalance.WaterTrackUpdateViewMode
 import hardcoder.dev.presentation.features.waterBalance.WaterTrackingHistoryViewModel
 import hardcoder.dev.presentation.features.waterBalance.WaterTrackingViewModel
 import hardcoder.dev.presentation.features.waterBalance.drinkType.DrinkTypeCreateViewModel
+import hardcoder.dev.presentation.features.waterBalance.drinkType.DrinkTypeManageTracksViewModel
 import hardcoder.dev.presentation.features.waterBalance.drinkType.DrinkTypeUpdateViewModel
-import hardcoder.dev.presentation.features.waterBalance.drinkType.DrinkTypeViewModel
 import hardcoder.dev.presentation.setUpFlow.EnterExerciseStressTimeViewModel
 import hardcoder.dev.presentation.setUpFlow.EnterWeightViewModel
 import hardcoder.dev.presentation.setUpFlow.HeroCreateViewModel
@@ -49,7 +59,7 @@ class PresentationModule(
         waterTrackingStatisticProvider = logicModule.waterTrackingStatisticProvider
     )
 
-    fun getDrinkTypeViewModel() = DrinkTypeViewModel(
+    fun getDrinkTypeManageTracksViewModel() = DrinkTypeManageTracksViewModel(
         drinkTypeProvider = logicModule.drinkTypeProvider
     )
 
@@ -57,7 +67,7 @@ class PresentationModule(
         iconResourceProvider = logicModule.iconResourceProvider,
         drinkTypeCreator = logicModule.drinkTypeCreator,
         drinkTypeNameValidator = logicModule.drinkTypeNameValidator,
-        drinkTypeIconResourceValidator = logicModule.drinkTypeIconResourceValidator
+        iconResourceValidator = logicModule.iconResourceValidator
     )
 
     fun getDrinkTypeUpdateViewModel(drinkTypeId: Int) = DrinkTypeUpdateViewModel(
@@ -66,7 +76,7 @@ class PresentationModule(
         drinkTypeDeleter = logicModule.drinkTypeDeleter,
         drinkTypeProvider = logicModule.drinkTypeProvider,
         drinkTypeNameValidator = logicModule.drinkTypeNameValidator,
-        drinkTypeIconResourceValidator = logicModule.drinkTypeIconResourceValidator,
+        iconResourceValidator = logicModule.iconResourceValidator,
         iconResourceProvider = logicModule.iconResourceProvider
     )
 
@@ -123,5 +133,84 @@ class PresentationModule(
 
     fun getFastingHistoryViewModel() = FastingHistoryViewModel(
         fastingTrackProvider = logicModule.fastingTrackProvider
+    )
+
+    fun getMoodTrackingViewModel() = MoodTrackingViewModel(
+        moodTrackProvider = logicModule.moodTrackProvider,
+        moodWithHobbyProvider = logicModule.moodWithHobbyProvider,
+        hobbyTrackProvider = logicModule.hobbyTrackProvider,
+        moodTrackingStatisticProvider = logicModule.moodTrackingStatisticProvider,
+        dateTimeProvider = logicModule.dateTimeProvider
+    )
+
+    fun getMoodTrackingCreateViewModel() = MoodTrackingTrackCreateViewModel(
+        moodTrackCreator = logicModule.moodTrackCreator,
+        moodTypeProvider = logicModule.moodTypeProvider,
+       // diaryTrackCreator = logicModule.diaryTrackCreator,
+        hobbyTrackProvider = logicModule.hobbyTrackProvider,
+        moodWithHobbyCreator = logicModule.moodWithHobbyCreator
+    )
+
+    fun getMoodTrackingUpdateViewModel(moodTrackId: Int) = MoodTrackingTrackUpdateViewModel(
+        moodTrackId = moodTrackId,
+        moodTypeProvider = logicModule.moodTypeProvider,
+        // diaryTrackCreator = logicModule.diaryTrackCreator,
+        hobbyTrackProvider = logicModule.hobbyTrackProvider,
+        moodTrackProvider = logicModule.moodTrackProvider,
+        moodTrackUpdater = logicModule.moodTrackUpdater,
+        moodWithHobbyProvider = logicModule.moodWithHobbyProvider,
+        moodWithHobbyCreator = logicModule.moodWithHobbyCreator,
+        moodTrackDeleter = logicModule.moodTrackDeleter,
+        moodWithHobbyDeleter = logicModule.moodWithHobbyDeleter
+    )
+
+    fun getMoodTrackingHistoryViewModel() = MoodTrackingHistoryViewModel(
+        moodTrackProvider = logicModule.moodTrackProvider,
+        moodTrackDeleter = logicModule.moodTrackDeleter,
+        hobbyTrackProvider = logicModule.hobbyTrackProvider,
+        moodWithHobbyProvider = logicModule.moodWithHobbyProvider
+    )
+
+    fun getMoodTypeManageTracksViewModel() = MoodTypeManageTracksViewModel(
+        moodTypeProvider = logicModule.moodTypeProvider
+    )
+
+    fun getMoodTypeTrackCreateViewModel() = MoodTypeCreateViewModel(
+        moodTypeCreator = logicModule.moodTypeCreator,
+        moodTypeNameValidator = logicModule.moodTypeNameValidator,
+        iconResourceProvider = logicModule.iconResourceProvider,
+        iconResourceValidator = logicModule.iconResourceValidator
+    )
+
+    fun getMoodTypeTrackUpdateViewModel(moodTypeId: Int) = MoodTypeUpdateViewModel(
+        moodTypeId = moodTypeId,
+        iconResourceProvider = logicModule.iconResourceProvider,
+        iconResourceValidator = logicModule.iconResourceValidator,
+        moodTypeNameValidator = logicModule.moodTypeNameValidator,
+        moodTypeProvider = logicModule.moodTypeProvider,
+        moodTypeUpdater = logicModule.moodTypeUpdater,
+        moodTypeDeleter = logicModule.moodTypeDeleter
+    )
+
+    fun getHobbyManageTracksViewModel() = HobbyManageTracksViewModel(
+        hobbyTrackProvider = logicModule.hobbyTrackProvider
+    )
+
+    fun getHobbyTrackCreateViewModel() = HobbyTrackCreateViewModel(
+        hobbyTrackCreator = logicModule.hobbyTrackCreator,
+        hobbyNameValidator = logicModule.hobbyNameValidator,
+        hobbyIconValidator = logicModule.hobbyIconValidator,
+        iconResourceProvider = logicModule.iconResourceProvider
+    )
+
+    fun getHobbyTrackUpdateViewModel(hobbyTrackId: Int) = HobbyTrackUpdateViewModel(
+        hobbyTrackId = hobbyTrackId,
+        hobbyNameValidator = logicModule.hobbyNameValidator,
+        hobbyIconValidator = logicModule.hobbyIconValidator,
+        hobbyTrackDeleter = logicModule.hobbyTrackDeleter,
+        hobbyTrackUpdater = logicModule.hobbyTrackUpdater,
+        hobbyTrackProvider = logicModule.hobbyTrackProvider,
+        iconResourceProvider = logicModule.iconResourceProvider,
+        moodTrackDeleter = logicModule.moodTrackDeleter
     )
 }

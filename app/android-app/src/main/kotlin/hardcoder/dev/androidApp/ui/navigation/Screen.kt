@@ -63,4 +63,29 @@ sealed class Screen(val route: String) {
     object FastingFeature : Screen("fasting_feature")
     object FastingCreateTrack : Screen("fasting_create_track")
     object FastingHistory : Screen("fasting_history")
+
+    object MoodTrackingFeature : Screen("mood_tracking_feature")
+    object MoodTrackingHistory : Screen("mood_tracking_history")
+    object MoodTrackingCreate : Screen("mood_tracking_create")
+    object MoodTrackingUpdate : Screen("mood_tracking_update/{moodTrackId}") {
+        fun buildRoute(moodTrackId: Int) = "mood_tracking_update/$moodTrackId"
+        fun getMoodTrackId(arguments: Bundle?) = requireNotNull(arguments).getInt("moodTrackId")
+        val arguments = listOf(navArgument("moodTrackId") { type = NavType.IntType })
+    }
+
+    object ManageMoodTypes : Screen("manage_mood_types")
+    object MoodTypeCreate : Screen("mood_type_create")
+    object MoodTypeUpdate : Screen("mood_type_update/{moodTypeId}") {
+        fun buildRoute(moodTypeId: Int) = "mood_type_update/$moodTypeId"
+        fun getMoodTypeId(arguments: Bundle?) = requireNotNull(arguments).getInt("moodTypeId")
+        val arguments = listOf(navArgument("moodTypeId") { type = NavType.IntType })
+    }
+
+    object ManageHobbies : Screen("manage_hobbies")
+    object HobbyCreate : Screen("hobby_create")
+    object HobbyUpdate : Screen("hobby_update/{hobbyTrackId}") {
+        fun buildRoute(hobbyTrackId: Int) = "hobby_update/$hobbyTrackId"
+        fun getHobbyTrackId(arguments: Bundle?) = requireNotNull(arguments).getInt("hobbyTrackId")
+        val arguments = listOf(navArgument("hobbyTrackId") { type = NavType.IntType })
+    }
 }

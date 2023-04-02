@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-class DrinkTypeViewModel(drinkTypeProvider: DrinkTypeProvider) : ViewModel() {
+class DrinkTypeManageTracksViewModel(drinkTypeProvider: DrinkTypeProvider) : ViewModel() {
 
     val state = drinkTypeProvider.provideAllDrinkTypes().stateIn(
         scope = viewModelScope,

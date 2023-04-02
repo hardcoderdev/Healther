@@ -15,7 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.features.waterBalance.drinkType.DrinkTypeViewModel
+import hardcoder.dev.presentation.features.waterBalance.drinkType.DrinkTypeManageTracksViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -29,7 +29,7 @@ fun DrinkTypeManageScreen(
 ) {
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel {
-        presentationModule.getDrinkTypeViewModel()
+        presentationModule.getDrinkTypeManageTracksViewModel()
     }
     val state = viewModel.state.collectAsState()
 
@@ -52,7 +52,7 @@ fun DrinkTypeManageScreen(
 
 @Composable
 private fun DrinkTypeManageContent(
-    state: DrinkTypeViewModel.State,
+    state: DrinkTypeManageTracksViewModel.State,
     onUpdateDrinkType: (DrinkType) -> Unit
 ) {
     if (state.drinkTypeList.isNotEmpty()) {
