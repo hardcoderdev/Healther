@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.IconItem
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.icons.LocalIcon
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeCreateViewModel
 import hardcoder.dev.uikit.IntSlider
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -55,7 +56,7 @@ fun CreateMoodTypeScreen(onGoBack: () -> Unit) {
             CreateMoodTypeContent(
                 state = state.value,
                 onUpdateName = viewModel::updateName,
-                onUpdateIconResource = viewModel::updateSelectedIconResource,
+                onUpdateIcon = viewModel::updateSelectedIcon,
                 onUpdatePositivePercentage = viewModel::updatePositivePercentage,
                 onCreateMoodType = viewModel::createMoodType
             )
@@ -73,7 +74,7 @@ fun CreateMoodTypeScreen(onGoBack: () -> Unit) {
 private fun CreateMoodTypeContent(
     state: MoodTypeCreateViewModel.State,
     onUpdateName: (String) -> Unit,
-    onUpdateIconResource: (String) -> Unit,
+    onUpdateIcon: (LocalIcon) -> Unit,
     onUpdatePositivePercentage: (Int) -> Unit,
     onCreateMoodType: () -> Unit
 ) {
@@ -89,7 +90,7 @@ private fun CreateMoodTypeContent(
         ) {
             EnterMoodTypeNameSection(state = state, onUpdateName = onUpdateName)
             Spacer(modifier = Modifier.height(32.dp))
-            SelectIconSection(state = state, onUpdateIconResource = onUpdateIconResource)
+            SelectIconSection(state = state, onUpdateIcon = onUpdateIcon)
             Spacer(modifier = Modifier.height(32.dp))
             EnterMoodTypePositivePercentageSection(
                 state = state,
@@ -126,7 +127,7 @@ private fun EnterMoodTypeNameSection(
             Icon(
                 iconResId = R.drawable.ic_description,
                 contentDescription = stringResource(
-                    id = R.string.createDrinkType_nameIcon_contentDescription
+                    id = R.string.waterTracking_CreateDrinkType_nameIcon_contentDescription
                 )
             )
         }
@@ -136,7 +137,7 @@ private fun EnterMoodTypeNameSection(
 @Composable
 private fun SelectIconSection(
     state: MoodTypeCreateViewModel.State,
-    onUpdateIconResource: (String) -> Unit
+    onUpdateIcon: (LocalIcon) -> Unit
 ) {
     Title(text = stringResource(id = R.string.moodTracking_CreateMoodType_selectIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
@@ -147,12 +148,12 @@ private fun SelectIconSection(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(8.dp)
     ) {
-        items(state.availableIconResourceList) {
+        items(state.availableIconsList) {
             IconItem(
-                iconResourceName = it,
-                contentDescriptionResId = R.string.createDrinkType_drinkTypeIconContentDescription,
-                selectedIconResourceName = state.selectedIconResource ?: "",
-                onSelectIcon = onUpdateIconResource
+                icon = it,
+                contentDescriptionResId = R.string.waterTracking_CreateDrinkType_drinkTypeIconContentDescription,
+                selectedIcon = state.selectedIcon,
+                onSelectIcon = onUpdateIcon
             )
         }
     }

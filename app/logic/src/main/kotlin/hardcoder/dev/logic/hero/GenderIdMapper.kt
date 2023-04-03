@@ -1,6 +1,6 @@
 package hardcoder.dev.logic.hero
 
-import hardcoder.dev.entities.hero.Gender
+import hardcoder.dev.logic.entities.hero.Gender
 
 class GenderIdMapper {
 

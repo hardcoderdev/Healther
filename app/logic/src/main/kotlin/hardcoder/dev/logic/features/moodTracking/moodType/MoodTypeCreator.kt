@@ -3,8 +3,9 @@ package hardcoder.dev.logic.features.moodTracking.moodType
 import android.content.Context
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
-import hardcoder.dev.entities.features.moodTracking.MoodType
 import hardcoder.dev.logic.R
+import hardcoder.dev.logic.entities.features.moodTracking.MoodType
+import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -12,19 +13,20 @@ class MoodTypeCreator(
     private val context: Context,
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher
+    private val dispatcher: CoroutineDispatcher,
+    private val iconResourceProvider: IconResourceProvider
 ) {
 
     suspend fun create(
         name: String,
-        iconResourceName: String,
+        iconId: Long,
         positivePercentage: Int
     ) = withContext(dispatcher) {
         appDatabase.moodTypeQueries
             .insert(
                 id = idGenerator.nextId(),
                 name = name,
-                iconResourceName = iconResourceName,
+                iconId = iconId,
                 positivePercentage = positivePercentage
             )
     }
@@ -34,7 +36,7 @@ class MoodTypeCreator(
             appDatabase.moodTypeQueries.insert(
                 id = moodType.id,
                 name = moodType.name,
-                iconResourceName = moodType.iconResourceName,
+                iconId = moodType.icon.id,
                 positivePercentage = moodType.positivePercentage
             )
         }
@@ -45,25 +47,25 @@ class MoodTypeCreator(
         MoodType(
             id = idGenerator.nextId(),
             name = context.getString(R.string.predefined_moodType_name_happy),
-            iconResourceName = "mood_happy",
+            icon = iconResourceProvider.getIcon(0),
             positivePercentage = 100
         ),
         MoodType(
             id = idGenerator.nextId(),
             name = context.getString(R.string.predefined_moodType_name_neutral),
-            iconResourceName = "mood_neutral",
+            icon = iconResourceProvider.getIcon(1),
             positivePercentage = 80
         ),
         MoodType(
             id = idGenerator.nextId(),
             name = context.getString(R.string.predefined_moodType_name_not_well),
-            iconResourceName = "mood_not_well",
+            icon = iconResourceProvider.getIcon(2),
             positivePercentage = 60
         ),
         MoodType(
             id = idGenerator.nextId(),
             name = context.getString(R.string.predefined_moodType_name_bad),
-            iconResourceName = "mood_bad",
+            icon = iconResourceProvider.getIcon(3),
             positivePercentage = 40
         )
     )

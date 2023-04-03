@@ -6,19 +6,12 @@ import hardcoder.dev.androidApp.ui.features.fasting.statistic.FastingStatisticRe
 import hardcoder.dev.androidApp.ui.features.moodTracking.statistic.MoodTrackingStatisticResolver
 import hardcoder.dev.androidApp.ui.features.pedometer.PedometerRejectedMapper
 import hardcoder.dev.androidApp.ui.features.pedometer.statistic.PedometerStatisticResolver
-import hardcoder.dev.androidApp.ui.features.waterBalance.waterTrack.statistic.WaterTrackingStatisticResolver
+import hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.statistic.WaterTrackingStatisticResolver
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.formatters.LiquidFormatter
-import hardcoder.dev.androidApp.ui.icons.IconResolver
 import hardcoder.dev.androidApp.ui.setUpFlow.gender.GenderResourcesProvider
 
 class UIModule(private val context: Context) {
-
-    val iconResolver by lazy {
-        IconResolver(
-            context = context
-        )
-    }
 
     val dateTimeFormatter by lazy {
         DateTimeFormatter(

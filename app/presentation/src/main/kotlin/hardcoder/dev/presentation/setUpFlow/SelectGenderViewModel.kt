@@ -2,7 +2,7 @@ package hardcoder.dev.presentation.setUpFlow
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.entities.hero.Gender
+import hardcoder.dev.logic.entities.hero.Gender
 import hardcoder.dev.logic.hero.GenderProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

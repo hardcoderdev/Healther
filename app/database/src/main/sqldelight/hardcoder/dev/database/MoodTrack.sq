@@ -1,15 +1,17 @@
+import kotlinx.datetime.Instant;
+
 CREATE TABLE MoodTrack (
     id INTEGER AS Int NOT NULL PRIMARY KEY,
     moodTypeId INTEGER AS Int NOT NULL,
-    creationTime INTEGER NOT NULL
+    date INTEGER AS Instant NOT NULL
 );
 
 insert:
-INSERT INTO MoodTrack (id, moodTypeId, creationTime)
+INSERT INTO MoodTrack (id, moodTypeId, date)
 VALUES (?, ?, ?);
 
 update:
-UPDATE MoodTrack SET moodTypeId = ?, creationTime = ? WHERE id = ?;
+UPDATE MoodTrack SET moodTypeId = ?, date = ? WHERE id = ?;
 
 deleteById:
 DELETE FROM MoodTrack WHERE id = ?;
@@ -18,7 +20,7 @@ deleteAllTracksByMoodTypeId:
 DELETE FROM MoodTrack WHERE moodTypeId = ?;
 
 provideMoodTracksByDayRange:
-SELECT * FROM MoodTrack WHERE creationTime BETWEEN ? AND ?;
+SELECT * FROM MoodTrack WHERE date BETWEEN ? AND ?;
 
 provideAllMoodTracks:
 SELECT * FROM MoodTrack;

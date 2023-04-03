@@ -15,8 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.entities.features.fasting.FastingPlan
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.entities.features.fasting.FastingPlan
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.NumberPicker
 import hardcoder.dev.uikit.card.Card
@@ -61,7 +61,7 @@ fun FastingPlanItem(
                     Spacer(modifier = Modifier.height(32.dp))
                     Description(
                         text = stringResource(
-                            id = R.string.fastingPlanItem_description_formatText,
+                            id = R.string.fasting_ItemPlan_description_formatText,
                             formatArgs = arrayOf(
                                 dateTimeFormatter.formatMillisDistance(
                                     distanceInMillis = fastingHoursInMillis,
@@ -77,7 +77,7 @@ fun FastingPlanItem(
                     )
                 } else {
                     Spacer(modifier = Modifier.height(16.dp))
-                    Description(text = stringResource(id = R.string.fastingPlanItem_selectFastingHours_text))
+                    Description(text = stringResource(id = R.string.fasting_ItemPlan_selectFastingHours_text))
                     NumberPicker(
                         modifier = Modifier.fillMaxWidth(),
                         value = customFastingHours ?: 4,

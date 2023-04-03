@@ -2,9 +2,9 @@ package hardcoder.dev.androidApp.ui.features.pedometer.statistic
 
 import android.content.Context
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.entities.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.extensions.roundAndFormatToString
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.entities.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.uikit.StatisticData
 
 class PedometerStatisticResolver(

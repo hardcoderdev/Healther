@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import hardcoder.dev.logic.dataStore.healtherDataStore
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeCreator
-import hardcoder.dev.logic.features.waterBalance.drinkType.DrinkTypeCreator
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeCreator
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 

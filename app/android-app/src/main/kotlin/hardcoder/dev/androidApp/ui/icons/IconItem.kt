@@ -9,31 +9,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.di.LocalUIModule
+import hardcoder.dev.logic.icons.LocalIcon
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.card.Card
 import hardcoder.dev.uikit.icons.Icon
 
 @Composable
 fun IconItem(
-    iconResourceName: String,
+    icon: LocalIcon,
     contentDescriptionResId: Int,
-    selectedIconResourceName: String,
-    onSelectIcon: (String) -> Unit
+    selectedIcon: LocalIcon,
+    onSelectIcon: (LocalIcon) -> Unit
 ) {
-    val uiModule = LocalUIModule.current
-    val iconResolver = uiModule.iconResolver
-
     Card(
         interactionType = InteractionType.SELECTION,
-        onClick = { onSelectIcon(iconResourceName) },
-        item = iconResourceName,
-        selectedItem = selectedIconResourceName,
+        onClick = { onSelectIcon(icon) },
+        item = icon,
+        selectedItem = selectedIcon,
         modifier = Modifier.size(60.dp)
     ) {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
             Icon(
-                iconResId = iconResolver.toResourceId(iconResourceName),
+                iconResId = icon.resourceId,
                 contentDescription = stringResource(id = contentDescriptionResId),
                 modifier = Modifier
                     .size(60.dp)

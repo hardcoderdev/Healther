@@ -33,10 +33,11 @@ import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.features.DeleteTrackDialog
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodItem
-import hardcoder.dev.entities.features.moodTracking.HobbyTrack
-import hardcoder.dev.entities.features.moodTracking.MoodType
-import hardcoder.dev.extensions.toDate
+import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
+import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.entities.features.moodTracking.Hobby
+import hardcoder.dev.logic.entities.features.moodTracking.MoodType
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingTrackUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
@@ -106,7 +107,7 @@ fun UpdateMoodTrackScreen(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.moodTracking_saveTrack_title_topBar,
+                titleResId = R.string.moodTracking_CreateMoodTrack_title_topBar,
                 onGoBack = onGoBack
             )
         ),
@@ -129,8 +130,8 @@ private fun UpdateMoodTrackContent(
     onUpdateNote: (String) -> Unit,
     onManageMoodTypes: () -> Unit,
     onManageHobby: () -> Unit,
-    onAddHobby: (HobbyTrack) -> Unit,
-    onRemoveHobby: (HobbyTrack) -> Unit,
+    onAddHobby: (Hobby) -> Unit,
+    onRemoveHobby: (Hobby) -> Unit,
     onCreateTrack: () -> Unit
 ) {
     var datePickerDialogVisibility by remember {
@@ -162,14 +163,15 @@ private fun UpdateMoodTrackContent(
                 onManageHobby = onManageHobby
             )
             Spacer(modifier = Modifier.height(16.dp))
-            SelectDateSection(state = state) {
-                datePickerDialogVisibility = !datePickerDialogVisibility
-            }
+            SelectDateSection(
+                state = state,
+                onShowDatePicker = { datePickerDialogVisibility = !datePickerDialogVisibility }
+            )
         }
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             iconResId = R.drawable.ic_save,
-            labelResId = R.string.moodTracking_updateTrack_buttonText,
+            labelResId = R.string.moodTracking_UpdateMoodTrack_buttonText,
             onClick = onCreateTrack
         )
         DatePicker(
@@ -189,7 +191,7 @@ private fun SelectMoodSection(
     onManageMoodTypes: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Title(text = stringResource(id = R.string.moodTracking_saveTrack_howYouFeelYourself_text))
+        Title(text = stringResource(id = R.string.moodTracking_CreateMoodTrack_howYouFeelYourself_text))
         Spacer(modifier = Modifier.height(16.dp))
         ScrollableTabRow(selectedTabIndex = state.moodTypeList.indexOf(state.selectedMoodType)) {
             MoodItem(
@@ -201,7 +203,7 @@ private fun SelectMoodSection(
                 ),
                 moodType = MoodType(
                     id = 0,
-                    iconResourceName = "ic_create",
+                    icon = LocalIconImpl(0, R.drawable.ic_create),
                     name = stringResource(id = R.string.moodTracking_CreateMoodTrack_manageMoodTypes_buttonText),
                     positivePercentage = 0
                 ),
@@ -228,14 +230,11 @@ private fun SelectMoodSection(
 @Composable
 private fun SelectHobbiesSection(
     state: MoodTrackingTrackUpdateViewModel.State,
-    onAddHobby: (HobbyTrack) -> Unit,
-    onRemoveHobby: (HobbyTrack) -> Unit,
+    onAddHobby: (Hobby) -> Unit,
+    onRemoveHobby: (Hobby) -> Unit,
     onManageHobby: () -> Unit
 ) {
-    val uiModule = LocalUIModule.current
-    val iconResolver = uiModule.iconResolver
-
-    Title(text = stringResource(id = R.string.moodTracking_saveTrack_youMaySelectHobbies_text))
+    Title(text = stringResource(id = R.string.moodTracking_CreateMoodTrack_youMaySelectHobbies_text))
     Spacer(modifier = Modifier.height(16.dp))
     FlowRow(
         modifier = Modifier
@@ -247,17 +246,17 @@ private fun SelectHobbiesSection(
     ) {
         Chip(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.moodTracking_saveTrack_manageHobby_buttonText),
+            text = stringResource(id = R.string.moodTracking_CreateMoodTrack_manageHobby_buttonText),
             iconResId = R.drawable.ic_create,
             shape = RoundedCornerShape(32.dp),
             interactionType = InteractionType.ACTION,
             onClick = onManageHobby
         )
-        state.hobbyTrackList.forEach { hobbyTrack ->
+        state.hobbyList.forEach { hobbyTrack ->
             Chip(
                 modifier = Modifier.padding(top = 8.dp),
                 text = hobbyTrack.name,
-                iconResId = iconResolver.toResourceId(hobbyTrack.iconResourceName),
+                iconResId = hobbyTrack.icon.resourceId,
                 shape = RoundedCornerShape(32.dp),
                 isSelected = state.selectedHobbies.contains(hobbyTrack),
                 interactionType = InteractionType.SELECTION,
@@ -279,12 +278,12 @@ private fun EnterNoteSection(
     onUpdateNote: (String) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Title(text = stringResource(id = R.string.moodTracking_saveTrack_youCanAddNote_text))
+        Title(text = stringResource(id = R.string.moodTracking_CreateMoodTrack_youCanAddNote_text))
         Spacer(modifier = Modifier.height(16.dp))
         FilledTextField(
             value = state.note ?: "",
             onValueChange = onUpdateNote,
-            label = R.string.moodTracking_updateTrack_enterNote_textField,
+            label = R.string.moodTracking_UpdateMoodTrack_enterNote_textField,
             multiline = true,
             maxLines = 5,
             keyboardOptions = KeyboardOptions(
@@ -305,7 +304,7 @@ private fun SelectDateSection(
 ) {
     val uiModule = LocalUIModule.current
     val dateTimeFormatter = uiModule.dateTimeFormatter
-    val selectedDate = state.selectedDate.date.toDate()
+    val selectedDate = state.selectedDate.date
     val formattedDate = dateTimeFormatter.formatDateTime(selectedDate)
 
     Title(text = stringResource(id = R.string.moodTracking_UpdateMoodTrack_selectAnotherDate_text))

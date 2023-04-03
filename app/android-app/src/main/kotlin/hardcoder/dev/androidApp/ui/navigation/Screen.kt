@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import hardcoder.dev.entities.hero.Gender
+import hardcoder.dev.logic.entities.hero.Gender
 
 sealed class Screen(val route: String) {
     object Root : Screen("splash")

@@ -3,7 +3,6 @@ package hardcoder.dev.presentation.features.pedometer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.extensions.createRangeForCurrentDay
-import hardcoder.dev.extensions.millisToLocalDateTime
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
@@ -15,7 +14,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PedometerHistoryViewModel(
@@ -43,7 +45,7 @@ class PedometerHistoryViewModel(
     )
 
     private val totalTrackingTime = pedometerTracks.map { pedometerTracks ->
-        pedometerTracks.sumOf { it.range.last - it.range.first }
+        pedometerTracks.sumOf { it.range.endInclusive.toEpochMilliseconds() - it.range.start.toEpochMilliseconds() }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -68,7 +70,7 @@ class PedometerHistoryViewModel(
 
     private val chartEntries = pedometerTracks.map { pedometerTracks ->
         pedometerTracks.groupBy {
-            it.range.first.millisToLocalDateTime().hour
+            it.range.start.toLocalDateTime(TimeZone.currentSystemDefault()).hour
         }.map { entry ->
             entry.key to entry.value.sumOf { it.stepsCount }
         }
@@ -104,7 +106,7 @@ class PedometerHistoryViewModel(
         )
     )
 
-    fun selectRange(range: LongRange) {
+    fun selectRange(range: ClosedRange<Instant>) {
         selectedRangeStateFlow.value = range
     }
 

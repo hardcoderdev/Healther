@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
-import hardcoder.dev.entities.hero.Gender
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.entities.hero.Gender
 import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -50,7 +50,7 @@ fun SelectGenderScreen(onGoBack: () -> Unit, onGoForward: (Gender) -> Unit) {
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.selectGender_title_topBar,
+                titleResId = R.string.setUpFlow_SelectGender_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -72,7 +72,7 @@ private fun SelectGenderContent(
             .fillMaxSize()
     ) {
         Column(Modifier.weight(2f)) {
-            Title(text = stringResource(id = R.string.selectGender_selectYourGender_text))
+            Title(text = stringResource(id = R.string.setUpFlow_SelectGender_selectYourGender_text))
             Spacer(modifier = Modifier.height(32.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
                 state.availableGenderList.forEach { gender ->
@@ -98,11 +98,11 @@ private fun SelectGenderContent(
                 }
             }
             Spacer(modifier = Modifier.height(32.dp))
-            Description(text = stringResource(id = R.string.selectGender_forWhatGender_text))
+            Description(text = stringResource(id = R.string.setUpFlow_SelectGender_forWhatGender_text))
         }
         IconTextButton(
             iconResId = R.drawable.ic_done,
-            labelResId = R.string.selectGender_next_buttonText,
+            labelResId = R.string.setUpFlow_SelectGender_next_buttonText,
             onClick = onGoForward
         )
     }

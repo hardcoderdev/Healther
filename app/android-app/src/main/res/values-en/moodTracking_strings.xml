@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="moodTracking_title_topBar">Mood tracking</string>
-    <string name="moodTracking_saveTrack_title_topBar">Track creation</string>
-    <string name="moodTracking_saveTrack_enterTitle_textField">Enter title…</string>
-    <string name="moodTracking_saveTrack_enterNote_textField">Enter your note here…</string>
-    <string name="moodTracking_saveTrack_buttonText">Save track</string>
-    <string name="moodTracking_saveTrack_youCanAddNote_text">You can add a note:</string>
-    <string name="moodTracking_saveTrack_howYouFeelYourself_text">How are you feeling right now?</string>
-    <string name="moodTracking_saveTrack_youMaySelectHobbies_text">You can mark what you did:</string>
-    <string name="moodTracking_saveTrack_manageHobby_buttonText">Activity management</string>
     <string name="moodTracking_diaryNowEmpty_text">Now it\'s empty. To add a new entry, click on the button at the bottom right.</string>
     <string name="moodTracking_nowEmpty_text">Now it\'s empty. To add a new entry, click on the button at the bottom right. Statistics and graph will appear after a couple of hours of using the feature.</string>
     <string name="moodTracking_statistic_happyMoodCount_text">You were happy</string>
@@ -18,18 +10,27 @@
     <string name="moodTracking_statistic_averageMood_text">Your mood is average</string>
     <string name="moodTracking_statistic_not_enough_data_text">Not enough info</string>
     <string name="moodTracking_statistic_text">General statistic:</string>
-    <string name="moodTracking_weDontHaveEnoughDataToShowChart_text">We don\'t have enough data yet to display a graph. Use this feature and the chart will appear the next day!</string>
+    <string name="moodTracking_chartNotEnoughData_text">We don\'t have enough data yet to display a graph. Use this feature and the chart will appear the next day!</string>
     <string name="moodTracking_activity_chart">Mood chart (per month):</string>
     <string name="moodTracking_diary_text">Mood diary:</string>
 
-    <string name="moodTracking_updateTrack_enterNote_textField">Enter your note here…</string>
-    <string name="moodTracking_updateTrack_enterTitle_textField">Enter title…</string>
-    <string name="moodTracking_updateTrack_buttonText">Update track</string>
+    <string name="moodTracking_CreateMoodTrack_title_topBar">Track creation</string>
+    <string name="moodTracking_CreateMoodTrack_enterTitle_textField">Enter title…</string>
+    <string name="moodTracking_CreateMoodTrack_enterNote_textField">Enter your note here…</string>
+    <string name="moodTracking_CreateMoodTrack_buttonText">Save track</string>
+    <string name="moodTracking_CreateMoodTrack_youCanAddNote_text">You can add a note:</string>
+    <string name="moodTracking_CreateMoodTrack_howYouFeelYourself_text">How are you feeling right now?</string>
+    <string name="moodTracking_CreateMoodTrack_youMaySelectHobbies_text">You can mark what you did:</string>
+    <string name="moodTracking_CreateMoodTrack_manageHobby_buttonText">Activity management</string>
 
-    <string name="moodTracking_history_title_topBar">Detailed history</string>
-    <string name="moodTracking_history_emptyDay_text">You haven\'t added any entries on this day.</string>
+    <string name="moodTracking_UpdateMoodTrack_enterNote_textField">Enter your note here…</string>
+    <string name="moodTracking_UpdateMoodTrack_enterTitle_textField">Enter title…</string>
+    <string name="moodTracking_UpdateMoodTrack_buttonText">Update track</string>
 
-    <string name="moodTrackingItem_feel_formatText">You felt like %s in %s today.</string>
+    <string name="moodTracking_History_title_topBar">Detailed history</string>
+    <string name="moodTracking_History_emptyDay_text">You haven\'t added any entries on this day.</string>
+
+    <string name="moodTracking_Item_feel_formatText">You felt like %s in %s today.</string>
 
     <string name="moodTracking_HobbyCreateTrack_title_topBar">Create an activity</string>
     <string name="moodTracking_HobbyCreateTrack_enter_name_text">Enter the name of the activity:</string>
@@ -37,13 +38,13 @@
     <string name="moodTracking_HobbyCreateTrack_selectIcon_text">Select an activity icon:</string>
     <string name="moodTracking_HobbyCreateTrack_saveTrack_buttonText">Save activity</string>
     <string name="moodTracking_HobbyCreateTrack_nameEmpty_error">The name can\'t be empty!</string>
-    <string name="moodTracking_HobbyCreateTrack_nameMoreThanMaxChars_error">Too many characters!</string>
+    <string name="moodTracking_HobbyCreateTrack_nameMoreThanMaxChars_error">Max characters: %d</string>
     <string name="moodTracking_HobbyCreateTrack_iconContentDescription">Activity icon</string>
 
     <string name="moodTracking_HobbyUpdateTrack_title_topBar">Activity update</string>
     <string name="moodTracking_HobbyUpdateTrack_saveTrack_buttonText">Update activity</string>
     <string name="moodTracking_HobbyUpdateTrack_selectIcon_text">Select an activity icon:</string>
-    <string name="moodTracking_HobbyUpdateTrack_nameMoreThanMaxChars_error">Too many characters!</string>
+    <string name="moodTracking_HobbyUpdateTrack_nameMoreThanMaxChars_error">Max characters: %d</string>
     <string name="moodTracking_HobbyUpdateTrack_nameEmpty_error">The name can\'t be empty!</string>
     <string name="moodTracking_HobbyUpdateTrack_enterHobbyName_textField">For example: work…</string>
     <string name="moodTracking_HobbyUpdateTrack_enter_name_text">Enter the name of the activity:</string>

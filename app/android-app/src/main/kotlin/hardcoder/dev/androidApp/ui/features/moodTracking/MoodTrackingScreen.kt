@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
-import hardcoder.dev.entities.features.moodTracking.MoodTrack
-import hardcoder.dev.entities.features.moodTracking.statistic.MoodTrackingStatistic
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.entities.features.moodTracking.MoodTrack
+import hardcoder.dev.logic.entities.features.moodTracking.statistic.MoodTrackingStatistic
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
@@ -86,13 +86,13 @@ fun MoodContent(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        if (state.chartEntries.isNotEmpty() && state.moodTrackingStatistic != null && state.moodTrackWithHobbiesList.isNotEmpty()) {
-            MoodTrackingStatisticSection(statistic = requireNotNull(state.moodTrackingStatistic).first())
+        if (state.chartEntries.isNotEmpty() && state.moodTrackingStatistic != null && state.moodWithHobbiesList.isNotEmpty()) {
+            MoodTrackingStatisticSection(statistic = requireNotNull(state.moodTrackingStatistic))
             Spacer(modifier = Modifier.height(32.dp))
             MoodTrackingChartSection(state = state)
             Spacer(modifier = Modifier.height(32.dp))
             MoodTrackingDiarySection(state = state, onUpdateTrack = onUpdateTrack)
-        } else if (state.moodTrackWithHobbiesList.isEmpty()) {
+        } else if (state.moodWithHobbiesList.isEmpty()) {
             EmptySection(emptyTitleResId = R.string.moodTracking_nowEmpty_text)
         } else {
             EmptyBlock(
@@ -131,7 +131,7 @@ private fun MoodTrackingChartSection(state: MoodTrackingViewModel.State) {
             }
         )
     } else {
-        Description(text = stringResource(id = R.string.moodTracking_weDontHaveEnoughDataToShowChart_text))
+        Description(text = stringResource(id = R.string.moodTracking_chartNotEnoughData_text))
     }
 }
 
@@ -149,11 +149,11 @@ private fun ColumnScope.MoodTrackingDiarySection(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
-        items(state.moodTrackWithHobbiesList) { track ->
+        items(state.moodWithHobbiesList) { track ->
             MoodTrackItem(
                 moodTrack = track.moodTrack,
                 onUpdate = onUpdateTrack,
-                hobbyTrackList = track.hobbyTrackList
+                hobbyList = track.hobbyList
             )
         }
     }

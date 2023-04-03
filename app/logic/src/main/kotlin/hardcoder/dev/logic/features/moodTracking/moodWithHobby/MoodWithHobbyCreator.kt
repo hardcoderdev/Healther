@@ -16,8 +16,8 @@ class MoodWithHobbyCreator(
         moodTrackId: Int,
         hobbyId: Int
     ) = withContext(dispatcher) {
-        appDatabase.moodWithHobbyTrackQueries.upsert(
-            id = id ?: idGenerator.nextId(),
+        appDatabase.moodWithHobbyQueries.upsert(
+            id = id ?: idGenerator.nextId(), // TODO BEFORE MERGE
             hobbyId = hobbyId,
             moodTrackId = moodTrackId
         )

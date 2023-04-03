@@ -2,12 +2,12 @@ package hardcoder.dev.presentation.features.fasting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.entities.features.fasting.FastingPlan
-import hardcoder.dev.entities.features.fasting.FastingTrack
-import hardcoder.dev.entities.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.logic.DateTimeProvider
+import hardcoder.dev.logic.entities.features.fasting.FastingPlan
+import hardcoder.dev.logic.entities.features.fasting.FastingTrack
+import hardcoder.dev.logic.entities.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatisticProvider
 import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider

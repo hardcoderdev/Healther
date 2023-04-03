@@ -11,8 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.di.LocalUIModule
-import hardcoder.dev.entities.features.moodTracking.MoodType
+import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.logic.entities.features.moodTracking.MoodType
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.card.Card
 import hardcoder.dev.uikit.text.Label
@@ -24,9 +24,6 @@ fun MoodItem(
     selectedMoodType: MoodType?,
     onSelect: () -> Unit
 ) {
-    val uiModule = LocalUIModule.current
-    val iconResolver = uiModule.iconResolver
-
     Card(
         interactionType = InteractionType.SELECTION,
         item = moodType,
@@ -42,7 +39,7 @@ fun MoodItem(
         ) {
             Image(
                 modifier = Modifier.height(60.dp),
-                painter = painterResource(id = iconResolver.toResourceId(moodType.iconResourceName)),
+                painter = painterResource(id = moodType.icon.resourceId),
                 contentDescription = moodType.name,
                 alignment = Alignment.Center
             )

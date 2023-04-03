@@ -59,7 +59,7 @@ fun PedometerHistoryScreen(onGoBack: () -> Unit) {
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.pedometerHistory_title_topBar,
+                titleResId = R.string.pedometer_History_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -107,7 +107,7 @@ private fun PedometerHistoryContent(
             )
         } else {
             Spacer(modifier = Modifier.height(16.dp))
-            Description(text = stringResource(id = R.string.pedometerHistory_weDontHaveEnoughDataToShowChart_text))
+            Description(text = stringResource(id = R.string.pedometer_History_weDontHaveEnoughDataToShowChart_text))
         }
     }
 }
@@ -118,7 +118,7 @@ private fun PedometerTracksHistory(
 ) {
     Spacer(modifier = Modifier.height(16.dp))
     if (state.totalStepsCount != 0) {
-        Title(text = stringResource(id = R.string.pedometerHistory_yourIndicatorsForThisDay_text))
+        Title(text = stringResource(id = R.string.pedometer_History_yourIndicatorsForThisDay_text))
         Spacer(modifier = Modifier.height(16.dp))
         Card<CardInfo>(interactionType = InteractionType.STATIC) {
             Row(

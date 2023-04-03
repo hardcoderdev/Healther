@@ -2,7 +2,7 @@ package hardcoder.dev.logic.features.moodTracking.hobby
 
 class HobbyNameValidator {
 
-    fun validate(hobbyName: HobbyName): ValidatedHobbyName {
+    fun validate(hobbyName: String): ValidatedHobbyName {
         return hobbyName.incorrectReason()?.let { reason ->
             IncorrectHobbyName(data = hobbyName, reason = reason)
         } ?: run {
@@ -10,10 +10,12 @@ class HobbyNameValidator {
         }
     }
 
-    private fun HobbyName.incorrectReason(): IncorrectHobbyName.Reason? {
+    private fun String.incorrectReason(): IncorrectHobbyName.Reason? {
         return when {
-            value.isEmpty() -> IncorrectHobbyName.Reason.Empty
-            value.length > HOBBY_NAME_MAX_CHARS -> IncorrectHobbyName.Reason.MoreThanMaxChars
+            isEmpty() -> IncorrectHobbyName.Reason.Empty
+            length > HOBBY_NAME_MAX_CHARS -> IncorrectHobbyName.Reason.MoreThanMaxChars(
+                HOBBY_NAME_MAX_CHARS
+            )
             else -> null
         }
     }
@@ -24,18 +26,16 @@ class HobbyNameValidator {
 }
 
 sealed class ValidatedHobbyName {
-    abstract val data: HobbyName
+    abstract val data: String
 }
 
-data class CorrectHobbyName(override val data: HobbyName) : ValidatedHobbyName()
+data class CorrectHobbyName(override val data: String) : ValidatedHobbyName()
 data class IncorrectHobbyName(
-    override val data: HobbyName,
+    override val data: String,
     val reason: Reason
 ) : ValidatedHobbyName() {
     sealed class Reason {
         object Empty : Reason()
-        object MoreThanMaxChars : Reason()
+        data class MoreThanMaxChars(val value: Int) : Reason()
     }
 }
-
-data class HobbyName(val value: String)

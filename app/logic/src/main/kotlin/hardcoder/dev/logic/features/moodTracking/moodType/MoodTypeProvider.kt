@@ -3,11 +3,13 @@ package hardcoder.dev.logic.features.moodTracking.moodType
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.MoodType
+import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.map
-import hardcoder.dev.entities.features.moodTracking.MoodType as MoodTypeEntity
+import hardcoder.dev.logic.entities.features.moodTracking.MoodType as MoodTypeEntity
 
 class MoodTypeProvider(
-    private val appDatabase: AppDatabase
+    private val appDatabase: AppDatabase,
+    private val iconResourceProvider: IconResourceProvider
 ) {
 
     fun provideAllMoodTypes() = appDatabase.moodTypeQueries.provideAllMoodTypes()
@@ -27,7 +29,7 @@ class MoodTypeProvider(
     private fun MoodType.toEntity() = MoodTypeEntity(
         id = id,
         name = name,
-        iconResourceName = iconResourceName,
+        icon = iconResourceProvider.getIcon(iconId),
         positivePercentage = positivePercentage
     )
 }

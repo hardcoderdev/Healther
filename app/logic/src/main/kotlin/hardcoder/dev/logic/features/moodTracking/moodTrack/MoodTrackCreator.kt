@@ -2,11 +2,12 @@ package hardcoder.dev.logic.features.moodTracking.moodTrack
 
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
-import hardcoder.dev.entities.features.moodTracking.MoodType
-import hardcoder.dev.extensions.toMillis
+import hardcoder.dev.logic.entities.features.moodTracking.MoodType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 
 class MoodTrackCreator(
     private val idGenerator: IdGenerator,
@@ -22,7 +23,7 @@ class MoodTrackCreator(
         appDatabase.moodTrackQueries.insert(
             id = moodTrackId,
             moodTypeId = moodType.id,
-            creationTime = date.toMillis()
+            date = date.toInstant(TimeZone.currentSystemDefault())
         )
         return@withContext moodTrackId
     }

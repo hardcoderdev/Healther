@@ -1,9 +1,13 @@
 package hardcoder.dev.androidApp.ui.formatters
 
 import android.content.Context
+import android.text.format.DateFormat
+import hardcoder.dev.extensions.toDate
 import hardcoder.dev.healther.R
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class DateTimeFormatter(
@@ -11,21 +15,24 @@ class DateTimeFormatter(
     private val defaultAccuracy: Accuracy
 ) {
 
-    fun formatDateTime(
-        date: Date,
-        formatPattern: String = DEFAULT_PATTERN
-    ): String {
-        val simpleDateFormat = SimpleDateFormat(formatPattern, Locale.getDefault())
-        return simpleDateFormat.format(date)
+    private val dateTimeFormatPattern = buildString {
+        append("HH:mm")
+        if (!DateFormat.is24HourFormat(context)) append(" a")
     }
 
-    fun formatDateTime(
-        dateInMillis: Long,
-        formatPattern: String = DEFAULT_PATTERN
-    ): String {
-        val date = Date(dateInMillis)
-        val simpleDateFormat = SimpleDateFormat(formatPattern, Locale.getDefault())
-        return simpleDateFormat.format(date)
+    private val timeFormatPattern = buildString {
+        append("dd.MM, HH:mm:ss")
+        if (!DateFormat.is24HourFormat(context)) append(" a")
+    }
+
+    fun formatDateTime(date: LocalDate): String {
+        val simpleDateFormat = SimpleDateFormat(dateTimeFormatPattern, Locale.getDefault())
+        return simpleDateFormat.format(date.toDate(TimeZone.currentSystemDefault()))
+    }
+
+    fun formatTime(time: Instant): String {
+        val simpleDateFormat = SimpleDateFormat(timeFormatPattern, Locale.getDefault())
+        return simpleDateFormat.format(time.toEpochMilliseconds())
     }
 
     fun formatMillisDistance(
@@ -97,9 +104,5 @@ class DateTimeFormatter(
         HOURS(2),
         MINUTES(3),
         SECONDS(4)
-    }
-
-    private companion object {
-        private const val DEFAULT_PATTERN = "dd.MM, HH:mm:ss"
     }
 }

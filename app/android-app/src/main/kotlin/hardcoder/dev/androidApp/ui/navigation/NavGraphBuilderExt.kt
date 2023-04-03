@@ -18,18 +18,18 @@ import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.update.UpdateM
 import hardcoder.dev.androidApp.ui.features.moodTracking.update.UpdateMoodTrackScreen
 import hardcoder.dev.androidApp.ui.features.pedometer.PedometerScreen
 import hardcoder.dev.androidApp.ui.features.pedometer.history.PedometerHistoryScreen
-import hardcoder.dev.androidApp.ui.features.waterBalance.drinkType.DrinkTypeManageScreen
-import hardcoder.dev.androidApp.ui.features.waterBalance.drinkType.create.CreateDrinkTypeScreen
-import hardcoder.dev.androidApp.ui.features.waterBalance.drinkType.update.UpdateDrinkTypeScreen
-import hardcoder.dev.androidApp.ui.features.waterBalance.waterTrack.WaterTrackingScreen
-import hardcoder.dev.androidApp.ui.features.waterBalance.waterTrack.create.SaveWaterTrackScreen
-import hardcoder.dev.androidApp.ui.features.waterBalance.waterTrack.history.WaterTrackingHistoryScreen
-import hardcoder.dev.androidApp.ui.features.waterBalance.waterTrack.update.UpdateWaterTrackScreen
+import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.DrinkTypeManageScreen
+import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.create.CreateDrinkTypeScreen
+import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.update.UpdateDrinkTypeScreen
+import hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.WaterTrackingScreen
+import hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.create.CreateWaterTrackScreen
+import hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.history.WaterTrackingHistoryScreen
+import hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.update.UpdateWaterTrackScreen
 import hardcoder.dev.androidApp.ui.setUpFlow.exerciseStress.EnterExerciseStressScreen
 import hardcoder.dev.androidApp.ui.setUpFlow.gender.SelectGenderScreen
 import hardcoder.dev.androidApp.ui.setUpFlow.weight.EnterWeightScreen
 import hardcoder.dev.androidApp.ui.setUpFlow.welcome.WelcomeScreen
-import hardcoder.dev.entities.hero.Gender
+import hardcoder.dev.logic.entities.hero.Gender
 
 fun NavGraphBuilder.addSetUpDestinations(navController: NavController) {
     composable(route = Screen.Welcome.route) {
@@ -101,7 +101,7 @@ fun NavGraphBuilder.addWaterTrackingDestinations(navController: NavController) {
         )
     }
     composable(route = Screen.SaveWaterTrack.route) {
-        SaveWaterTrackScreen(
+        CreateWaterTrackScreen(
             onGoBack = navController::popBackStack,
             onManageDrinkType = { navController.navigate(Screen.ManageDrinkTypes.route) }
         )

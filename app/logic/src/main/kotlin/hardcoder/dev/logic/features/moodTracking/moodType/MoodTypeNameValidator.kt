@@ -2,16 +2,18 @@ package hardcoder.dev.logic.features.moodTracking.moodType
 
 class MoodTypeNameValidator {
 
-    fun validate(data: MoodTypeName) = data.incorrectReason()?.let { reason ->
-        IncorrectValidatedMoodTypeName(data = data, reason = reason)
+    fun validate(moodTypeName: String) = moodTypeName.incorrectReason()?.let { reason ->
+        IncorrectValidatedMoodTypeName(data = moodTypeName, reason = reason)
     } ?: run {
-        CorrectValidatedMoodTypeName(data = data)
+        CorrectValidatedMoodTypeName(data = moodTypeName)
     }
 
-    private fun MoodTypeName.incorrectReason(): IncorrectValidatedMoodTypeName.Reason? {
+    private fun String.incorrectReason(): IncorrectValidatedMoodTypeName.Reason? {
         return when {
-            value.isEmpty() -> IncorrectValidatedMoodTypeName.Reason.Empty
-            value.length > MOOD_TYPE_NAME_MAX_CHARS -> IncorrectValidatedMoodTypeName.Reason.MoreThanMaxChars
+            isEmpty() -> IncorrectValidatedMoodTypeName.Reason.Empty
+            length > MOOD_TYPE_NAME_MAX_CHARS -> IncorrectValidatedMoodTypeName.Reason.MoreThanMaxChars(
+                MOOD_TYPE_NAME_MAX_CHARS
+            )
             else -> null
         }
     }
@@ -22,21 +24,19 @@ class MoodTypeNameValidator {
 }
 
 sealed class ValidatedMoodTypeName {
-    abstract val data: MoodTypeName
+    abstract val data: String
 }
 
 data class CorrectValidatedMoodTypeName(
-    override val data: MoodTypeName
+    override val data: String
 ) : ValidatedMoodTypeName()
 
 data class IncorrectValidatedMoodTypeName(
-    override val data: MoodTypeName,
+    override val data: String,
     val reason: Reason
 ) : ValidatedMoodTypeName() {
     sealed class Reason {
         object Empty : Reason()
-        object MoreThanMaxChars : Reason()
+        data class MoreThanMaxChars(val value: Int) : Reason()
     }
 }
-
-data class MoodTypeName(val value: String)

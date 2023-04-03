@@ -1,16 +1,16 @@
 CREATE TABLE MoodType (
     id INTEGER AS Int NOT NULL PRIMARY KEY,
     name TEXT NOT NULL,
-    iconResourceName TEXT NOT NULL,
+    iconId INTEGER NOT NULL,
     positivePercentage INTEGER AS Int NOT NULL
 );
 
 insert:
-INSERT INTO MoodType (id, name, iconResourceName, positivePercentage)
+INSERT INTO MoodType (id, name, iconId, positivePercentage)
 VALUES (?, ?, ?, ?);
 
 update:
-UPDATE MoodType SET name = ?, iconResourceName = ?, positivePercentage = ? WHERE id = ?;
+UPDATE MoodType SET name = ?, iconId = ?, positivePercentage = ? WHERE id = ?;
 
 deleteById:
 DELETE FROM MoodType WHERE id = ?;

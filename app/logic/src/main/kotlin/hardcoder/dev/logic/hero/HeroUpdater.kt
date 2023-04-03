@@ -1,7 +1,7 @@
 package hardcoder.dev.logic.hero
 
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.entities.hero.Hero
+import hardcoder.dev.logic.entities.hero.Hero
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

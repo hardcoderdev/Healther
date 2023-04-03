@@ -1,8 +1,6 @@
 object Modules {
 
     object Namespaces {
-
-        const val entities = "hardcoder.dev.entities"
         const val database = "hardcoder.dev.database"
         const val presentation = "hardcoder.dev.presentation"
         const val logic = "hardcoder.dev.logic"
@@ -15,7 +13,6 @@ object Modules {
     }
 
     object Paths {
-        val entities = mapOf("path" to ":app:entities")
         val database = mapOf("path" to ":app:database")
         val presentation = mapOf("path" to ":app:presentation")
         val logic = mapOf("path" to ":app:logic")

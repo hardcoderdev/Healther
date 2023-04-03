@@ -25,7 +25,8 @@ import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.IconItem
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.hobby.IncorrectHobbyName
-import hardcoder.dev.presentation.features.moodTracking.hobby.HobbyTrackUpdateViewModel
+import hardcoder.dev.logic.icons.LocalIcon
+import hardcoder.dev.presentation.features.moodTracking.hobby.HobbyUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -48,13 +49,13 @@ fun UpdateHobbyTrackScreen(
     val state = viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = state.value.updateState) {
-        if (state.value.updateState is HobbyTrackUpdateViewModel.UpdateState.Executed) {
+        if (state.value.updateState is HobbyUpdateViewModel.UpdateState.Executed) {
             onGoBack()
         }
     }
 
     LaunchedEffect(key1 = state.value.deleteState) {
-        if (state.value.deleteState is HobbyTrackUpdateViewModel.DeleteState.Executed) {
+        if (state.value.deleteState is HobbyUpdateViewModel.DeleteState.Executed) {
             onGoBack()
         }
     }
@@ -64,7 +65,7 @@ fun UpdateHobbyTrackScreen(
             UpdateHobbyTrackContent(
                 state = state.value,
                 onUpdateHobbyName = viewModel::updateHobbyName,
-                onSelectIcon = viewModel::updateHobbyIconResId,
+                onSelectIcon = viewModel::updateIcon,
                 onUpdateTrack = viewModel::updateHobbyTrack
             )
         },
@@ -87,9 +88,9 @@ fun UpdateHobbyTrackScreen(
 
 @Composable
 fun UpdateHobbyTrackContent(
-    state: HobbyTrackUpdateViewModel.State,
+    state: HobbyUpdateViewModel.State,
     onUpdateHobbyName: (String) -> Unit,
-    onSelectIcon: (String) -> Unit,
+    onSelectIcon: (LocalIcon) -> Unit,
     onUpdateTrack: () -> Unit
 ) {
     val validatedHobbyName = state.validatedName
@@ -139,11 +140,11 @@ fun UpdateHobbyTrackContent(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(vertical = 16.dp)
             ) {
-                items(state.availableIconResourceList) {
+                items(state.availableIconsList) {
                     IconItem(
-                        iconResourceName = it,
-                        contentDescriptionResId = R.string.createDrinkType_drinkTypeIconContentDescription,
-                        selectedIconResourceName = state.selectedIconResource ?: "",
+                        icon = it,
+                        contentDescriptionResId = R.string.waterTracking_CreateDrinkType_drinkTypeIconContentDescription,
+                        selectedIcon = state.selectedIcon,
                         onSelectIcon = onSelectIcon
                     )
                 }

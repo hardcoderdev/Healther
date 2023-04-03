@@ -22,10 +22,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.entities.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.extensions.roundAndFormatToString
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.entities.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.presentation.features.pedometer.Available
 import hardcoder.dev.presentation.features.pedometer.NotAvailable
 import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
@@ -250,7 +250,7 @@ private fun PedometerActivityChart(state: PedometerViewModel.State) {
             }
         )
     } else {
-        Description(text = stringResource(id = R.string.pedometer_weDontHaveEnoughDataToShowChart_text))
+        Description(text = stringResource(id = R.string.pedometer_chartNotEnoughData_text))
     }
 }
 

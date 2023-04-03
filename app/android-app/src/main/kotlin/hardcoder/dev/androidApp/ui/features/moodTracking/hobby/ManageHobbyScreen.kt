@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
-import hardcoder.dev.entities.features.moodTracking.HobbyTrack
+import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.features.moodTracking.hobby.HobbyManageTracksViewModel
+import hardcoder.dev.logic.entities.features.moodTracking.Hobby
+import hardcoder.dev.presentation.features.moodTracking.hobby.HobbyManageViewModel
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
@@ -30,7 +30,7 @@ import hardcoder.dev.uikit.sections.EmptySection
 fun ManageHobbyScreen(
     onGoBack: () -> Unit,
     onCreateHobbyTrack: () -> Unit,
-    onUpdateHobbyTrack: (HobbyTrack) -> Unit
+    onUpdateHobbyTrack: (Hobby) -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel {
@@ -57,13 +57,10 @@ fun ManageHobbyScreen(
 
 @Composable
 private fun ManageHobbyContent(
-    state: HobbyManageTracksViewModel.State,
-    onUpdateHobbyTrack: (HobbyTrack) -> Unit
+    state: HobbyManageViewModel.State,
+    onUpdateHobbyTrack: (Hobby) -> Unit
 ) {
-    val uiModule = LocalUIModule.current
-    val iconResolver = uiModule.iconResolver
-
-    if (state.hobbyTrackList.isNotEmpty()) {
+    if (state.hobbyList.isNotEmpty()) {
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
@@ -71,15 +68,15 @@ private fun ManageHobbyContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             maxItemsInEachRow = 4
         ) {
-            state.hobbyTrackList.forEach { hobbyTrack ->
+            state.hobbyList.forEach { hobbyTrack ->
                 Chip(
                     modifier = Modifier.padding(top = 8.dp),
                     onClick = { onUpdateHobbyTrack(hobbyTrack) },
                     text = hobbyTrack.name,
                     interactionType = InteractionType.ACTION,
-                    iconResId = iconResolver.toResourceId(hobbyTrack.iconResourceName),
+                    iconResId = hobbyTrack.icon.resourceId,
                     shape = RoundedCornerShape(32.dp),
-                    isSelected = state.hobbyTrackList.contains(hobbyTrack)
+                    isSelected = state.hobbyList.contains(hobbyTrack)
                 )
             }
         }

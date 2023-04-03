@@ -15,7 +15,6 @@ dependencyResolutionManagement {
 rootProject.name = "Healther"
 include(
     ":app:android-app",
-    ":app:entities",
     ":app:database",
     ":app:logic",
     ":app:presentation"

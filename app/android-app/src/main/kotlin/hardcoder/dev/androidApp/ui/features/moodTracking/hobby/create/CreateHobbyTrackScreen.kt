@@ -25,7 +25,8 @@ import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.IconItem
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.hobby.IncorrectHobbyName
-import hardcoder.dev.presentation.features.moodTracking.hobby.HobbyTrackCreateViewModel
+import hardcoder.dev.logic.icons.LocalIcon
+import hardcoder.dev.presentation.features.moodTracking.hobby.HobbyCreateViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -43,7 +44,7 @@ fun CreateHobbyTrackScreen(onGoBack: () -> Unit) {
     val state = viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = state.value.creationState) {
-        if (state.value.creationState is HobbyTrackCreateViewModel.CreationState.Executed) {
+        if (state.value.creationState is HobbyCreateViewModel.CreationState.Executed) {
             onGoBack()
         }
     }
@@ -52,7 +53,7 @@ fun CreateHobbyTrackScreen(onGoBack: () -> Unit) {
         content = {
             CreateHobbyTrackContent(
                 state = state.value,
-                onSelectIcon = viewModel::updateHobbyIconResId,
+                onSelectIcon = viewModel::updateSelectedIcon,
                 onUpdateHobbyName = viewModel::updateHobbyName,
                 onCreateTrack = viewModel::createTrack
             )
@@ -68,9 +69,9 @@ fun CreateHobbyTrackScreen(onGoBack: () -> Unit) {
 
 @Composable
 fun CreateHobbyTrackContent(
-    state: HobbyTrackCreateViewModel.State,
+    state: HobbyCreateViewModel.State,
     onUpdateHobbyName: (String) -> Unit,
-    onSelectIcon: (String) -> Unit,
+    onSelectIcon: (LocalIcon) -> Unit,
     onCreateTrack: () -> Unit
 ) {
     val validatedHobbyName = state.validatedName
@@ -120,10 +121,10 @@ fun CreateHobbyTrackContent(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(vertical = 16.dp)
             ) {
-                items(state.availableIconResourceList) {
+                items(state.availableIconsList) {
                     IconItem(
-                        iconResourceName = it,
-                        selectedIconResourceName = state.selectedIconResource ?: "",
+                        icon = it,
+                        selectedIcon = state.selectedIcon,
                         contentDescriptionResId = R.string.moodTracking_HobbyCreateTrack_iconContentDescription,
                         onSelectIcon = onSelectIcon
                     )

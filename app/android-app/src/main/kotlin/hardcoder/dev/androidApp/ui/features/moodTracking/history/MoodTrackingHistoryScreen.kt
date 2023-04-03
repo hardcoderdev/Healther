@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodTrackItem
-import hardcoder.dev.entities.features.moodTracking.MoodTrack
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.features.moodTracking.MoodTrackWithHobbies
+import hardcoder.dev.logic.entities.features.moodTracking.MoodTrack
+import hardcoder.dev.logic.entities.features.moodTracking.MoodWithHobbies
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingHistoryViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
@@ -56,7 +56,7 @@ fun MoodTrackingHistoryScreen(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.moodTracking_history_title_topBar,
+                titleResId = R.string.moodTracking_History_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -98,7 +98,7 @@ private fun MoodTrackingHistoryContent(
 
 @Composable
 private fun MoodTracksHistory(
-    moodTrackList: List<MoodTrackWithHobbies>,
+    moodTrackList: List<MoodWithHobbies>,
     onTrackDelete: (Int) -> Unit,
     onTrackUpdate: (MoodTrack) -> Unit
 ) {
@@ -112,11 +112,11 @@ private fun MoodTracksHistory(
                 MoodTrackItem(
                     moodTrack = track.moodTrack,
                     onUpdate = onTrackUpdate,
-                    hobbyTrackList = track.hobbyTrackList
+                    hobbyList = track.hobbyList
                 )
             }
         }
     } else {
-        Description(text = stringResource(id = R.string.moodTracking_history_emptyDay_text))
+        Description(text = stringResource(id = R.string.moodTracking_History_emptyDay_text))
     }
 }

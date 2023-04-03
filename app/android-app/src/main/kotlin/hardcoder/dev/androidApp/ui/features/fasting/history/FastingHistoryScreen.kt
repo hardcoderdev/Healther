@@ -49,7 +49,7 @@ fun FastingHistoryScreen(onGoBack: () -> Unit) {
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.fastingHistory_title_topBar,
+                titleResId = R.string.fasting_History_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -99,6 +99,6 @@ private fun FastingTracksHistory(state: FastingHistoryViewModel.State) {
         }
     } else {
         Spacer(modifier = Modifier.height(16.dp))
-        Description(text = stringResource(id = R.string.fastingHistory_emptyDayHistory_text))
+        Description(text = stringResource(id = R.string.fasting_History_emptyDayHistory_text))
     }
 }

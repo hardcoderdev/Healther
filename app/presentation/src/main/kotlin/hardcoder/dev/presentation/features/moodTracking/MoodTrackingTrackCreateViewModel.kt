@@ -3,9 +3,9 @@ package hardcoder.dev.presentation.features.moodTracking
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.entities.features.moodTracking.HobbyTrack
-import hardcoder.dev.entities.features.moodTracking.MoodType
-import hardcoder.dev.logic.features.moodTracking.hobby.HobbyTrackProvider
+import hardcoder.dev.logic.entities.features.moodTracking.Hobby
+import hardcoder.dev.logic.entities.features.moodTracking.MoodType
+import hardcoder.dev.logic.features.moodTracking.hobby.HobbyProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackCreator
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
 import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyCreator
@@ -23,22 +23,22 @@ class MoodTrackingTrackCreateViewModel(
     //private val diaryTrackCreator: DiaryTrackCreator,
     private val moodWithHobbyCreator: MoodWithHobbyCreator,
     moodTypeProvider: MoodTypeProvider,
-    hobbyTrackProvider: HobbyTrackProvider
+    hobbyProvider: HobbyProvider
 ) : ViewModel() {
 
     private val creationState = MutableStateFlow<CreationState>(CreationState.NotExecuted)
-    private var mutableSelectedHobbies = mutableListOf<HobbyTrack>()
+    private var mutableSelectedHobbies = mutableListOf<Hobby>()
     private val selectedDate =
         MutableStateFlow(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
     private val selectedMoodType = MutableStateFlow<MoodType?>(null)
     private val note = MutableStateFlow("")
-    private val selectedHobbies = MutableStateFlow<List<HobbyTrack>>(mutableListOf())
+    private val selectedHobbies = MutableStateFlow<List<Hobby>>(mutableListOf())
     private val moodTypeList = moodTypeProvider.provideAllMoodTypes().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
     )
-    private val hobbyTrackList = hobbyTrackProvider.provideAllHobbies().stateIn(
+    private val hobbyTrackList = hobbyProvider.provideAllHobbies().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
@@ -63,7 +63,7 @@ class MoodTrackingTrackCreateViewModel(
         State(
             creationState = creationState,
             moodTypeList = moodTypeList,
-            hobbyTrackList = hobbyTrackList,
+            hobbyList = hobbyTrackList,
             selectedMoodType = selectedMoodType,
             selectedHobbies = selectedHobbies,
             selectedDate = selectedDate,
@@ -75,7 +75,7 @@ class MoodTrackingTrackCreateViewModel(
         initialValue = State(
             creationState = creationState.value,
             moodTypeList = moodTypeList.value,
-            hobbyTrackList = hobbyTrackList.value,
+            hobbyList = hobbyTrackList.value,
             selectedMoodType = selectedMoodType.value,
             selectedHobbies = selectedHobbies.value,
             selectedDate = selectedDate.value,
@@ -95,17 +95,17 @@ class MoodTrackingTrackCreateViewModel(
         selectedDate.value = localDateTime
     }
 
-    fun addHobbyTrack(hobbyTrack: HobbyTrack) {
-        if (selectedHobbies.value.contains(hobbyTrack).not()) {
+    fun addHobbyTrack(hobby: Hobby) {
+        if (selectedHobbies.value.contains(hobby).not()) {
             mutableSelectedHobbies = selectedHobbies.value.toMutableList()
-            mutableSelectedHobbies.add(hobbyTrack)
+            mutableSelectedHobbies.add(hobby)
             selectedHobbies.value = mutableSelectedHobbies
         }
     }
 
-    fun removeHobbyTrack(hobbyTrack: HobbyTrack) {
+    fun removeHobbyTrack(hobby: Hobby) {
         mutableSelectedHobbies = selectedHobbies.value.toMutableList()
-        mutableSelectedHobbies.remove(hobbyTrack)
+        mutableSelectedHobbies.remove(hobby)
         selectedHobbies.value = mutableSelectedHobbies
     }
 
@@ -141,9 +141,9 @@ class MoodTrackingTrackCreateViewModel(
     data class State(
         val creationState: CreationState,
         val moodTypeList: List<MoodType>,
-        val hobbyTrackList: List<HobbyTrack>,
+        val hobbyList: List<Hobby>,
         val selectedMoodType: MoodType?,
-        val selectedHobbies: List<HobbyTrack>,
+        val selectedHobbies: List<Hobby>,
         val selectedDate: LocalDateTime,
         val note: String?
     )

@@ -14,9 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.entities.features.fasting.FastingTrack
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.entities.features.fasting.FastingTrack
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.card.Card
 import hardcoder.dev.uikit.progressBar.CircularProgressBar
@@ -33,9 +33,9 @@ fun FastingItem(fastingTrack: FastingTrack) {
     }
 
     val fastingStartDateAndTime =
-        dateTimeFormatter.formatDateTime(fastingTrack.startTime.toEpochMilliseconds())
+        dateTimeFormatter.formatTime(fastingTrack.startTime)
     val fastingEndDateAndTime =
-        dateTimeFormatter.formatDateTime(fastingEndDateAndTimeMillis.toEpochMilliseconds())
+        dateTimeFormatter.formatTime(fastingEndDateAndTimeMillis)
 
     val fastingDurationInMillis = fastingTrack.interruptedTime?.let {
         it - fastingTrack.startTime
@@ -68,21 +68,21 @@ fun FastingItem(fastingTrack: FastingTrack) {
             Column(Modifier.fillMaxWidth()) {
                 Label(
                     text = stringResource(
-                        id = R.string.fastingItem_fasting_startTime_formatText,
+                        id = R.string.fasting_Item_fasting_startTime_formatText,
                         formatArgs = arrayOf(fastingStartDateAndTime)
                     )
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Label(
                     text = stringResource(
-                        id = R.string.fastingItem_fasting_endTime_formatText,
+                        id = R.string.fasting_Item_fasting_endTime_formatText,
                         formatArgs = arrayOf(fastingEndDateAndTime)
                     )
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Label(
                     text = stringResource(
-                        id = R.string.fastingItem_fastingPlan_formatText,
+                        id = R.string.fasting_Item_fastingPlan_formatText,
                         formatArgs = arrayOf(
                             stringResource(
                                 id = fastingPlanResourcesProvider.provide(

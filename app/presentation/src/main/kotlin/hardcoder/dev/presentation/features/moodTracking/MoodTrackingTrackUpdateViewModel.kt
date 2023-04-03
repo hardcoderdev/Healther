@@ -3,20 +3,16 @@ package hardcoder.dev.presentation.features.moodTracking
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.entities.features.moodTracking.HobbyTrack
-import hardcoder.dev.entities.features.moodTracking.MoodType
-import hardcoder.dev.logic.features.moodTracking.hobby.HobbyTrackProvider
+import hardcoder.dev.logic.entities.features.moodTracking.Hobby
+import hardcoder.dev.logic.entities.features.moodTracking.MoodType
+import hardcoder.dev.logic.features.moodTracking.hobby.HobbyProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDeleter
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackUpdater
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
-import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyCreator
-import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyDeleter
 import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -32,29 +28,35 @@ class MoodTrackingTrackUpdateViewModel(
     private val moodTrackUpdater: MoodTrackUpdater,
     private val moodTrackDeleter: MoodTrackDeleter,
     //private val diaryTrackCreator: DiaryTrackCreator,
-    private val moodWithHobbyCreator: MoodWithHobbyCreator,
-    private val moodWithHobbyDeleter: MoodWithHobbyDeleter,
     private val moodTrackProvider: MoodTrackProvider,
-    private val moodWithHobbyProvider: MoodWithHobbyProvider,
-    private val hobbyTrackProvider: HobbyTrackProvider,
+    moodWithHobbyProvider: MoodWithHobbyProvider,
+    hobbyProvider: HobbyProvider,
     moodTypeProvider: MoodTypeProvider,
 ) : ViewModel() {
 
     private val updateState = MutableStateFlow<UpdateState>(UpdateState.NotExecuted)
     private val deleteState = MutableStateFlow<DeleteState>(DeleteState.NotExecuted)
-    private var mutableSelectedHobbies = mutableListOf<HobbyTrack>()
-    private val selectedDate =
-        MutableStateFlow(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
+    private var mutableSelectedHobbies = mutableListOf<Hobby>()
+    private val selectedDate = MutableStateFlow(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
     private val selectedMoodType = MutableStateFlow<MoodType?>(null)
     private val note = MutableStateFlow("")
-    private val initialHobbies = MutableStateFlow<List<HobbyTrack>>(emptyList())
-    private val selectedHobbies = MutableStateFlow<List<HobbyTrack>>(emptyList())
+    private val selectedHobbies = MutableStateFlow<List<Hobby>>(emptyList())
+    private val initialHobbies = moodWithHobbyProvider.provideHobbyListByMoodTrackId(moodTrackId).map {
+        selectedHobbies.value = it
+        it
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = emptyList()
+    )
+
     private val moodTypeList = moodTypeProvider.provideAllMoodTypes().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
     )
-    private val hobbyTrackList = hobbyTrackProvider.provideAllHobbies().stateIn(
+
+    private val hobbyTrackList = hobbyProvider.provideAllHobbies().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
@@ -79,7 +81,7 @@ class MoodTrackingTrackUpdateViewModel(
             updateState = updateState,
             deleteState = deleteState,
             moodTypeList = moodTypeList,
-            hobbyTrackList = hobbyTrackList,
+            hobbyList = hobbyTrackList,
             selectedMoodType = selectedMoodType,
             selectedHobbies = selectedHobbies,
             selectedDate = selectedDate,
@@ -92,7 +94,7 @@ class MoodTrackingTrackUpdateViewModel(
             updateState = updateState.value,
             deleteState = deleteState.value,
             moodTypeList = moodTypeList.value,
-            hobbyTrackList = hobbyTrackList.value,
+            hobbyList = hobbyTrackList.value,
             selectedMoodType = selectedMoodType.value,
             selectedHobbies = initialHobbies.value,
             selectedDate = selectedDate.value,
@@ -112,17 +114,17 @@ class MoodTrackingTrackUpdateViewModel(
         selectedDate.value = localDateTime
     }
 
-    fun addHobbyTrack(hobbyTrack: HobbyTrack) {
-        if (selectedHobbies.value.contains(hobbyTrack).not()) {
+    fun addHobbyTrack(hobby: Hobby) {
+        if (selectedHobbies.value.contains(hobby).not()) {
             mutableSelectedHobbies = selectedHobbies.value.toMutableList()
-            mutableSelectedHobbies.add(hobbyTrack)
+            mutableSelectedHobbies.add(hobby)
             selectedHobbies.value = mutableSelectedHobbies
         }
     }
 
-    fun removeHobbyTrack(hobbyTrack: HobbyTrack) {
+    fun removeHobbyTrack(hobby: Hobby) {
         mutableSelectedHobbies = selectedHobbies.value.toMutableList()
-        mutableSelectedHobbies.remove(hobbyTrack)
+        mutableSelectedHobbies.remove(hobby)
         selectedHobbies.value = mutableSelectedHobbies
     }
 
@@ -130,25 +132,12 @@ class MoodTrackingTrackUpdateViewModel(
         viewModelScope.launch {
             moodTrackProvider.provideById(moodTrackId).firstOrNull()?.let {
                 val selectedMoodType = requireNotNull(selectedMoodType.value)
-
                 val moodTrack = it.copy(
-                    moodType = selectedMoodType, date = selectedDate.value.toInstant(
-                        TimeZone.currentSystemDefault()
-                    )
+                    moodType = selectedMoodType,
+                    date = selectedDate.value.toInstant(TimeZone.currentSystemDefault())
                 )
 
-                moodTrackUpdater.update(moodTrack)
-
-                if (initialHobbies.value.isNotEmpty()) {
-                    moodWithHobbyDeleter.deleteAllHobbiesByMoodTrackId(moodTrackId)
-                }
-
-                selectedHobbies.value.forEach { hobbyTrack ->
-                    moodWithHobbyCreator.create(
-                        moodTrackId = moodTrackId,
-                        hobbyId = hobbyTrack.id
-                    )
-                }
+                moodTrackUpdater.update(moodTrack, selectedHobbies.value)
             }
 
             updateState.value = UpdateState.Executed
@@ -169,18 +158,6 @@ class MoodTrackingTrackUpdateViewModel(
             moodTrackProvider.provideById(moodTrackId).firstOrNull()?.let { moodTrack ->
                 selectedMoodType.value = moodTrack.moodType
                 selectedDate.value = moodTrack.date.toLocalDateTime(TimeZone.currentSystemDefault())
-
-                initialHobbies.value = moodWithHobbyProvider.provideMoodWithHobbyTracks(
-                    moodTrackId
-                ).map { moodWithHobbyTrackList ->
-                    if (moodWithHobbyTrackList.isEmpty()) emptyList() else combine(
-                        moodWithHobbyTrackList.map { moodWithHobbyTrack ->
-                            hobbyTrackProvider.provideHobbyById(moodWithHobbyTrack.hobbyTrackId)
-                        }) {
-                        if (it.isEmpty()) emptyList() else it.filterNotNull().toList()
-                    }.first()
-                }.first()
-
                 selectedHobbies.value = initialHobbies.value
             }
         }
@@ -200,9 +177,9 @@ class MoodTrackingTrackUpdateViewModel(
         val updateState: UpdateState,
         val deleteState: DeleteState,
         val moodTypeList: List<MoodType>,
-        val hobbyTrackList: List<HobbyTrack>,
+        val hobbyList: List<Hobby>,
         val selectedMoodType: MoodType?,
-        val selectedHobbies: List<HobbyTrack>,
+        val selectedHobbies: List<Hobby>,
         val selectedDate: LocalDateTime,
         val note: String?
     )

@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
-import hardcoder.dev.entities.features.moodTracking.MoodType
+import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.entities.features.moodTracking.MoodType
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeManageTracksViewModel
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -60,9 +60,6 @@ private fun ManageMoodTypeContent(
     state: MoodTypeManageTracksViewModel.State,
     onUpdateMoodType: (MoodType) -> Unit
 ) {
-    val uiModule = LocalUIModule.current
-    val iconResolver = uiModule.iconResolver
-
     if (state.moodTypeList.isNotEmpty()) {
         FlowRow(
             modifier = Modifier
@@ -77,7 +74,7 @@ private fun ManageMoodTypeContent(
                     onClick = { onUpdateMoodType(moodType) },
                     text = moodType.name,
                     interactionType = InteractionType.ACTION,
-                    iconResId = iconResolver.toResourceId(moodType.iconResourceName),
+                    iconResId = moodType.icon.resourceId,
                     shape = RoundedCornerShape(32.dp),
                     isSelected = state.moodTypeList.contains(moodType)
                 )

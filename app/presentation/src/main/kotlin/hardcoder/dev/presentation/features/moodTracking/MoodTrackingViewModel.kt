@@ -2,12 +2,12 @@ package hardcoder.dev.presentation.features.moodTracking
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.entities.features.moodTracking.statistic.MoodTrackingStatistic
 import hardcoder.dev.extensions.createRangeForCurrentDay
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.logic.DateTimeProvider
-import hardcoder.dev.logic.features.moodTracking.hobby.HobbyTrackProvider
+import hardcoder.dev.logic.entities.features.moodTracking.MoodWithHobbies
+import hardcoder.dev.logic.entities.features.moodTracking.statistic.MoodTrackingStatistic
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyProvider
 import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatisticProvider
@@ -16,7 +16,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.DateTimeUnit
@@ -27,52 +26,15 @@ import kotlinx.datetime.toLocalDateTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MoodTrackingViewModel(
-    private val hobbyTrackProvider: HobbyTrackProvider,
-    private val moodWithHobbyProvider: MoodWithHobbyProvider,
+    moodWithHobbyProvider: MoodWithHobbyProvider,
     moodTrackProvider: MoodTrackProvider,
     dateTimeProvider: DateTimeProvider,
     moodTrackingStatisticProvider: MoodTrackingStatisticProvider
 ) : ViewModel() {
 
-    private val moodTrackList = moodTrackProvider.provideAllMoodTracksByDayRange(
+    private val moodWithHobbyTrackList = moodWithHobbyProvider.provideMoodWithHobbyList(
         LocalDate.now().createRangeForCurrentDay()
     ).stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = emptyList()
-    )
-
-    private val moodWithHobbyTrackList = moodTrackList.flatMapLatest { tracks ->
-        if (tracks.isEmpty()) flowOf(emptyList())
-        else combine(
-            tracks.map { moodTrack ->
-                moodWithHobbyProvider.provideMoodWithHobbyTracks(moodTrack.id)
-                    .flatMapLatest { moodWithHobbyTracks ->
-                        if (moodWithHobbyTracks.isEmpty()) {
-                            flowOf(
-                                MoodTrackWithHobbies(
-                                    moodTrack = moodTrack,
-                                    hobbyTrackList = emptyList()
-                                )
-                            )
-                        } else {
-                            combine(
-                                moodWithHobbyTracks.map {
-                                    hobbyTrackProvider.provideHobbyById(it.hobbyTrackId)
-                                }
-                            ) { hobbyTracks ->
-                                MoodTrackWithHobbies(
-                                    moodTrack = moodTrack,
-                                    hobbyTrackList = hobbyTracks.toList()
-                                )
-                            }
-                        }
-                    }
-            }
-        ) {
-            it.toList()
-        }
-    }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
@@ -116,7 +78,7 @@ class MoodTrackingViewModel(
         chartEntries,
     ) { moodWithHobbyTrackList, moodTrackingStatistic, chartEntries ->
         State(
-            moodTrackWithHobbiesList = moodWithHobbyTrackList,
+            moodWithHobbiesList = moodWithHobbyTrackList,
             moodTrackingStatistic = moodTrackingStatistic,
             chartEntries = chartEntries
         )
@@ -124,15 +86,15 @@ class MoodTrackingViewModel(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
-            moodTrackWithHobbiesList = moodWithHobbyTrackList.value,
+            moodWithHobbiesList = moodWithHobbyTrackList.value,
             moodTrackingStatistic = moodTrackingStatistic.value,
             chartEntries = chartEntries.value
         )
     )
 
     data class State(
-        val moodTrackWithHobbiesList: List<MoodTrackWithHobbies>,
-        val moodTrackingStatistic: List<MoodTrackingStatistic>?,
+        val moodWithHobbiesList: List<MoodWithHobbies>,
+        val moodTrackingStatistic: MoodTrackingStatistic?,
         val chartEntries: List<Pair<Int, Int>>
     )
 }

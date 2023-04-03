@@ -10,6 +10,6 @@ class MoodWithHobbyDeleter(
 ) {
 
     suspend fun deleteAllHobbiesByMoodTrackId(moodTrackId: Int) = withContext(dispatcher) {
-        appDatabase.moodWithHobbyTrackQueries.deleteAllHobbiesByMoodTrackId(moodTrackId)
+        appDatabase.moodWithHobbyQueries.deleteAllHobbiesByMoodTrackId(moodTrackId)
     }
 }
