@@ -37,6 +37,6 @@ data class IncorrectValidatedMoodTypeName(
 ) : ValidatedMoodTypeName() {
     sealed class Reason {
         object Empty : Reason()
-        data class MoreThanMaxChars(val value: Int) : Reason()
+        data class MoreThanMaxChars(val maxChars: Int) : Reason()
     }
 }

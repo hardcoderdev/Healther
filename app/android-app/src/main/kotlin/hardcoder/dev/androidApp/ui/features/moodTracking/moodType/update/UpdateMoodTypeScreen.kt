@@ -90,7 +90,7 @@ fun UpdateMoodTypeScreen(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.moodTracking_UpdateMoodType_title_topBar,
+                titleResId = R.string.moodTracking_updateMoodType_title_topBar,
                 onGoBack = onGoBack
             )
         ),
@@ -135,7 +135,7 @@ private fun UpdateMoodTypeContent(
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             iconResId = R.drawable.ic_save,
-            labelResId = R.string.moodTracking_UpdateMoodType_createTrack_buttonText,
+            labelResId = R.string.moodTracking_updateMoodType_createTrack_buttonText,
             onClick = onUpdateMoodType,
             isEnabled = state.allowUpdate
         )
@@ -147,13 +147,13 @@ private fun EnterMoodTypeNameSection(
     state: MoodTypeUpdateViewModel.State,
     onUpdateName: (String) -> Unit
 ) {
-    Title(text = stringResource(id = R.string.moodTracking_UpdateMoodType_enterName_text))
+    Title(text = stringResource(id = R.string.moodTracking_updateMoodType_enterName_text))
     Spacer(modifier = Modifier.height(16.dp))
     FilledTextField(
         modifier = Modifier.fillMaxWidth(),
         value = state.name ?: "",
         onValueChange = onUpdateName,
-        label = R.string.moodTracking_UpdateMoodType_enterName_textField,
+        label = R.string.moodTracking_updateMoodType_enterName_textField,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done
@@ -162,7 +162,7 @@ private fun EnterMoodTypeNameSection(
             Icon(
                 iconResId = R.drawable.ic_description,
                 contentDescription = stringResource(
-                    id = R.string.waterTracking_UpdateDrinkType_nameIcon_contentDescription
+                    id = R.string.waterTracking_updateDrinkType_nameIcon_contentDescription
                 )
             )
         }
@@ -174,7 +174,7 @@ private fun SelectIconSection(
     state: MoodTypeUpdateViewModel.State,
     onUpdateIconResource: (LocalIcon) -> Unit
 ) {
-    Title(text = stringResource(id = R.string.moodTracking_UpdateMoodType_selectMoodIcon_text))
+    Title(text = stringResource(id = R.string.moodTracking_updateMoodType_selectMoodIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
     LazyHorizontalGrid(
         modifier = Modifier.height(200.dp),
@@ -186,7 +186,7 @@ private fun SelectIconSection(
         items(state.availableIconsList) {
             IconItem(
                 icon = it,
-                contentDescriptionResId = R.string.waterTracking_UpdateDrinkType_drinkTypeIconContentDescription,
+                contentDescriptionResId = R.string.waterTracking_updateDrinkType_drinkTypeIconContentDescription,
                 selectedIcon = state.selectedIcon,
                 onSelectIcon = onUpdateIconResource
             )
@@ -199,11 +199,11 @@ private fun EnterMoodTypePositivePercentageSection(
     state: MoodTypeUpdateViewModel.State,
     onUpdatePositivePercentage: (Int) -> Unit
 ) {
-    Title(text = stringResource(id = R.string.moodTracking_UpdateMoodType_selectPositivePercentage_text))
+    Title(text = stringResource(id = R.string.moodTracking_updateMoodType_selectPositivePercentage_text))
     Spacer(modifier = Modifier.height(16.dp))
     Description(
         text = stringResource(
-            id = R.string.moodTracking_UpdateMoodType_selectedPositivePercentage_formatText,
+            id = R.string.moodTracking_updateMoodType_selectedPositivePercentage_formatText,
             formatArgs = arrayOf(state.positivePercentage)
         )
     )

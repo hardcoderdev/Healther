@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
-import hardcoder.dev.logic.entities.features.waterTracking.DrinkType
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.chip.Chip
 

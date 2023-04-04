@@ -19,8 +19,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodTrackItem
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.moodTracking.MoodTrack
-import hardcoder.dev.logic.entities.features.moodTracking.MoodWithHobbies
+import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
+import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingHistoryViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
@@ -56,7 +56,7 @@ fun MoodTrackingHistoryScreen(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.moodTracking_History_title_topBar,
+                titleResId = R.string.moodTracking_history_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -89,7 +89,7 @@ private fun MoodTrackingHistoryContent(
         )
         Spacer(modifier = Modifier.height(16.dp))
         MoodTracksHistory(
-            moodTrackList = state.moodTrackWithHobbyList,
+            moodTrackList = state.moodWithActivityList,
             onTrackUpdate = onTrackUpdate,
             onTrackDelete = onTrackDelete
         )
@@ -98,7 +98,7 @@ private fun MoodTrackingHistoryContent(
 
 @Composable
 private fun MoodTracksHistory(
-    moodTrackList: List<MoodWithHobbies>,
+    moodTrackList: List<MoodWithActivities>,
     onTrackDelete: (Int) -> Unit,
     onTrackUpdate: (MoodTrack) -> Unit
 ) {
@@ -112,11 +112,11 @@ private fun MoodTracksHistory(
                 MoodTrackItem(
                     moodTrack = track.moodTrack,
                     onUpdate = onTrackUpdate,
-                    hobbyList = track.hobbyList
+                    activitiesList = track.activityList
                 )
             }
         }
     } else {
-        Description(text = stringResource(id = R.string.moodTracking_History_emptyDay_text))
+        Description(text = stringResource(id = R.string.moodTracking_history_emptyDay_text))
     }
 }

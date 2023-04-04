@@ -2,7 +2,7 @@ package hardcoder.dev.presentation.features.moodTracking.moodType
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.logic.entities.features.moodTracking.MoodType
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map

@@ -8,9 +8,9 @@ import hardcoder.dev.presentation.features.moodTracking.MoodTrackingHistoryViewM
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingTrackCreateViewModel
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingTrackUpdateViewModel
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingViewModel
-import hardcoder.dev.presentation.features.moodTracking.hobby.HobbyCreateViewModel
-import hardcoder.dev.presentation.features.moodTracking.hobby.HobbyManageViewModel
-import hardcoder.dev.presentation.features.moodTracking.hobby.HobbyUpdateViewModel
+import hardcoder.dev.presentation.features.moodTracking.activity.CreateActivityViewModel
+import hardcoder.dev.presentation.features.moodTracking.activity.ManageActivitiesViewModel
+import hardcoder.dev.presentation.features.moodTracking.activity.UpdateActivityViewModel
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeCreateViewModel
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeManageTracksViewModel
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeUpdateViewModel
@@ -134,7 +134,7 @@ class PresentationModule(
     )
 
     fun getMoodTrackingViewModel() = MoodTrackingViewModel(
-        moodWithHobbyProvider = logicModule.moodWithHobbyProvider,
+        moodWithActivitiesProvider = logicModule.moodWithActivitiesProvider,
         moodTrackProvider = logicModule.moodTrackProvider,
         dateTimeProvider = logicModule.dateTimeProvider,
         moodTrackingStatisticProvider = logicModule.moodTrackingStatisticProvider
@@ -144,24 +144,24 @@ class PresentationModule(
         moodTrackCreator = logicModule.moodTrackCreator,
         moodTypeProvider = logicModule.moodTypeProvider,
         // diaryTrackCreator = logicModule.diaryTrackCreator,
-        hobbyProvider = logicModule.hobbyProvider,
-        moodWithHobbyCreator = logicModule.moodWithHobbyCreator
+        activityProvider = logicModule.activityProvider,
+        moodWithActivityCreator = logicModule.moodWithActivityCreator
     )
 
     fun getMoodTrackingUpdateViewModel(moodTrackId: Int) = MoodTrackingTrackUpdateViewModel(
         moodTrackId = moodTrackId,
         moodTypeProvider = logicModule.moodTypeProvider,
         // diaryTrackCreator = logicModule.diaryTrackCreator,
-        hobbyProvider = logicModule.hobbyProvider,
+        activityProvider = logicModule.activityProvider,
         moodTrackProvider = logicModule.moodTrackProvider,
         moodTrackUpdater = logicModule.moodTrackUpdater,
-        moodWithHobbyProvider = logicModule.moodWithHobbyProvider,
+        moodWithActivityProvider = logicModule.moodWithActivitiesProvider,
         moodTrackDeleter = logicModule.moodTrackDeleter
     )
 
     fun getMoodTrackingHistoryViewModel() = MoodTrackingHistoryViewModel(
         moodTrackDeleter = logicModule.moodTrackDeleter,
-        moodWithHobbyProvider = logicModule.moodWithHobbyProvider
+        moodWithActivitiesProvider = logicModule.moodWithActivitiesProvider
     )
 
     fun getMoodTypeManageTracksViewModel() = MoodTypeManageTracksViewModel(
@@ -183,22 +183,22 @@ class PresentationModule(
         moodTypeDeleter = logicModule.moodTypeDeleter
     )
 
-    fun getHobbyManageTracksViewModel() = HobbyManageViewModel(
-        hobbyProvider = logicModule.hobbyProvider
+    fun getManageActivitiesViewModel() = ManageActivitiesViewModel(
+        activityProvider = logicModule.activityProvider
     )
 
-    fun getHobbyTrackCreateViewModel() = HobbyCreateViewModel(
-        hobbyCreator = logicModule.hobbyCreator,
-        hobbyNameValidator = logicModule.hobbyNameValidator,
-        iconResourceProvider = logicModule.hobbyIconProvider
+    fun getCreateActivityViewModel() = CreateActivityViewModel(
+        activityCreator = logicModule.activityCreator,
+        activityNameValidator = logicModule.activityNameValidator,
+        iconResourceProvider = logicModule.activityIconProvider
     )
 
-    fun getHobbyTrackUpdateViewModel(hobbyTrackId: Int) = HobbyUpdateViewModel(
-        hobbyTrackId = hobbyTrackId,
-        hobbyNameValidator = logicModule.hobbyNameValidator,
-        hobbyDeleter = logicModule.hobbyDeleter,
-        hobbyUpdater = logicModule.hobbyUpdater,
-        hobbyProvider = logicModule.hobbyProvider,
-        iconResourceProvider = logicModule.hobbyIconProvider
+    fun getUpdateActivityViewModel(hobbyTrackId: Int) = UpdateActivityViewModel(
+        activityId = hobbyTrackId,
+        activityNameValidator = logicModule.activityNameValidator,
+        activityDeleter = logicModule.activityDeleter,
+        activityUpdater = logicModule.activityUpdater,
+        activityProvider = logicModule.activityProvider,
+        iconResourceProvider = logicModule.activityIconProvider
     )
 }

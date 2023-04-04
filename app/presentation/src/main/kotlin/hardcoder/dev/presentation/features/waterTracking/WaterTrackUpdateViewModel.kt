@@ -4,7 +4,6 @@ import android.content.res.Resources.NotFoundException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.logic.entities.features.waterTracking.DrinkType
 import hardcoder.dev.logic.features.waterTracking.CorrectMillilitersInput
 import hardcoder.dev.logic.features.waterTracking.ValidatedMillilitersCount
 import hardcoder.dev.logic.features.waterTracking.WaterIntakeResolver
@@ -12,6 +11,7 @@ import hardcoder.dev.logic.features.waterTracking.WaterTrackDeleter
 import hardcoder.dev.logic.features.waterTracking.WaterTrackMillilitersValidator
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackUpdater
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.hero.HeroProvider
 import kotlinx.coroutines.flow.MutableStateFlow

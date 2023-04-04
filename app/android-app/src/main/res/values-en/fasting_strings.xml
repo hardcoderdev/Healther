@@ -26,18 +26,18 @@
     <string name="fasting_nowEmpty_text">Now it\'s empty. End (or interrupt) the fast and you will see the graph and statistics.</string>
     <string name="fasting_chartNotEnoughData_text">We don\'t have enough data yet to display a graph. Use this feature for a couple of hours and the graph will appear!</string>>
 
-    <string name="fasting_CreateFastingTrack_title_topBar">Start fasting</string>
-    <string name="fasting_CreateFastingTrack_start_buttonText">Start fasting</string>
-    <string name="fasting_CreateFastingTrack_planDifficulty_text">All plans below are arranged in ascending order of difficulty.</string>
-    <string name="fasting_CreateFastingTrack_selectPlan_text">Plan selection:</string>
+    <string name="fasting_createFastingTrack_title_topBar">Start fasting</string>
+    <string name="fasting_createFastingTrack_start_buttonText">Start fasting</string>
+    <string name="fasting_createFastingTrack_planDifficulty_text">All plans below are arranged in ascending order of difficulty.</string>
+    <string name="fasting_createFastingTrack_selectPlan_text">Plan selection:</string>
 
-    <string name="fasting_History_title_topBar">Detailed history</string>
-    <string name="fasting_History_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
+    <string name="fasting_history_title_topBar">Detailed history</string>
+    <string name="fasting_history_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
 
-    <string name="fasting_ItemPlan_description_formatText">You will fast for %s and after that you will have %s to eat.</string>
-    <string name="fasting_ItemPlan_selectFastingHours_text">Select the number of hours after which the fast will end:</string>
-    <string name="fasting_ItemPlan_customPlan">Your plan</string>
-    <string name="fasting_Item_fasting_startTime_formatText">Start of fasting: %s</string>
-    <string name="fasting_Item_fasting_endTime_formatText">End of fasting: %s</string>
-    <string name="fasting_Item_fastingPlan_formatText">Fasting plan: %s</string>
+    <string name="fasting_itemPlan_description_formatText">You will fast for %s and after that you will have %s to eat.</string>
+    <string name="fasting_itemPlan_selectFastingHours_text">Select the number of hours after which the fast will end:</string>
+    <string name="fasting_itemPlan_customPlan">Your plan</string>
+    <string name="fasting_item_fasting_startTime_formatText">Start of fasting: %s</string>
+    <string name="fasting_item_fasting_endTime_formatText">End of fasting: %s</string>
+    <string name="fasting_item_fastingPlan_formatText">Fasting plan: %s</string>
 </resources>

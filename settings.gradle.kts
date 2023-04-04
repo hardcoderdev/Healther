@@ -20,9 +20,9 @@ include(
     ":app:presentation"
 )
 include(
-    ":framework:extensions",
-    ":framework:coroutines",
-    ":framework:uikit",
-    ":framework:utilities",
-    ":framework:permissions"
+    ":foundation:extensions",
+    ":foundation:coroutines",
+    ":foundation:uikit",
+    ":foundation:utilities",
+    ":foundation:permissions"
 )

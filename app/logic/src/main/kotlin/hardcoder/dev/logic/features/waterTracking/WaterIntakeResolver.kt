@@ -1,6 +1,6 @@
 package hardcoder.dev.logic.features.waterTracking
 
-import hardcoder.dev.logic.entities.hero.Gender
+import hardcoder.dev.logic.hero.gender.Gender
 import kotlin.math.roundToInt
 
 class WaterIntakeResolver {

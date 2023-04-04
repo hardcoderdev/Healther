@@ -3,7 +3,7 @@ package hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.statistic
 import android.content.Context
 import hardcoder.dev.androidApp.ui.formatters.LiquidFormatter
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.waterTracking.statistic.WaterTrackingStatistic
+import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatistic
 import hardcoder.dev.uikit.StatisticData
 
 class WaterTrackingStatisticResolver(

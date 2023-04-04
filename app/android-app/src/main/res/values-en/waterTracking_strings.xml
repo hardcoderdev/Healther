@@ -13,53 +13,54 @@
     <string name="waterTracking_activity_chart">Activity chart (by hours):</string>
     <string name="waterTracking_diary_text">Drunk diary:</string>
 
-    <string name="waterTracking_CreateWaterTrack_create_title_topBar">Create an entry</string>
-    <string name="waterTracking_CreateWaterTrack_selectDateRange_buttonText">Select date</string>
-    <string name="waterTracking_CreateWaterTrack_enterMillilitersCount_text">Enter the amount of drink you have drunk (in ml):</string>
-    <string name="waterTracking_CreateWaterTrack_enterMillilitersCountHint_textField">The amount of drink you drink…</string>
-    <string name="waterTracking_CreateWaterTrack_selectAnotherDate_text">Have you drunk water before? You can change the date.</string>
-    <string name="waterTracking_CreateWaterTrack_enterDrinkType_text">Select the type of drink…</string>
-    <string name="waterTracking_CreateWaterTrack_saveEntry_buttonText">Create entry</string>
-    <string name="waterTracking_CreateWaterTrack_millilitersEmpty_text">This field can\'t be empty!</string>
-    <string name="waterTracking_CreateWaterTrack_selectedDate_formatText">Selected date: %s</string>
-    <string name="waterTracking_CreateWaterTrack_millilitersMoreThanDailyWaterIntake_text">The ml entered by you is more, than daily rate!</string>
-    <string name="waterTracking_CreateWaterTrack_createDrinkType_management_text">Create your drink</string>
+    <string name="waterTracking_createWaterTrack_create_title_topBar">Create an entry</string>
+    <string name="waterTracking_createWaterTrack_selectDateRange_buttonText">Select date</string>
+    <string name="waterTracking_createWaterTrack_enterMillilitersCount_text">Enter the amount of drink you have drunk (in ml):</string>
+    <string name="waterTracking_createWaterTrack_enterMillilitersCountHint_textField">The amount of drink you drink…</string>
+    <string name="waterTracking_createWaterTrack_selectAnotherDate_text">Have you drunk water before? You can change the date.</string>
+    <string name="waterTracking_createWaterTrack_enterDrinkType_text">Select the type of drink…</string>
+    <string name="waterTracking_createWaterTrack_saveEntry_buttonText">Create entry</string>
+    <string name="waterTracking_createWaterTrack_millilitersEmpty_text">This field can\'t be empty!</string>
+    <string name="waterTracking_createWaterTrack_selectedDate_formatText">Selected date: %s</string>
+    <string name="waterTracking_createWaterTrack_millilitersMoreThanDailyWaterIntake_text">The ml entered by you is more, than daily rate!</string>
+    <string name="waterTracking_createWaterTrack_createDrinkType_management_text">Create your drink</string>
 
-    <string name="waterTracking_UpdateWaterTrack_updateEntry_buttonText">Update entry</string>
-    <string name="waterTracking_UpdateWaterTrack_update_title_topBar">Entry update</string>
-    <string name="waterTracking_UpdateWaterTrack_selectDateRange_buttonText">Select date</string>
-    <string name="waterTracking_UpdateWaterTrack_enterMillilitersCountHint_textField">The amount of drink you drink…</string>
-    <string name="waterTracking_UpdateWaterTrack_selectAnotherDate_text">Have you drunk water before? You can change the date.</string>
-    <string name="waterTracking_UpdateWaterTrack_enterDrinkType_text">Select the type of drink…</string>
-    <string name="waterTracking_UpdateWaterTrack_selectedDate_formatText">Selected date: %s</string>
-    <string name="waterTracking_UpdateWaterTrack_millilitersEmpty_text">This field cannot be empty!</string>
-    <string name="waterTracking_UpdateWaterTrack_millilitersMoreThanDailyWaterIntake_text">The ml entered by you is more, than daily rate!</string>
-    <string name="waterTracking_UpdateWaterTrack_createCustomDrinkType_buttonText">Create your drink</string>
+    <string name="waterTracking_updateWaterTrack_updateEntry_buttonText">Update entry</string>
+    <string name="waterTracking_updateWaterTrack_update_title_topBar">Entry update</string>
+    <string name="waterTracking_updateWaterTrack_selectDateRange_buttonText">Select date</string>
+    <string name="waterTracking_updateWaterTrack_enterMillilitersCountHint_textField">The amount of drink you drink…</string>
+    <string name="waterTracking_updateWaterTrack_selectAnotherDate_text">Have you drunk water before? You can change the date.</string>
+    <string name="waterTracking_updateWaterTrack_enterDrinkType_text">Select the type of drink…</string>
+    <string name="waterTracking_updateWaterTrack_selectedDate_formatText">Selected date: %s</string>
+    <string name="waterTracking_updateWaterTrack_millilitersEmpty_text">This field cannot be empty!</string>
+    <string name="waterTracking_updateWaterTrack_millilitersMoreThanDailyWaterIntake_text">The ml entered by you is more, than daily rate!</string>
+    <string name="waterTracking_updateWaterTrack_createCustomDrinkType_buttonText">Create your drink</string>
+    <string name="waterTracking_updateWaterTrack_createDrinkType_management_text">Create your drink</string>
 
-    <string name="waterTracking_History_title_topBar">Detailed history</string>
-    <string name="waterTracking_History_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
+    <string name="waterTracking_history_title_topBar">Detailed history</string>
+    <string name="waterTracking_history_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
 
-    <string name="waterTracking_DrinkTypeManage_title_topBar">Drink type management</string>
-    <string name="waterTracking_DrinkTypeManage_nowEmpty_text">Now it\'s empty. In order to add a custom drink, it appears in the right corner!</string>
+    <string name="waterTracking_drinkTypeManage_title_topBar">Drink type management</string>
+    <string name="waterTracking_drinkTypeManage_nowEmpty_text">Now it\'s empty. In order to add a custom drink, it appears in the right corner!</string>
 
-    <string name="waterTracking_CreateDrinkType_title_topBar">Creating a drink</string>
-    <string name="waterTracking_CreateDrinkType_enterName_text">Enter the name of the drink:</string>
-    <string name="waterTracking_CreateDrinkType_nameIcon_contentDescription">Name input icon</string>
-    <string name="waterTracking_CreateDrinkType_enterName_textField">Like a gin tonic…</string>
-    <string name="waterTracking_CreateDrinkType_selectIcon_text">Select a drink icon:</string>
-    <string name="waterTracking_CreateDrinkType_drinkTypeIconContentDescription">Drink type icon</string>
-    <string name="waterTracking_CreateDrinkType_selectHydrationIndex_text">Specify the drink hydration index:</string>
-    <string name="waterTracking_CreateDrinkType_selectedIndex_formatText">Selected index: %d%%</string>
-    <string name="waterTracking_CreateDrinkType_createTrack_buttonText">Save a drink</string>
+    <string name="waterTracking_createDrinkType_title_topBar">Creating a drink</string>
+    <string name="waterTracking_createDrinkType_enterName_text">Enter the name of the drink:</string>
+    <string name="waterTracking_createDrinkType_nameIcon_contentDescription">Name input icon</string>
+    <string name="waterTracking_createDrinkType_enterName_textField">Like a gin tonic…</string>
+    <string name="waterTracking_createDrinkType_selectIcon_text">Select a drink icon:</string>
+    <string name="waterTracking_createDrinkType_drinkTypeIconContentDescription">Drink type icon</string>
+    <string name="waterTracking_createDrinkType_selectHydrationIndex_text">Specify the drink hydration index:</string>
+    <string name="waterTracking_createDrinkType_selectedIndex_formatText">Selected index: %d%%</string>
+    <string name="waterTracking_createDrinkType_createTrack_buttonText">Save a drink</string>
 
-    <string name="waterTracking_UpdateDrinkType_title_topBar">Drink type update</string>
-    <string name="waterTracking_UpdateDrinkType_selectedIndex_formatText">Selected index: %d%%</string>
-    <string name="waterTracking_UpdateDrinkType_selectHydrationIndex_text">Specify the drink hydration index:</string>
-    <string name="waterTracking_UpdateDrinkType_drinkTypeIconContentDescription">Drink type icon</string>
-    <string name="waterTracking_UpdateDrinkType_selectIcon_text">Select a drink icon:</string>
-    <string name="waterTracking_UpdateDrinkType_nameIcon_contentDescription">Name input icon</string>
-    <string name="waterTracking_UpdateDrinkType_enterName_textField">Like a gin tonic…</string>
-    <string name="waterTracking_UpdateDrinkType_enterName_text">Enter the name of the drink:</string>
-    <string name="waterTracking_UpdateDrinkType_createTrack_buttonText">Update drink type</string>
+    <string name="waterTracking_updateDrinkType_title_topBar">Drink type update</string>
+    <string name="waterTracking_updateDrinkType_selectedIndex_formatText">Selected index: %d%%</string>
+    <string name="waterTracking_updateDrinkType_selectHydrationIndex_text">Specify the drink hydration index:</string>
+    <string name="waterTracking_updateDrinkType_drinkTypeIconContentDescription">Drink type icon</string>
+    <string name="waterTracking_updateDrinkType_selectIcon_text">Select a drink icon:</string>
+    <string name="waterTracking_updateDrinkType_nameIcon_contentDescription">Name input icon</string>
+    <string name="waterTracking_updateDrinkType_enterName_textField">Like a gin tonic…</string>
+    <string name="waterTracking_updateDrinkType_enterName_text">Enter the name of the drink:</string>
+    <string name="waterTracking_updateDrinkType_createTrack_buttonText">Update drink type</string>
 
 </resources>

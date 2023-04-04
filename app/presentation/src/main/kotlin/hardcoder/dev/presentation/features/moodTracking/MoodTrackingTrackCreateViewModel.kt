@@ -3,12 +3,12 @@ package hardcoder.dev.presentation.features.moodTracking
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.logic.entities.features.moodTracking.Hobby
-import hardcoder.dev.logic.entities.features.moodTracking.MoodType
-import hardcoder.dev.logic.features.moodTracking.hobby.HobbyProvider
+import hardcoder.dev.logic.features.moodTracking.activity.Activity
+import hardcoder.dev.logic.features.moodTracking.activity.ActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackCreator
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
-import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyCreator
+import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityCreator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -21,24 +21,23 @@ import kotlinx.datetime.toLocalDateTime
 class MoodTrackingTrackCreateViewModel(
     private val moodTrackCreator: MoodTrackCreator,
     //private val diaryTrackCreator: DiaryTrackCreator,
-    private val moodWithHobbyCreator: MoodWithHobbyCreator,
+    private val moodWithActivityCreator: MoodWithActivityCreator,
     moodTypeProvider: MoodTypeProvider,
-    hobbyProvider: HobbyProvider
+    activityProvider: ActivityProvider
 ) : ViewModel() {
 
     private val creationState = MutableStateFlow<CreationState>(CreationState.NotExecuted)
-    private var mutableSelectedHobbies = mutableListOf<Hobby>()
-    private val selectedDate =
-        MutableStateFlow(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
+    private var mutableSelectedActivities = mutableListOf<Activity>()
+    private val selectedDate = MutableStateFlow(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
     private val selectedMoodType = MutableStateFlow<MoodType?>(null)
     private val note = MutableStateFlow("")
-    private val selectedHobbies = MutableStateFlow<List<Hobby>>(mutableListOf())
+    private val selectedActivities = MutableStateFlow<List<Activity>>(mutableListOf())
     private val moodTypeList = moodTypeProvider.provideAllMoodTypes().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
     )
-    private val hobbyTrackList = hobbyProvider.provideAllHobbies().stateIn(
+    private val activityList = activityProvider.provideAllActivities().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
@@ -53,19 +52,19 @@ class MoodTrackingTrackCreateViewModel(
     val state = combine(
         creationState,
         moodTypeList,
-        hobbyTrackList,
+        activityList,
         selectedMoodType,
-        selectedHobbies,
+        selectedActivities,
         selectedDate,
         note
-    ) { creationState, moodTypeList, hobbyTrackList, selectedMoodType,
-        selectedHobbies, selectedDate, note ->
+    ) { creationState, moodTypeList, activityList, selectedMoodType,
+        selectedActivities, selectedDate, note ->
         State(
             creationState = creationState,
             moodTypeList = moodTypeList,
-            hobbyList = hobbyTrackList,
+            activityList = activityList,
             selectedMoodType = selectedMoodType,
-            selectedHobbies = selectedHobbies,
+            selectedActivities = selectedActivities,
             selectedDate = selectedDate,
             note = note
         )
@@ -75,9 +74,9 @@ class MoodTrackingTrackCreateViewModel(
         initialValue = State(
             creationState = creationState.value,
             moodTypeList = moodTypeList.value,
-            hobbyList = hobbyTrackList.value,
+            activityList = activityList.value,
             selectedMoodType = selectedMoodType.value,
-            selectedHobbies = selectedHobbies.value,
+            selectedActivities = selectedActivities.value,
             selectedDate = selectedDate.value,
             note = note.value
         )
@@ -95,18 +94,18 @@ class MoodTrackingTrackCreateViewModel(
         selectedDate.value = localDateTime
     }
 
-    fun addHobbyTrack(hobby: Hobby) {
-        if (selectedHobbies.value.contains(hobby).not()) {
-            mutableSelectedHobbies = selectedHobbies.value.toMutableList()
-            mutableSelectedHobbies.add(hobby)
-            selectedHobbies.value = mutableSelectedHobbies
+    fun addActivity(activity: Activity) {
+        if (selectedActivities.value.contains(activity).not()) {
+            mutableSelectedActivities = selectedActivities.value.toMutableList()
+            mutableSelectedActivities.add(activity)
+            selectedActivities.value = mutableSelectedActivities
         }
     }
 
-    fun removeHobbyTrack(hobby: Hobby) {
-        mutableSelectedHobbies = selectedHobbies.value.toMutableList()
-        mutableSelectedHobbies.remove(hobby)
-        selectedHobbies.value = mutableSelectedHobbies
+    fun removeActivity(activity: Activity) {
+        mutableSelectedActivities = selectedActivities.value.toMutableList()
+        mutableSelectedActivities.remove(activity)
+        selectedActivities.value = mutableSelectedActivities
     }
 
     fun createTrack() {
@@ -127,10 +126,10 @@ class MoodTrackingTrackCreateViewModel(
 //                )
             }
 
-            selectedHobbies.value.forEach { hobbyTrack ->
-                moodWithHobbyCreator.create(
+            selectedActivities.value.forEach { activity ->
+                moodWithActivityCreator.create(
                     moodTrackId = moodTrackId,
-                    hobbyId = hobbyTrack.id
+                    activityId = activity.id
                 )
             }
 
@@ -141,9 +140,9 @@ class MoodTrackingTrackCreateViewModel(
     data class State(
         val creationState: CreationState,
         val moodTypeList: List<MoodType>,
-        val hobbyList: List<Hobby>,
+        val activityList: List<Activity>,
         val selectedMoodType: MoodType?,
-        val selectedHobbies: List<Hobby>,
+        val selectedActivities: List<Activity>,
         val selectedDate: LocalDateTime,
         val note: String?
     )

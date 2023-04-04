@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.waterTracking.DrinkType
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackItem
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.card.Card

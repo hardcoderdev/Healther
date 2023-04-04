@@ -2,6 +2,7 @@
 
 package hardcoder.dev.androidApp.ui.features.moodTracking.update
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -33,11 +36,10 @@ import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.features.DeleteTrackDialog
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodItem
-import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.moodTracking.Hobby
-import hardcoder.dev.logic.entities.features.moodTracking.MoodType
+import hardcoder.dev.logic.features.moodTracking.activity.Activity
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingTrackUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
@@ -47,13 +49,17 @@ import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonStyles
 import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.card.Card
 import hardcoder.dev.uikit.chip.Chip
 import hardcoder.dev.uikit.dialogs.DatePicker
 import hardcoder.dev.uikit.lists.ScrollableTabRow
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.FilledTextField
+import hardcoder.dev.uikit.text.Label
 import hardcoder.dev.uikit.text.Title
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 
 @Composable
 fun UpdateMoodTrackScreen(
@@ -99,15 +105,15 @@ fun UpdateMoodTrackScreen(
                 onUpdateNote = viewModel::updateNote,
                 onUpdateSelectedDate = viewModel::updateSelectedDate,
                 onManageMoodTypes = onManageMoodTypes,
-                onAddHobby = viewModel::addHobbyTrack,
-                onRemoveHobby = viewModel::removeHobbyTrack,
+                onAddHobby = viewModel::addActivity,
+                onRemoveHobby = viewModel::removeActivity,
                 onManageHobby = onManageHobby,
                 onCreateTrack = viewModel::updateTrack
             )
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.moodTracking_CreateMoodTrack_title_topBar,
+                titleResId = R.string.moodTracking_createMoodTrack_title_topBar,
                 onGoBack = onGoBack
             )
         ),
@@ -130,8 +136,8 @@ private fun UpdateMoodTrackContent(
     onUpdateNote: (String) -> Unit,
     onManageMoodTypes: () -> Unit,
     onManageHobby: () -> Unit,
-    onAddHobby: (Hobby) -> Unit,
-    onRemoveHobby: (Hobby) -> Unit,
+    onAddHobby: (Activity) -> Unit,
+    onRemoveHobby: (Activity) -> Unit,
     onCreateTrack: () -> Unit
 ) {
     var datePickerDialogVisibility by remember {
@@ -158,9 +164,9 @@ private fun UpdateMoodTrackContent(
             Spacer(modifier = Modifier.height(16.dp))
             SelectHobbiesSection(
                 state = state,
-                onAddHobby = onAddHobby,
-                onRemoveHobby = onRemoveHobby,
-                onManageHobby = onManageHobby
+                onAddActivity = onAddHobby,
+                onRemoveActivity = onRemoveHobby,
+                onManageActivities = onManageHobby
             )
             Spacer(modifier = Modifier.height(16.dp))
             SelectDateSection(
@@ -171,7 +177,7 @@ private fun UpdateMoodTrackContent(
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             iconResId = R.drawable.ic_save,
-            labelResId = R.string.moodTracking_UpdateMoodTrack_buttonText,
+            labelResId = R.string.moodTracking_updateMoodTrack_buttonText,
             onClick = onCreateTrack
         )
         DatePicker(
@@ -191,25 +197,10 @@ private fun SelectMoodSection(
     onManageMoodTypes: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Title(text = stringResource(id = R.string.moodTracking_CreateMoodTrack_howYouFeelYourself_text))
+        Title(text = stringResource(id = R.string.moodTracking_createMoodTrack_howYouFeelYourself_text))
         Spacer(modifier = Modifier.height(16.dp))
         ScrollableTabRow(selectedTabIndex = state.moodTypeList.indexOf(state.selectedMoodType)) {
-            MoodItem(
-                modifier = Modifier.padding(
-                    start = 4.dp,
-                    end = 16.dp,
-                    top = 16.dp,
-                    bottom = 16.dp
-                ),
-                moodType = MoodType(
-                    id = 0,
-                    icon = LocalIconImpl(0, R.drawable.ic_create),
-                    name = stringResource(id = R.string.moodTracking_CreateMoodTrack_manageMoodTypes_buttonText),
-                    positivePercentage = 0
-                ),
-                selectedMoodType = state.selectedMoodType,
-                onSelect = { onManageMoodTypes() }
-            )
+            MoodTypeManagementButton(onManageMoodTypes = onManageMoodTypes)
             state.moodTypeList.forEach { moodType ->
                 MoodItem(
                     modifier = Modifier.padding(
@@ -228,13 +219,43 @@ private fun SelectMoodSection(
 }
 
 @Composable
+private fun MoodTypeManagementButton(onManageMoodTypes: () -> Unit) {
+    Card<MoodType>(
+        interactionType = InteractionType.ACTION,
+        onClick = onManageMoodTypes,
+        modifier = Modifier.padding(
+            start = 4.dp,
+            end = 16.dp,
+            top = 16.dp,
+            bottom = 16.dp
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .width(130.dp)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                modifier = Modifier.height(60.dp),
+                painter = painterResource(id = R.drawable.ic_create),
+                contentDescription = stringResource(id = R.string.moodTracking_createMoodTrack_manageMoodTypes_buttonText),
+                alignment = Alignment.Center
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Label(text = stringResource(id = R.string.moodTracking_createMoodTrack_manageMoodTypes_buttonText))
+        }
+    }
+}
+
+@Composable
 private fun SelectHobbiesSection(
     state: MoodTrackingTrackUpdateViewModel.State,
-    onAddHobby: (Hobby) -> Unit,
-    onRemoveHobby: (Hobby) -> Unit,
-    onManageHobby: () -> Unit
+    onAddActivity: (Activity) -> Unit,
+    onRemoveActivity: (Activity) -> Unit,
+    onManageActivities: () -> Unit
 ) {
-    Title(text = stringResource(id = R.string.moodTracking_CreateMoodTrack_youMaySelectHobbies_text))
+    Title(text = stringResource(id = R.string.moodTracking_createMoodTrack_youMaySelectActivities_text))
     Spacer(modifier = Modifier.height(16.dp))
     FlowRow(
         modifier = Modifier
@@ -244,15 +265,8 @@ private fun SelectHobbiesSection(
         verticalAlignment = Alignment.CenterVertically,
         maxItemsInEachRow = 6
     ) {
-        Chip(
-            modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.moodTracking_CreateMoodTrack_manageHobby_buttonText),
-            iconResId = R.drawable.ic_create,
-            shape = RoundedCornerShape(32.dp),
-            interactionType = InteractionType.ACTION,
-            onClick = onManageHobby
-        )
-        state.hobbyList.forEach { hobbyTrack ->
+        ManagementActivitiesButton(onManageActivities = onManageActivities)
+        state.activityList.forEach { hobbyTrack ->
             Chip(
                 modifier = Modifier.padding(top = 8.dp),
                 text = hobbyTrack.name,
@@ -262,9 +276,9 @@ private fun SelectHobbiesSection(
                 interactionType = InteractionType.SELECTION,
                 onClick = {
                     if (state.selectedHobbies.contains(hobbyTrack)) {
-                        onRemoveHobby(hobbyTrack)
+                        onRemoveActivity(hobbyTrack)
                     } else {
-                        onAddHobby(hobbyTrack)
+                        onAddActivity(hobbyTrack)
                     }
                 }
             )
@@ -273,17 +287,30 @@ private fun SelectHobbiesSection(
 }
 
 @Composable
+private fun ManagementActivitiesButton(onManageActivities: () -> Unit) {
+    Chip(
+        modifier = Modifier.padding(top = 8.dp),
+        text = stringResource(id = R.string.moodTracking_updateMoodTrack_manageActivities_buttonText),
+        iconResId = R.drawable.ic_create,
+        shape = RoundedCornerShape(32.dp),
+        interactionType = InteractionType.ACTION,
+        onClick = onManageActivities
+    )
+}
+
+
+@Composable
 private fun EnterNoteSection(
     state: MoodTrackingTrackUpdateViewModel.State,
     onUpdateNote: (String) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Title(text = stringResource(id = R.string.moodTracking_CreateMoodTrack_youCanAddNote_text))
+        Title(text = stringResource(id = R.string.moodTracking_createMoodTrack_youCanAddNote_text))
         Spacer(modifier = Modifier.height(16.dp))
         FilledTextField(
             value = state.note ?: "",
             onValueChange = onUpdateNote,
-            label = R.string.moodTracking_UpdateMoodTrack_enterNote_textField,
+            label = R.string.moodTracking_updateMoodTrack_enterNote_textField,
             multiline = true,
             maxLines = 5,
             keyboardOptions = KeyboardOptions(
@@ -304,21 +331,21 @@ private fun SelectDateSection(
 ) {
     val uiModule = LocalUIModule.current
     val dateTimeFormatter = uiModule.dateTimeFormatter
-    val selectedDate = state.selectedDate.date
+    val selectedDate = state.selectedDate.toInstant(TimeZone.currentSystemDefault())
     val formattedDate = dateTimeFormatter.formatDateTime(selectedDate)
 
-    Title(text = stringResource(id = R.string.moodTracking_UpdateMoodTrack_selectAnotherDate_text))
+    Title(text = stringResource(id = R.string.moodTracking_updateMoodTrack_selectAnotherDate_text))
     Spacer(modifier = Modifier.height(16.dp))
     Description(
         text = stringResource(
-            id = R.string.moodTracking_UpdateMoodTrack_selectedDate_formatText,
+            id = R.string.moodTracking_updateMoodTrack_selectedDate_formatText,
             formatArgs = arrayOf(formattedDate)
         )
     )
     Spacer(modifier = Modifier.height(16.dp))
     IconTextButton(
         iconResId = R.drawable.ic_date_range,
-        labelResId = R.string.moodTracking_UpdateMoodTrack_selectDateRange_buttonText,
+        labelResId = R.string.moodTracking_updateMoodTrack_selectDateRange_buttonText,
         style = ButtonStyles.OUTLINED,
         onClick = onShowDatePicker
     )

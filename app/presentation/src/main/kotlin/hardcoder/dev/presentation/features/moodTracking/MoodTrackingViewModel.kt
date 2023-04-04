@@ -6,10 +6,10 @@ import hardcoder.dev.extensions.createRangeForCurrentDay
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.logic.DateTimeProvider
-import hardcoder.dev.logic.entities.features.moodTracking.MoodWithHobbies
-import hardcoder.dev.logic.entities.features.moodTracking.statistic.MoodTrackingStatistic
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
-import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyProvider
+import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
+import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
+import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatistic
 import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatisticProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,13 +26,13 @@ import kotlinx.datetime.toLocalDateTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MoodTrackingViewModel(
-    moodWithHobbyProvider: MoodWithHobbyProvider,
+    moodWithActivitiesProvider: MoodWithActivitiesProvider,
     moodTrackProvider: MoodTrackProvider,
     dateTimeProvider: DateTimeProvider,
     moodTrackingStatisticProvider: MoodTrackingStatisticProvider
 ) : ViewModel() {
 
-    private val moodWithHobbyTrackList = moodWithHobbyProvider.provideMoodWithHobbyList(
+    private val moodWithActivityList = moodWithActivitiesProvider.provideMoodWithActivityList(
         LocalDate.now().createRangeForCurrentDay()
     ).stateIn(
         scope = viewModelScope,
@@ -73,12 +73,12 @@ class MoodTrackingViewModel(
     )
 
     val state = combine(
-        moodWithHobbyTrackList,
+        moodWithActivityList,
         moodTrackingStatistic,
         chartEntries,
     ) { moodWithHobbyTrackList, moodTrackingStatistic, chartEntries ->
         State(
-            moodWithHobbiesList = moodWithHobbyTrackList,
+            moodWithActivitiesList = moodWithHobbyTrackList,
             moodTrackingStatistic = moodTrackingStatistic,
             chartEntries = chartEntries
         )
@@ -86,14 +86,14 @@ class MoodTrackingViewModel(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
-            moodWithHobbiesList = moodWithHobbyTrackList.value,
+            moodWithActivitiesList = moodWithActivityList.value,
             moodTrackingStatistic = moodTrackingStatistic.value,
             chartEntries = chartEntries.value
         )
     )
 
     data class State(
-        val moodWithHobbiesList: List<MoodWithHobbies>,
+        val moodWithActivitiesList: List<MoodWithActivities>,
         val moodTrackingStatistic: MoodTrackingStatistic?,
         val chartEntries: List<Pair<Int, Int>>
     )

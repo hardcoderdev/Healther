@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -33,8 +34,8 @@ import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.DrinkTypeIte
 import hardcoder.dev.androidApp.ui.formatters.RegexHolder
 import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.waterTracking.DrinkType
 import hardcoder.dev.logic.features.waterTracking.IncorrectMillilitersInput
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackCreateViewModel
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -42,12 +43,15 @@ import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonStyles
 import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.chip.Chip
 import hardcoder.dev.uikit.dialogs.DatePicker
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.ErrorText
 import hardcoder.dev.uikit.text.FilledTextField
 import hardcoder.dev.uikit.text.Title
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 
 @Composable
 fun CreateWaterTrackScreen(
@@ -79,7 +83,7 @@ fun CreateWaterTrackScreen(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.waterTracking_CreateWaterTrack_create_title_topBar,
+                titleResId = R.string.waterTracking_createWaterTrack_create_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -124,7 +128,7 @@ private fun CreateWaterTrackContent(
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             iconResId = R.drawable.ic_done,
-            labelResId = R.string.waterTracking_CreateWaterTrack_saveEntry_buttonText,
+            labelResId = R.string.waterTracking_createWaterTrack_saveEntry_buttonText,
             onClick = onCreateWaterTrack,
             isEnabled = state.creationAllowed
         )
@@ -146,7 +150,7 @@ private fun EnterDrunkMillilitersSection(
     val validatedMillilitersCount = state.validatedMillilitersCount
     val validatedByRegexMillilitersCount = validatedMillilitersCount?.data ?: 0
 
-    Title(text = stringResource(id = R.string.waterTracking_CreateWaterTrack_enterMillilitersCount_text))
+    Title(text = stringResource(id = R.string.waterTracking_createWaterTrack_enterMillilitersCount_text))
     Spacer(modifier = Modifier.height(16.dp))
     FilledTextField(
         value = validatedByRegexMillilitersCount.toString(),
@@ -158,7 +162,7 @@ private fun EnterDrunkMillilitersSection(
             }
         },
         regex = RegexHolder.textFieldDigitRegex,
-        label = R.string.waterTracking_CreateWaterTrack_enterMillilitersCountHint_textField,
+        label = R.string.waterTracking_createWaterTrack_enterMillilitersCountHint_textField,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done
@@ -175,11 +179,11 @@ private fun EnterDrunkMillilitersSection(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                 text = when (validatedMillilitersCount.reason) {
                     is IncorrectMillilitersInput.Reason.Empty -> {
-                        stringResource(R.string.waterTracking_CreateWaterTrack_millilitersEmpty_text)
+                        stringResource(R.string.waterTracking_createWaterTrack_millilitersEmpty_text)
                     }
 
                     is IncorrectMillilitersInput.Reason.MoreThanDailyWaterIntake -> {
-                        stringResource(R.string.waterTracking_CreateWaterTrack_millilitersMoreThanDailyWaterIntake_text)
+                        stringResource(R.string.waterTracking_createWaterTrack_millilitersMoreThanDailyWaterIntake_text)
                     }
 
                     else -> {
@@ -197,7 +201,7 @@ private fun SelectDrinkTypeSection(
     updateSelectedDrink: (DrinkType) -> Unit,
     onManageDrinkType: () -> Unit
 ) {
-    Title(text = stringResource(id = R.string.waterTracking_CreateWaterTrack_enterDrinkType_text))
+    Title(text = stringResource(id = R.string.waterTracking_createWaterTrack_enterDrinkType_text))
     Spacer(modifier = Modifier.height(8.dp))
     FlowRow(
         modifier = Modifier
@@ -205,20 +209,7 @@ private fun SelectDrinkTypeSection(
             .horizontalScroll(rememberScrollState()),
         maxItemsInEachRow = 8
     ) {
-        DrinkTypeItem(
-            modifier = Modifier.padding(4.dp),
-            interactionType = InteractionType.ACTION,
-            selectedDrinkType = state.selectedDrink,
-            drinkType = DrinkType(
-                id = 0,
-                name = stringResource(id = R.string.waterTracking_CreateWaterTrack_createDrinkType_management_text),
-                icon = LocalIconImpl(0, R.drawable.ic_create),
-                hydrationIndexPercentage = 0
-            ),
-            onSelect = {
-                onManageDrinkType()
-            }
-        )
+        DrinkTypeManagementButton(onManageDrinkType = onManageDrinkType)
         state.drinks.forEach { drink ->
             DrinkTypeItem(
                 modifier = Modifier.padding(4.dp),
@@ -232,27 +223,40 @@ private fun SelectDrinkTypeSection(
 }
 
 @Composable
+private fun DrinkTypeManagementButton(onManageDrinkType: () -> Unit) {
+    Chip(
+        modifier = Modifier.padding(4.dp),
+        interactionType = InteractionType.ACTION,
+        onClick = { onManageDrinkType() },
+        text = stringResource(id = R.string.waterTracking_createWaterTrack_createDrinkType_management_text),
+        iconResId = LocalIconImpl(0, R.drawable.ic_create).resourceId,
+        shape = RoundedCornerShape(32.dp),
+        isSelected = false
+    )
+}
+
+@Composable
 private fun SelectDateSection(
     state: WaterTrackCreateViewModel.State,
     onShowDatePicker: () -> Unit
 ) {
     val uiModule = LocalUIModule.current
     val dateTimeFormatter = uiModule.dateTimeFormatter
-    val selectedDate = state.selectedDate.date
+    val selectedDate = state.selectedDate.toInstant(TimeZone.currentSystemDefault())
     val formattedDate = dateTimeFormatter.formatDateTime(selectedDate)
 
-    Title(text = stringResource(id = R.string.waterTracking_CreateWaterTrack_selectAnotherDate_text))
+    Title(text = stringResource(id = R.string.waterTracking_createWaterTrack_selectAnotherDate_text))
     Spacer(modifier = Modifier.height(16.dp))
     Description(
         text = stringResource(
-            id = R.string.waterTracking_CreateWaterTrack_selectedDate_formatText,
+            id = R.string.waterTracking_createWaterTrack_selectedDate_formatText,
             formatArgs = arrayOf(formattedDate)
         )
     )
     Spacer(modifier = Modifier.height(16.dp))
     IconTextButton(
         iconResId = R.drawable.ic_date_range,
-        labelResId = R.string.waterTracking_CreateWaterTrack_selectDateRange_buttonText,
+        labelResId = R.string.waterTracking_createWaterTrack_selectDateRange_buttonText,
         style = ButtonStyles.OUTLINED,
         onClick = onShowDatePicker
     )

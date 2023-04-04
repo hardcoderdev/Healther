@@ -2,10 +2,10 @@ package hardcoder.dev.presentation.setUpFlow
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import hardcoder.dev.logic.appPreferences.AppPreference
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
-import hardcoder.dev.logic.entities.appPreferences.AppPreference
-import hardcoder.dev.logic.entities.hero.Gender
 import hardcoder.dev.logic.hero.HeroCreator
+import hardcoder.dev.logic.hero.gender.Gender
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 

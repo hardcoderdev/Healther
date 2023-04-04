@@ -1,7 +1,5 @@
 package hardcoder.dev.logic.features.fasting.plan
 
-import hardcoder.dev.logic.entities.features.fasting.FastingPlan
-
 class FastingPlanIdMapper {
 
     private val map = mapOf(

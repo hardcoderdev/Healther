@@ -2,7 +2,7 @@ package hardcoder.dev.logic.features.moodTracking.moodTrack
 
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
-import hardcoder.dev.logic.entities.features.moodTracking.MoodType
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDateTime

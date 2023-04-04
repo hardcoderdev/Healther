@@ -1,7 +1,6 @@
 package hardcoder.dev.logic.features.moodTracking.moodType
 
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.logic.entities.features.moodTracking.MoodType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

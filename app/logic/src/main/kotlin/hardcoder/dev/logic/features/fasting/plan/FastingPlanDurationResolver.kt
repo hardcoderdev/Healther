@@ -1,6 +1,5 @@
 package hardcoder.dev.logic.features.fasting.plan
 
-import hardcoder.dev.logic.entities.features.fasting.FastingPlan
 import kotlin.time.Duration.Companion.hours
 
 class FastingPlanDurationResolver {

@@ -36,8 +36,8 @@
     <string name="pedometer_reject_not_available_description">Без сенсоров шагов у нас физически не получится отслеживать ваши шаги, так как информацию о шагах мы получаем с сенсоров вашего телефона, а так как у вас нет сенсоров, к сожалению вы не сможете воспользоваться этой фичей.</string>
     <string name="pedometer_nowEmpty_text">Сейчас здесь пусто. Чтобы увидеть статистику и график, пройдите несколько десятков шагов.</string>
 
-    <string name="pedometer_History_yourIndicatorsForThisDay_text">Ваши показатели за день:</string>
-    <string name="pedometer_History_weDontHaveEnoughDataToShowChart_text">За этот день недостаточно данных для отображения графика.</string>
-    <string name="pedometer_History_title_topBar">Подробная история</string>
-    <string name="pedometer_History_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
+    <string name="pedometer_history_yourIndicatorsForThisDay_text">Ваши показатели за день:</string>
+    <string name="pedometer_history_weDontHaveEnoughDataToShowChart_text">За этот день недостаточно данных для отображения графика.</string>
+    <string name="pedometer_history_title_topBar">Подробная история</string>
+    <string name="pedometer_history_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
 </resources>

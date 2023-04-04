@@ -25,7 +25,7 @@ import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.extensions.roundAndFormatToString
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.pedometer.statistic.PedometerStatistic
+import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.presentation.features.pedometer.Available
 import hardcoder.dev.presentation.features.pedometer.NotAvailable
 import hardcoder.dev.presentation.features.pedometer.PedometerViewModel

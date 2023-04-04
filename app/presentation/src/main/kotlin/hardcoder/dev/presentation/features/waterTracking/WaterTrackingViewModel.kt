@@ -7,12 +7,12 @@ import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.extensions.mapItems
 import hardcoder.dev.extensions.millisToLocalDateTime
-import hardcoder.dev.logic.entities.features.waterTracking.statistic.WaterTrackingStatistic
-import hardcoder.dev.logic.entities.hero.Hero
 import hardcoder.dev.logic.features.waterTracking.WaterIntakeResolver
 import hardcoder.dev.logic.features.waterTracking.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
+import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatistic
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatisticProvider
+import hardcoder.dev.logic.hero.Hero
 import hardcoder.dev.logic.hero.HeroProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow

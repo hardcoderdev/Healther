@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
-import hardcoder.dev.logic.entities.features.fasting.FastingTrack as FastingTrackEntity
+import hardcoder.dev.logic.features.fasting.track.FastingTrack as FastingTrackEntity
 
 class FastingTrackProvider(
     private val appDatabase: AppDatabase,

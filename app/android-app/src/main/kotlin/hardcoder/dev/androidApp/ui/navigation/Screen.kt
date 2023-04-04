@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import hardcoder.dev.logic.entities.hero.Gender
+import hardcoder.dev.logic.hero.gender.Gender
 
 sealed class Screen(val route: String) {
     object Root : Screen("splash")
@@ -81,11 +81,11 @@ sealed class Screen(val route: String) {
         val arguments = listOf(navArgument("moodTypeId") { type = NavType.IntType })
     }
 
-    object ManageHobbies : Screen("manage_hobbies")
-    object HobbyCreate : Screen("hobby_create")
-    object HobbyUpdate : Screen("hobby_update/{hobbyTrackId}") {
+    object ManageHobbies : Screen("manage_activities")
+    object ActivityCreate : Screen("activity_create")
+    object ActivityUpdate : Screen("activity_update/{activityId}") {
         fun buildRoute(hobbyTrackId: Int) = "hobby_update/$hobbyTrackId"
-        fun getHobbyTrackId(arguments: Bundle?) = requireNotNull(arguments).getInt("hobbyTrackId")
-        val arguments = listOf(navArgument("hobbyTrackId") { type = NavType.IntType })
+        fun getActivityIdId(arguments: Bundle?) = requireNotNull(arguments).getInt("activityId")
+        val arguments = listOf(navArgument("activityId") { type = NavType.IntType })
     }
 }

@@ -3,8 +3,7 @@ package hardcoder.dev.logic.features.waterTracking.statistic
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.WaterTrack
-import hardcoder.dev.logic.entities.features.waterTracking.DrinkType
-import hardcoder.dev.logic.entities.features.waterTracking.statistic.WaterTrackingStatistic
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +14,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.math.roundToInt
-import hardcoder.dev.logic.entities.features.waterTracking.WaterTrack as WaterTrackEntity
+import hardcoder.dev.logic.features.waterTracking.WaterTrack as WaterTrackEntity
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class WaterTrackingStatisticProvider(

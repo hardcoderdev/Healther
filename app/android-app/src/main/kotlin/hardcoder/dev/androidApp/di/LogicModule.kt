@@ -1,11 +1,13 @@
 package hardcoder.dev.androidApp.di
 
 import android.content.Context
-import hardcoder.dev.androidApp.ui.features.moodTracking.hobby.HobbyIconProvider
-import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.MoodTypeIconProvider
+import hardcoder.dev.androidApp.ui.features.moodTracking.activity.ActivityIconProvider
+import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers.MoodTypeIconProvider
+import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers.PredefinedMoodTypeProviderImpl
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.BatteryRequirementsController
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.PedometerManagerImpl
-import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.DrinkTypeIconProvider
+import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.providers.DrinkTypeIconProvider
+import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.providers.PredefinedDrinkTypeProviderImpl
 import hardcoder.dev.database.AppDatabaseFactory
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.logic.DateTimeProvider
@@ -18,11 +20,11 @@ import hardcoder.dev.logic.features.fasting.plan.FastingPlanProvider
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatisticProvider
 import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
-import hardcoder.dev.logic.features.moodTracking.hobby.HobbyCreator
-import hardcoder.dev.logic.features.moodTracking.hobby.HobbyDeleter
-import hardcoder.dev.logic.features.moodTracking.hobby.HobbyNameValidator
-import hardcoder.dev.logic.features.moodTracking.hobby.HobbyProvider
-import hardcoder.dev.logic.features.moodTracking.hobby.HobbyUpdater
+import hardcoder.dev.logic.features.moodTracking.activity.ActivityCreator
+import hardcoder.dev.logic.features.moodTracking.activity.ActivityDeleter
+import hardcoder.dev.logic.features.moodTracking.activity.ActivityNameValidator
+import hardcoder.dev.logic.features.moodTracking.activity.ActivityProvider
+import hardcoder.dev.logic.features.moodTracking.activity.ActivityUpdater
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackCreator
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDeleter
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
@@ -32,9 +34,9 @@ import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeDeleter
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeUpdater
-import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyCreator
-import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyDeleter
-import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyProvider
+import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
+import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityCreator
+import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityDeleter
 import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatisticProvider
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
@@ -56,11 +58,11 @@ import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeNameValidat
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeUpdater
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatisticProvider
-import hardcoder.dev.logic.hero.GenderIdMapper
-import hardcoder.dev.logic.hero.GenderProvider
 import hardcoder.dev.logic.hero.HeroCreator
 import hardcoder.dev.logic.hero.HeroProvider
 import hardcoder.dev.logic.hero.HeroUpdater
+import hardcoder.dev.logic.hero.gender.GenderIdMapper
+import hardcoder.dev.logic.hero.gender.GenderProvider
 import hardcoder.dev.permissions.PermissionsController
 import kotlinx.coroutines.Dispatchers
 
@@ -181,11 +183,10 @@ class LogicModule(private val context: Context) {
 
     val drinkTypeCreator by lazy {
         DrinkTypeCreator(
-            context = context,
             idGenerator = idGenerator,
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO,
-            iconResourceProvider = drinkTypeIconProvider
+            predefinedDrinkTypeProvider = drinkTypePredefinedProvider
         )
     }
 
@@ -213,6 +214,13 @@ class LogicModule(private val context: Context) {
 
     val drinkTypeIconProvider by lazy {
         DrinkTypeIconProvider()
+    }
+
+    private val drinkTypePredefinedProvider by lazy {
+        PredefinedDrinkTypeProviderImpl(
+            context = context,
+            drinkTypeIconProvider = drinkTypeIconProvider
+        )
     }
 
     private val genderIdMapper by lazy {
@@ -316,61 +324,60 @@ class LogicModule(private val context: Context) {
         FastingPlanDurationResolver()
     }
 
-    val hobbyCreator by lazy {
-        HobbyCreator(
+    val activityCreator by lazy {
+        ActivityCreator(
             idGenerator = idGenerator,
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO
         )
     }
 
-    val hobbyUpdater by lazy {
-        HobbyUpdater(
+    val activityUpdater by lazy {
+        ActivityUpdater(
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO
         )
     }
 
-    val hobbyDeleter by lazy {
-        HobbyDeleter(
+    val activityDeleter by lazy {
+        ActivityDeleter(
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO
         )
     }
 
-    val hobbyProvider by lazy {
-        HobbyProvider(
+    val activityProvider by lazy {
+        ActivityProvider(
             appDatabase = appDatabase,
-            iconResourceProvider = hobbyIconProvider
+            iconResourceProvider = activityIconProvider
         )
     }
 
-    val hobbyNameValidator by lazy {
-        HobbyNameValidator()
+    val activityNameValidator by lazy {
+        ActivityNameValidator()
     }
 
-    val hobbyIconProvider by lazy {
-        HobbyIconProvider()
+    val activityIconProvider by lazy {
+        ActivityIconProvider()
     }
 
-    val moodWithHobbyProvider by lazy {
-        MoodWithHobbyProvider(
+    val moodWithActivitiesProvider by lazy {
+        MoodWithActivitiesProvider(
             appDatabase = appDatabase,
             moodTrackProvider = moodTrackProvider,
-            hobbyProvider = hobbyProvider
+            activityProvider = activityProvider
         )
     }
 
-    val moodWithHobbyCreator by lazy {
-        MoodWithHobbyCreator(
-            idGenerator = idGenerator,
+    val moodWithActivityCreator by lazy {
+        MoodWithActivityCreator(
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO
         )
     }
 
-    val moodWithHobbyDeleter by lazy {
-        MoodWithHobbyDeleter(
+    private val moodWithActivityDeleter by lazy {
+        MoodWithActivityDeleter(
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO
         )
@@ -388,8 +395,8 @@ class LogicModule(private val context: Context) {
         MoodTrackUpdater(
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO,
-            moodWithHobbyCreator = moodWithHobbyCreator,
-            moodWithHobbyDeleter = moodWithHobbyDeleter
+            moodWithActivityCreator = moodWithActivityCreator,
+            moodWithActivityDeleter = moodWithActivityDeleter
         )
     }
 
@@ -413,11 +420,10 @@ class LogicModule(private val context: Context) {
 
     val moodTypeCreator by lazy {
         MoodTypeCreator(
-            context = context,
             idGenerator = idGenerator,
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO,
-            iconResourceProvider = moodTypeIconProvider
+            predefinedMoodTypeProvider = predefinedMoodTypeProvider
         )
     }
 
@@ -445,6 +451,13 @@ class LogicModule(private val context: Context) {
 
     val moodTypeIconProvider by lazy {
         MoodTypeIconProvider()
+    }
+
+    private val predefinedMoodTypeProvider by lazy {
+        PredefinedMoodTypeProviderImpl(
+            context = context,
+            moodTypeIconProvider = moodTypeIconProvider
+        )
     }
 
     val moodTrackingStatisticProvider by lazy {

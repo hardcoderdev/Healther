@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import hardcoder.dev.extensions.createRangeForCurrentDay
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
-import hardcoder.dev.logic.entities.features.moodTracking.MoodWithHobbies
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDeleter
-import hardcoder.dev.logic.features.moodTracking.moodWithHobby.MoodWithHobbyProvider
+import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
+import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,26 +21,26 @@ import kotlinx.datetime.LocalDate
 @OptIn(ExperimentalCoroutinesApi::class)
 class MoodTrackingHistoryViewModel(
     private val moodTrackDeleter: MoodTrackDeleter,
-    private val moodWithHobbyProvider: MoodWithHobbyProvider
+    private val moodWithActivitiesProvider: MoodWithActivitiesProvider
 ) : ViewModel() {
 
     private val selectedRange = MutableStateFlow(LocalDate.now().createRangeForCurrentDay())
 
-    private val moodWithHobbyTrackList = selectedRange.flatMapLatest { range ->
-        moodWithHobbyProvider.provideMoodWithHobbyList(range)
+    private val moodWithActivityList = selectedRange.flatMapLatest { range ->
+        moodWithActivitiesProvider.provideMoodWithActivityList(range)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
     )
 
-    val state = moodWithHobbyTrackList.map { moodWithHobbyTrackList ->
-        State(moodTrackWithHobbyList = moodWithHobbyTrackList)
+    val state = moodWithActivityList.map { moodWithActivityList ->
+        State(moodWithActivityList = moodWithActivityList)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
-            moodTrackWithHobbyList = emptyList()
+            moodWithActivityList = emptyList()
         )
     )
 
@@ -54,5 +54,5 @@ class MoodTrackingHistoryViewModel(
         }
     }
 
-    data class State(val moodTrackWithHobbyList: List<MoodWithHobbies>)
+    data class State(val moodWithActivityList: List<MoodWithActivities>)
 }

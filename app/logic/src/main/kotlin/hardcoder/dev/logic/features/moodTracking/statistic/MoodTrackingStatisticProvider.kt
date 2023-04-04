@@ -3,8 +3,7 @@ package hardcoder.dev.logic.features.moodTracking.statistic
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.MoodTrack
-import hardcoder.dev.logic.entities.features.moodTracking.MoodType
-import hardcoder.dev.logic.entities.features.moodTracking.statistic.MoodTrackingStatistic
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import hardcoder.dev.logic.entities.features.moodTracking.MoodTrack as MoodTrackEntity
+import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack as MoodTrackEntity
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MoodTrackingStatisticProvider(

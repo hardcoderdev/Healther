@@ -17,10 +17,10 @@ object Modules {
         val presentation = mapOf("path" to ":app:presentation")
         val logic = mapOf("path" to ":app:logic")
 
-        val extensions = mapOf("path" to ":framework:extensions")
-        val permissions = mapOf("path" to ":framework:permissions")
-        val coroutines = mapOf("path" to ":framework:coroutines")
-        val uikit = mapOf("path" to ":framework:uikit")
-        val utilities = mapOf("path" to ":framework:utilities")
+        val extensions = mapOf("path" to ":foundation:extensions")
+        val permissions = mapOf("path" to ":foundation:permissions")
+        val coroutines = mapOf("path" to ":foundation:coroutines")
+        val uikit = mapOf("path" to ":foundation:uikit")
+        val utilities = mapOf("path" to ":foundation:utilities")
     }
 }

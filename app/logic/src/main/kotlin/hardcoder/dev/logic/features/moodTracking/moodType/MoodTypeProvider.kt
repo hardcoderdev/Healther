@@ -5,7 +5,7 @@ import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.MoodType
 import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.map
-import hardcoder.dev.logic.entities.features.moodTracking.MoodType as MoodTypeEntity
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodType as MoodTypeEntity
 
 class MoodTypeProvider(
     private val appDatabase: AppDatabase,

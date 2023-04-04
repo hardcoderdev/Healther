@@ -14,68 +14,71 @@
     <string name="moodTracking_activity_chart">Mood chart (per month):</string>
     <string name="moodTracking_diary_text">Mood diary:</string>
 
-    <string name="moodTracking_CreateMoodTrack_title_topBar">Track creation</string>
-    <string name="moodTracking_CreateMoodTrack_enterTitle_textField">Enter title…</string>
-    <string name="moodTracking_CreateMoodTrack_enterNote_textField">Enter your note here…</string>
-    <string name="moodTracking_CreateMoodTrack_buttonText">Save track</string>
-    <string name="moodTracking_CreateMoodTrack_youCanAddNote_text">You can add a note:</string>
-    <string name="moodTracking_CreateMoodTrack_howYouFeelYourself_text">How are you feeling right now?</string>
-    <string name="moodTracking_CreateMoodTrack_youMaySelectHobbies_text">You can mark what you did:</string>
-    <string name="moodTracking_CreateMoodTrack_manageHobby_buttonText">Activity management</string>
+    <string name="moodTracking_createMoodTrack_title_topBar">Track creation</string>
+    <string name="moodTracking_createMoodTrack_enterTitle_textField">Enter title…</string>
+    <string name="moodTracking_createMoodTrack_enterNote_textField">Enter your note here…</string>
+    <string name="moodTracking_createMoodTrack_buttonText">Save track</string>
+    <string name="moodTracking_createMoodTrack_youCanAddNote_text">You can add a note:</string>
+    <string name="moodTracking_createMoodTrack_howYouFeelYourself_text">How are you feeling right now?</string>
+    <string name="moodTracking_createMoodTrack_youMaySelectActivities_text">You can mark what you did:</string>
+    <string name="moodTracking_createMoodTrack_manageActivities_buttonText">Activity management</string>
 
-    <string name="moodTracking_UpdateMoodTrack_enterNote_textField">Enter your note here…</string>
-    <string name="moodTracking_UpdateMoodTrack_enterTitle_textField">Enter title…</string>
-    <string name="moodTracking_UpdateMoodTrack_buttonText">Update track</string>
+    <string name="moodTracking_updateMoodTrack_enterNote_textField">Enter your note here…</string>
+    <string name="moodTracking_updateMoodTrack_enterTitle_textField">Enter title…</string>
+    <string name="moodTracking_updateMoodTrack_buttonText">Update track</string>
+    <string name="moodTracking_updateMoodTrack_manageActivities_buttonText">Activity management</string>
 
-    <string name="moodTracking_History_title_topBar">Detailed history</string>
-    <string name="moodTracking_History_emptyDay_text">You haven\'t added any entries on this day.</string>
+    <string name="moodTracking_history_title_topBar">Detailed history</string>
+    <string name="moodTracking_history_emptyDay_text">You haven\'t added any entries on this day.</string>
 
-    <string name="moodTracking_Item_feel_formatText">You felt like %s in %s today.</string>
+    <string name="moodTracking_item_feel_formatText">You felt like %s in %s today.</string>
+    <string name="moodTracking_item_activity_left_count_format">%d more activities…</string>
 
-    <string name="moodTracking_HobbyCreateTrack_title_topBar">Create an activity</string>
-    <string name="moodTracking_HobbyCreateTrack_enter_name_text">Enter the name of the activity:</string>
-    <string name="moodTracking_HobbyCreateTrack_enterHobbyName_textField">For example: work…</string>
-    <string name="moodTracking_HobbyCreateTrack_selectIcon_text">Select an activity icon:</string>
-    <string name="moodTracking_HobbyCreateTrack_saveTrack_buttonText">Save activity</string>
-    <string name="moodTracking_HobbyCreateTrack_nameEmpty_error">The name can\'t be empty!</string>
-    <string name="moodTracking_HobbyCreateTrack_nameMoreThanMaxChars_error">Max characters: %d</string>
-    <string name="moodTracking_HobbyCreateTrack_iconContentDescription">Activity icon</string>
+    <string name="moodTracking_createActivity_title_topBar">Create an activity</string>
+    <string name="moodTracking_createActivity_enter_name_text">Enter the name of the activity:</string>
+    <string name="moodTracking_createActivity_enterActivityName_textField">For example: work…</string>
+    <string name="moodTracking_createActivity_selectIcon_text">Select an activity icon:</string>
+    <string name="moodTracking_createActivity_saveTrack_buttonText">Save activity</string>
+    <string name="moodTracking_createActivity_nameEmpty_error">The name can\'t be empty!</string>
+    <string name="moodTracking_createActivity_nameMoreThanMaxChars_error">Max characters: %d</string>
+    <string name="moodTracking_createActivity_iconContentDescription">Activity icon</string>
 
-    <string name="moodTracking_HobbyUpdateTrack_title_topBar">Activity update</string>
-    <string name="moodTracking_HobbyUpdateTrack_saveTrack_buttonText">Update activity</string>
-    <string name="moodTracking_HobbyUpdateTrack_selectIcon_text">Select an activity icon:</string>
-    <string name="moodTracking_HobbyUpdateTrack_nameMoreThanMaxChars_error">Max characters: %d</string>
-    <string name="moodTracking_HobbyUpdateTrack_nameEmpty_error">The name can\'t be empty!</string>
-    <string name="moodTracking_HobbyUpdateTrack_enterHobbyName_textField">For example: work…</string>
-    <string name="moodTracking_HobbyUpdateTrack_enter_name_text">Enter the name of the activity:</string>
+    <string name="moodTracking_updateActivity_title_topBar">Activity update</string>
+    <string name="moodTracking_updateActivity_saveTrack_buttonText">Update activity</string>
+    <string name="moodTracking_updateActivity_selectIcon_text">Select an activity icon:</string>
+    <string name="moodTracking_updateActivity_nameMoreThanMaxChars_error">Max characters: %d</string>
+    <string name="moodTracking_updateActivity_nameEmpty_error">The name can\'t be empty!</string>
+    <string name="moodTracking_updateActivity_enterActivityName_textField">For example: work…</string>
+    <string name="moodTracking_updateActivity_enter_name_text">Enter the name of the activity:</string>
+    <string name="moodTracking_updateActivity_activityIconContentDescription">Activity icon</string>
 
-    <string name="moodTracking_HobbyManageTracks_title_topBar">Activities management</string>
-    <string name="moodTracking_HobbyManageTracks_nowEmpty_text">Now it\'s empty. To create a new activity and then attach it to the emotion recording, click on the button at the bottom right.</string>
+    <string name="moodTracking_manageActivities_title_topBar">Activities management</string>
+    <string name="moodTracking_manageActivities_nowEmpty_text">Now it\'s empty. To create a new activity and then attach it to the emotion recording, click on the button at the bottom right.</string>
 
-    <string name="moodTracking_MoodTypeManageTracks_title_topBar">Mood management</string>
-    <string name="moodTracking_MoodTypeManageTracks_nowEmpty_text">Now it\'s empty. To create a new mood and then use it in the emotion recording, click on the button at the bottom right.</string>
+    <string name="moodTracking_moodTypeManageTracks_title_topBar">Mood management</string>
+    <string name="moodTracking_moodTypeManageTracks_nowEmpty_text">Now it\'s empty. To create a new mood and then use it in the emotion recording, click on the button at the bottom right.</string>
 
-    <string name="moodTracking_CreateMoodType_title_topBar">Mood creation</string>
-    <string name="moodTracking_CreateMoodType_buttonText">Save mood</string>
-    <string name="moodTracking_CreateMoodType_enterName_text">Enter mood title:</string>
-    <string name="moodTracking_CreateMoodType_enterName_textField">For example, inspiring…</string>
-    <string name="moodTracking_CreateMoodType_selectIcon_text">Select mood icon:</string>
-    <string name="moodTracking_CreateMoodType_selectPositivePercentage_text">How positive is this mood?</string>
-    <string name="moodTracking_CreateMoodType_selectedIndex_formatText">Selected percent: %d%%</string>
-    <string name="moodTracking_CreateMoodTrack_manageMoodTypes_buttonText">Management</string>
-    <string name="moodTracking_CreateMoodTrack_selectDateRange_buttonText">Select date</string>
-    <string name="moodTracking_CreateMoodTrack_selectedDate_formatText">Selected date: %s</string>
-    <string name="moodTracking_CreateMoodTrack_selectAnotherDate_text">Do you want to save the mood for another date?</string>
+    <string name="moodTracking_createMoodType_title_topBar">Mood creation</string>
+    <string name="moodTracking_createMoodType_buttonText">Save mood</string>
+    <string name="moodTracking_createMoodType_enterName_text">Enter mood title:</string>
+    <string name="moodTracking_createMoodType_enterName_textField">For example, inspiring…</string>
+    <string name="moodTracking_createMoodType_selectIcon_text">Select mood icon:</string>
+    <string name="moodTracking_createMoodType_selectPositivePercentage_text">How positive is this mood?</string>
+    <string name="moodTracking_createMoodType_selectedIndex_formatText">Selected percent: %d%%</string>
+    <string name="moodTracking_createMoodTrack_manageMoodTypes_buttonText">Management</string>
+    <string name="moodTracking_createMoodTrack_selectDateRange_buttonText">Select date</string>
+    <string name="moodTracking_createMoodTrack_selectedDate_formatText">Selected date: %s</string>
+    <string name="moodTracking_createMoodTrack_selectAnotherDate_text">Do you want to save the mood for another date?</string>
 
-    <string name="moodTracking_UpdateMoodType_title_topBar">Mood update</string>
-    <string name="moodTracking_UpdateMoodType_createTrack_buttonText">Update mood</string>
-    <string name="moodTracking_UpdateMoodType_enterName_text">Enter title mood:</string>
-    <string name="moodTracking_UpdateMoodType_selectedPositivePercentage_formatText">Selected percent: %d%%</string>
-    <string name="moodTracking_UpdateMoodType_selectPositivePercentage_text">How positive is this mood?</string>
-    <string name="moodTracking_UpdateMoodType_selectMoodIcon_text">Select mood icon:</string>
-    <string name="moodTracking_UpdateMoodType_enterName_textField">For example, inspiring…</string>
-    <string name="moodTracking_UpdateMoodTrack_manageMoodTypes_buttonText">Mood management</string>
-    <string name="moodTracking_UpdateMoodTrack_selectAnotherDate_text">Do you want to save the mood for another date?</string>
-    <string name="moodTracking_UpdateMoodTrack_selectedDate_formatText">Selected date: %s</string>
-    <string name="moodTracking_UpdateMoodTrack_selectDateRange_buttonText">Select date</string>
+    <string name="moodTracking_updateMoodType_title_topBar">Mood update</string>
+    <string name="moodTracking_updateMoodType_createTrack_buttonText">Update mood</string>
+    <string name="moodTracking_updateMoodType_enterName_text">Enter title mood:</string>
+    <string name="moodTracking_updateMoodType_selectedPositivePercentage_formatText">Selected percent: %d%%</string>
+    <string name="moodTracking_updateMoodType_selectPositivePercentage_text">How positive is this mood?</string>
+    <string name="moodTracking_updateMoodType_selectMoodIcon_text">Select mood icon:</string>
+    <string name="moodTracking_updateMoodType_enterName_textField">For example, inspiring…</string>
+    <string name="moodTracking_updateMoodTrack_manageMoodTypes_buttonText">Mood management</string>
+    <string name="moodTracking_updateMoodTrack_selectAnotherDate_text">Do you want to save the mood for another date?</string>
+    <string name="moodTracking_updateMoodTrack_selectedDate_formatText">Selected date: %s</string>
+    <string name="moodTracking_updateMoodTrack_selectDateRange_buttonText">Select date</string>
 </resources>

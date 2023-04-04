@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.waterTracking.DrinkType
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeManageViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
@@ -43,7 +43,7 @@ fun DrinkTypeManageScreen(
         onFabClick = onCreateDrinkType,
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.waterTracking_DrinkTypeManage_title_topBar,
+                titleResId = R.string.waterTracking_drinkTypeManage_title_topBar,
                 onGoBack = onGoBack
             )
         )

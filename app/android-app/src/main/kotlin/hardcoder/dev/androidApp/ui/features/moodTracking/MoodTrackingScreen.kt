@@ -21,8 +21,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.moodTracking.MoodTrack
-import hardcoder.dev.logic.entities.features.moodTracking.statistic.MoodTrackingStatistic
+import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
+import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatistic
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
@@ -86,13 +86,13 @@ fun MoodContent(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        if (state.chartEntries.isNotEmpty() && state.moodTrackingStatistic != null && state.moodWithHobbiesList.isNotEmpty()) {
+        if (state.chartEntries.isNotEmpty() && state.moodTrackingStatistic != null && state.moodWithActivitiesList.isNotEmpty()) {
             MoodTrackingStatisticSection(statistic = requireNotNull(state.moodTrackingStatistic))
             Spacer(modifier = Modifier.height(32.dp))
             MoodTrackingChartSection(state = state)
             Spacer(modifier = Modifier.height(32.dp))
             MoodTrackingDiarySection(state = state, onUpdateTrack = onUpdateTrack)
-        } else if (state.moodWithHobbiesList.isEmpty()) {
+        } else if (state.moodWithActivitiesList.isEmpty()) {
             EmptySection(emptyTitleResId = R.string.moodTracking_nowEmpty_text)
         } else {
             EmptyBlock(
@@ -149,11 +149,11 @@ private fun ColumnScope.MoodTrackingDiarySection(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
-        items(state.moodWithHobbiesList) { track ->
+        items(state.moodWithActivitiesList) { track ->
             MoodTrackItem(
                 moodTrack = track.moodTrack,
                 onUpdate = onUpdateTrack,
-                hobbyList = track.hobbyList
+                activitiesList = track.activityList
             )
         }
     }

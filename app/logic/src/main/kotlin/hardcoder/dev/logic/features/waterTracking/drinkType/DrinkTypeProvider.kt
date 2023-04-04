@@ -5,7 +5,7 @@ import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.DrinkType
 import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.map
-import hardcoder.dev.logic.entities.features.waterTracking.DrinkType as DrinkTypeEntity
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType as DrinkTypeEntity
 
 class DrinkTypeProvider(
     private val appDatabase: AppDatabase,

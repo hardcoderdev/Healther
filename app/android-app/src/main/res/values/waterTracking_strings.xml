@@ -14,53 +14,53 @@
     <string name="waterTracking_activity_chart">График активности (по часам):</string>
     <string name="waterTracking_diary_text">Дневник выпитого:</string>
 
-    <string name="waterTracking_CreateWaterTrack_create_title_topBar">Создание записи</string>
-    <string name="waterTracking_CreateWaterTrack_selectDateRange_buttonText">Выбрать дату</string>
-    <string name="waterTracking_CreateWaterTrack_enterMillilitersCount_text">Введите количество выпитого напитка (в мл):</string>
-    <string name="waterTracking_CreateWaterTrack_enterMillilitersCountHint_textField">Количество выпитого напитка…</string>
-    <string name="waterTracking_CreateWaterTrack_selectAnotherDate_text">Уже пили воду раньше?\nВы можете изменить дату.</string>
-    <string name="waterTracking_CreateWaterTrack_enterDrinkType_text">Выберите тип напитка…</string>
-    <string name="waterTracking_CreateWaterTrack_saveEntry_buttonText">Создать запись</string>
-    <string name="waterTracking_CreateWaterTrack_millilitersEmpty_text">Это поле не может быть пустым!</string>
-    <string name="waterTracking_CreateWaterTrack_selectedDate_formatText">Выбранная дата: %s</string>
-    <string name="waterTracking_CreateWaterTrack_millilitersMoreThanDailyWaterIntake_text">Введёные вами мл больше, чем дневная норма!</string>
-    <string name="waterTracking_CreateWaterTrack_createDrinkType_management_text">Управление напитками</string>
+    <string name="waterTracking_createWaterTrack_create_title_topBar">Создание записи</string>
+    <string name="waterTracking_createWaterTrack_selectDateRange_buttonText">Выбрать дату</string>
+    <string name="waterTracking_createWaterTrack_enterMillilitersCount_text">Введите количество выпитого напитка (в мл):</string>
+    <string name="waterTracking_createWaterTrack_enterMillilitersCountHint_textField">Количество выпитого напитка…</string>
+    <string name="waterTracking_createWaterTrack_selectAnotherDate_text">Уже пили воду раньше?\nВы можете изменить дату.</string>
+    <string name="waterTracking_createWaterTrack_enterDrinkType_text">Выберите тип напитка…</string>
+    <string name="waterTracking_createWaterTrack_saveEntry_buttonText">Создать запись</string>
+    <string name="waterTracking_createWaterTrack_millilitersEmpty_text">Это поле не может быть пустым!</string>
+    <string name="waterTracking_createWaterTrack_selectedDate_formatText">Выбранная дата: %s</string>
+    <string name="waterTracking_createWaterTrack_millilitersMoreThanDailyWaterIntake_text">Введёные вами мл больше, чем дневная норма!</string>
+    <string name="waterTracking_createWaterTrack_createDrinkType_management_text">Управление напитками</string>
 
-    <string name="waterTracking_UpdateWaterTrack_updateEntry_buttonText">Обновить запись</string>
-    <string name="waterTracking_UpdateWaterTrack_update_title_topBar">Обновление записи</string>
-    <string name="waterTracking_UpdateWaterTrack_selectDateRange_buttonText">Выбрать дату</string>
-    <string name="waterTracking_UpdateWaterTrack_enterMillilitersCountHint_textField">Количество выпитого напитка…</string>
-    <string name="waterTracking_UpdateWaterTrack_selectAnotherDate_text">Уже пили воду раньше? Вы можете изменить дату.</string>
-    <string name="waterTracking_UpdateWaterTrack_enterDrinkType_text">Выберите тип напитка…</string>
-    <string name="waterTracking_UpdateWaterTrack_selectedDate_formatText">Выбранная дата: %s</string>
-    <string name="waterTracking_UpdateWaterTrack_millilitersEmpty_text">Это поле не может быть пустым!</string>
-    <string name="waterTracking_UpdateWaterTrack_millilitersMoreThanDailyWaterIntake_text">Введёные вами мл больше, чем дневная норма!</string>
-    <string name="waterTracking_UpdateWaterTrack_createCustomDrinkType_buttonText">Создать свой напиток</string>
+    <string name="waterTracking_updateWaterTrack_updateEntry_buttonText">Обновить запись</string>
+    <string name="waterTracking_updateWaterTrack_update_title_topBar">Обновление записи</string>
+    <string name="waterTracking_updateWaterTrack_selectDateRange_buttonText">Выбрать дату</string>
+    <string name="waterTracking_updateWaterTrack_enterMillilitersCountHint_textField">Количество выпитого напитка…</string>
+    <string name="waterTracking_updateWaterTrack_selectAnotherDate_text">Уже пили воду раньше? Вы можете изменить дату.</string>
+    <string name="waterTracking_updateWaterTrack_enterDrinkType_text">Выберите тип напитка…</string>
+    <string name="waterTracking_updateWaterTrack_selectedDate_formatText">Выбранная дата: %s</string>
+    <string name="waterTracking_updateWaterTrack_millilitersEmpty_text">Это поле не может быть пустым!</string>
+    <string name="waterTracking_updateWaterTrack_millilitersMoreThanDailyWaterIntake_text">Введёные вами мл больше, чем дневная норма!</string>
+    <string name="waterTracking_updateWaterTrack_createCustomDrinkType_buttonText">Создать свой напиток</string>
+    <string name="waterTracking_updateWaterTrack_createDrinkType_management_text">Управление напитками</string>
 
-    <string name="waterTracking_History_title_topBar">Подробная история</string>
-    <string name="waterTracking_History_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
+    <string name="waterTracking_history_title_topBar">Подробная история</string>
+    <string name="waterTracking_history_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
 
-    <string name="waterTracking_DrinkTypeManage_title_topBar">Управление напитками</string>
-    <string name="waterTracking_DrinkTypeManage_nowEmpty_text">Сейчас здесь пусто. Для того, чтобы добавить кастомный напиток воспользуйтесь кнопкой в правом нижнем углу!</string>
+    <string name="waterTracking_drinkTypeManage_title_topBar">Управление напитками</string>
+    <string name="waterTracking_drinkTypeManage_nowEmpty_text">Сейчас здесь пусто. Для того, чтобы добавить кастомный напиток воспользуйтесь кнопкой в правом нижнем углу!</string>
 
-    <string name="waterTracking_CreateDrinkType_title_topBar">Создание напитка</string>
-    <string name="waterTracking_CreateDrinkType_enterName_text">Введите название напитка:</string>
-    <string name="waterTracking_CreateDrinkType_nameIcon_contentDescription">Иконка ввода названия</string>
-    <string name="waterTracking_CreateDrinkType_enterName_textField">Например, Джин-тоник…</string>
-    <string name="waterTracking_CreateDrinkType_selectIcon_text">Выберите иконку напитка:</string>
-    <string name="waterTracking_CreateDrinkType_drinkTypeIconContentDescription">Иконка напитка</string>
-    <string name="waterTracking_CreateDrinkType_selectHydrationIndex_text">Укажите индекс гидратации напитка:</string>
-    <string name="waterTracking_CreateDrinkType_selectedIndex_formatText">Выбранный индекс: %d%%</string>
-    <string name="waterTracking_CreateDrinkType_createTrack_buttonText">Сохранить напиток</string>
+    <string name="waterTracking_createDrinkType_title_topBar">Создание напитка</string>
+    <string name="waterTracking_createDrinkType_enterName_text">Введите название напитка:</string>
+    <string name="waterTracking_createDrinkType_nameIcon_contentDescription">Иконка ввода названия</string>
+    <string name="waterTracking_createDrinkType_enterName_textField">Например, Джин-тоник…</string>
+    <string name="waterTracking_createDrinkType_selectIcon_text">Выберите иконку напитка:</string>
+    <string name="waterTracking_createDrinkType_drinkTypeIconContentDescription">Иконка напитка</string>
+    <string name="waterTracking_createDrinkType_selectHydrationIndex_text">Укажите индекс гидратации напитка:</string>
+    <string name="waterTracking_createDrinkType_selectedIndex_formatText">Выбранный индекс: %d%%</string>
+    <string name="waterTracking_createDrinkType_createTrack_buttonText">Сохранить напиток</string>
 
-    <string name="waterTracking_UpdateDrinkType_title_topBar">Обновление напитка</string>
-    <string name="waterTracking_UpdateDrinkType_selectedIndex_formatText">Выбранный индекс: %d%%</string>
-    <string name="waterTracking_UpdateDrinkType_selectHydrationIndex_text">Укажите индекс гидратации напитка:</string>
-    <string name="waterTracking_UpdateDrinkType_drinkTypeIconContentDescription">Иконка напитка</string>
-    <string name="waterTracking_UpdateDrinkType_selectIcon_text">Выберите иконку напитка:</string>
-    <string name="waterTracking_UpdateDrinkType_nameIcon_contentDescription">Иконка ввода названия</string>
-    <string name="waterTracking_UpdateDrinkType_enterName_textField">Например, Джин-тоник…</string>
-    <string name="waterTracking_UpdateDrinkType_enterName_text">Введите название напитка:</string>
-    <string name="waterTracking_UpdateDrinkType_createTrack_buttonText">Обновить напиток</string>
-
+    <string name="waterTracking_updateDrinkType_title_topBar">Обновление напитка</string>
+    <string name="waterTracking_updateDrinkType_selectedIndex_formatText">Выбранный индекс: %d%%</string>
+    <string name="waterTracking_updateDrinkType_selectHydrationIndex_text">Укажите индекс гидратации напитка:</string>
+    <string name="waterTracking_updateDrinkType_drinkTypeIconContentDescription">Иконка напитка</string>
+    <string name="waterTracking_updateDrinkType_selectIcon_text">Выберите иконку напитка:</string>
+    <string name="waterTracking_updateDrinkType_nameIcon_contentDescription">Иконка ввода названия</string>
+    <string name="waterTracking_updateDrinkType_enterName_textField">Например, Джин-тоник…</string>
+    <string name="waterTracking_updateDrinkType_enterName_text">Введите название напитка:</string>
+    <string name="waterTracking_updateDrinkType_createTrack_buttonText">Обновить напиток</string>
 </resources>

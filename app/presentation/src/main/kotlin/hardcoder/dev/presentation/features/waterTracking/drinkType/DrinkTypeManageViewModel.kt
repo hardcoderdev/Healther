@@ -2,7 +2,7 @@ package hardcoder.dev.presentation.features.waterTracking.drinkType
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.logic.entities.features.waterTracking.DrinkType
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map

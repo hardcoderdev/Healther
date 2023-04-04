@@ -2,7 +2,7 @@ package hardcoder.dev.androidApp.ui.features.moodTracking.statistic
 
 import android.content.Context
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.moodTracking.statistic.MoodTrackingStatistic
+import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatistic
 import hardcoder.dev.uikit.StatisticData
 
 class MoodTrackingStatisticResolver(private val context: Context) {

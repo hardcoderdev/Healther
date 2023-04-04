@@ -3,8 +3,6 @@ package hardcoder.dev.logic.features.fasting.statistic
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.logic.DateTimeProvider
-import hardcoder.dev.logic.entities.features.fasting.statistic.FastingDurationStatistic
-import hardcoder.dev.logic.entities.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
 import kotlinx.coroutines.flow.Flow

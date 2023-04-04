@@ -20,7 +20,7 @@ import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.waterTracking.statistic.WaterTrackingStatistic
+import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatistic
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackItem
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingViewModel
 import hardcoder.dev.uikit.Action

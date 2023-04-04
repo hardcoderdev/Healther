@@ -7,11 +7,11 @@ import hardcoder.dev.androidApp.ui.features.fasting.FastingScreen
 import hardcoder.dev.androidApp.ui.features.fasting.create.FastingCreationTrackScreen
 import hardcoder.dev.androidApp.ui.features.fasting.history.FastingHistoryScreen
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodTrackingScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.activity.ManageActivitiesScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.activity.create.CreateActivityScreen
+import hardcoder.dev.androidApp.ui.features.moodTracking.activity.update.UpdateActivityScreen
 import hardcoder.dev.androidApp.ui.features.moodTracking.create.CreateMoodTrackScreen
 import hardcoder.dev.androidApp.ui.features.moodTracking.history.MoodTrackingHistoryScreen
-import hardcoder.dev.androidApp.ui.features.moodTracking.hobby.ManageHobbyScreen
-import hardcoder.dev.androidApp.ui.features.moodTracking.hobby.create.CreateHobbyTrackScreen
-import hardcoder.dev.androidApp.ui.features.moodTracking.hobby.update.UpdateHobbyTrackScreen
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.ManageMoodTypeScreen
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.create.CreateMoodTypeScreen
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.update.UpdateMoodTypeScreen
@@ -29,9 +29,9 @@ import hardcoder.dev.androidApp.ui.setUpFlow.exerciseStress.EnterExerciseStressS
 import hardcoder.dev.androidApp.ui.setUpFlow.gender.SelectGenderScreen
 import hardcoder.dev.androidApp.ui.setUpFlow.weight.EnterWeightScreen
 import hardcoder.dev.androidApp.ui.setUpFlow.welcome.WelcomeScreen
-import hardcoder.dev.logic.entities.hero.Gender
+import hardcoder.dev.logic.hero.gender.Gender
 
-fun NavGraphBuilder.addSetUpDestinations(navController: NavController) {
+fun NavGraphBuilder.setUpDestinations(navController: NavController) {
     composable(route = Screen.Welcome.route) {
         WelcomeScreen(
             onStart = {
@@ -85,7 +85,7 @@ fun NavGraphBuilder.addSetUpDestinations(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.addWaterTrackingDestinations(navController: NavController) {
+fun NavGraphBuilder.waterTrackingDestinations(navController: NavController) {
     composable(route = Screen.WaterTrackingFeature.route) {
         WaterTrackingScreen(
             onGoBack = navController::popBackStack,
@@ -147,7 +147,7 @@ fun NavGraphBuilder.addWaterTrackingDestinations(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.addPedometerDestinations(navController: NavController) {
+fun NavGraphBuilder.pedometerDestinations(navController: NavController) {
     composable(
         route = Screen.PedometerFeature.route,
         deepLinks = Screen.PedometerFeature.deepLinks
@@ -162,7 +162,7 @@ fun NavGraphBuilder.addPedometerDestinations(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.addFastingDestinations(navController: NavController) {
+fun NavGraphBuilder.fastingDestinations(navController: NavController) {
     composable(route = Screen.FastingFeature.route) {
         FastingScreen(
             onGoBack = navController::popBackStack,
@@ -182,7 +182,7 @@ fun NavGraphBuilder.addFastingDestinations(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.addMoodTrackingDestinations(navController: NavController) {
+fun NavGraphBuilder.moodTrackingDestinations(navController: NavController) {
     composable(route = Screen.MoodTrackingFeature.route) {
         MoodTrackingScreen(
             onGoBack = navController::popBackStack,
@@ -235,23 +235,23 @@ fun NavGraphBuilder.addMoodTrackingDestinations(navController: NavController) {
         )
     }
     composable(route = Screen.ManageHobbies.route) {
-        ManageHobbyScreen(
+        ManageActivitiesScreen(
             onGoBack = navController::popBackStack,
-            onCreateHobbyTrack = { navController.navigate(Screen.HobbyCreate.route) },
-            onUpdateHobbyTrack = { navController.navigate(Screen.HobbyUpdate.buildRoute(it.id)) }
+            onCreateActivity = { navController.navigate(Screen.ActivityCreate.route) },
+            onUpdateActivity = { navController.navigate(Screen.ActivityUpdate.buildRoute(it.id)) }
         )
     }
-    composable(route = Screen.HobbyCreate.route) {
-        CreateHobbyTrackScreen(
+    composable(route = Screen.ActivityCreate.route) {
+        CreateActivityScreen(
             onGoBack = navController::popBackStack
         )
     }
     composable(
-        route = Screen.HobbyUpdate.route,
-        arguments = Screen.HobbyUpdate.arguments
+        route = Screen.ActivityUpdate.route,
+        arguments = Screen.ActivityUpdate.arguments
     ) {
-        UpdateHobbyTrackScreen(
-            hobbyTrackId = Screen.HobbyUpdate.getHobbyTrackId(it.arguments),
+        UpdateActivityScreen(
+            activityId = Screen.ActivityUpdate.getActivityIdId(it.arguments),
             onGoBack = navController::popBackStack
         )
     }

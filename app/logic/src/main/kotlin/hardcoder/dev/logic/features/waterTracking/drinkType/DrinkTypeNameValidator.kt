@@ -13,7 +13,9 @@ class DrinkTypeNameValidator {
     private fun String.incorrectReason(): IncorrectValidatedDrinkTypeName.Reason? {
         return when {
             isEmpty() -> IncorrectValidatedDrinkTypeName.Reason.Empty
-            length > DRINK_TYPE_NAME_MAX_CHARS -> IncorrectValidatedDrinkTypeName.Reason.MoreThanMaxChars
+            length > DRINK_TYPE_NAME_MAX_CHARS -> IncorrectValidatedDrinkTypeName.Reason.MoreThanMaxChars(
+                DRINK_TYPE_NAME_MAX_CHARS
+            )
             else -> null
         }
     }
@@ -37,6 +39,6 @@ data class IncorrectValidatedDrinkTypeName(
 ) : ValidatedDrinkTypeName() {
     sealed class Reason {
         object Empty : Reason()
-        object MoreThanMaxChars : Reason()
+        data class MoreThanMaxChars(val maxChars: Int) : Reason()
     }
 }

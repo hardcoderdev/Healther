@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
 import hardcoder.dev.extensions.createRangeForCurrentDay
-import hardcoder.dev.logic.entities.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
+import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatisticProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow

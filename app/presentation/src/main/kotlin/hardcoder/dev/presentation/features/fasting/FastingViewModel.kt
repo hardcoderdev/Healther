@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.logic.DateTimeProvider
-import hardcoder.dev.logic.entities.features.fasting.FastingPlan
-import hardcoder.dev.logic.entities.features.fasting.FastingTrack
-import hardcoder.dev.logic.entities.features.fasting.statistic.FastingStatistic
+import hardcoder.dev.logic.features.fasting.plan.FastingPlan
+import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatisticProvider
 import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
+import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted

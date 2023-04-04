@@ -5,7 +5,7 @@ import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.PedometerTrack
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
-import hardcoder.dev.logic.entities.features.pedometer.PedometerTrack as PedometerTrackEntity
+import hardcoder.dev.logic.features.pedometer.PedometerTrack as PedometerTrackEntity
 
 class PedometerTrackProvider(private val appDatabase: AppDatabase) {
 

@@ -4,7 +4,7 @@ import android.content.Context
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.extensions.roundAndFormatToString
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.pedometer.statistic.PedometerStatistic
+import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.uikit.StatisticData
 
 class PedometerStatisticResolver(

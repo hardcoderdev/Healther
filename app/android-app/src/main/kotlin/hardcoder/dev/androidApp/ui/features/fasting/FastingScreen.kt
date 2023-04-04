@@ -28,8 +28,8 @@ import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.fasting.FastingTrack
-import hardcoder.dev.logic.entities.features.fasting.statistic.FastingStatistic
+import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
+import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig

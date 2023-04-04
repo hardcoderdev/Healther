@@ -3,13 +3,12 @@ package hardcoder.dev.logic.features.pedometer.statistic
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.PedometerTrack
-import hardcoder.dev.logic.entities.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
 import kotlinx.coroutines.flow.map
 import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
-import hardcoder.dev.logic.entities.features.pedometer.PedometerTrack as PedometerTrackEntity
+import hardcoder.dev.logic.features.pedometer.PedometerTrack as PedometerTrackEntity
 
 class PedometerStatisticProvider(
     private val appDatabase: AppDatabase,

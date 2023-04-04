@@ -17,7 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.moodTracking.MoodType
+import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeManageTracksViewModel
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -48,7 +48,7 @@ fun ManageMoodTypeScreen(
         onFabClick = onCreateMoodType,
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.moodTracking_MoodTypeManageTracks_title_topBar,
+                titleResId = R.string.moodTracking_moodTypeManageTracks_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -86,7 +86,7 @@ private fun ManageMoodTypeContent(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            EmptySection(emptyTitleResId = R.string.moodTracking_MoodTypeManageTracks_nowEmpty_text)
+            EmptySection(emptyTitleResId = R.string.moodTracking_moodTypeManageTracks_nowEmpty_text)
         }
     }
 }

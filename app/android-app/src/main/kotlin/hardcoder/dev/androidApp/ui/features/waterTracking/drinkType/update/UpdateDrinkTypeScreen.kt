@@ -90,7 +90,7 @@ fun UpdateDrinkTypeScreen(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.waterTracking_UpdateDrinkType_title_topBar,
+                titleResId = R.string.waterTracking_updateDrinkType_title_topBar,
                 onGoBack = onGoBack
             )
         ),
@@ -135,7 +135,7 @@ private fun UpdateDrinkTypeContent(
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             iconResId = R.drawable.ic_save,
-            labelResId = R.string.waterTracking_UpdateDrinkType_createTrack_buttonText,
+            labelResId = R.string.waterTracking_updateDrinkType_createTrack_buttonText,
             onClick = onUpdateDrinkType,
             isEnabled = state.allowUpdate
         )
@@ -147,13 +147,13 @@ private fun EnterDrinkTypeNameSection(
     state: DrinkTypeUpdateViewModel.State,
     onUpdateName: (String) -> Unit
 ) {
-    Title(text = stringResource(id = R.string.waterTracking_UpdateDrinkType_enterName_text))
+    Title(text = stringResource(id = R.string.waterTracking_updateDrinkType_enterName_text))
     Spacer(modifier = Modifier.height(16.dp))
     FilledTextField(
         modifier = Modifier.fillMaxWidth(),
         value = state.name ?: "",
         onValueChange = onUpdateName,
-        label = R.string.waterTracking_UpdateDrinkType_enterName_textField,
+        label = R.string.waterTracking_updateDrinkType_enterName_textField,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done
@@ -162,7 +162,7 @@ private fun EnterDrinkTypeNameSection(
             Icon(
                 iconResId = R.drawable.ic_description,
                 contentDescription = stringResource(
-                    id = R.string.waterTracking_UpdateDrinkType_nameIcon_contentDescription
+                    id = R.string.waterTracking_updateDrinkType_nameIcon_contentDescription
                 )
             )
         }
@@ -174,7 +174,7 @@ private fun SelectIconSection(
     state: DrinkTypeUpdateViewModel.State,
     onUpdateIcon: (LocalIcon) -> Unit
 ) {
-    Title(text = stringResource(id = R.string.waterTracking_UpdateDrinkType_selectIcon_text))
+    Title(text = stringResource(id = R.string.waterTracking_updateDrinkType_selectIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
     LazyHorizontalGrid(
         modifier = Modifier.height(200.dp),
@@ -186,7 +186,7 @@ private fun SelectIconSection(
         items(state.availableIconsList) {
             IconItem(
                 icon = it,
-                contentDescriptionResId = R.string.waterTracking_UpdateDrinkType_drinkTypeIconContentDescription,
+                contentDescriptionResId = R.string.waterTracking_updateDrinkType_drinkTypeIconContentDescription,
                 selectedIcon = state.selectedIcon,
                 onSelectIcon = onUpdateIcon
             )
@@ -199,11 +199,11 @@ private fun EnterDrinkHydrationIndexPercentageSection(
     state: DrinkTypeUpdateViewModel.State,
     onUpdateHydrationIndex: (Int) -> Unit
 ) {
-    Title(text = stringResource(id = R.string.waterTracking_UpdateDrinkType_selectHydrationIndex_text))
+    Title(text = stringResource(id = R.string.waterTracking_updateDrinkType_selectHydrationIndex_text))
     Spacer(modifier = Modifier.height(16.dp))
     Description(
         text = stringResource(
-            id = R.string.waterTracking_UpdateDrinkType_selectedIndex_formatText,
+            id = R.string.waterTracking_updateDrinkType_selectedIndex_formatText,
             formatArgs = arrayOf(state.hydrationIndexPercentage)
         )
     )

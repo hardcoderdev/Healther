@@ -33,8 +33,8 @@
     <string name="pedometer_reject_not_available_description">Without step sensors, we will not be able to physically track your steps, since we receive information about steps from your phone\'s sensors, and since you do not have sensors, unfortunately you will not be able to use this feature.</string>
     <string name="pedometer_nowEmpty_text">Now it\'s empty. To start tracking steps, click on the button on the top right and grant the necessary permissions. Statistics and graphics will appear after a couple of hours.</string>
 
-    <string name="pedometer_History_yourIndicatorsForThisDay_text">Your scores for the day:</string>
-    <string name="pedometer_History_weDontHaveEnoughDataToShowChart_text">There is not enough data for this day to display a graph.</string>
-    <string name="pedometer_History_title_topBar">Detailed history</string>
-    <string name="pedometer_History_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
+    <string name="pedometer_history_yourIndicatorsForThisDay_text">Your scores for the day:</string>
+    <string name="pedometer_history_weDontHaveEnoughDataToShowChart_text">There is not enough data for this day to display a graph.</string>
+    <string name="pedometer_history_title_topBar">Detailed history</string>
+    <string name="pedometer_history_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
 </resources>

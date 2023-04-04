@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -34,8 +35,8 @@ import hardcoder.dev.androidApp.ui.formatters.RegexHolder
 import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
 import hardcoder.dev.extensions.toDate
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.entities.features.waterTracking.DrinkType
 import hardcoder.dev.logic.features.waterTracking.IncorrectMillilitersInput
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
@@ -45,6 +46,7 @@ import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonStyles
 import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.chip.Chip
 import hardcoder.dev.uikit.dialogs.DatePicker
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.ErrorText
@@ -101,7 +103,7 @@ fun UpdateWaterTrackScreen(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.waterTracking_UpdateWaterTrack_update_title_topBar,
+                titleResId = R.string.waterTracking_updateWaterTrack_update_title_topBar,
                 onGoBack = onGoBack
             )
         ),
@@ -156,7 +158,7 @@ private fun UpdateWaterTrackContent(
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             iconResId = R.drawable.ic_done,
-            labelResId = R.string.waterTracking_UpdateWaterTrack_updateEntry_buttonText,
+            labelResId = R.string.waterTracking_updateWaterTrack_updateEntry_buttonText,
             onClick = onUpdateWaterTrack,
             isEnabled = state.allowUpdate
         )
@@ -190,7 +192,7 @@ private fun EnterDrunkMillilitersSection(
             }
         },
         regex = RegexHolder.textFieldDigitRegex,
-        label = R.string.waterTracking_UpdateWaterTrack_enterMillilitersCountHint_textField,
+        label = R.string.waterTracking_updateWaterTrack_enterMillilitersCountHint_textField,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done
@@ -207,11 +209,11 @@ private fun EnterDrunkMillilitersSection(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp),
                 text = when (validatedMillilitersCount.reason) {
                     is IncorrectMillilitersInput.Reason.Empty -> {
-                        stringResource(R.string.waterTracking_UpdateWaterTrack_millilitersEmpty_text)
+                        stringResource(R.string.waterTracking_updateWaterTrack_millilitersEmpty_text)
                     }
 
                     is IncorrectMillilitersInput.Reason.MoreThanDailyWaterIntake -> {
-                        stringResource(R.string.waterTracking_UpdateWaterTrack_millilitersMoreThanDailyWaterIntake_text)
+                        stringResource(R.string.waterTracking_updateWaterTrack_millilitersMoreThanDailyWaterIntake_text)
                     }
 
                     else -> {
@@ -229,7 +231,7 @@ private fun SelectDrinkTypeSection(
     updateSelectedDrink: (DrinkType) -> Unit,
     onManageDrinkType: () -> Unit
 ) {
-    Title(text = stringResource(id = R.string.waterTracking_UpdateWaterTrack_enterDrinkType_text))
+    Title(text = stringResource(id = R.string.waterTracking_updateWaterTrack_enterDrinkType_text))
     Spacer(modifier = Modifier.height(8.dp))
     FlowRow(
         modifier = Modifier
@@ -237,20 +239,7 @@ private fun SelectDrinkTypeSection(
             .horizontalScroll(rememberScrollState()),
         maxItemsInEachRow = 8
     ) {
-        DrinkTypeItem(
-            modifier = Modifier.padding(4.dp),
-            interactionType = InteractionType.ACTION,
-            selectedDrinkType = state.selectedDrink,
-            drinkType = DrinkType(
-                id = 0,
-                name = stringResource(id = R.string.waterTracking_CreateWaterTrack_createDrinkType_management_text),
-                icon = LocalIconImpl(0, R.drawable.ic_create),
-                hydrationIndexPercentage = 0
-            ),
-            onSelect = {
-                onManageDrinkType()
-            }
-        )
+        DrinkTypeManagementButton(onManageDrinkType = onManageDrinkType)
         state.drinks.forEach { drink ->
             DrinkTypeItem(
                 modifier = Modifier.padding(4.dp),
@@ -263,6 +252,19 @@ private fun SelectDrinkTypeSection(
 }
 
 @Composable
+private fun DrinkTypeManagementButton(onManageDrinkType: () -> Unit) {
+    Chip(
+        modifier = Modifier.padding(4.dp),
+        interactionType = InteractionType.ACTION,
+        onClick = { onManageDrinkType() },
+        text = stringResource(id = R.string.waterTracking_updateWaterTrack_createDrinkType_management_text),
+        iconResId = LocalIconImpl(0, R.drawable.ic_create).resourceId,
+        shape = RoundedCornerShape(32.dp),
+        isSelected = false
+    )
+}
+
+@Composable
 private fun SelectDateSection(
     state: WaterTrackUpdateViewModel.State,
     onShowDatePicker: () -> Unit
@@ -270,18 +272,18 @@ private fun SelectDateSection(
     val selectedDate = state.selectedDate.date.toDate()
     val formattedDate = DateFormat.getDateInstance().format(selectedDate)
 
-    Title(text = stringResource(id = R.string.waterTracking_UpdateWaterTrack_selectAnotherDate_text))
+    Title(text = stringResource(id = R.string.waterTracking_updateWaterTrack_selectAnotherDate_text))
     Spacer(modifier = Modifier.height(16.dp))
     Description(
         text = stringResource(
-            id = R.string.waterTracking_UpdateWaterTrack_selectedDate_formatText,
+            id = R.string.waterTracking_updateWaterTrack_selectedDate_formatText,
             formatArgs = arrayOf(formattedDate)
         )
     )
     Spacer(modifier = Modifier.height(16.dp))
     IconTextButton(
         iconResId = R.drawable.ic_date_range,
-        labelResId = R.string.waterTracking_UpdateWaterTrack_selectDateRange_buttonText,
+        labelResId = R.string.waterTracking_updateWaterTrack_selectDateRange_buttonText,
         style = ButtonStyles.OUTLINED,
         onClick = onShowDatePicker
     )
