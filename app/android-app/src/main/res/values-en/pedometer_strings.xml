@@ -11,7 +11,7 @@
     <string name="pedometer_noHardwareSensorOnDevice_text">Your device is missing a sensor. Unfortunately, you won\'t be able to use this feature.</string>
     <string name="pedometer_stepsLabel_text">Steps</string>
     <string name="pedometer_emptyDayHistory_text">On this day, you didn\'t turn on the pedometer.</string>
-    <string name="pedometer_weDontHaveEnoughDataToShowChart_text">We don\'t have enough data yet to display a graph. Use this feature for a couple of hours and the graph will appear!</string>
+    <string name="pedometer_chartNotEnoughData_text">We don\'t have enough data yet to display a graph. Use this feature for a couple of hours and the graph will appear!</string>
     <string name="pedometer_notification_notificationContentTitle_text">Pedometer</string>
     <string name="pedometer_notification_contentStepFormat_text">Steps passed: %d</string>
     <string name="pedometer_statistic_text">General statistic:</string>
@@ -32,8 +32,9 @@
     <string name="pedometer_reject_permissions_description">We need permission to track your activity in order to be able to receive data from the sensors on your device.</string>
     <string name="pedometer_reject_not_available_description">Without step sensors, we will not be able to physically track your steps, since we receive information about steps from your phone\'s sensors, and since you do not have sensors, unfortunately you will not be able to use this feature.</string>
     <string name="pedometer_nowEmpty_text">Now it\'s empty. To start tracking steps, click on the button on the top right and grant the necessary permissions. Statistics and graphics will appear after a couple of hours.</string>
-    <string name="pedometerHistory_yourIndicatorsForThisDay_text">Your scores for the day:</string>
-    <string name="pedometerHistory_weDontHaveEnoughDataToShowChart_text">There is not enough data for this day to display a graph.</string>
-    <string name="pedometerHistory_title_topBar">Detailed history</string>
-    <string name="pedometerHistory_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
+
+    <string name="pedometer_history_yourIndicatorsForThisDay_text">Your scores for the day:</string>
+    <string name="pedometer_history_weDontHaveEnoughDataToShowChart_text">There is not enough data for this day to display a graph.</string>
+    <string name="pedometer_history_title_topBar">Detailed history</string>
+    <string name="pedometer_history_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
 </resources>

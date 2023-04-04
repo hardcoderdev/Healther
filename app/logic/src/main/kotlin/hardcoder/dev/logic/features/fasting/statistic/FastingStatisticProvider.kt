@@ -2,9 +2,6 @@ package hardcoder.dev.logic.features.fasting.statistic
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.entities.features.fasting.statistic.FastingDurationStatistic
-import hardcoder.dev.entities.features.fasting.statistic.FastingStatistic
-import hardcoder.dev.extensions.toMillis
 import hardcoder.dev.logic.DateTimeProvider
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
@@ -45,8 +42,9 @@ class FastingStatisticProvider(
         .map { selectFastingDurationQuery ->
             val fastingTracksDurationList = selectFastingDurationQuery.executeAsList()
                 .dropLastWhile {
+                    // MAYBE TODO
                     dateTimeProvider.getCurrentTime()
-                        .toMillis(TimeZone.currentSystemDefault()) - it.startTime < it.duration
+                        .toInstant(TimeZone.currentSystemDefault()) - it.startTime < it.duration.hours
                 }.map {
                     it.duration
                 }
@@ -74,7 +72,7 @@ class FastingStatisticProvider(
                 list.isNotEmpty()
             }?.dropLastWhile { fastingTrack ->
                 dateTimeProvider.getCurrentTime()
-                    .toMillis() - fastingTrack.startTime < fastingTrack.duration
+                    .toInstant(TimeZone.currentSystemDefault()) - fastingTrack.startTime < fastingTrack.duration.hours
             }?.groupingBy { fastingTrackDatabase ->
                 fastingPlanIdMapper.mapToFastingPlan(fastingTrackDatabase.fastingPlanId)
             }?.eachCount()?.maxByOrNull { entry ->

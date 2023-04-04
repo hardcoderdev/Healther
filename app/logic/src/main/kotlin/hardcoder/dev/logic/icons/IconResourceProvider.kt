@@ -1,5 +1,6 @@
 package hardcoder.dev.logic.icons
 
 interface IconResourceProvider {
-    fun provideWaterTrackingIconResources(): List<String>
+    fun getIcons(): List<LocalIcon>
+    fun getIcon(id: Long): LocalIcon
 }

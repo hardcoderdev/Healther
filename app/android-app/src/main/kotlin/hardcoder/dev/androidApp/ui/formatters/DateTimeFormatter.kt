@@ -1,32 +1,66 @@
 package hardcoder.dev.androidApp.ui.formatters
 
 import android.content.Context
+import android.text.format.DateFormat
 import hardcoder.dev.healther.R
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toLocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 class DateTimeFormatter(
     private val context: Context,
     private val defaultAccuracy: Accuracy
 ) {
 
-    fun formatDateTime(
-        date: Date,
-        formatPattern: String = DEFAULT_PATTERN
+    private val appTimeZone get() = TimeZone.currentSystemDefault()
+    private val dateFormatter = DateTimeFormatter.ofLocalizedDate(dateFormatStyle)
+    private val timeFormatter = DateTimeFormatter.ofPattern(
+        if (DateFormat.is24HourFormat(context)) "HH:mm"
+        else "hh:mm a"
+    )
+
+    fun formatDate(
+        instant: Instant,
+    ) = formatDate(instant.toLocalDateTime(appTimeZone).date)
+
+    fun formatTime(
+        instant: Instant
     ): String {
-        val simpleDateFormat = SimpleDateFormat(formatPattern, Locale.getDefault())
-        return simpleDateFormat.format(date)
+        val javaDateTime = instant.toLocalDateTime(appTimeZone).toJavaLocalDateTime()
+        return timeFormatter.format(javaDateTime)
     }
 
     fun formatDateTime(
-        dateInMillis: Long,
-        formatPattern: String = DEFAULT_PATTERN
+        instant: Instant,
+    ) = formatDateTime(instant.toLocalDateTime(appTimeZone))
+
+    private fun formatDate(
+        date: LocalDate,
+    ) = dateFormatter.format(date.toJavaLocalDate())!!
+
+    private fun formatDateTime(
+        dateTime: LocalDateTime
     ): String {
-        val date = Date(dateInMillis)
-        val simpleDateFormat = SimpleDateFormat(formatPattern, Locale.getDefault())
-        return simpleDateFormat.format(date)
+        val jDateTime = dateTime.toJavaLocalDateTime()
+        return dateFormatter.format(
+            jDateTime.toLocalDate()
+        ) + ", " + timeFormatter.format(
+            jDateTime.toLocalTime()
+        )
     }
+
+    private fun formatTimeZone(
+        timeZone: TimeZone
+    ) = android.icu.util.TimeZone.getTimeZone(timeZone.id).getDisplayName(
+        false,
+        timeZoneFormatStyle
+    )!!
 
     fun formatMillisDistance(
         distanceInMillis: Long,
@@ -99,7 +133,8 @@ class DateTimeFormatter(
         SECONDS(4)
     }
 
-    private companion object {
-        private const val DEFAULT_PATTERN = "dd.MM, HH:mm:ss"
+    companion object {
+        private val dateFormatStyle = FormatStyle.LONG
+        private const val timeZoneFormatStyle = android.icu.util.TimeZone.LONG_GMT
     }
 }

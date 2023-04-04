@@ -11,8 +11,7 @@ object Android {
 
         const val gradle = "com.android.tools.build:gradle:${Versions.gradle}"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-        const val navigation =
-            "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
+        const val navigation = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
     }
 
     object PackagingOptions {

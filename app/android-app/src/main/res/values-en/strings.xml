@@ -2,7 +2,8 @@
 <resources>
     <string name="app_name">Healther</string>
 
-    <string name="dashboard_featureType_fasting">Fasting</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
 
     <string name="datetime_seconds">%ds</string>
     <string name="datetime_minutes">%dm</string>
@@ -14,8 +15,7 @@
     <string name="liquid_liters">%dl</string>
     <string name="liquid_milliliters">%dml</string>
 
-    <string name="gender_male">Male</string>
-    <string name="gender_female">Female</string>
+    <string name="iconItem_icon_contentDescription">Icon for the element</string>
 
     <string name="deleteDialog_iconContentDescription">Delete icon</string>
     <string name="deleteDialog_no_option">Cancel</string>

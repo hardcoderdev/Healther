@@ -1,13 +1,12 @@
 package hardcoder.dev.logic.features.fasting.track
 
 import android.content.Context
-import android.util.Log
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
-import hardcoder.dev.entities.features.fasting.FastingPlan
 import hardcoder.dev.logic.dataStore.healtherDataStore
+import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CurrentFastingManager(
@@ -37,27 +37,26 @@ class CurrentFastingManager(
     }
 
     suspend fun startFasting(
-        startTime: Long,
+        startTime: Instant,
         duration: Long,
         fastingPlan: FastingPlan
     ) = withContext(dispatcher) {
         val id = idGenerator.nextId()
         setCurrentId(id)
 
-        Log.d("dwdwd", "duration $duration")
         appDatabase.fastingTrackQueries.insert(
             id = id,
             startTime = startTime,
             duration = duration,
             fastingPlanId = fastingPlanIdMapper.mapToId(fastingPlan),
-            interruptedTimeInMillis = null
+            interruptedTime = null
         )
     }
 
     suspend fun interruptFasting() = withContext(dispatcher) {
         appDatabase.fastingTrackQueries.update(
             id = fastingCurrentTrackId.first(),
-            interruptedTimeInMillis = Clock.System.now().toEpochMilliseconds()
+            interruptedTime = Clock.System.now()
         )
     }
 

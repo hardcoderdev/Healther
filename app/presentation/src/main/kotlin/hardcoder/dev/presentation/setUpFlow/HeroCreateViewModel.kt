@@ -2,11 +2,12 @@ package hardcoder.dev.presentation.setUpFlow
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.entities.appPreferences.AppPreference
-import hardcoder.dev.entities.hero.Gender
+import hardcoder.dev.logic.appPreferences.AppPreference
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
 import hardcoder.dev.logic.hero.HeroCreator
+import hardcoder.dev.logic.hero.gender.Gender
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 
 class HeroCreateViewModel(
     private val appPreferenceUpdater: AppPreferenceUpdater,
@@ -25,7 +26,7 @@ class HeroCreateViewModel(
                 gender = gender
             )
 
-            appPreferenceUpdater.update(AppPreference(firstLaunchTime = System.currentTimeMillis()))
+            appPreferenceUpdater.update(AppPreference(firstLaunchTime = Clock.System.now()))
         }
     }
 }

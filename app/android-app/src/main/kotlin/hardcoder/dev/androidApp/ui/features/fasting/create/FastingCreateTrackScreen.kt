@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.fasting.plans.FastingPlanItem
-import hardcoder.dev.entities.features.fasting.FastingPlan
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.presentation.features.fasting.FastingTrackCreateViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
@@ -52,7 +52,7 @@ fun FastingCreationTrackScreen(onGoBack: () -> Unit) {
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.fastingCreation_title_topBar,
+                titleResId = R.string.fasting_createFastingTrack_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -76,7 +76,7 @@ private fun FastingCreationTrackContent(
         Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             iconResId = R.drawable.ic_play,
-            labelResId = R.string.fasting_start_buttonText,
+            labelResId = R.string.fasting_createFastingTrack_start_buttonText,
             onClick = onStartFasting,
             isEnabled = state.creationAllowed
         )
@@ -89,9 +89,9 @@ private fun SelectPlanSection(
     onUpdateSelectedPlan: (FastingPlan, Int?) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Title(text = stringResource(id = R.string.fastingPlanItem_selectPlan_text))
+        Title(text = stringResource(id = R.string.fasting_createFastingTrack_selectPlan_text))
         Spacer(modifier = Modifier.height(16.dp))
-        Description(text = stringResource(id = R.string.fastingPlanItem_planDifficulty_text))
+        Description(text = stringResource(id = R.string.fasting_createFastingTrack_planDifficulty_text))
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),

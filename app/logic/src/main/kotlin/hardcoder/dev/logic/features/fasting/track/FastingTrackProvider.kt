@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
-import hardcoder.dev.entities.features.fasting.FastingTrack as FastingTrackEntity
+import hardcoder.dev.logic.features.fasting.track.FastingTrack as FastingTrackEntity
 
 class FastingTrackProvider(
     private val appDatabase: AppDatabase,
@@ -33,8 +33,8 @@ class FastingTrackProvider(
             }
         }
 
-    fun provideFastingTracksByStartTime(dayRange: LongRange) = appDatabase.fastingTrackQueries
-        .provideFastingTrackByStartTime(dayRange.first, dayRange.last)
+    fun provideFastingTracksByStartTime(dayRange: ClosedRange<Instant>) = appDatabase.fastingTrackQueries
+        .provideFastingTrackByStartTime(dayRange.start, dayRange.endInclusive)
         .asFlow()
         .map {
             it.executeAsList().map { fastingTrackDatabase ->
@@ -54,7 +54,7 @@ class FastingTrackProvider(
         .asFlow()
         .map {
             it.executeAsList().filter { fastingTrack ->
-                fastingTrack.interruptedTimeInMillis == null
+                fastingTrack.interruptedTime == null
             }.map { fastingTrackDatabase ->
                 fastingTrackDatabase.toEntity()
             }
@@ -62,9 +62,9 @@ class FastingTrackProvider(
 
     private fun FastingTrack.toEntity() = FastingTrackEntity(
         id = id,
-        startTime = Instant.fromEpochMilliseconds(startTime),
+        startTime = startTime,
         duration = duration.toDuration(DurationUnit.HOURS),
         fastingPlan = fastingPlanIdMapper.mapToFastingPlan(fastingPlanId),
-        interruptedTime = interruptedTimeInMillis?.let { Instant.fromEpochMilliseconds(it) }
+        interruptedTime = interruptedTime
     )
 }

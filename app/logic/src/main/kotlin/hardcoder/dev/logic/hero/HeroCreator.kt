@@ -1,7 +1,8 @@
 package hardcoder.dev.logic.hero
 
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.entities.hero.Gender
+import hardcoder.dev.logic.hero.gender.Gender
+import hardcoder.dev.logic.hero.gender.GenderIdMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

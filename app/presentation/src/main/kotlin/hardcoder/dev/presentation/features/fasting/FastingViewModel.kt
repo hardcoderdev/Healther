@@ -2,14 +2,14 @@ package hardcoder.dev.presentation.features.fasting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.entities.features.fasting.FastingPlan
-import hardcoder.dev.entities.features.fasting.FastingTrack
-import hardcoder.dev.entities.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
 import hardcoder.dev.logic.DateTimeProvider
+import hardcoder.dev.logic.features.fasting.plan.FastingPlan
+import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatisticProvider
 import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
+import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
@@ -40,7 +40,7 @@ class FastingViewModel(
         initialValue = null
     )
 
-    private val fastingTracksForTheLastWeek =
+    private val fastingTracksForTheLastMonth =
         dateTimeProvider.currentTimeFlow().flatMapLatest { currentDateTime ->
             fastingTrackProvider.provideFastingTracksByStartTime(
                 currentDateTime.date.minus(
@@ -61,7 +61,7 @@ class FastingViewModel(
         initialValue = emptyList()
     )
 
-    private val chartEntries = fastingTracksForTheLastWeek.map { fastingTrackList ->
+    private val chartEntries = fastingTracksForTheLastMonth.map { fastingTrackList ->
         fastingTrackList.groupBy {
             it.startTime.toLocalDateTime(TimeZone.currentSystemDefault()).date.dayOfMonth
         }.map { entry ->

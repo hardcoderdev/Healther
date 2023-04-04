@@ -2,7 +2,7 @@ package hardcoder.dev.presentation.features.fasting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.entities.features.fasting.FastingPlan
+import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanDurationResolver
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanProvider
 import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 
 class FastingTrackCreateViewModel(
     private val currentFastingManager: CurrentFastingManager,
@@ -65,7 +66,7 @@ class FastingTrackCreateViewModel(
             val fastingPlan = requireNotNull(selectedPlan.value)
 
             currentFastingManager.startFasting(
-                startTime = System.currentTimeMillis(),
+                startTime = Clock.System.now(),
                 fastingPlan = fastingPlan,
                 duration = fastingPlanDurationMapper.resolve(
                     fastingPlan,

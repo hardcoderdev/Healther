@@ -3,12 +3,11 @@ package hardcoder.dev.presentation.features.pedometer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.entities.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.extensions.createRangeForCurrentDay
-import hardcoder.dev.extensions.millisToLocalDateTime
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
+import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatisticProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class PedometerViewModel(
     private val pedometerManager: PedometerManager,
@@ -52,7 +52,7 @@ class PedometerViewModel(
     )
 
     private val totalTrackingTime = tracks.map { pedometerTracks ->
-        pedometerTracks.sumOf { it.range.last - it.range.first }
+        pedometerTracks.sumOf { it.range.endInclusive.toEpochMilliseconds() - it.range.start.toEpochMilliseconds() }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -77,7 +77,7 @@ class PedometerViewModel(
 
     private val chartEntries = tracks.map { pedometerTracks ->
         pedometerTracks.groupBy {
-            it.range.first.millisToLocalDateTime().hour
+            it.range.start.toLocalDateTime(TimeZone.currentSystemDefault()).hour
         }.map { entry ->
             entry.key to entry.value.sumOf { it.stepsCount }
         }

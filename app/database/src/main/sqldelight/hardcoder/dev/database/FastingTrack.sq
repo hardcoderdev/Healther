@@ -1,17 +1,19 @@
+import kotlinx.datetime.Instant;
+
 CREATE TABLE IF NOT EXISTS FastingTrack(
     id INTEGER AS Int NOT NULL PRIMARY KEY,
-    startTime INTEGER NOT NULL,
+    startTime INTEGER AS Instant NOT NULL,
     duration INTEGER NOT NULL,
     fastingPlanId INTEGER AS Int NOT NULL,
-    interruptedTimeInMillis INTEGER
+    interruptedTime INTEGER AS Instant
 );
 
 insert:
-INSERT INTO FastingTrack (id, startTime, duration, fastingPlanId, interruptedTimeInMillis)
+INSERT INTO FastingTrack (id, startTime, duration, fastingPlanId, interruptedTime)
 VALUES (?, ?, ?, ?, ?);
 
 update:
-UPDATE FastingTrack SET interruptedTimeInMillis = ? WHERE id = ?;
+UPDATE FastingTrack SET interruptedTime = ? WHERE id = ?;
 
 provideFastingTrackById:
 SELECT * FROM FastingTrack WHERE id = ?;

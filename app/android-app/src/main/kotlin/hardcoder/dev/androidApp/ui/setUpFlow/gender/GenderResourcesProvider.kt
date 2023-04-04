@@ -1,7 +1,7 @@
 package hardcoder.dev.androidApp.ui.setUpFlow.gender
 
-import hardcoder.dev.entities.hero.Gender
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.hero.gender.Gender
 
 class GenderResourcesProvider {
 

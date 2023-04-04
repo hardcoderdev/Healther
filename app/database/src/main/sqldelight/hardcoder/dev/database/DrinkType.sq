@@ -1,16 +1,16 @@
 CREATE TABLE DrinkType (
     id INTEGER AS Int NOT NULL PRIMARY KEY,
     name TEXT NOT NULL,
-    iconResourceName TEXT NOT NULL,
+    iconId INTEGER NOT NULL,
     hydrationIndexPercentage INTEGER AS Int NOT NULL
 );
 
 insert:
-INSERT INTO DrinkType (id, name, iconResourceName, hydrationIndexPercentage)
+INSERT INTO DrinkType (id, name, iconId, hydrationIndexPercentage)
 VALUES (?, ?, ?, ?);
 
 update:
-UPDATE DrinkType SET name = ?, iconResourceName = ?, hydrationIndexPercentage = ? WHERE id = ?;
+UPDATE DrinkType SET name = ?, iconId = ?, hydrationIndexPercentage = ? WHERE id = ?;
 
 deleteById:
 DELETE FROM DrinkType WHERE id = ?;

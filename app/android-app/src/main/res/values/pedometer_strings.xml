@@ -11,7 +11,7 @@
     <string name="pedometer_noHardwareSensorOnDevice_text">На вашем девайсе отсутствует сенсор.\nК сожалению вы не сможете воспользоваться этой фичей</string>
     <string name="pedometer_stepsLabel_text">Шаги</string>
     <string name="pedometer_emptyDayHistory_text">В этот день вы не включали шагомер.</string>
-    <string name="pedometer_weDontHaveEnoughDataToShowChart_text">У нас пока недостаточно данных для отображения графика. Используйте эту фичу на протяжении пары часов и график появится!</string>
+    <string name="pedometer_chartNotEnoughData_text">У нас пока недостаточно данных для отображения графика. Используйте эту фичу на протяжении пары часов и график появится!</string>
     <string name="pedometer_notification_notificationContentTitle_text">Шагомер</string>
     <string name="pedometer_notification_contentStepFormat_text">Шагов пройдено: %d</string>
     <string name="pedometer_notificationManagerChannelId" translatable="false">healther_pedometer_feature_id</string>
@@ -35,8 +35,9 @@
     <string name="pedometer_reject_permissions_description">Разрешение на отслеживание физической активности нужно нам, чтобы иметь право получать от сенсоров с вашего устройства данные.</string>
     <string name="pedometer_reject_not_available_description">Без сенсоров шагов у нас физически не получится отслеживать ваши шаги, так как информацию о шагах мы получаем с сенсоров вашего телефона, а так как у вас нет сенсоров, к сожалению вы не сможете воспользоваться этой фичей.</string>
     <string name="pedometer_nowEmpty_text">Сейчас здесь пусто. Чтобы увидеть статистику и график, пройдите несколько десятков шагов.</string>
-    <string name="pedometerHistory_yourIndicatorsForThisDay_text">Ваши показатели за день:</string>
-    <string name="pedometerHistory_weDontHaveEnoughDataToShowChart_text">За этот день недостаточно данных для отображения графика.</string>
-    <string name="pedometerHistory_title_topBar">Подробная история</string>
-    <string name="pedometerHistory_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
+
+    <string name="pedometer_history_yourIndicatorsForThisDay_text">Ваши показатели за день:</string>
+    <string name="pedometer_history_weDontHaveEnoughDataToShowChart_text">За этот день недостаточно данных для отображения графика.</string>
+    <string name="pedometer_history_title_topBar">Подробная история</string>
+    <string name="pedometer_history_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
 </resources>

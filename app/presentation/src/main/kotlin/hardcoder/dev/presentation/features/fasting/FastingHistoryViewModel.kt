@@ -2,9 +2,9 @@ package hardcoder.dev.presentation.features.fasting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.entities.features.fasting.FastingTrack
 import hardcoder.dev.extensions.getEndOfDay
 import hardcoder.dev.extensions.getStartOfDay
+import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.ExperimentalCoroutinesApi

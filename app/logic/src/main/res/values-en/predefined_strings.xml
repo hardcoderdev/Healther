@@ -8,4 +8,9 @@
     <string name="predefined_drinkType_name_juice">Juice</string>
     <string name="predefined_drinkType_name_soda">Soda</string>
     <string name="predefined_drinkType_name_soup">Soup</string>
+
+    <string name="predefined_moodType_name_happy">Great</string>
+    <string name="predefined_moodType_name_neutral">Neutral</string>
+    <string name="predefined_moodType_name_not_well">Not good</string>
+    <string name="predefined_moodType_name_bad">Badly</string>
 </resources>

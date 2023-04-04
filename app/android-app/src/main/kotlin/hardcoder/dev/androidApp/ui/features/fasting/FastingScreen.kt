@@ -26,10 +26,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.entities.features.fasting.FastingTrack
-import hardcoder.dev.entities.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.extensions.safeDiv
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
+import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
@@ -104,7 +104,7 @@ fun FastingScreen(
         } else {
             TopBarConfig(
                 type = TopBarType.TopBarWithNavigationBack(
-                    titleResId = R.string.dashboard_featureType_fasting,
+                    titleResId = R.string.fasting_title_topBar,
                     onGoBack = onGoBack
                 )
             )
@@ -277,8 +277,7 @@ private fun FastingInfoSection(state: FastingViewModel.FastingState.Fasting) {
     val uiModule = LocalUIModule.current
     val fastingPlanResourcesProvider = uiModule.fastingPlanResourcesProvider
     val dateTimeFormatter = uiModule.dateTimeFormatter
-    val formattedDate =
-        dateTimeFormatter.formatDateTime(state.startTimeInMillis.toEpochMilliseconds())
+    val formattedDate = dateTimeFormatter.formatTime(state.startTimeInMillis)
     val fastingPlanResources = fastingPlanResourcesProvider.provide(state.selectedPlan)
 
     Description(
@@ -302,7 +301,7 @@ private fun FastingLastTracksSection(lastFastingTrackList: List<FastingTrack>) {
     Spacer(modifier = Modifier.height(16.dp))
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         if (lastFastingTrackList.isEmpty()) {
-            Description(text = stringResource(id = R.string.fasting_noEnoughDataToShowLastTracks_text))
+            Description(text = stringResource(id = R.string.fasting_lastTracksNotEnoughData_text))
         } else {
             lastFastingTrackList.forEach {
                 FastingItem(fastingTrack = it)
@@ -347,6 +346,6 @@ private fun FastingChartSection(fastingChartEntries: List<Pair<Int, Long>>) {
             }
         )
     } else {
-        Description(text = stringResource(id = R.string.pedometer_weDontHaveEnoughDataToShowChart_text))
+        Description(text = stringResource(id = R.string.fasting_chartNotEnoughData_text))
     }
 }

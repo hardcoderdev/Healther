@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.entities.hero.Gender
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.hero.gender.Gender
 import hardcoder.dev.presentation.setUpFlow.EnterExerciseStressTimeViewModel
 import hardcoder.dev.uikit.NumberPicker
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -62,7 +62,7 @@ fun EnterExerciseStressScreen(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.enterExerciseStress_title_topBar,
+                titleResId = R.string.setUpFlow_enterExerciseStress_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -81,7 +81,7 @@ private fun EnterExerciseStressContent(
             .fillMaxSize()
     ) {
         Column(Modifier.weight(2f)) {
-            Title(text = stringResource(id = R.string.enterExerciseStress_enterExerciseStressTime_text))
+            Title(text = stringResource(id = R.string.setUpFlow_enterExerciseStress_enterExerciseStressTime_text))
             Spacer(modifier = Modifier.height(32.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -106,7 +106,7 @@ private fun EnterExerciseStressContent(
         }
         IconTextButton(
             iconResId = R.drawable.ic_done,
-            labelResId = R.string.enterExerciseStress_next_buttonText,
+            labelResId = R.string.setUpFlow_enterExerciseStress_next_buttonText,
             onClick = onGoForward
         )
     }

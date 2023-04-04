@@ -20,8 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.entities.hero.Gender
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.hero.gender.Gender
 import hardcoder.dev.presentation.setUpFlow.EnterWeightViewModel
 import hardcoder.dev.uikit.NumberPicker
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -56,7 +56,7 @@ fun EnterWeightScreen(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.enterWeight_title_topBar,
+                titleResId = R.string.setUpFlow_enterWeight_title_topBar,
                 onGoBack = onGoBack
             )
         )
@@ -75,7 +75,7 @@ private fun EnterWeightContent(
             .fillMaxSize()
     ) {
         Column(Modifier.weight(2f)) {
-            Title(text = stringResource(id = R.string.enterWeight_enterYourWeightInKg_text))
+            Title(text = stringResource(id = R.string.setUpFlow_enterWeight_enterYourWeightInKg_text))
             Spacer(modifier = Modifier.height(32.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -100,7 +100,7 @@ private fun EnterWeightContent(
         }
         IconTextButton(
             iconResId = R.drawable.ic_done,
-            labelResId = R.string.enterWeight_next_buttonText,
+            labelResId = R.string.setUpFlow_enterWeight_next_buttonText,
             onClick = onGoForward
         )
     }

@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">Healther</string>
 
-    <string name="dashboard_featureType_fasting">Голодание</string>
+    <string name="gender_male">Мужской</string>
+    <string name="gender_female">Женский</string>
 
     <string name="datetime_seconds">%dс</string>
     <string name="datetime_minutes">%dм</string>
@@ -13,8 +14,7 @@
     <string name="liquid_liters">%dл</string>
     <string name="liquid_milliliters">%dмл</string>
 
-    <string name="gender_male">Мужской</string>
-    <string name="gender_female">Женский</string>
+    <string name="iconItem_icon_contentDescription">Иконка для элемента</string>
 
     <string name="deleteDialog_iconContentDescription">Иконка удаления</string>
     <string name="deleteDialog_no_option">Отмена</string>
