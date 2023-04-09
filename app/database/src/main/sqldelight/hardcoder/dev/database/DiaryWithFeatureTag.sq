@@ -1,0 +1,15 @@
+CREATE TABLE DiaryWithFeatureTag (
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    diaryTrackId INTEGER AS Int NOT NULL,
+    featureTagId INTEGER AS Int NOT NULL
+);
+
+upsert:
+INSERT OR REPLACE INTO DiaryWithFeatureTag (id, diaryTrackId, featureTagId)
+VALUES (?, ?, ?);
+
+deleteAllFeatureTagsByDiaryTrackId:
+DELETE FROM DiaryWithFeatureTag WHERE diaryTrackId = ?;
+
+provideAllDiaryWithFeatureTagsByDiaryTrackId:
+SELECT * FROM DiaryWithFeatureTag WHERE diaryTrackId = ?;

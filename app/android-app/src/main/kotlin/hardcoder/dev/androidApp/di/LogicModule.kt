@@ -1,6 +1,7 @@
 package hardcoder.dev.androidApp.di
 
 import android.content.Context
+import hardcoder.dev.androidApp.ui.dashboard.diary.PredefinedFeatureTagProviderImpl
 import hardcoder.dev.androidApp.ui.features.moodTracking.activity.ActivityIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers.MoodTypeIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers.PredefinedMoodTypeProviderImpl
@@ -14,6 +15,18 @@ import hardcoder.dev.logic.DateTimeProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
 import hardcoder.dev.logic.appPreferences.PredefinedTracksManager
+import hardcoder.dev.logic.dashboard.features.DateRangeFilterTypeMapper
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackCreator
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackDeleter
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackDescriptionValidator
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackProvider
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackUpdater
+import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsCreator
+import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsDeleter
+import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsProvider
+import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTagCreator
+import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTagDeleter
+import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTagProvider
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanDurationResolver
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanProvider
@@ -83,7 +96,8 @@ class LogicModule(private val context: Context) {
         PredefinedTracksManager(
             context = context,
             drinkTypeCreator = drinkTypeCreator,
-            moodTypeCreator = moodTypeCreator
+            moodTypeCreator = moodTypeCreator,
+            featureTagCreator = featureTagCreator
         )
     }
 
@@ -465,5 +479,90 @@ class LogicModule(private val context: Context) {
             appDatabase = appDatabase,
             moodTypeProvider = moodTypeProvider
         )
+    }
+
+    val diaryTrackCreator by lazy {
+        DiaryTrackCreator(
+            idGenerator = idGenerator,
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val diaryTrackUpdater by lazy {
+        DiaryTrackUpdater(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO,
+            diaryWithFeatureTagsCreator = diaryWithFeatureTagsCreator,
+            diaryWithFeatureTagsDeleter = diaryWithFeatureTagsDeleter
+        )
+    }
+
+    val diaryTrackDeleter by lazy {
+        DiaryTrackDeleter(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val diaryTrackProvider by lazy {
+        DiaryTrackProvider(appDatabase = appDatabase)
+    }
+
+    val dateRangeFilterTypeMapper by lazy {
+        DateRangeFilterTypeMapper(appPreferenceProvider = appPreferenceProvider)
+    }
+
+    val featureTagCreator by lazy {
+        FeatureTagCreator(
+            idGenerator = idGenerator,
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO,
+            predefinedFeatureTagProvider = predefinedFeatureTagProvider
+        )
+    }
+
+    val featureTagDeleter by lazy {
+        FeatureTagDeleter(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val featureTagProvider by lazy {
+        FeatureTagProvider(
+            appDatabase = appDatabase
+        )
+    }
+
+    val predefinedFeatureTagProvider by lazy {
+        PredefinedFeatureTagProviderImpl(context = context)
+    }
+
+    val diaryWithFeatureTagsCreator by lazy {
+        DiaryWithFeatureTagsCreator(
+            idGenerator = idGenerator,
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val diaryWithFeatureTagsDeleter by lazy {
+        DiaryWithFeatureTagsDeleter(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val diaryWithFeatureTagsProvider by lazy {
+        DiaryWithFeatureTagsProvider(
+            appDatabase = appDatabase,
+            diaryTrackProvider = diaryTrackProvider,
+            featureTagsProvider = featureTagProvider
+        )
+    }
+
+    val diaryTrackDescriptionValidator by lazy {
+        DiaryTrackDescriptionValidator()
     }
 }

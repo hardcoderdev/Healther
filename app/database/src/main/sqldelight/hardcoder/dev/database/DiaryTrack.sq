@@ -1,0 +1,24 @@
+import kotlinx.datetime.Instant;
+
+CREATE TABLE DiaryTrack (
+    id INTEGER AS Int NOT NULL,
+    text TEXT NOT NULL,
+    title TEXT,
+    date INTEGER AS Instant NOT NULL
+);
+
+insert:
+INSERT INTO DiaryTrack (id, text, title, date)
+VALUES (?, ?, ?,?);
+
+update:
+UPDATE DiaryTrack SET title = ?, text = ? WHERE id = ?;
+
+delete:
+DELETE FROM DiaryTrack WHERE id = ?;
+
+provideDiaryTrackById:
+SELECT * FROM DiaryTrack WHERE id = ?;
+
+provideAllDiaryEntriesByDateRange:
+SELECT * FROM DiaryTrack WHERE date BETWEEN ? AND ?;

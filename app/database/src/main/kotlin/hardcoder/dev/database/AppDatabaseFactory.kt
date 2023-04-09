@@ -23,6 +23,7 @@ object AppDatabaseFactory {
             startTimeAdapter = InstantAdapter,
             interruptedTimeAdapter = InstantAdapter
         ),
-        MoodTrackAdapter = MoodTrack.Adapter(dateAdapter = InstantAdapter)
+        MoodTrackAdapter = MoodTrack.Adapter(dateAdapter = InstantAdapter),
+        DiaryTrackAdapter = DiaryTrack.Adapter(dateAdapter = InstantAdapter)
     )
 }

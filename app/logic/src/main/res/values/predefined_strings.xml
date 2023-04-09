@@ -13,4 +13,10 @@
     <string name="predefined_moodType_name_neutral">Нейтрально</string>
     <string name="predefined_moodType_name_not_well">Не очень</string>
     <string name="predefined_moodType_name_bad">Плохо</string>
+
+    <string name="predefined_diary_filterFeatureType_noFeature">Без фичей</string>
+    <string name="predefined_diary_filterFeatureType_waterTrackingFilter">Водный баланс</string>
+    <string name="predefined_diary_filterFeatureType_pedometerFilter">Шагомер</string>
+    <string name="predefined_diary_filterFeatureType_fastingFilter">Голодание</string>
+    <string name="predefined_diary_filterFeatureType_moodTrackingFilter">Настроение</string>
 </resources>

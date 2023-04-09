@@ -3,6 +3,9 @@ package hardcoder.dev.androidApp.ui.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import hardcoder.dev.androidApp.ui.dashboard.diary.DiaryCreateTrackScreen
+import hardcoder.dev.androidApp.ui.dashboard.diary.DiaryScreen
+import hardcoder.dev.androidApp.ui.dashboard.diary.DiaryUpdateTrackScreen
 import hardcoder.dev.androidApp.ui.features.fasting.FastingScreen
 import hardcoder.dev.androidApp.ui.features.fasting.create.FastingCreationTrackScreen
 import hardcoder.dev.androidApp.ui.features.fasting.history.FastingHistoryScreen
@@ -79,7 +82,7 @@ fun NavGraphBuilder.setUpDestinations(navController: NavController) {
             onGoBack = navController::popBackStack,
             onGoForward = {
                 //navController.navigate(Screen.Dashboard.route)
-                navController.navigate(Screen.WaterTrackingFeature.route)
+                navController.navigate(Screen.Diary.route)
             }
         )
     }
@@ -253,6 +256,28 @@ fun NavGraphBuilder.moodTrackingDestinations(navController: NavController) {
         UpdateActivityScreen(
             activityId = Screen.ActivityUpdate.getActivityIdId(it.arguments),
             onGoBack = navController::popBackStack
+        )
+    }
+}
+
+fun NavGraphBuilder.diaryDestinations(navController: NavController) {
+    composable(route = Screen.Diary.route) {
+        DiaryScreen(
+            onGoBack = navController::popBackStack,
+            onCreateTrack = { navController.navigate(Screen.DiaryCreateTrack.route) },
+            onUpdateTrack = { navController.navigate(Screen.DiaryUpdateTrack.buildRoute(it)) }
+        )
+    }
+    composable(route = Screen.DiaryCreateTrack.route) {
+        DiaryCreateTrackScreen(onGoBack = navController::popBackStack)
+    }
+    composable(
+        route = Screen.DiaryUpdateTrack.route,
+        arguments = Screen.DiaryUpdateTrack.arguments
+    ) {
+        DiaryUpdateTrackScreen(
+            onGoBack = navController::popBackStack,
+            diaryTrackId = Screen.DiaryUpdateTrack.getDiaryTrackId(it.arguments)
         )
     }
 }

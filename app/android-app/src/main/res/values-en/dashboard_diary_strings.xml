@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="diary_title_topBar">Diary</string>
+    <string name="diary_searchTrack_textField">Search by notes…</string>
+    <string name="diary_clearSearchText_textField">Clear text in search</string>
+    <string name="diary_dropDownItem_filterByAllTime">For all time</string>
+    <string name="diary_dropDownItem_filterByDay">Per day</string>
+    <string name="diary_dropDownItem_filterByWeek">Per week</string>
+    <string name="diary_dropDownItem_filterByMonth">Per month</string>
+    <string name="diary_dropDownItem_filterByYear">Per year</string>
+    <string name="diary_searchIcon_contentDescription">Search by notes…</string>
+    <string name="diary_nowEmpty_text">Now it\'s empty. To add new entries here, click on the button at the bottom right.</string>
+
+    <string name="diary_createTrack_title_topBar">Сreating a note</string>
+    <string name="diary_createTrack_enterTitle_textField">Enter title…</string>
+    <string name="diary_createTrack_enterNote_textField">Enter note here…</string>
+    <string name="diary_createTrack_selectLinkedFeatureType_text">Link note to:</string>
+    <string name="diary_createTrack_buttonText">Save note</string>
+    <string name="diary_createTrack_descriptionEmpty_text">This field cannot be empty!</string>
+    <string name="diary_createTrack_enterInfo_text">Basic information:</string>
+
+    <string name="diary_updateTrack_title_topBar">Note update</string>
+    <string name="diary_updateTrack_enterTitle_textField">Enter title…</string>
+    <string name="diary_updateTrack_enterNote_textField">Enter note here…</string>
+    <string name="diary_updateTrack_selectLinkedFeatureType_text">Link note to:</string>
+    <string name="diary_updateTrack_descriptionEmpty_text">This field cannot be empty!</string>
+</resources>

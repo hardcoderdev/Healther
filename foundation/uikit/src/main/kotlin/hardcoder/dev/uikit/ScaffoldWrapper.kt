@@ -6,6 +6,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +16,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import hardcoder.dev.uikit.icons.Icon
@@ -24,6 +28,7 @@ fun ScaffoldWrapper(
     content: @Composable () -> Unit,
     onFabClick: (() -> Unit)? = null,
     topBarConfig: TopBarConfig,
+    dropdownConfig: DropdownConfig? = null,
     actionConfig: ActionConfig? = null
 ) {
     Scaffold(
@@ -33,6 +38,7 @@ fun ScaffoldWrapper(
                 is TopBarType.TopBarWithNavigationBack -> GoBackTopBar(
                     titleResId = topBarConfig.type.titleResId,
                     onGoBack = topBarConfig.type.onGoBack,
+                    dropdownConfig = dropdownConfig,
                     actionConfig = actionConfig
                 )
 
@@ -70,6 +76,13 @@ fun SimpleTopBar(@StringRes titleResId: Int) {
     )
 }
 
+data class DropdownItem(
+    val name: String,
+    val onDropdownItemClick: () -> Unit
+)
+
+data class DropdownConfig(val actionToggle: Action, val dropdownItems: List<DropdownItem>)
+
 data class Action(@DrawableRes val iconResId: Int, val onActionClick: () -> Unit)
 
 data class ActionConfig(val actions: List<Action>)
@@ -89,6 +102,7 @@ sealed class TopBarType {
 fun GoBackTopBar(
     @StringRes titleResId: Int,
     onGoBack: () -> Unit,
+    dropdownConfig: DropdownConfig? = null,
     actionConfig: ActionConfig? = null,
 ) {
     TopAppBar(
@@ -102,9 +116,38 @@ fun GoBackTopBar(
             IconButton(onClick = onGoBack, iconResId = R.drawable.ic_top_bar_back)
         },
         actions = {
+            val isExpanded = remember {
+                mutableStateOf(false)
+            }
+
             actionConfig?.let {
                 it.actions.forEach { action ->
                     IconButton(onClick = action.onActionClick, iconResId = action.iconResId)
+                }
+            }
+
+            dropdownConfig?.let {
+                IconButton(
+                    iconResId = it.actionToggle.iconResId,
+                    contentDescription = null,
+                    onClick = { isExpanded.value = !isExpanded.value }
+                )
+
+                DropdownMenu(
+                    expanded = isExpanded.value,
+                    onDismissRequest = {
+                        isExpanded.value = false
+                    }
+                ) {
+                    it.dropdownItems.forEach { dropdownItem ->
+                        DropdownMenuItem(
+                            text = { Text(dropdownItem.name) },
+                            onClick = {
+                                dropdownItem.onDropdownItemClick()
+                                isExpanded.value = false
+                            }
+                        )
+                    }
                 }
             }
         }

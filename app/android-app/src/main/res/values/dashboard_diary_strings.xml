@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="diary_title_topBar">Дневник</string>
+    <string name="diary_searchTrack_textField">Поиск по заметкам…</string>
+    <string name="diary_clearSearchText_textField">Очистка текста в поиске</string>
+    <string name="diary_dropDownItem_filterByAllTime">За всё время</string>
+    <string name="diary_dropDownItem_filterByDay">За день</string>
+    <string name="diary_dropDownItem_filterByWeek">За неделю</string>
+    <string name="diary_dropDownItem_filterByMonth">За месяц</string>
+    <string name="diary_dropDownItem_filterByYear">За год</string>
+    <string name="diary_searchIcon_contentDescription">Поиск по заметкам…</string>
+    <string name="diary_nowEmpty_text">Сейчас здесь пусто. Чтобы добавить сюда новые записи, нажмите на кнопку справа внизу.</string>
+
+    <string name="diary_createTrack_title_topBar">Добавление заметкам</string>
+    <string name="diary_createTrack_enterNote_textField">Заметку вводите здесь…</string>
+    <string name="diary_createTrack_selectLinkedFeatureType_text">Привязать заметку к:</string>
+    <string name="diary_createTrack_enterTitle_textField">Введите заголовок…</string>
+    <string name="diary_createTrack_buttonText">Сохранить запись</string>
+    <string name="diary_createTrack_descriptionEmpty_text">Это поле не может быть пустым!</string>
+    <string name="diary_createTrack_enterInfo_text">Основная информация:</string>
+
+    <string name="diary_updateTrack_selectLinkedFeatureType_text">Привязать заметку к:</string>
+    <string name="diary_updateTrack_title_topBar">Обновление заметкам</string>
+    <string name="diary_updateTrack_enterTitle_textField">Введите заголовок…</string>
+    <string name="diary_updateTrack_enterNote_textField">Заметку вводите здесь…</string>
+    <string name="diary_updateTrack_descriptionEmpty_text">Это поле не может быть пустым!</string>
+</resources>

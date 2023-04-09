@@ -8,9 +8,16 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.FocusState
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.VisualTransformation
 
@@ -74,6 +81,7 @@ fun FilledTextField(
     modifier: Modifier = Modifier,
     @StringRes label: Int? = null,
     multiline: Boolean = false,
+    minLines: Int = 1,
     maxLines: Int = Int.MAX_VALUE,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -83,9 +91,19 @@ fun FilledTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     regex: Regex? = null,
+    onFocusChanged: (FocusState) -> Unit = {}
 ) {
-    TextField(
-        modifier = modifier,
+    var focusState: FocusState? by remember { mutableStateOf(null) }
+    val focusRequester = remember { FocusRequester() }
+
+    androidx.compose.material.TextField(
+        minLines = minLines,
+        modifier = modifier
+            .focusRequester(focusRequester)
+            .onFocusChanged {
+                focusState = it
+                onFocusChanged(it)
+            },
         value = when {
             regex == null -> value
             regex.matches(value) -> value
@@ -115,6 +133,6 @@ fun FilledTextField(
         isError = isError,
         readOnly = readOnly,
         leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon
+        trailingIcon = if (focusState?.hasFocus == true) trailingIcon else null
     )
 }

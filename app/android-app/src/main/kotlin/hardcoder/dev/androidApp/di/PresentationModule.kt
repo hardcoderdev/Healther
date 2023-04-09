@@ -1,6 +1,9 @@
 package hardcoder.dev.androidApp.di
 
 import android.content.Context
+import hardcoder.dev.presentation.dashboard.features.diary.DiaryCreateTrackViewModel
+import hardcoder.dev.presentation.dashboard.features.diary.DiaryUpdateTrackViewModel
+import hardcoder.dev.presentation.dashboard.features.diary.DiaryViewModel
 import hardcoder.dev.presentation.features.fasting.FastingHistoryViewModel
 import hardcoder.dev.presentation.features.fasting.FastingTrackCreateViewModel
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
@@ -200,5 +203,28 @@ class PresentationModule(
         activityUpdater = logicModule.activityUpdater,
         activityProvider = logicModule.activityProvider,
         iconResourceProvider = logicModule.activityIconProvider
+    )
+
+    fun getDiaryViewModel() = DiaryViewModel(
+        dateRangeFilterTypeMapper = logicModule.dateRangeFilterTypeMapper,
+        diaryWithFeatureTagsProvider = logicModule.diaryWithFeatureTagsProvider,
+        featureTagProvider = logicModule.featureTagProvider
+    )
+
+    fun getDiaryCreateTrackViewModel() = DiaryCreateTrackViewModel(
+        diaryTrackCreator = logicModule.diaryTrackCreator,
+        diaryWithFeatureTagsCreator = logicModule.diaryWithFeatureTagsCreator,
+        featureTagProvider = logicModule.featureTagProvider,
+        diaryTrackDescriptionValidator = logicModule.diaryTrackDescriptionValidator
+    )
+
+    fun getDiaryUpdateTrackViewModel(diaryTrackId: Int) = DiaryUpdateTrackViewModel(
+        diaryTrackId = diaryTrackId,
+        diaryTrackUpdater = logicModule.diaryTrackUpdater,
+        diaryTrackProvider = logicModule.diaryTrackProvider,
+        diaryTrackDeleter = logicModule.diaryTrackDeleter,
+        diaryWithFeatureTagsProvider = logicModule.diaryWithFeatureTagsProvider,
+        featureTagProvider = logicModule.featureTagProvider,
+        diaryTrackDescriptionValidator = logicModule.diaryTrackDescriptionValidator
     )
 }

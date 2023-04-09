@@ -33,6 +33,14 @@ sealed class Screen(val route: String) {
 
     object Dashboard : Screen("dashboard")
 
+    object Diary : Screen("diary")
+    object DiaryCreateTrack : Screen("diary_create_track")
+    object DiaryUpdateTrack : Screen("diary_update_track/{diaryTrackId}") {
+        fun buildRoute(diaryTrackId: Int) = "diary_update_track/$diaryTrackId"
+        fun getDiaryTrackId(arguments: Bundle?) = requireNotNull(arguments).getInt("diaryTrackId")
+        val arguments = listOf(navArgument("diaryTrackId") { type = NavType.IntType })
+    }
+
     object WaterTrackingFeature : Screen("water_tracking_feature")
     object WaterTrackingHistory : Screen("water_tracking_history")
     object SaveWaterTrack : Screen("save_water_track")

@@ -237,19 +237,19 @@ private fun SelectActivitiesSection(
         maxItemsInEachRow = 6
     ) {
         ManagementActivitiesButton(onManageActivities = onManageActivities)
-        state.activityList.forEach { hobbyTrack ->
+        state.activityList.forEach { activity ->
             Chip(
                 modifier = Modifier.padding(top = 8.dp),
-                text = hobbyTrack.name,
-                iconResId = hobbyTrack.icon.resourceId,
+                text = activity.name,
+                iconResId = activity.icon.resourceId,
                 shape = RoundedCornerShape(32.dp),
-                isSelected = state.selectedActivities.contains(hobbyTrack),
+                isSelected = state.selectedActivities.contains(activity),
                 interactionType = InteractionType.SELECTION,
                 onClick = {
-                    if (state.selectedActivities.contains(hobbyTrack)) {
-                        onRemoveActivity(hobbyTrack)
+                    if (state.selectedActivities.contains(activity)) {
+                        onRemoveActivity(activity)
                     } else {
-                        onAddActivity(hobbyTrack)
+                        onAddActivity(activity)
                     }
                 }
             )
