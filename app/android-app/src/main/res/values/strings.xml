@@ -21,5 +21,4 @@
     <string name="deleteDialog_yes_option">Удалить</string>
     <string name="deleteDialog_trackDeletionTitle_text">Удаление записи</string>
     <string name="deleteDialog_trackDeletionDescription_text">Вы действительно хотите удалить эту запись?</string>
-
 </resources>

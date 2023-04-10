@@ -11,8 +11,8 @@ import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackProvide
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackUpdater
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.ValidatedDiaryTrackDescription
 import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsProvider
-import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTag
-import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTagProvider
+import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTag
+import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTagProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.firstOrNull

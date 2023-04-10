@@ -7,9 +7,6 @@ insert:
 INSERT INTO FeatureTag (id, name)
 VALUES (?, ?);
 
-deleteById:
-DELETE FROM FeatureTag WHERE id = ?;
-
 provideAllFeatureTags:
 SELECT * FROM FeatureTag;
 

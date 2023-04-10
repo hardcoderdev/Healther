@@ -29,7 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.IncorrectValidatedDiaryTrackDescription
-import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTag
+import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTag
 import hardcoder.dev.presentation.dashboard.features.diary.DiaryCreateTrackViewModel
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -84,8 +84,6 @@ private fun DiaryCreateTrackContent(
     onAddFeatureTag: (FeatureTag) -> Unit,
     onCreateTrack: () -> Unit
 ) {
-    val validatedDescription = state.validatedDiaryTrackDescription
-
     Column(
         Modifier
             .fillMaxWidth()
@@ -96,50 +94,11 @@ private fun DiaryCreateTrackContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState())
         ) {
-            Title(text = stringResource(id = R.string.diary_createTrack_enterInfo_text))
-            Spacer(modifier = Modifier.height(16.dp))
-            FilledTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = state.title,
-                onValueChange = onUpdateTitle,
-                label = R.string.diary_createTrack_enterTitle_textField,
-                multiline = false,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                )
+            EnterBasicInfoSection(
+                state = state,
+                onUpdateTitle = onUpdateTitle,
+                onUpdateText = onUpdateText
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            FilledTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = state.description ?: "",
-                onValueChange = onUpdateText,
-                label = R.string.diary_createTrack_enterNote_textField,
-                multiline = true,
-                minLines = 5,
-                maxLines = 5,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Default
-                )
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            AnimatedVisibility(visible = validatedDescription is IncorrectValidatedDiaryTrackDescription) {
-                if (validatedDescription is IncorrectValidatedDiaryTrackDescription) {
-                    ErrorText(
-                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                        text = when (validatedDescription.reason) {
-                            is IncorrectValidatedDiaryTrackDescription.Reason.Empty -> {
-                                stringResource(R.string.diary_createTrack_descriptionEmpty_text)
-                            }
-
-                            else -> {
-                                stringResource(id = 0)
-                            }
-                        }
-                    )
-                }
-            }
             Spacer(modifier = Modifier.height(32.dp))
             FeatureTagSection(
                 state = state,
@@ -154,6 +113,60 @@ private fun DiaryCreateTrackContent(
             onClick = onCreateTrack,
             isEnabled = state.creationAllowed
         )
+    }
+}
+
+@Composable
+private fun EnterBasicInfoSection(
+    state: DiaryCreateTrackViewModel.State,
+    onUpdateTitle: (String) -> Unit,
+    onUpdateText: (String) -> Unit
+) {
+    val validatedDescription = state.validatedDiaryTrackDescription
+
+    Title(text = stringResource(id = R.string.diary_createTrack_enterInfo_text))
+    Spacer(modifier = Modifier.height(16.dp))
+    FilledTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = state.title ?: "",
+        onValueChange = onUpdateTitle,
+        label = R.string.diary_createTrack_enterTitle_textField,
+        multiline = false,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next
+        )
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    FilledTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = state.description ?: "",
+        onValueChange = onUpdateText,
+        label = R.string.diary_createTrack_enterNote_textField,
+        multiline = true,
+        minLines = 5,
+        maxLines = 5,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Default
+        )
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    AnimatedVisibility(visible = validatedDescription is IncorrectValidatedDiaryTrackDescription) {
+        if (validatedDescription is IncorrectValidatedDiaryTrackDescription) {
+            ErrorText(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                text = when (validatedDescription.reason) {
+                    is IncorrectValidatedDiaryTrackDescription.Reason.Empty -> {
+                        stringResource(R.string.diary_createTrack_descriptionEmpty_text)
+                    }
+
+                    else -> {
+                        stringResource(id = 0)
+                    }
+                }
+            )
+        }
     }
 }
 
@@ -175,7 +188,7 @@ private fun FeatureTagSection(
     ) {
         state.featureTagList.forEach { featureTag ->
             Chip(
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(bottom = 8.dp),
                 text = featureTag.name,
                 shape = RoundedCornerShape(8.dp),
                 isSelected = state.selectedFeatureTags.contains(featureTag),
@@ -189,5 +202,12 @@ private fun FeatureTagSection(
                 }
             )
         }
+    }
+    Spacer(modifier = Modifier.height(16.dp))
+    AnimatedVisibility(visible = state.selectedFeatureTags.isEmpty()) {
+        ErrorText(
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
+            text = stringResource(R.string.diary_createTrack_featureTagNotSelected_text)
+        )
     }
 }

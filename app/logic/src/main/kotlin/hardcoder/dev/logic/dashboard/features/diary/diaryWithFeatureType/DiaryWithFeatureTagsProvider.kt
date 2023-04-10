@@ -4,7 +4,7 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackProvider
-import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTagProvider
+import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTagProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

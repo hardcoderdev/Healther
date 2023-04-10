@@ -6,8 +6,8 @@ import hardcoder.dev.logic.dashboard.features.DateRangeFilterType
 import hardcoder.dev.logic.dashboard.features.DateRangeFilterTypeMapper
 import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTags
 import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsProvider
-import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTag
-import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTagProvider
+import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTag
+import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTagProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -112,7 +112,6 @@ class DiaryViewModel(
         mutableSelectedFilters.remove(featureTag)
         selectedFilterList.value = mutableSelectedFilters
     }
-
 
     data class State(
         val selectedFilterList: List<FeatureTag>,

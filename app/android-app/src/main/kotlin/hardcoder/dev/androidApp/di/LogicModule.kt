@@ -24,9 +24,8 @@ import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackUpdater
 import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsCreator
 import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsDeleter
 import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsProvider
-import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTagCreator
-import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTagDeleter
-import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTagProvider
+import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTagCreator
+import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTagProvider
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanDurationResolver
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanProvider
@@ -485,7 +484,8 @@ class LogicModule(private val context: Context) {
         DiaryTrackCreator(
             idGenerator = idGenerator,
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            dispatcher = Dispatchers.IO,
+            diaryWithFeatureTagsCreator = diaryWithFeatureTagsCreator
         )
     }
 
@@ -519,13 +519,6 @@ class LogicModule(private val context: Context) {
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO,
             predefinedFeatureTagProvider = predefinedFeatureTagProvider
-        )
-    }
-
-    val featureTagDeleter by lazy {
-        FeatureTagDeleter(
-            appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
         )
     }
 

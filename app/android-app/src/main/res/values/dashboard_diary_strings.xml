@@ -10,6 +10,7 @@
     <string name="diary_dropDownItem_filterByYear">За год</string>
     <string name="diary_searchIcon_contentDescription">Поиск по заметкам…</string>
     <string name="diary_nowEmpty_text">Сейчас здесь пусто. Чтобы добавить сюда новые записи, нажмите на кнопку справа внизу.</string>
+    <string name="diary_nothingFound_text">По вашему запросу или фильтру ничего не найдено :(</string>
 
     <string name="diary_createTrack_title_topBar">Добавление заметкам</string>
     <string name="diary_createTrack_enterNote_textField">Заметку вводите здесь…</string>
@@ -18,10 +19,16 @@
     <string name="diary_createTrack_buttonText">Сохранить запись</string>
     <string name="diary_createTrack_descriptionEmpty_text">Это поле не может быть пустым!</string>
     <string name="diary_createTrack_enterInfo_text">Основная информация:</string>
+    <string name="diary_createTrack_featureTagNotSelected_text">Пожалуйста, выберите хотя бы 1 тег!</string>
 
     <string name="diary_updateTrack_selectLinkedFeatureType_text">Привязать заметку к:</string>
     <string name="diary_updateTrack_title_topBar">Обновление заметкам</string>
     <string name="diary_updateTrack_enterTitle_textField">Введите заголовок…</string>
     <string name="diary_updateTrack_enterNote_textField">Заметку вводите здесь…</string>
+    <string name="diary_updateTrack_enterInfo_text">Основная информация:</string>
     <string name="diary_updateTrack_descriptionEmpty_text">Это поле не может быть пустым!</string>
+    <string name="diary_updateTrack_featureTagNotSelected_text">Пожалуйста, выберите хотя бы 1 тег!</string>
+
+
+
 </resources>

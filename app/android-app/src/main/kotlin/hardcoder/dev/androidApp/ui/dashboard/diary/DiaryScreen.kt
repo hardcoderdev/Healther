@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,7 +35,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.dashboard.features.DateRangeFilterType
-import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTag
+import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTags
+import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTag
 import hardcoder.dev.presentation.dashboard.features.diary.DiaryViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.DropdownConfig
@@ -45,6 +47,7 @@ import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.chip.Chip
 import hardcoder.dev.uikit.icons.Icon
+import hardcoder.dev.uikit.sections.EmptyBlock
 import hardcoder.dev.uikit.sections.EmptySection
 import hardcoder.dev.uikit.text.FilledTextField
 
@@ -124,74 +127,81 @@ private fun DiaryContent(
     onAddFilterFeatureTag: (FeatureTag) -> Unit,
     onRemoveFilterFeatureTag: (FeatureTag) -> Unit
 ) {
-    val inputService = LocalSoftwareKeyboardController.current
-    val focusManager = LocalFocusManager.current
-
     Column(
         Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        FilledTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = state.searchText,
-            onValueChange = onSearchTrack,
-            label = R.string.diary_searchTrack_textField,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Search
-            ),
-            leadingIcon = {
-                Icon(
-                    iconResId = R.drawable.ic_search,
-                    contentDescription = stringResource(
-                        id = R.string.diary_searchIcon_contentDescription
-                    )
-                )
-            },
-            trailingIcon = {
-                Icon(
-                    iconResId = R.drawable.ic_clear,
-                    modifier = Modifier.clickable {
-                        onSearchTrack("")
-                        inputService?.hide()
-                        focusManager.clearFocus()
-                    }
-                )
-            }
-        )
+        SearchDiaryTrackSection(state = state, onSearchTrack = onSearchTrack)
         Spacer(modifier = Modifier.height(8.dp))
         FilterFeatureTypeSection(
             state = state,
             onAddFilterFeatureTag = onAddFilterFeatureTag,
             onRemoveFilterFeatureTag = onRemoveFilterFeatureTag
         )
-        if (state.diaryTrackList.isNotEmpty()) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(2f),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(vertical = 16.dp)
-            ) {
-                val items = if (state.searchText.isEmpty() && state.selectedFilterList.isEmpty()) {
-                    state.diaryTrackList
-                } else {
-                    state.filteredTrackList
-                }
-                items(items) { diaryWithFeatureTags ->
-                    DiaryItem(
-                        diaryWithFeatureTags = diaryWithFeatureTags,
-                        onUpdate = { onUpdateTrack(it.id) }
-                    )
-                }
+        when {
+            state.diaryTrackList.isEmpty() -> {
+                Spacer(modifier = Modifier.height(16.dp))
+                EmptySection(emptyTitleResId = R.string.diary_nowEmpty_text)
             }
-        } else {
-            Spacer(modifier = Modifier.height(16.dp))
-            EmptySection(emptyTitleResId = R.string.diary_nowEmpty_text)
+            state.searchText.isEmpty() && state.selectedFilterList.isEmpty() -> {
+                DiaryTrackListSection(items = state.diaryTrackList, onUpdateTrack = onUpdateTrack)
+            }
+            state.filteredTrackList.isEmpty() -> {
+                Spacer(modifier = Modifier.height(16.dp))
+                EmptyBlock(
+                    lottieAnimationResId = R.raw.empty_astronaut,
+                    modifier = Modifier.height(100.dp),
+                    emptyTitleResId = R.string.diary_nothingFound_text
+                )
+            }
+            else -> {
+                DiaryTrackListSection(
+                    items = state.filteredTrackList,
+                    onUpdateTrack = onUpdateTrack
+                )
+            }
         }
     }
+}
+
+@Composable
+private fun SearchDiaryTrackSection(
+    state: DiaryViewModel.State,
+    onSearchTrack: (String) -> Unit
+) {
+    val inputService = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
+    Spacer(modifier = Modifier.height(16.dp))
+    FilledTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = state.searchText,
+        onValueChange = onSearchTrack,
+        label = R.string.diary_searchTrack_textField,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Search
+        ),
+        leadingIcon = {
+            Icon(
+                iconResId = R.drawable.ic_search,
+                contentDescription = stringResource(
+                    id = R.string.diary_searchIcon_contentDescription
+                )
+            )
+        },
+        trailingIcon = {
+            Icon(
+                iconResId = R.drawable.ic_clear,
+                modifier = Modifier.clickable {
+                    onSearchTrack("")
+                    inputService?.hide()
+                    focusManager.clearFocus()
+                }
+            )
+        }
+    )
 }
 
 @Composable
@@ -222,6 +232,27 @@ private fun FilterFeatureTypeSection(
                         onAddFilterFeatureTag(filterFeatureTag)
                     }
                 }
+            )
+        }
+    }
+}
+
+@Composable
+private fun ColumnScope.DiaryTrackListSection(
+    items: List<DiaryWithFeatureTags>,
+    onUpdateTrack: (Int) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .weight(2f),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(vertical = 16.dp)
+    ) {
+        items(items) { diaryWithFeatureTags ->
+            DiaryItem(
+                diaryWithFeatureTags = diaryWithFeatureTags,
+                onUpdate = { onUpdateTrack(it.id) }
             )
         }
     }

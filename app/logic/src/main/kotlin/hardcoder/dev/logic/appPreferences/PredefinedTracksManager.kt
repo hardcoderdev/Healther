@@ -3,7 +3,7 @@ package hardcoder.dev.logic.appPreferences
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTagCreator
+import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTagCreator
 import hardcoder.dev.logic.dataStore.healtherDataStore
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeCreator
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeCreator
@@ -19,7 +19,8 @@ class PredefinedTracksManager(
 
     private val isDrinkTypeSavedPreferenceKey = booleanPreferencesKey(IS_DRINK_TYPES_SAVED)
     private val isMoodTypesSavedPreferenceKey = booleanPreferencesKey(IS_MOOD_TYPES_SAVED)
-    private val isDiaryFeatureTagsSavedPreferenceKey = booleanPreferencesKey(IS_DIARY_FEATURE_TAGS_SAVED)
+    private val isDiaryFeatureTagsSavedPreferenceKey =
+        booleanPreferencesKey(IS_DIARY_FEATURE_TAGS_SAVED)
 
     private val isMoodTypesSaved = context.healtherDataStore.data.map {
         it[isMoodTypesSavedPreferenceKey] ?: false
@@ -32,11 +33,9 @@ class PredefinedTracksManager(
     }
 
     suspend fun createPredefinedTracksIfNeeded() {
-        when {
-            !isDrinkTypeSaved.first() -> createPredefinedDrinkTypes()
-            !isMoodTypesSaved.first() -> createPredefinedMoodTypes()
-            !isDiaryFeatureTagsSaved.first() -> createPredefinedDiaryFeatureTags()
-        }
+        if (!isDrinkTypeSaved.first()) createPredefinedDrinkTypes()
+        if (!isMoodTypesSaved.first()) createPredefinedMoodTypes()
+        if (!isDiaryFeatureTagsSaved.first()) createPredefinedDiaryFeatureTags()
     }
 
     private suspend fun createPredefinedDrinkTypes() {

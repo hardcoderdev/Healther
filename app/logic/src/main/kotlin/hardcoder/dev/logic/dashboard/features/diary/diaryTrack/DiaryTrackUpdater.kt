@@ -3,7 +3,7 @@ package hardcoder.dev.logic.dashboard.features.diary.diaryTrack
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsCreator
 import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsDeleter
-import hardcoder.dev.logic.dashboard.features.diary.featureType.FeatureTag
+import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTag
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

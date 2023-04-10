@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.dashboard.features.diary.featureType
+package hardcoder.dev.logic.dashboard.features.diary.featureTag
 
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
