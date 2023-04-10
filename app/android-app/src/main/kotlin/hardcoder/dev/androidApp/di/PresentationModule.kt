@@ -213,6 +213,7 @@ class PresentationModule(
 
     fun getDiaryCreateTrackViewModel() = DiaryCreateTrackViewModel(
         diaryTrackCreator = logicModule.diaryTrackCreator,
+        diaryWithFeatureTagsCreator = logicModule.diaryWithFeatureTagsCreator,
         featureTagProvider = logicModule.featureTagProvider,
         diaryTrackDescriptionValidator = logicModule.diaryTrackDescriptionValidator
     )
