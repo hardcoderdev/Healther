@@ -155,8 +155,8 @@ class DiaryUpdateTrackViewModel(
 
             diaryTrackProvider.provideDiaryTrackById(diaryTrackId).firstOrNull()?.let {
                 val updatedTrack = it.copy(
-                    text = validatedDescription.data,
-                    title = title.value.ifEmpty { null }
+                    text = validatedDescription.data.trim(),
+                    title = title.value.ifEmpty { null }?.trim()
                 )
 
                 diaryTrackUpdater.update(updatedTrack, selectedFeatureTags.value)

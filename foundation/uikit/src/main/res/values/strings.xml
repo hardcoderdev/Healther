@@ -3,4 +3,5 @@
 
     <string name="default_nowEmpty_text">Сейчас здесь пусто.</string>
     <string name="default_grantPermission_buttonText">Выдать доступ</string>
+    <string name="icon_search_clear_content_description">Очистить поиск</string>
 </resources>

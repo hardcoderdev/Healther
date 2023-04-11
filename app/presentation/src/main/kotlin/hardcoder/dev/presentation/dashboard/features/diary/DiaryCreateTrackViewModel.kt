@@ -115,8 +115,8 @@ class DiaryCreateTrackViewModel(
 
             diaryTrackCreator.create(
                 date = selectedDate.value.getStartOfDay(),
-                text = validatedDescription.data,
-                title = title.value,
+                text = validatedDescription.data.trim(),
+                title = title.value?.trim(),
                 selectedFeatureTags = selectedFeatureTags.value
             )
 

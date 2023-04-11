@@ -1,8 +1,7 @@
-@file:OptIn(ExperimentalComposeUiApi::class, ExperimentalLayoutApi::class)
+@file:OptIn(ExperimentalLayoutApi::class)
 
 package hardcoder.dev.androidApp.ui.dashboard.diary
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,36 +19,27 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.dashboard.features.DateRangeFilterType
 import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTags
 import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTag
 import hardcoder.dev.presentation.dashboard.features.diary.DiaryViewModel
 import hardcoder.dev.uikit.Action
-import hardcoder.dev.uikit.DropdownConfig
-import hardcoder.dev.uikit.DropdownItem
+import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.chip.Chip
-import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.sections.EmptyBlock
 import hardcoder.dev.uikit.sections.EmptySection
-import hardcoder.dev.uikit.text.FilledTextField
+import kotlinx.coroutines.launch
 
 @Composable
 fun DiaryScreen(
@@ -57,6 +47,7 @@ fun DiaryScreen(
     onCreateTrack: () -> Unit,
     onUpdateTrack: (Int) -> Unit
 ) {
+    val scope = rememberCoroutineScope()
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel { presentationModule.getDiaryViewModel() }
     val state = viewModel.state.collectAsState()
@@ -67,51 +58,28 @@ fun DiaryScreen(
             DiaryContent(
                 state = state.value,
                 onUpdateTrack = onUpdateTrack,
-                onSearchTrack = viewModel::updateSearchText,
                 onAddFilterFeatureTag = viewModel::addFilterFeatureTag,
                 onRemoveFilterFeatureTag = viewModel::removeFilterFeatureTag
             )
         },
         topBarConfig = TopBarConfig(
-            type = TopBarType.TopBarWithNavigationBack(
+            type = TopBarType.SearchTopBar(
                 titleResId = R.string.diary_title_topBar,
-                onGoBack = onGoBack
+                searchText = state.value.searchText,
+                placeholderText = R.string.diary_searchTrack_textField,
+                onGoBack = onGoBack,
+                onSearchTextChanged = viewModel::updateSearchText,
+                onClearClick = { viewModel.updateSearchText("") }
             )
         ),
-        dropdownConfig = DropdownConfig(
-            actionToggle = Action(
-                iconResId = R.drawable.ic_sort,
-                onActionClick = {}
-            ),
-            dropdownItems = listOf(
-                DropdownItem(
-                    name = stringResource(id = R.string.diary_dropDownItem_filterByDay),
-                    onDropdownItemClick = {
-                        viewModel.updateSelectedFilterType(DateRangeFilterType.ByDay)
-                    }
-                ),
-                DropdownItem(
-                    name = stringResource(id = R.string.diary_dropDownItem_filterByWeek),
-                    onDropdownItemClick = {
-                        viewModel.updateSelectedFilterType(DateRangeFilterType.ByWeek)
-                    }
-                ),
-                DropdownItem(
-                    name = stringResource(id = R.string.diary_dropDownItem_filterByMonth),
-                    onDropdownItemClick = {
-                        viewModel.updateSelectedFilterType(DateRangeFilterType.ByMonth)
-                    }
-                ),
-                DropdownItem(
-                    name = stringResource(id = R.string.diary_dropDownItem_filterByYear),
-                    onDropdownItemClick = {
-                        viewModel.updateSelectedFilterType(DateRangeFilterType.ByYear)
-                    }
-                ),
-                DropdownItem(
-                    name = stringResource(id = R.string.diary_dropDownItem_filterByAllTime),
-                    onDropdownItemClick = {
-                        viewModel.updateSelectedFilterType(DateRangeFilterType.ByAllPeriod)
+        actionConfig = ActionConfig(
+            listOf(
+                Action(
+                    iconResId = R.drawable.ic_sort,
+                    onActionClick = {
+                        scope.launch {
+                            //filterBottomSheetState.expand()
+                        }
                     }
                 )
             )
@@ -123,7 +91,6 @@ fun DiaryScreen(
 private fun DiaryContent(
     state: DiaryViewModel.State,
     onUpdateTrack: (Int) -> Unit,
-    onSearchTrack: (String) -> Unit,
     onAddFilterFeatureTag: (FeatureTag) -> Unit,
     onRemoveFilterFeatureTag: (FeatureTag) -> Unit
 ) {
@@ -132,8 +99,6 @@ private fun DiaryContent(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        SearchDiaryTrackSection(state = state, onSearchTrack = onSearchTrack)
-        Spacer(modifier = Modifier.height(8.dp))
         FilterFeatureTypeSection(
             state = state,
             onAddFilterFeatureTag = onAddFilterFeatureTag,
@@ -144,9 +109,11 @@ private fun DiaryContent(
                 Spacer(modifier = Modifier.height(16.dp))
                 EmptySection(emptyTitleResId = R.string.diary_nowEmpty_text)
             }
+
             state.searchText.isEmpty() && state.selectedFilterList.isEmpty() -> {
                 DiaryTrackListSection(items = state.diaryTrackList, onUpdateTrack = onUpdateTrack)
             }
+
             state.filteredTrackList.isEmpty() -> {
                 Spacer(modifier = Modifier.height(16.dp))
                 EmptyBlock(
@@ -155,6 +122,7 @@ private fun DiaryContent(
                     emptyTitleResId = R.string.diary_nothingFound_text
                 )
             }
+
             else -> {
                 DiaryTrackListSection(
                     items = state.filteredTrackList,
@@ -163,45 +131,6 @@ private fun DiaryContent(
             }
         }
     }
-}
-
-@Composable
-private fun SearchDiaryTrackSection(
-    state: DiaryViewModel.State,
-    onSearchTrack: (String) -> Unit
-) {
-    val inputService = LocalSoftwareKeyboardController.current
-    val focusManager = LocalFocusManager.current
-
-    Spacer(modifier = Modifier.height(16.dp))
-    FilledTextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = state.searchText,
-        onValueChange = onSearchTrack,
-        label = R.string.diary_searchTrack_textField,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Search
-        ),
-        leadingIcon = {
-            Icon(
-                iconResId = R.drawable.ic_search,
-                contentDescription = stringResource(
-                    id = R.string.diary_searchIcon_contentDescription
-                )
-            )
-        },
-        trailingIcon = {
-            Icon(
-                iconResId = R.drawable.ic_clear,
-                modifier = Modifier.clickable {
-                    onSearchTrack("")
-                    inputService?.hide()
-                    focusManager.clearFocus()
-                }
-            )
-        }
-    )
 }
 
 @Composable
