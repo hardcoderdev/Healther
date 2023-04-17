@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalLayoutApi::class)
 
-package hardcoder.dev.androidApp.ui.dashboard.diary
+package hardcoder.dev.androidApp.ui.dashboard.diary.update
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.horizontalScroll
@@ -27,9 +27,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.androidApp.ui.features.fasting.FastingItem
+import hardcoder.dev.androidApp.ui.features.moodTracking.MoodTrackItem
+import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.IncorrectValidatedDiaryTrackDescription
-import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTag
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.IncorrectValidatedDiaryTrackTitle
+import hardcoder.dev.logic.features.fasting.track.FastingTrack
+import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import hardcoder.dev.presentation.dashboard.features.diary.DiaryUpdateTrackViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
@@ -45,8 +51,9 @@ import hardcoder.dev.uikit.text.Title
 
 @Composable
 fun DiaryUpdateTrackScreen(
+    diaryTrackId: Int,
     onGoBack: () -> Unit,
-    diaryTrackId: Int
+    onManageTags: () -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel {
@@ -70,11 +77,12 @@ fun DiaryUpdateTrackScreen(
         content = {
             DiaryUpdateTrackContent(
                 state = state.value,
-                onRemoveFeatureTag = viewModel::removeFeatureTag,
-                onAddFeatureTag = viewModel::addFeatureTag,
                 onUpdateText = viewModel::updateText,
                 onUpdateTitle = viewModel::updateTitle,
-                onUpdateTrack = viewModel::updateTrack
+                onUpdateTrack = viewModel::updateTrack,
+                onAddTag = viewModel::addTag,
+                onRemoveTag = viewModel::removeTag,
+                onManageTags = onManageTags
             )
         },
         topBarConfig = TopBarConfig(
@@ -99,9 +107,10 @@ private fun DiaryUpdateTrackContent(
     state: DiaryUpdateTrackViewModel.State,
     onUpdateText: (String) -> Unit,
     onUpdateTitle: (String) -> Unit,
-    onRemoveFeatureTag: (FeatureTag) -> Unit,
-    onAddFeatureTag: (FeatureTag) -> Unit,
-    onUpdateTrack: () -> Unit
+    onUpdateTrack: () -> Unit,
+    onAddTag: (DiaryTag) -> Unit,
+    onRemoveTag: (DiaryTag) -> Unit,
+    onManageTags: () -> Unit
 ) {
     Column(
         Modifier
@@ -119,10 +128,15 @@ private fun DiaryUpdateTrackContent(
                 onUpdateText = onUpdateText
             )
             Spacer(modifier = Modifier.height(32.dp))
-            FeatureTagSection(
+            state.diaryTrack?.let {
+                AttachedEntitySection(diaryTrack = it)
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+            SelectTagsSection(
                 state = state,
-                onRemoveFeatureTag = onRemoveFeatureTag,
-                onAddFeatureTag = onAddFeatureTag
+                onAddTag = onAddTag,
+                onRemoveTag = onRemoveTag,
+                onManageTags = onManageTags
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -141,21 +155,43 @@ private fun EnterBasicInfoSection(
     onUpdateTitle: (String) -> Unit,
     onUpdateText: (String) -> Unit
 ) {
+    val validatedTitle = state.validatedTitle
     val validatedDescription = state.validatedDescription
 
     Title(text = stringResource(id = R.string.diary_updateTrack_enterInfo_text))
     Spacer(modifier = Modifier.height(16.dp))
     FilledTextField(
         modifier = Modifier.fillMaxWidth(),
-        value = state.title,
+        value = state.title ?: "",
         onValueChange = onUpdateTitle,
         label = R.string.diary_updateTrack_enterTitle_textField,
         multiline = false,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Next
-        )
+        ),
+        isError = validatedTitle is IncorrectValidatedDiaryTrackTitle
     )
+    Spacer(modifier = Modifier.height(16.dp))
+    AnimatedVisibility(visible = validatedTitle is IncorrectValidatedDiaryTrackTitle) {
+        if (validatedTitle is IncorrectValidatedDiaryTrackTitle) {
+            ErrorText(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                text = when (val reason = validatedTitle.reason) {
+                    is IncorrectValidatedDiaryTrackTitle.Reason.MoreThanMaxChars -> {
+                        stringResource(
+                            id = R.string.diary_updateTrack_titleMoreThanMaxChars_text,
+                            formatArgs = arrayOf(reason.maxChars)
+                        )
+                    }
+
+                    else -> {
+                        stringResource(id = 0)
+                    }
+                }
+            )
+        }
+    }
     Spacer(modifier = Modifier.height(16.dp))
     FilledTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -168,7 +204,8 @@ private fun EnterBasicInfoSection(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Default
-        )
+        ),
+        isError = validatedDescription is IncorrectValidatedDiaryTrackDescription
     )
     Spacer(modifier = Modifier.height(16.dp))
     AnimatedVisibility(visible = validatedDescription is IncorrectValidatedDiaryTrackDescription) {
@@ -179,9 +216,62 @@ private fun EnterBasicInfoSection(
                     is IncorrectValidatedDiaryTrackDescription.Reason.Empty -> {
                         stringResource(R.string.diary_updateTrack_descriptionEmpty_text)
                     }
+                }
+            )
+        }
+    }
+}
 
-                    else -> {
-                        stringResource(id = 0)
+@Composable
+private fun AttachedEntitySection(diaryTrack: Any) {
+    Title(text = stringResource(id = R.string.diary_updateTrack_attachedEntity_text))
+    Spacer(modifier = Modifier.height(16.dp))
+    when (diaryTrack) {
+        is FastingTrack -> {
+            FastingItem(fastingTrack = diaryTrack)
+        }
+
+        is MoodTrack -> {
+            MoodTrackItem(
+                activitiesList = emptyList(),
+                moodTrack = diaryTrack,
+                onUpdate = {}
+            )
+        }
+    }
+}
+
+@Composable
+private fun SelectTagsSection(
+    state: DiaryUpdateTrackViewModel.State,
+    onAddTag: (DiaryTag) -> Unit,
+    onRemoveTag: (DiaryTag) -> Unit,
+    onManageTags: () -> Unit
+) {
+    Title(text = stringResource(id = R.string.diary_updateTrack_youMaySelectTags_text))
+    Spacer(modifier = Modifier.height(16.dp))
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        maxItemsInEachRow = 6
+    ) {
+        ManagementTagsButton(onManageTags = onManageTags)
+        state.tagList.forEach { tag ->
+            Chip(
+                modifier = Modifier.padding(top = 8.dp),
+                text = tag.name,
+                iconResId = tag.icon.resourceId,
+                shape = RoundedCornerShape(32.dp),
+                isSelected = state.selectedTags.contains(tag),
+                interactionType = InteractionType.SELECTION,
+                onClick = {
+                    if (state.selectedTags.contains(tag)) {
+                        onRemoveTag(tag)
+                    } else {
+                        onAddTag(tag)
                     }
                 }
             )
@@ -190,43 +280,13 @@ private fun EnterBasicInfoSection(
 }
 
 @Composable
-private fun FeatureTagSection(
-    state: DiaryUpdateTrackViewModel.State,
-    onRemoveFeatureTag: (FeatureTag) -> Unit,
-    onAddFeatureTag: (FeatureTag) -> Unit
-) {
-    Title(text = stringResource(id = R.string.diary_updateTrack_selectLinkedFeatureType_text))
-    Spacer(modifier = Modifier.height(16.dp))
-    FlowRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        maxItemsInEachRow = 4
-    ) {
-        state.featureTagList.forEach { featureTag ->
-            Chip(
-                modifier = Modifier.padding(bottom = 8.dp),
-                text = featureTag.name,
-                shape = RoundedCornerShape(8.dp),
-                isSelected = state.selectedFeatureTags.contains(featureTag),
-                interactionType = InteractionType.SELECTION,
-                onClick = {
-                    if (state.selectedFeatureTags.contains(featureTag)) {
-                        onRemoveFeatureTag(featureTag)
-                    } else {
-                        onAddFeatureTag(featureTag)
-                    }
-                }
-            )
-        }
-    }
-    Spacer(modifier = Modifier.height(16.dp))
-    AnimatedVisibility(visible = state.selectedFeatureTags.isEmpty()) {
-        ErrorText(
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-            text = stringResource(R.string.diary_updateTrack_featureTagNotSelected_text)
-        )
-    }
+private fun ManagementTagsButton(onManageTags: () -> Unit) {
+    Chip(
+        modifier = Modifier.padding(top = 8.dp),
+        text = stringResource(id = R.string.diary_updateTrack_manageTags_buttonText),
+        iconResId = R.drawable.ic_create,
+        shape = RoundedCornerShape(32.dp),
+        interactionType = InteractionType.ACTION,
+        onClick = onManageTags
+    )
 }

@@ -1,8 +1,8 @@
 package hardcoder.dev.androidApp.di
 
 import android.content.Context
-import hardcoder.dev.androidApp.ui.dashboard.diary.PredefinedFeatureTagProviderImpl
-import hardcoder.dev.androidApp.ui.features.moodTracking.activity.ActivityIconProvider
+import hardcoder.dev.androidApp.ui.dashboard.diary.tags.providers.DiaryTagIconProvider
+import hardcoder.dev.androidApp.ui.features.moodTracking.activity.providers.ActivityIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers.MoodTypeIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers.PredefinedMoodTypeProviderImpl
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.BatteryRequirementsController
@@ -16,16 +16,22 @@ import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
 import hardcoder.dev.logic.appPreferences.PredefinedTracksManager
 import hardcoder.dev.logic.dashboard.features.DateRangeFilterTypeMapper
+import hardcoder.dev.logic.dashboard.features.DateRangeFilterTypeProvider
+import hardcoder.dev.logic.dashboard.features.diary.AttachmentTypeIdMapper
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentCreator
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentDeleter
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentProvider
+import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagCreator
+import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagDeleter
+import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagNameValidator
+import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagProvider
+import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagUpdater
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackCreator
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackDeleter
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackDescriptionValidator
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackProvider
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackTitleValidator
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackUpdater
-import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsCreator
-import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsDeleter
-import hardcoder.dev.logic.dashboard.features.diary.diaryWithFeatureType.DiaryWithFeatureTagsProvider
-import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTagCreator
-import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTagProvider
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanDurationResolver
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanProvider
@@ -95,8 +101,7 @@ class LogicModule(private val context: Context) {
         PredefinedTracksManager(
             context = context,
             drinkTypeCreator = drinkTypeCreator,
-            moodTypeCreator = moodTypeCreator,
-            featureTagCreator = featureTagCreator
+            moodTypeCreator = moodTypeCreator
         )
     }
 
@@ -325,7 +330,8 @@ class LogicModule(private val context: Context) {
             fastingPlanIdMapper = fastingPlanIdMapper,
             dispatcher = Dispatchers.IO,
             idGenerator = idGenerator,
-            fastingTrackProvider = fastingTrackProvider
+            fastingTrackProvider = fastingTrackProvider,
+            diaryTrackCreator = diaryTrackCreator
         )
     }
 
@@ -382,7 +388,7 @@ class LogicModule(private val context: Context) {
         )
     }
 
-    val moodWithActivityCreator by lazy {
+    private val moodWithActivityCreator by lazy {
         MoodWithActivityCreator(
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO
@@ -400,7 +406,9 @@ class LogicModule(private val context: Context) {
         MoodTrackCreator(
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO,
-            idGenerator = idGenerator
+            idGenerator = idGenerator,
+            diaryTrackCreator = diaryTrackCreator,
+            moodWithActivityCreator = moodWithActivityCreator
         )
     }
 
@@ -409,7 +417,10 @@ class LogicModule(private val context: Context) {
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO,
             moodWithActivityCreator = moodWithActivityCreator,
-            moodWithActivityDeleter = moodWithActivityDeleter
+            moodWithActivityDeleter = moodWithActivityDeleter,
+            diaryTrackProvider = diaryTrackProvider,
+            diaryTrackUpdater = diaryTrackUpdater,
+            diaryAttachmentProvider = diaryAttachmentProvider
         )
     }
 
@@ -485,7 +496,7 @@ class LogicModule(private val context: Context) {
             idGenerator = idGenerator,
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO,
-            diaryWithFeatureTagsCreator = diaryWithFeatureTagsCreator
+            diaryAttachmentCreator = diaryAttachmentCreator
         )
     }
 
@@ -493,8 +504,8 @@ class LogicModule(private val context: Context) {
         DiaryTrackUpdater(
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO,
-            diaryWithFeatureTagsCreator = diaryWithFeatureTagsCreator,
-            diaryWithFeatureTagsDeleter = diaryWithFeatureTagsDeleter
+            diaryAttachmentCreator = diaryAttachmentCreator,
+            diaryAttachmentDeleter = diaryAttachmentDeleter
         )
     }
 
@@ -506,56 +517,93 @@ class LogicModule(private val context: Context) {
     }
 
     val diaryTrackProvider by lazy {
-        DiaryTrackProvider(appDatabase = appDatabase)
+        DiaryTrackProvider(
+            appDatabase = appDatabase,
+            diaryAttachmentProvider = diaryAttachmentProvider
+        )
     }
 
     val dateRangeFilterTypeMapper by lazy {
         DateRangeFilterTypeMapper(appPreferenceProvider = appPreferenceProvider)
     }
 
-    val featureTagCreator by lazy {
-        FeatureTagCreator(
-            idGenerator = idGenerator,
-            appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
-            predefinedFeatureTagProvider = predefinedFeatureTagProvider
-        )
+    val dateRangeFilterTypeProvider by lazy {
+        DateRangeFilterTypeProvider()
     }
 
-    val featureTagProvider by lazy {
-        FeatureTagProvider(
-            appDatabase = appDatabase
-        )
-    }
-
-    val predefinedFeatureTagProvider by lazy {
-        PredefinedFeatureTagProviderImpl(context = context)
-    }
-
-    val diaryWithFeatureTagsCreator by lazy {
-        DiaryWithFeatureTagsCreator(
-            idGenerator = idGenerator,
-            appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
-        )
-    }
-
-    val diaryWithFeatureTagsDeleter by lazy {
-        DiaryWithFeatureTagsDeleter(
-            appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
-        )
-    }
-
-    val diaryWithFeatureTagsProvider by lazy {
-        DiaryWithFeatureTagsProvider(
-            appDatabase = appDatabase,
-            diaryTrackProvider = diaryTrackProvider,
-            featureTagsProvider = featureTagProvider
-        )
+    val diaryTrackTitleValidator by lazy {
+        DiaryTrackTitleValidator()
     }
 
     val diaryTrackDescriptionValidator by lazy {
         DiaryTrackDescriptionValidator()
+    }
+
+    private val attachmentTypeIdMapper by lazy {
+        AttachmentTypeIdMapper()
+    }
+
+    private val diaryAttachmentCreator by lazy {
+        DiaryAttachmentCreator(
+            idGenerator = idGenerator,
+            appDatabase = appDatabase,
+            attachmentTypeIdMapper = attachmentTypeIdMapper,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val diaryAttachmentProvider by lazy {
+        DiaryAttachmentProvider(
+            appDatabase = appDatabase,
+            attachmentTypeIdMapper = attachmentTypeIdMapper,
+            fastingTrackProvider = fastingTrackProvider,
+            moodTrackProvider = moodTrackProvider,
+            diaryTagProvider = diaryTagProvider
+        )
+    }
+
+    val diaryAttachmentDeleter by lazy {
+        DiaryAttachmentDeleter(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO,
+            attachmentTypeIdMapper = attachmentTypeIdMapper
+        )
+    }
+
+    val diaryTagIconProvider by lazy {
+        DiaryTagIconProvider()
+    }
+
+    val diaryTagNameValidator by lazy {
+        DiaryTagNameValidator()
+    }
+
+    val diaryTagCreator by lazy {
+        DiaryTagCreator(
+            idGenerator = idGenerator,
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val diaryTagUpdater by lazy {
+        DiaryTagUpdater(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val diaryTagDeleter by lazy {
+        DiaryTagDeleter(
+            appDatabase = appDatabase,
+            dispatcher = Dispatchers.IO
+        )
+    }
+
+    val diaryTagProvider by lazy {
+        DiaryTagProvider(
+            appDatabase = appDatabase,
+            iconResourceProvider = diaryTagIconProvider
+        )
     }
 }

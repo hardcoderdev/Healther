@@ -11,6 +11,10 @@
     <string name="diary_searchIcon_contentDescription">Поиск по заметкам…</string>
     <string name="diary_nowEmpty_text">Сейчас здесь пусто. Чтобы добавить сюда новые записи, нажмите на кнопку справа внизу.</string>
     <string name="diary_nothingFound_text">По вашему запросу или фильтру ничего не найдено :(</string>
+    <string name="diary_filterBottomSheetTitle_text">Фильтрация заметок</string>
+    <string name="diary_selectDateRange_subtitle_bottomSheet_text">Временной период:</string>
+    <string name="diary_selectTags_subtitle_bottomSheet_text">Ваши теги:</string>
+    <string name="diary_item_tags_left_count_format">Ещё %d занятий…</string>
 
     <string name="diary_createTrack_title_topBar">Добавление заметкам</string>
     <string name="diary_createTrack_enterNote_textField">Заметку вводите здесь…</string>
@@ -19,16 +23,42 @@
     <string name="diary_createTrack_buttonText">Сохранить запись</string>
     <string name="diary_createTrack_descriptionEmpty_text">Это поле не может быть пустым!</string>
     <string name="diary_createTrack_enterInfo_text">Основная информация:</string>
-    <string name="diary_createTrack_featureTagNotSelected_text">Пожалуйста, выберите хотя бы 1 тег!</string>
+    <string name="diary_createTrack_titleMoreThanMaxChars_text">Макс. длина заголовка: %d символов!</string>
+    <string name="diary_createTrack_youMaySelectTags_text">Вы можете выбрать теги для этой заметки:</string>
+    <string name="diary_createTrack_manageTags_buttonText">Управление тегами</string>
 
     <string name="diary_updateTrack_selectLinkedFeatureType_text">Привязать заметку к:</string>
     <string name="diary_updateTrack_title_topBar">Обновление заметкам</string>
     <string name="diary_updateTrack_enterTitle_textField">Введите заголовок…</string>
+    <string name="diary_updateTrack_titleMoreThanMaxChars_text">Макс. длина заголовка: %d символов!</string>
     <string name="diary_updateTrack_enterNote_textField">Заметку вводите здесь…</string>
     <string name="diary_updateTrack_enterInfo_text">Основная информация:</string>
     <string name="diary_updateTrack_descriptionEmpty_text">Это поле не может быть пустым!</string>
-    <string name="diary_updateTrack_featureTagNotSelected_text">Пожалуйста, выберите хотя бы 1 тег!</string>
+    <string name="diary_updateTrack_attachedEntity_text">Прикрепленная запись:</string>
+    <string name="diary_updateTrack_youMaySelectTags_text">Вы можете выбрать теги для этой заметки:</string>
+    <string name="diary_updateTrack_manageTags_buttonText">Управление тегами</string>
 
+    <string name="diary_itemFasting_yourNote_text">Ваше примечание:</string>
+    <string name="diary_itemMood_yourNote_text">Ваше примечание:</string>
 
+    <string name="diary_manageTags_title_topBar">Управление тегами</string>
+    <string name="diary_manageTags_nowEmpty_text">Сейчас здесь пусто. Чтобы создать новый тег и затем прикрепить его к заметке, нажмите на кнопку справа внизу.</string>
 
+    <string name="diary_createTag_title_topBar">Создание тега</string>
+    <string name="diary_createTag_enter_name_text">Введите название тега:</string>
+    <string name="diary_createTag_enterName_textField">Например: здоровье…</string>
+    <string name="diary_createTag_nameEmpty_error">Название не может быть пустым!</string>
+    <string name="diary_createTag_nameMoreThanMaxChars_error">Максимальное кол-во символов: %d</string>
+    <string name="diary_createTag_selectIcon_text">Выберите иконку для тега:</string>
+    <string name="diary_createTag_tagIconContentDescription">Иконка тега</string>
+    <string name="diary_createTag_saveTrack_buttonText">Сохранить тег</string>
+
+    <string name="diary_updateTag_title_topBar">Обновление тега</string>
+    <string name="diary_updateTag_enter_name_text">Введите название тега:</string>
+    <string name="diary_updateTag_enterName_textField">Например: здоровье…</string>
+    <string name="diary_updateTag_nameEmpty_error">Название не может быть пустым!</string>
+    <string name="diary_updateTag_nameMoreThanMaxChars_error">Максимальное кол-во символов: %d</string>
+    <string name="diary_updateTag_selectIcon_text">Выберите иконку для тега:</string>
+    <string name="diary_updateTag_tagIconContentDescription">Иконка тега</string>
+    <string name="diary_updateTag_saveTrack_buttonText">Обновить тег</string>
 </resources>

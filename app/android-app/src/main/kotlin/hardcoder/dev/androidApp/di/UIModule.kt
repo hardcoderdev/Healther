@@ -1,6 +1,7 @@
 package hardcoder.dev.androidApp.di
 
 import android.content.Context
+import hardcoder.dev.androidApp.ui.dashboard.diary.DateRangeFilterTypeResourcesProvider
 import hardcoder.dev.androidApp.ui.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.features.fasting.statistic.FastingStatisticResolver
 import hardcoder.dev.androidApp.ui.features.moodTracking.statistic.MoodTrackingStatisticResolver
@@ -63,5 +64,9 @@ class UIModule(private val context: Context) {
         MoodTrackingStatisticResolver(
             context = context
         )
+    }
+
+    val dateRangeFilterTypeResourcesProvider by lazy {
+        DateRangeFilterTypeResourcesProvider()
     }
 }

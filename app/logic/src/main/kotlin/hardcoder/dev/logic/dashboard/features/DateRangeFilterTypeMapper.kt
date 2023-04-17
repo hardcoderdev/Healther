@@ -24,15 +24,15 @@ class DateRangeFilterTypeMapper(appPreferenceProvider: AppPreferenceProvider) {
     ).value
 
     private val map = mapOf(
-        DateRangeFilterType.ByAllPeriod to requireNotNull(appPreferences).firstLaunchTime
+        DateRangeFilterType.BY_ALL_PERIOD to requireNotNull(appPreferences).firstLaunchTime
                 ..LocalDate.now().getEndOfDay(),
-        DateRangeFilterType.ByDay to LocalDate.now().getStartOfDay()
+        DateRangeFilterType.BY_DAY to LocalDate.now().getStartOfDay()
                 ..LocalDate.now().getEndOfDay(),
-        DateRangeFilterType.ByWeek to LocalDate.now().minus(7, DateTimeUnit.DAY).getStartOfDay()
+        DateRangeFilterType.BY_WEEK to LocalDate.now().minus(7, DateTimeUnit.DAY).getStartOfDay()
                 ..LocalDate.now().getEndOfDay(),
-        DateRangeFilterType.ByMonth to LocalDate.now().minus(1, DateTimeUnit.MONTH).getStartOfDay()
+        DateRangeFilterType.BY_MONTH to LocalDate.now().minus(1, DateTimeUnit.MONTH).getStartOfDay()
                 ..LocalDate.now().getEndOfDay(),
-        DateRangeFilterType.ByYear to LocalDate.now().minus(1, DateTimeUnit.YEAR).getStartOfDay()
+        DateRangeFilterType.BY_YEAR to LocalDate.now().minus(1, DateTimeUnit.YEAR).getStartOfDay()
                 ..LocalDate.now().getEndOfDay()
     )
 

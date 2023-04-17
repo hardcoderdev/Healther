@@ -3,29 +3,44 @@ package hardcoder.dev.presentation.dashboard.features.diary
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.extensions.getStartOfDay
+import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTag
+import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.CorrectValidatedDiaryTrackDescription
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.CorrectValidatedDiaryTrackTitle
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackCreator
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackDescriptionValidator
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackTitleValidator
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.ValidatedDiaryTrackDescription
-import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTag
-import hardcoder.dev.logic.dashboard.features.diary.featureTag.FeatureTagProvider
-import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.ValidatedDiaryTrackTitle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class DiaryCreateTrackViewModel(
     private val diaryTrackCreator: DiaryTrackCreator,
-    featureTagProvider: FeatureTagProvider,
+    diaryTagProvider: DiaryTagProvider,
+    diaryTrackTitleValidator: DiaryTrackTitleValidator,
     diaryTrackDescriptionValidator: DiaryTrackDescriptionValidator
 ) : ViewModel() {
 
     private val creationState = MutableStateFlow<CreationState>(CreationState.NotExecuted)
+    private val selectedDate =
+        MutableStateFlow(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
+    private val title = MutableStateFlow<String?>(null)
+    private val validatedTitle = title.map {
+        it?.let {
+            diaryTrackTitleValidator.validate(it)
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = null
+    )
     private val description = MutableStateFlow<String?>(null)
     private val validatedDescription = description.map {
         it?.let {
@@ -36,41 +51,34 @@ class DiaryCreateTrackViewModel(
         started = SharingStarted.Eagerly,
         initialValue = null
     )
-    private val title = MutableStateFlow<String?>(null)
-    private val selectedDate = MutableStateFlow(LocalDate.now())
-    private var mutableSelectedFeatureTags = mutableListOf<FeatureTag>()
-    private val selectedFeatureTags = MutableStateFlow<List<FeatureTag>>(emptyList())
-    private val featureTags = featureTagProvider.provideAllFeatureTags().stateIn(
+    private val tagList = diaryTagProvider.provideAllDiaryTags().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
     )
-
-    init {
-        viewModelScope.launch {
-            mutableSelectedFeatureTags.add(featureTagProvider.provideAllFeatureTags().first().first())
-            selectedFeatureTags.value = mutableSelectedFeatureTags
-        }
-    }
+    private var mutableSelectedTags = mutableListOf<DiaryTag>()
+    private val selectedTags = MutableStateFlow<List<DiaryTag>>(emptyList())
 
     val state = combine(
         creationState,
-        featureTags,
         title,
+        validatedTitle,
         description,
         validatedDescription,
-        selectedFeatureTags
-    ) { creationState, featureTags, title, description,
-        validatedDescription, selectedFeatureTags ->
+        tagList,
+        selectedTags
+    ) { creationState, title, validatedTitle, description,
+        validatedDescription, tagList, selectedTags ->
         State(
-            creationAllowed = selectedFeatureTags.isNotEmpty() &&
+            creationAllowed = validatedTitle is CorrectValidatedDiaryTrackTitle &&
                     validatedDescription is CorrectValidatedDiaryTrackDescription,
             creationState = creationState,
-            featureTagList = featureTags,
+            title = title,
+            validatedTitle = validatedTitle,
             description = description,
             validatedDiaryTrackDescription = validatedDescription,
-            title = title,
-            selectedFeatureTags = selectedFeatureTags
+            tagList = tagList,
+            selectedTags = selectedTags
         )
     }.stateIn(
         scope = viewModelScope,
@@ -78,11 +86,12 @@ class DiaryCreateTrackViewModel(
         initialValue = State(
             creationAllowed = false,
             creationState = creationState.value,
-            featureTagList = featureTags.value,
-            selectedFeatureTags = selectedFeatureTags.value,
+            title = title.value,
+            validatedTitle = validatedTitle.value,
             description = description.value,
             validatedDiaryTrackDescription = validatedDescription.value,
-            title = title.value
+            tagList = tagList.value,
+            selectedTags = selectedTags.value
         )
     )
 
@@ -94,30 +103,35 @@ class DiaryCreateTrackViewModel(
         title.value = newTitle
     }
 
-    fun addFeatureTag(featureTag: FeatureTag) {
-        if (selectedFeatureTags.value.contains(featureTag).not()) {
-            mutableSelectedFeatureTags = selectedFeatureTags.value.toMutableList()
-            mutableSelectedFeatureTags.add(featureTag)
-            selectedFeatureTags.value = mutableSelectedFeatureTags
+    fun addTag(diaryTag: DiaryTag) {
+        if (selectedTags.value.contains(diaryTag).not()) {
+            mutableSelectedTags = selectedTags.value.toMutableList()
+            mutableSelectedTags.add(diaryTag)
+            selectedTags.value = mutableSelectedTags
         }
     }
 
-    fun removeFeatureTag(featureTag: FeatureTag) {
-        mutableSelectedFeatureTags = selectedFeatureTags.value.toMutableList()
-        mutableSelectedFeatureTags.remove(featureTag)
-        selectedFeatureTags.value = mutableSelectedFeatureTags
+    fun removeTag(diaryTag: DiaryTag) {
+        mutableSelectedTags = selectedTags.value.toMutableList()
+        mutableSelectedTags.remove(diaryTag)
+        selectedTags.value = mutableSelectedTags
     }
 
     fun createTrack() {
         viewModelScope.launch {
+            val validatedTitle = validatedTitle.value
+            require(validatedTitle is ValidatedDiaryTrackTitle)
+
             val validatedDescription = validatedDescription.value
             require(validatedDescription is ValidatedDiaryTrackDescription)
 
             diaryTrackCreator.create(
-                date = selectedDate.value.getStartOfDay(),
-                text = validatedDescription.data.trim(),
-                title = title.value?.trim(),
-                selectedFeatureTags = selectedFeatureTags.value
+                entityId = null,
+                attachmentType = null,
+                title = validatedTitle.data.trim(),
+                description = validatedDescription.data.trim(),
+                date = selectedDate.value,
+                selectedTags = selectedTags.value
             )
 
             creationState.value = CreationState.Executed
@@ -127,11 +141,12 @@ class DiaryCreateTrackViewModel(
     data class State(
         val creationAllowed: Boolean,
         val creationState: CreationState,
-        val selectedFeatureTags: List<FeatureTag>,
-        val featureTagList: List<FeatureTag>,
         val title: String?,
+        val validatedTitle: ValidatedDiaryTrackTitle?,
         val description: String?,
-        val validatedDiaryTrackDescription: ValidatedDiaryTrackDescription?
+        val validatedDiaryTrackDescription: ValidatedDiaryTrackDescription?,
+        val tagList: List<DiaryTag>,
+        val selectedTags: List<DiaryTag>
     )
 
     sealed class CreationState {

@@ -61,7 +61,7 @@ import kotlinx.datetime.toInstant
 @Composable
 fun CreateMoodTrackScreen(
     onGoBack: () -> Unit,
-    onManageHobby: () -> Unit,
+    onManageActivities: () -> Unit,
     onManageMoodTypes: () -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
@@ -86,7 +86,7 @@ fun CreateMoodTrackScreen(
                 onManageMoodTypes = onManageMoodTypes,
                 onAddActivity = viewModel::addActivity,
                 onRemoveActivity = viewModel::removeActivity,
-                onManageActivities = onManageHobby,
+                onManageActivities = onManageActivities,
                 onCreateTrack = viewModel::createTrack
             )
         },

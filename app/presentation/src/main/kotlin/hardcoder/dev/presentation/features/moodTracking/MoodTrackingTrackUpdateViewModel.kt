@@ -3,6 +3,8 @@ package hardcoder.dev.presentation.features.moodTracking
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentProvider
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackProvider
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.logic.features.moodTracking.activity.ActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDeleter
@@ -27,8 +29,9 @@ class MoodTrackingTrackUpdateViewModel(
     private val moodTrackId: Int,
     private val moodTrackUpdater: MoodTrackUpdater,
     private val moodTrackDeleter: MoodTrackDeleter,
-    //private val diaryTrackCreator: DiaryTrackCreator,
+    private val diaryTrackProvider: DiaryTrackProvider,
     private val moodTrackProvider: MoodTrackProvider,
+    private val diaryAttachmentProvider: DiaryAttachmentProvider,
     moodWithActivityProvider: MoodWithActivitiesProvider,
     activityProvider: ActivityProvider,
     moodTypeProvider: MoodTypeProvider,
@@ -137,7 +140,11 @@ class MoodTrackingTrackUpdateViewModel(
                     date = selectedDate.value.toInstant(TimeZone.currentSystemDefault())
                 )
 
-                moodTrackUpdater.update(moodTrack, selectedActivities.value)
+                moodTrackUpdater.update(
+                    note = note.value,
+                    moodTrack = moodTrack,
+                    selectedActivities = selectedActivities.value
+                )
             }
 
             updateState.value = UpdateState.Executed
@@ -159,6 +166,11 @@ class MoodTrackingTrackUpdateViewModel(
                 selectedMoodType.value = moodTrack.moodType
                 selectedDate.value = moodTrack.date.toLocalDateTime(TimeZone.currentSystemDefault())
                 selectedActivities.value = initialActivities.value
+                diaryAttachmentProvider.provideAttachmentOfDiaryTrackById(moodTrackId).firstOrNull()?.let { attachment ->
+                    diaryTrackProvider.provideDiaryTrackById(attachment.diaryTrackId).map { diaryTrack ->
+                        note.value = diaryTrack?.description ?: ""
+                    }
+                }
             }
         }
     }

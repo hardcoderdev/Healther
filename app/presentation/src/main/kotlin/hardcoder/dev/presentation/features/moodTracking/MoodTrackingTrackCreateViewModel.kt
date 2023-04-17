@@ -8,7 +8,6 @@ import hardcoder.dev.logic.features.moodTracking.activity.ActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackCreator
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
-import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityCreator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -20,8 +19,6 @@ import kotlinx.datetime.toLocalDateTime
 
 class MoodTrackingTrackCreateViewModel(
     private val moodTrackCreator: MoodTrackCreator,
-    //private val diaryTrackCreator: DiaryTrackCreator,
-    private val moodWithActivityCreator: MoodWithActivityCreator,
     moodTypeProvider: MoodTypeProvider,
     activityProvider: ActivityProvider
 ) : ViewModel() {
@@ -112,26 +109,12 @@ class MoodTrackingTrackCreateViewModel(
         viewModelScope.launch {
             val selectedMoodType = requireNotNull(selectedMoodType.value)
 
-            val moodTrackId = moodTrackCreator.create(
+            moodTrackCreator.create(
+                note = note.value,
                 moodType = selectedMoodType,
-                date = selectedDate.value
+                date = selectedDate.value,
+                selectedActivities = selectedActivities.value
             )
-
-            if (note.value.isNotEmpty()) {
-//                diaryTrackCreator.create(
-//                    creationTime = creationTime,
-//                    linkedFeatureType = FeatureType.MOOD_TRACKING,
-//                    text = note.value,
-//                    title = null
-//                )
-            }
-
-            selectedActivities.value.forEach { activity ->
-                moodWithActivityCreator.create(
-                    moodTrackId = moodTrackId,
-                    activityId = activity.id
-                )
-            }
 
             creationState.value = CreationState.Executed
         }

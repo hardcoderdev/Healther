@@ -1,9 +1,9 @@
 package hardcoder.dev.logic.dashboard.features
 
-sealed class DateRangeFilterType {
-    object ByAllPeriod : DateRangeFilterType()
-    object ByDay : DateRangeFilterType()
-    object ByWeek : DateRangeFilterType()
-    object ByMonth : DateRangeFilterType()
-    object ByYear : DateRangeFilterType()
+enum class DateRangeFilterType {
+    BY_DAY,
+    BY_WEEK,
+    BY_MONTH,
+    BY_YEAR,
+    BY_ALL_PERIOD
 }

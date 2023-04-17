@@ -3,9 +3,12 @@ package hardcoder.dev.androidApp.ui.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import hardcoder.dev.androidApp.ui.dashboard.diary.DiaryCreateTrackScreen
+import hardcoder.dev.androidApp.ui.dashboard.diary.create.DiaryCreateTrackScreen
 import hardcoder.dev.androidApp.ui.dashboard.diary.DiaryScreen
-import hardcoder.dev.androidApp.ui.dashboard.diary.DiaryUpdateTrackScreen
+import hardcoder.dev.androidApp.ui.dashboard.diary.tags.ManageTagsScreen
+import hardcoder.dev.androidApp.ui.dashboard.diary.tags.create.CreateTagScreen
+import hardcoder.dev.androidApp.ui.dashboard.diary.tags.update.UpdateTagScreen
+import hardcoder.dev.androidApp.ui.dashboard.diary.update.DiaryUpdateTrackScreen
 import hardcoder.dev.androidApp.ui.features.fasting.FastingScreen
 import hardcoder.dev.androidApp.ui.features.fasting.create.FastingCreationTrackScreen
 import hardcoder.dev.androidApp.ui.features.fasting.history.FastingHistoryScreen
@@ -203,7 +206,7 @@ fun NavGraphBuilder.moodTrackingDestinations(navController: NavController) {
     composable(route = Screen.MoodTrackingCreate.route) {
         CreateMoodTrackScreen(
             onGoBack = navController::popBackStack,
-            onManageHobby = { navController.navigate(Screen.ManageHobbies.route) },
+            onManageActivities = { navController.navigate(Screen.ManageHobbies.route) },
             onManageMoodTypes = { navController.navigate(Screen.ManageMoodTypes.route) }
         )
     }
@@ -269,7 +272,10 @@ fun NavGraphBuilder.diaryDestinations(navController: NavController) {
         )
     }
     composable(route = Screen.DiaryCreateTrack.route) {
-        DiaryCreateTrackScreen(onGoBack = navController::popBackStack)
+        DiaryCreateTrackScreen(
+            onGoBack = navController::popBackStack,
+            onManageTags = { navController.navigate(Screen.ManageDiaryTags.route) }
+        )
     }
     composable(
         route = Screen.DiaryUpdateTrack.route,
@@ -277,7 +283,27 @@ fun NavGraphBuilder.diaryDestinations(navController: NavController) {
     ) {
         DiaryUpdateTrackScreen(
             onGoBack = navController::popBackStack,
-            diaryTrackId = Screen.DiaryUpdateTrack.getDiaryTrackId(it.arguments)
+            diaryTrackId = Screen.DiaryUpdateTrack.getDiaryTrackId(it.arguments),
+            onManageTags = { navController.navigate(Screen.ManageDiaryTags.route) }
+        )
+    }
+    composable(route = Screen.ManageDiaryTags.route) {
+        ManageTagsScreen(
+            onGoBack = navController::popBackStack,
+            onCreateTag = { navController.navigate(Screen.CreateDiaryTag.route) },
+            onUpdateTag = { navController.navigate(Screen.UpdateDiaryTag.buildRoute(it.id)) }
+        )
+    }
+    composable(route = Screen.CreateDiaryTag.route) {
+        CreateTagScreen(onGoBack = navController::popBackStack)
+    }
+    composable(
+        route = Screen.UpdateDiaryTag.route,
+        arguments = Screen.UpdateDiaryTag.arguments
+    ) {
+        UpdateTagScreen(
+            tagId = Screen.UpdateDiaryTag.getDiaryTagId(it.arguments),
+            onGoBack = navController::popBackStack
         )
     }
 }

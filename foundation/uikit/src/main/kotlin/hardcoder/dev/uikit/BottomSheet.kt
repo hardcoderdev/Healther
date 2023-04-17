@@ -1,6 +1,7 @@
 package hardcoder.dev.uikit
 
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
@@ -9,6 +10,8 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -16,12 +19,14 @@ fun BottomSheet(
     modifier: Modifier = Modifier,
     state: BottomSheetState = rememberBottomSheetState(showed = false),
     sheetContent: @Composable ColumnScope.() -> Unit,
+    sheetShape: Shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
     content: @Composable () -> Unit,
 ) {
     ModalBottomSheetLayout(
         sheetState = state.materialState,
         modifier = modifier,
         sheetContent = sheetContent,
+        sheetShape = sheetShape,
         content = content
     )
 }

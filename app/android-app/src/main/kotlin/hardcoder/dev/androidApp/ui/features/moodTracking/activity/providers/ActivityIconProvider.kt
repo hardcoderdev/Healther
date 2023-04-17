@@ -1,4 +1,4 @@
-package hardcoder.dev.androidApp.ui.features.moodTracking.activity
+package hardcoder.dev.androidApp.ui.features.moodTracking.activity.providers
 
 import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
 import hardcoder.dev.healther.R

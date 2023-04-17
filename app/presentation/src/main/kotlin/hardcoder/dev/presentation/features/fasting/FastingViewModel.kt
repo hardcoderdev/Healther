@@ -12,6 +12,7 @@ import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
 import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -85,10 +86,13 @@ class FastingViewModel(
         initialValue = null
     )
 
+    private val note = MutableStateFlow("")
+
     val state = combine(
         dateTimeProvider.currentTimeFlow(),
         currentTrack,
-    ) { currentTime, currentTrack ->
+        note
+    ) { currentTime, currentTrack, note ->
         currentTrack?.let {
             val timeSinceStartOfFasting =
                 currentTime.toInstant(TimeZone.currentSystemDefault()) - currentTrack.startTime
@@ -99,6 +103,7 @@ class FastingViewModel(
                 FastingState.Finished(
                     fastingPlan = currentTrack.fastingPlan,
                     isInterrupted = currentTrack.interruptedTime != null,
+                    note = note,
                     timeLeftInMillis = currentTrack.interruptedTime?.let {
                         it - currentTrack.startTime
                     } ?: run {
@@ -139,8 +144,13 @@ class FastingViewModel(
 
     fun clearFasting() {
         viewModelScope.launch {
-            currentFastingManager.clearFasting()
+            currentFastingManager.clearFasting(note = note.value)
+            note.value = ""
         }
+    }
+
+    fun updateNote(newNote: String) {
+        note.value = newNote
     }
 
     sealed class FastingState {
@@ -159,6 +169,7 @@ class FastingViewModel(
         ) : FastingState()
 
         data class Finished(
+            val note: String?,
             val timeLeftInMillis: Duration,
             val isInterrupted: Boolean,
             val fastingPlan: FastingPlan,
