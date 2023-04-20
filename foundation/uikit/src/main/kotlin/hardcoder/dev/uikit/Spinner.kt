@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package hardcoder.dev.uikit
 
@@ -14,10 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 
-data class SpinnerEntry(
-    val index: Int,
-    @StringRes val valueResId: Int
-)
+data class SpinnerEntry(@StringRes val valueResId: Int)
 
 @Composable
 fun FilledSpinner(
@@ -63,14 +60,14 @@ fun FilledSpinner(
                     onUpdateSelectedOption(null)
                 }
             )
-            spinnerEntries.forEach { spinnerEntry ->
+            spinnerEntries.forEachIndexed { index, spinnerEntry ->
                 DropdownMenuItem(
                     text = {
                         Text(text = stringResource(id = spinnerEntry.valueResId))
                     },
                     onClick = {
                         onUpdateExpanded(false)
-                        onUpdateSelectedOption(spinnerEntry.index)
+                        onUpdateSelectedOption(index)
                     }
                 )
             }

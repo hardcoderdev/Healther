@@ -2,12 +2,14 @@ package hardcoder.dev.logic.features.moodTracking.moodTrack
 
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
-import hardcoder.dev.logic.dashboard.features.diary.AttachmentType
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackCreator
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityCreator
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -18,6 +20,7 @@ class MoodTrackCreator(
     private val appDatabase: AppDatabase,
     private val dispatcher: CoroutineDispatcher,
     private val diaryTrackCreator: DiaryTrackCreator,
+    private val moodTrackProvider: MoodTrackProvider,
     private val moodWithActivityCreator: MoodWithActivityCreator
 ) {
 
@@ -35,14 +38,15 @@ class MoodTrackCreator(
             date = date.toInstant(TimeZone.currentSystemDefault())
         )
 
-        note?.let {
+        if (note != null) {
             diaryTrackCreator.create(
-                entityId = moodTrackId,
-                description = note,
-                title = null,
+                content = note,
                 date = date,
-                selectedTags = emptyList(),
-                attachmentType = AttachmentType.MOOD_TRACKING_ENTITY
+                diaryAttachmentGroup = DiaryAttachmentGroup(
+                    moodTracks = listOf(
+                        moodTrackProvider.provideById(moodTrackId).filterNotNull().first()
+                    )
+                )
             )
         }
 

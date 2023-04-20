@@ -24,7 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.IconItem
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.dashboard.features.diary.diaryTag.IncorrectValidatedDiaryTagName
+import hardcoder.dev.logic.dashboard.features.diary.diaryTag.IncorrectDiaryTagName
 import hardcoder.dev.logic.icons.LocalIcon
 import hardcoder.dev.presentation.dashboard.features.diary.tags.UpdateTagViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -103,18 +103,18 @@ private fun UpdateTagContent(
                     imeAction = ImeAction.Next
                 ),
                 modifier = Modifier.fillMaxWidth(),
-                isError = state.validatedName is IncorrectValidatedDiaryTagName
+                isError = state.validatedName is IncorrectDiaryTagName
             )
-            AnimatedVisibility(visible = validatedTagName is IncorrectValidatedDiaryTagName) {
-                if (validatedTagName is IncorrectValidatedDiaryTagName) {
+            AnimatedVisibility(visible = validatedTagName is IncorrectDiaryTagName) {
+                if (validatedTagName is IncorrectDiaryTagName) {
                     ErrorText(
                         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                         text = when (val reason = validatedTagName.reason) {
-                            is IncorrectValidatedDiaryTagName.Reason.Empty -> {
+                            is IncorrectDiaryTagName.Reason.Empty -> {
                                 stringResource(R.string.diary_updateTag_nameEmpty_error)
                             }
 
-                            is IncorrectValidatedDiaryTagName.Reason.MoreThanMaxChars -> {
+                            is IncorrectDiaryTagName.Reason.MoreThanMaxChars -> {
                                 stringResource(
                                     id = R.string.diary_updateTag_nameMoreThanMaxChars_error,
                                     formatArgs = arrayOf(reason.maxChars)

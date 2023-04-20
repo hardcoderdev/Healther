@@ -31,11 +31,9 @@ import hardcoder.dev.androidApp.ui.features.fasting.FastingItem
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodTrackItem
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTag
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.IncorrectValidatedDiaryTrackDescription
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.IncorrectValidatedDiaryTrackTitle
-import hardcoder.dev.logic.features.fasting.track.FastingTrack
-import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.IncorrectDiaryTrackContent
 import hardcoder.dev.presentation.dashboard.features.diary.DiaryUpdateTrackViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
@@ -77,11 +75,9 @@ fun DiaryUpdateTrackScreen(
         content = {
             DiaryUpdateTrackContent(
                 state = state.value,
-                onUpdateText = viewModel::updateText,
-                onUpdateTitle = viewModel::updateTitle,
+                onUpdateText = viewModel::updateContent,
                 onUpdateTrack = viewModel::updateTrack,
-                onAddTag = viewModel::addTag,
-                onRemoveTag = viewModel::removeTag,
+                onToggleTag = viewModel::toggleTag,
                 onManageTags = onManageTags
             )
         },
@@ -106,10 +102,8 @@ fun DiaryUpdateTrackScreen(
 private fun DiaryUpdateTrackContent(
     state: DiaryUpdateTrackViewModel.State,
     onUpdateText: (String) -> Unit,
-    onUpdateTitle: (String) -> Unit,
     onUpdateTrack: () -> Unit,
-    onAddTag: (DiaryTag) -> Unit,
-    onRemoveTag: (DiaryTag) -> Unit,
+    onToggleTag: (DiaryTag) -> Unit,
     onManageTags: () -> Unit
 ) {
     Column(
@@ -124,18 +118,14 @@ private fun DiaryUpdateTrackContent(
         ) {
             EnterBasicInfoSection(
                 state = state,
-                onUpdateTitle = onUpdateTitle,
                 onUpdateText = onUpdateText
             )
             Spacer(modifier = Modifier.height(32.dp))
-            state.diaryTrack?.let {
-                AttachedEntitySection(diaryTrack = it)
-            }
+            AttachedEntitySection(diaryAttachmentGroup = state.diaryAttachmentGroup) // TODO HANDLE IF GROUP EMPTY
             Spacer(modifier = Modifier.height(32.dp))
             SelectTagsSection(
                 state = state,
-                onAddTag = onAddTag,
-                onRemoveTag = onRemoveTag,
+                onToggleTag = onToggleTag,
                 onManageTags = onManageTags
             )
         }
@@ -152,50 +142,15 @@ private fun DiaryUpdateTrackContent(
 @Composable
 private fun EnterBasicInfoSection(
     state: DiaryUpdateTrackViewModel.State,
-    onUpdateTitle: (String) -> Unit,
     onUpdateText: (String) -> Unit
 ) {
-    val validatedTitle = state.validatedTitle
-    val validatedDescription = state.validatedDescription
+    val validatedDescription = state.validatedContent
 
     Title(text = stringResource(id = R.string.diary_updateTrack_enterInfo_text))
     Spacer(modifier = Modifier.height(16.dp))
     FilledTextField(
         modifier = Modifier.fillMaxWidth(),
-        value = state.title ?: "",
-        onValueChange = onUpdateTitle,
-        label = R.string.diary_updateTrack_enterTitle_textField,
-        multiline = false,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Next
-        ),
-        isError = validatedTitle is IncorrectValidatedDiaryTrackTitle
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    AnimatedVisibility(visible = validatedTitle is IncorrectValidatedDiaryTrackTitle) {
-        if (validatedTitle is IncorrectValidatedDiaryTrackTitle) {
-            ErrorText(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                text = when (val reason = validatedTitle.reason) {
-                    is IncorrectValidatedDiaryTrackTitle.Reason.MoreThanMaxChars -> {
-                        stringResource(
-                            id = R.string.diary_updateTrack_titleMoreThanMaxChars_text,
-                            formatArgs = arrayOf(reason.maxChars)
-                        )
-                    }
-
-                    else -> {
-                        stringResource(id = 0)
-                    }
-                }
-            )
-        }
-    }
-    Spacer(modifier = Modifier.height(16.dp))
-    FilledTextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = state.description ?: "",
+        value = state.content ?: "",
         onValueChange = onUpdateText,
         label = R.string.diary_updateTrack_enterNote_textField,
         multiline = true,
@@ -205,15 +160,15 @@ private fun EnterBasicInfoSection(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Default
         ),
-        isError = validatedDescription is IncorrectValidatedDiaryTrackDescription
+        isError = validatedDescription is IncorrectDiaryTrackContent
     )
     Spacer(modifier = Modifier.height(16.dp))
-    AnimatedVisibility(visible = validatedDescription is IncorrectValidatedDiaryTrackDescription) {
-        if (validatedDescription is IncorrectValidatedDiaryTrackDescription) {
+    AnimatedVisibility(visible = validatedDescription is IncorrectDiaryTrackContent) {
+        if (validatedDescription is IncorrectDiaryTrackContent) {
             ErrorText(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                 text = when (validatedDescription.reason) {
-                    is IncorrectValidatedDiaryTrackDescription.Reason.Empty -> {
+                    is IncorrectDiaryTrackContent.Reason.Empty -> {
                         stringResource(R.string.diary_updateTrack_descriptionEmpty_text)
                     }
                 }
@@ -223,29 +178,26 @@ private fun EnterBasicInfoSection(
 }
 
 @Composable
-private fun AttachedEntitySection(diaryTrack: Any) {
+private fun AttachedEntitySection(diaryAttachmentGroup: DiaryAttachmentGroup) {
     Title(text = stringResource(id = R.string.diary_updateTrack_attachedEntity_text))
     Spacer(modifier = Modifier.height(16.dp))
-    when (diaryTrack) {
-        is FastingTrack -> {
-            FastingItem(fastingTrack = diaryTrack)
-        }
-
-        is MoodTrack -> {
-            MoodTrackItem(
-                activitiesList = emptyList(),
-                moodTrack = diaryTrack,
-                onUpdate = {}
-            )
-        }
+    diaryAttachmentGroup.fastingTracks.forEach { fastingTrack ->
+        FastingItem(fastingTrack = fastingTrack)
     }
+    diaryAttachmentGroup.moodTracks.forEach { moodTrack ->
+        MoodTrackItem(
+            activitiesList = emptyList(),
+            moodTrack = moodTrack,
+            onUpdate = {}
+        )
+    }
+    Spacer(modifier = Modifier.height(16.dp))
 }
 
 @Composable
 private fun SelectTagsSection(
     state: DiaryUpdateTrackViewModel.State,
-    onAddTag: (DiaryTag) -> Unit,
-    onRemoveTag: (DiaryTag) -> Unit,
+    onToggleTag: (DiaryTag) -> Unit,
     onManageTags: () -> Unit
 ) {
     Title(text = stringResource(id = R.string.diary_updateTrack_youMaySelectTags_text))
@@ -265,15 +217,9 @@ private fun SelectTagsSection(
                 text = tag.name,
                 iconResId = tag.icon.resourceId,
                 shape = RoundedCornerShape(32.dp),
-                isSelected = state.selectedTags.contains(tag),
+                isSelected = state.diaryAttachmentGroup.tags.contains(tag),
                 interactionType = InteractionType.SELECTION,
-                onClick = {
-                    if (state.selectedTags.contains(tag)) {
-                        onRemoveTag(tag)
-                    } else {
-                        onAddTag(tag)
-                    }
-                }
+                onClick = { onToggleTag(tag) }
             )
         }
     }

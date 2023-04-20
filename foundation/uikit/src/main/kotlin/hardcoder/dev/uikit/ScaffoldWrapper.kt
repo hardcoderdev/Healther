@@ -17,9 +17,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DropdownMenu
@@ -61,6 +63,7 @@ fun ScaffoldWrapper(
     actionConfig: ActionConfig? = null
 ) {
     Scaffold(
+        contentWindowInsets = WindowInsets.systemBars,
         topBar = {
             when (topBarConfig.type) {
                 is TopBarType.TitleTopBar -> SimpleTopBar(titleResId = topBarConfig.type.titleResId)
@@ -70,6 +73,7 @@ fun ScaffoldWrapper(
                     dropdownConfig = dropdownConfig,
                     actionConfig = actionConfig
                 )
+
                 is TopBarType.SearchTopBar -> SearchTopBar(
                     titleResId = topBarConfig.type.titleResId,
                     searchText = topBarConfig.type.searchText,
@@ -79,6 +83,7 @@ fun ScaffoldWrapper(
                     onSearchTextChanged = topBarConfig.type.onSearchTextChanged,
                     onClearClick = topBarConfig.type.onClearClick
                 )
+
                 is TopBarType.WithoutTopBar -> null
             }
         },
@@ -304,20 +309,20 @@ fun SearchTopBar(
             }
         },
         actions = {
-            AnimatedVisibility(
-                visible = !isSearchModeEnabled,
-                enter = fadeIn() + expandHorizontally { -it },
-                exit = fadeOut() + shrinkHorizontally { -it }
-            ) {
-                Row {
+            Row {
+                AnimatedVisibility(
+                    visible = !isSearchModeEnabled,
+                    enter = fadeIn() + expandHorizontally { -it },
+                    exit = fadeOut() + shrinkHorizontally { -it }
+                ) {
                     IconButton(
                         onClick = { isSearchModeEnabled = true },
                         iconResId = R.drawable.ic_search
                     )
-                    actionConfig?.let {
-                        it.actions.forEach { action ->
-                            IconButton(onClick = action.onActionClick, iconResId = action.iconResId)
-                        }
+                }
+                actionConfig?.let {
+                    it.actions.forEach { action ->
+                        IconButton(onClick = action.onActionClick, iconResId = action.iconResId)
                     }
                 }
             }

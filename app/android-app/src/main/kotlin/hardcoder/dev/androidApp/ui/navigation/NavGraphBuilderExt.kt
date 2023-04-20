@@ -206,7 +206,7 @@ fun NavGraphBuilder.moodTrackingDestinations(navController: NavController) {
     composable(route = Screen.MoodTrackingCreate.route) {
         CreateMoodTrackScreen(
             onGoBack = navController::popBackStack,
-            onManageActivities = { navController.navigate(Screen.ManageHobbies.route) },
+            onManageActivities = { navController.navigate(Screen.ManageActivities.route) },
             onManageMoodTypes = { navController.navigate(Screen.ManageMoodTypes.route) }
         )
     }
@@ -216,7 +216,7 @@ fun NavGraphBuilder.moodTrackingDestinations(navController: NavController) {
     ) {
         UpdateMoodTrackScreen(
             moodTrackId = Screen.MoodTrackingUpdate.getMoodTrackId(it.arguments),
-            onManageHobby = { navController.navigate(Screen.ManageHobbies.route) },
+            onManageActivities = { navController.navigate(Screen.ManageActivities.route) },
             onManageMoodTypes = { navController.navigate(Screen.ManageMoodTypes.route) },
             onGoBack = navController::popBackStack
         )
@@ -240,7 +240,7 @@ fun NavGraphBuilder.moodTrackingDestinations(navController: NavController) {
             onGoBack = navController::popBackStack
         )
     }
-    composable(route = Screen.ManageHobbies.route) {
+    composable(route = Screen.ManageActivities.route) {
         ManageActivitiesScreen(
             onGoBack = navController::popBackStack,
             onCreateActivity = { navController.navigate(Screen.ActivityCreate.route) },

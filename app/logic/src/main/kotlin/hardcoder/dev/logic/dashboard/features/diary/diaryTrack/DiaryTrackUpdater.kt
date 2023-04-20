@@ -4,7 +4,7 @@ import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.logic.dashboard.features.diary.AttachmentType
 import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentCreator
 import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentDeleter
-import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTag
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentGroup
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -17,20 +17,22 @@ class DiaryTrackUpdater(
 
     suspend fun update(
         diaryTrack: DiaryTrack,
-        selectedTags: List<DiaryTag>
+        diaryAttachmentGroup: DiaryAttachmentGroup
     ) = withContext(dispatcher) {
         appDatabase.diaryTrackQueries.update(
             id = diaryTrack.id,
-            description = diaryTrack.description,
-            title = diaryTrack.title
+            content = diaryTrack.content,
         )
 
-        diaryAttachmentDeleter.deleteAllTagsOfDiaryTrackById(diaryTrack.id)
+        diaryAttachmentDeleter.deleteAllDiaryTrackAttachmentsById(
+            diaryTrackId = diaryTrack.id,
+            targetType = AttachmentType.TAG
+        )
 
-        selectedTags.forEach { tag ->
+        diaryAttachmentGroup.tags.forEach { tag ->
             diaryAttachmentCreator.create(
-                attachmentId = tag.id,
-                attachmentType = AttachmentType.TAG,
+                targetId = tag.id,
+                targetType = AttachmentType.TAG,
                 diaryTrackId = diaryTrack.id
             )
         }

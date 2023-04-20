@@ -4,7 +4,7 @@ import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.logic.dashboard.features.diary.AttachmentType
 import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentCreator
-import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTag
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentGroup
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDateTime
@@ -19,33 +19,37 @@ class DiaryTrackCreator(
 ) {
 
     suspend fun create(
-        entityId: Int?,
-        attachmentType: AttachmentType?,
+        diaryAttachmentGroup: DiaryAttachmentGroup,
         date: LocalDateTime,
-        description: String,
-        title: String?,
-        selectedTags: List<DiaryTag>
+        content: String
     ) = withContext(dispatcher) {
         val diaryTrackId = idGenerator.nextId()
         appDatabase.diaryTrackQueries.insert(
             id = diaryTrackId,
-            title = title,
-            description = description,
+            content = content,
             date = date.toInstant(TimeZone.currentSystemDefault()),
         )
 
-        entityId?.let {
+        diaryAttachmentGroup.moodTracks.forEach { moodTrack ->
             diaryAttachmentCreator.create(
-                attachmentId = entityId,
-                attachmentType = requireNotNull(attachmentType),
+                targetId = moodTrack.id,
+                targetType = requireNotNull(AttachmentType.MOOD_TRACKING_ENTITY),
                 diaryTrackId = diaryTrackId
             )
         }
 
-        selectedTags.forEach { tag ->
+        diaryAttachmentGroup.fastingTracks.forEach { fastingTrack ->
             diaryAttachmentCreator.create(
-                attachmentId = tag.id,
-                attachmentType = AttachmentType.TAG,
+                targetId = fastingTrack.id,
+                targetType = requireNotNull(AttachmentType.FASTING_ENTITY),
+                diaryTrackId = diaryTrackId
+            )
+        }
+
+        diaryAttachmentGroup.tags.forEach { tag ->
+            diaryAttachmentCreator.create(
+                targetId = tag.id,
+                targetType = AttachmentType.TAG,
                 diaryTrackId = diaryTrackId
             )
         }

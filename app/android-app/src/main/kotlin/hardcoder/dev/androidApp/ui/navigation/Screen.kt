@@ -97,7 +97,7 @@ sealed class Screen(val route: String) {
         val arguments = listOf(navArgument("moodTypeId") { type = NavType.IntType })
     }
 
-    object ManageHobbies : Screen("manage_activities")
+    object ManageActivities : Screen("manage_activities")
     object ActivityCreate : Screen("activity_create")
     object ActivityUpdate : Screen("activity_update/{activityId}") {
         fun buildRoute(hobbyTrackId: Int) = "hobby_update/$hobbyTrackId"

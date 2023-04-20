@@ -3,15 +3,15 @@ package hardcoder.dev.logic.dashboard.features.diary.diaryTag
 class DiaryTagNameValidator {
 
     fun validate(name: String) = name.incorrectReason()?.let { reason ->
-        IncorrectValidatedDiaryTagName(data = name, reason = reason)
+        IncorrectDiaryTagName(data = name, reason = reason)
     } ?: run {
-        CorrectValidatedDiaryTagName(data = name)
+        CorrectDiaryTagName(data = name)
     }
 
-    private fun String.incorrectReason(): IncorrectValidatedDiaryTagName.Reason? {
+    private fun String.incorrectReason(): IncorrectDiaryTagName.Reason? {
         return when {
-            isEmpty() -> IncorrectValidatedDiaryTagName.Reason.Empty
-            length > DIARY_TAG_NAME_MAX_CHARS -> IncorrectValidatedDiaryTagName.Reason.MoreThanMaxChars(
+            isEmpty() -> IncorrectDiaryTagName.Reason.Empty
+            length > DIARY_TAG_NAME_MAX_CHARS -> IncorrectDiaryTagName.Reason.MoreThanMaxChars(
                 DIARY_TAG_NAME_MAX_CHARS
             )
             else -> null
@@ -27,11 +27,11 @@ sealed class ValidatedDiaryTagName {
     abstract val data: String
 }
 
-data class CorrectValidatedDiaryTagName(
+data class CorrectDiaryTagName(
     override val data: String
 ) : ValidatedDiaryTagName()
 
-data class IncorrectValidatedDiaryTagName(
+data class IncorrectDiaryTagName(
     override val data: String,
     val reason: Reason
 ) : ValidatedDiaryTagName() {

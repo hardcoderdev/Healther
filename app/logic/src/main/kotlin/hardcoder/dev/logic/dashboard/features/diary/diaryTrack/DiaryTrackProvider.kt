@@ -54,9 +54,8 @@ class DiaryTrackProvider(
 
     private fun DiaryTrack.toDiaryTrackEntity(diaryAttachmentGroup: DiaryAttachmentGroup?) = DiaryTrackEntity(
         id = id,
-        description = description,
+        content = content,
         date = date,
-        title = title,
         diaryAttachmentGroup = diaryAttachmentGroup
     )
 }

@@ -78,7 +78,7 @@ class CreateActivityViewModel(
 
             activityCreator.create(
                 name = validatedName.data,
-                iconId = selectedIcon.value.id
+                icon = selectedIcon.value
             )
 
             creationState.value = CreationState.Executed

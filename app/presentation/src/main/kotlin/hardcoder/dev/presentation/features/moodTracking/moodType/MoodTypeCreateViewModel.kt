@@ -3,7 +3,7 @@ package hardcoder.dev.presentation.features.moodTracking.moodType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.logic.features.moodTracking.moodType.CorrectValidatedMoodTypeName
+import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeCreator
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
 import hardcoder.dev.logic.features.moodTracking.moodType.ValidatedMoodTypeName
@@ -52,7 +52,7 @@ class MoodTypeCreateViewModel(
             availableIconsList = availableIcons,
             selectedIcon = selectedIcon,
             positivePercentage = selectedPositivePercentage,
-            allowCreation = validatedName is CorrectValidatedMoodTypeName
+            allowCreation = validatedName is CorrectMoodTypeName
         )
     }.stateIn(
         scope = viewModelScope,
@@ -83,11 +83,11 @@ class MoodTypeCreateViewModel(
     fun createMoodType() {
         viewModelScope.launch {
             val validatedName = validatedMoodTypeName.value
-            require(validatedName is CorrectValidatedMoodTypeName)
+            require(validatedName is CorrectMoodTypeName)
 
             moodTypeCreator.create(
                 name = validatedName.data,
-                iconId = selectedIcon.value.id,
+                icon = selectedIcon.value,
                 positivePercentage = selectedPositivePercentage.value
             )
 

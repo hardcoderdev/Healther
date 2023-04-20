@@ -15,15 +15,15 @@ class DiaryAttachmentCreator(
 ) {
 
     suspend fun create(
-        attachmentId: Int,
-        attachmentType: AttachmentType,
+        targetId: Int,
+        targetType: AttachmentType,
         diaryTrackId: Int
     ) = withContext(dispatcher) {
         appDatabase.diaryAttachmentQueries.create(
             id = idGenerator.nextId(),
             diaryTrackId = diaryTrackId,
-            attachmentTypeId = attachmentTypeIdMapper.mapToId(attachmentType),
-            attachmentId = attachmentId
+            targetTypeId = attachmentTypeIdMapper.mapToId(targetType),
+            targetId = targetId
         )
     }
 }

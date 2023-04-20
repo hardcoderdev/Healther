@@ -25,12 +25,12 @@ class DiaryViewModel(
 ) : ViewModel() {
 
     private val selectedDateRangeFilterType = MutableStateFlow(DateRangeFilterType.BY_DAY)
-    private val dateRangeFilterTypes = dateRangeFilterTypeProvider.provideAllDateRangeFilters().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = emptyList()
-    )
-    private var selectedTagMutableList = mutableListOf<DiaryTag>()
+    private val dateRangeFilterTypes =
+        dateRangeFilterTypeProvider.provideAllDateRangeFilters().stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = emptyList()
+        )
     private val selectedTagList = MutableStateFlow<List<DiaryTag>>(emptyList())
     private val searchText = MutableStateFlow("")
     private val diaryTrackList = selectedDateRangeFilterType.flatMapLatest {
@@ -56,31 +56,10 @@ class DiaryViewModel(
         diaryTrackList
     ) { tagList, selectedTagList, searchText, dateRangeFilterTypes,
         selectedDateRangeFilterType, diaryTrackList ->
-        val filteredTracks = mutableListOf<DiaryTrack>()
-
-        if (searchText.isNotEmpty()) {
-            diaryTrackList.forEach {
-                if (
-                    it.description.trim().contains(other = searchText, ignoreCase = true)
-                    || it.title?.trim()?.contains(other = searchText, ignoreCase = true) == true
-                ) {
-                    filteredTracks.add(it)
-                }
-            }
-        } else {
-            filteredTracks.addAll(diaryTrackList)
-        }
-
-        filteredTracks.removeAll {
-            it.diaryAttachmentGroup?.tags?.let { tags ->
-                !tags.containsAll(selectedTagList)
-            } ?: false
-        }
-
         State(
             tagList = tagList,
             searchText = searchText,
-            filteredTrackList = filteredTracks,
+            filteredTrackList = diaryTrackList.filterTracks(searchText),
             dateRangeFilterTypes = dateRangeFilterTypes,
             selectedDateRangeFilterType = selectedDateRangeFilterType,
             diaryTrackList = diaryTrackList,
@@ -108,18 +87,60 @@ class DiaryViewModel(
         searchText.value = text
     }
 
-    fun addFilterFeatureTag(diaryTag: DiaryTag) {
-        if (selectedTagList.value.contains(diaryTag).not()) {
-            selectedTagMutableList = selectedTagList.value.toMutableList()
+    fun toggleFilterTag(diaryTag: DiaryTag) {
+        val selectedTagMutableList = selectedTagList.value.toMutableList()
+        val isRemoved = selectedTagMutableList.removeIf { it == diaryTag }
+        if (isRemoved) {
+            selectedTagList.value = selectedTagMutableList
+            return
+        } else {
             selectedTagMutableList.add(diaryTag)
             selectedTagList.value = selectedTagMutableList
         }
     }
 
-    fun removeFilterFeatureTag(diaryTag: DiaryTag) {
-        selectedTagMutableList = selectedTagList.value.toMutableList()
-        selectedTagMutableList.remove(diaryTag)
-        selectedTagList.value = selectedTagMutableList
+    private fun List<DiaryTrack>.filterTracks(searchText: String): List<DiaryTrack> {
+        return if (searchText.isNotEmpty()) {
+            val searchedDiaryTrackList = searchDiaryTracks(searchText, this)
+            return if (selectedTagList.value.isNotEmpty()) {
+                filterDiaryTracksByTags(searchedDiaryTrackList)
+            } else {
+                searchedDiaryTrackList
+            }
+        } else {
+            filterDiaryTracksByTags(this)
+        }
+    }
+
+    private fun filterDiaryTracksByTags(diaryTrackList: List<DiaryTrack>): List<DiaryTrack> {
+        val filteredTrackList = mutableListOf<DiaryTrack>()
+
+        diaryTrackList.forEach { diaryTrack ->
+            diaryTrack.diaryAttachmentGroup?.tags?.let { tags ->
+                if (tags.containsAll(selectedTagList.value)) {
+                    filteredTrackList.add(diaryTrack)
+                }
+            }
+        }
+
+        return filteredTrackList
+    }
+
+    private fun searchDiaryTracks(
+        searchText: String,
+        diaryTrackList: List<DiaryTrack>
+    ): MutableList<DiaryTrack> {
+        val filteredTrackList = mutableListOf<DiaryTrack>()
+
+        searchText.trim().split(" ").let { searchWord ->
+            filteredTrackList.addAll(
+                diaryTrackList.filter { diaryTrack ->
+                    searchWord.all { diaryTrack.content.contains(it, ignoreCase = true) }
+                }
+            )
+        }
+
+        return filteredTrackList
     }
 
     data class State(

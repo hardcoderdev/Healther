@@ -5,10 +5,9 @@ import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 
 data class DiaryAttachmentGroup(
-    val diaryTrackId: Int,
-    val fastingTracks: List<FastingTrack>,
-    val moodTracks: List<MoodTrack>,
-    val tags: List<DiaryTag>
+    val fastingTracks: List<FastingTrack> = emptyList(),
+    val moodTracks: List<MoodTrack> = emptyList(),
+    val tags: List<DiaryTag> = emptyList()
 )
 
 

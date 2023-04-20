@@ -30,8 +30,7 @@ import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTag
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.IncorrectValidatedDiaryTrackDescription
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.IncorrectValidatedDiaryTrackTitle
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.IncorrectDiaryTrackContent
 import hardcoder.dev.presentation.dashboard.features.diary.DiaryCreateTrackViewModel
 import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -64,11 +63,9 @@ fun DiaryCreateTrackScreen(
         content = {
             DiaryCreateTrackContent(
                 state = state.value,
-                onUpdateText = viewModel::updateText,
-                onUpdateTitle = viewModel::updateTitle,
+                onUpdateText = viewModel::updateContent,
                 onCreateTrack = viewModel::createTrack,
-                onAddTag = viewModel::addTag,
-                onRemoveTag = viewModel::removeTag,
+                onToggleTag = viewModel::toggleTag,
                 onManageTags = onManageTags
             )
         },
@@ -85,10 +82,8 @@ fun DiaryCreateTrackScreen(
 private fun DiaryCreateTrackContent(
     state: DiaryCreateTrackViewModel.State,
     onUpdateText: (String) -> Unit,
-    onUpdateTitle: (String) -> Unit,
     onCreateTrack: () -> Unit,
-    onAddTag: (DiaryTag) -> Unit,
-    onRemoveTag: (DiaryTag) -> Unit,
+    onToggleTag: (DiaryTag) -> Unit,
     onManageTags: () -> Unit
 ) {
     Column(
@@ -103,14 +98,12 @@ private fun DiaryCreateTrackContent(
         ) {
             EnterBasicInfoSection(
                 state = state,
-                onUpdateTitle = onUpdateTitle,
                 onUpdateText = onUpdateText
             )
             Spacer(modifier = Modifier.height(32.dp))
             SelectTagsSection(
                 state = state,
-                onAddTag = onAddTag,
-                onRemoveTag = onRemoveTag,
+                onToggleTag = onToggleTag,
                 onManageTags = onManageTags
             )
         }
@@ -127,46 +120,11 @@ private fun DiaryCreateTrackContent(
 @Composable
 private fun EnterBasicInfoSection(
     state: DiaryCreateTrackViewModel.State,
-    onUpdateTitle: (String) -> Unit,
     onUpdateText: (String) -> Unit
 ) {
-    val validatedTitle = state.validatedTitle
-    val validatedDescription = state.validatedDiaryTrackDescription
+    val validatedDescription = state.validatedDiaryTrackContent
 
     Title(text = stringResource(id = R.string.diary_createTrack_enterInfo_text))
-    Spacer(modifier = Modifier.height(16.dp))
-    FilledTextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = state.title ?: "",
-        onValueChange = onUpdateTitle,
-        label = R.string.diary_createTrack_enterTitle_textField,
-        multiline = false,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Next
-        ),
-        isError = validatedTitle is IncorrectValidatedDiaryTrackTitle
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    AnimatedVisibility(visible = validatedTitle is IncorrectValidatedDiaryTrackTitle) {
-        if (validatedTitle is IncorrectValidatedDiaryTrackTitle) {
-            ErrorText(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                text = when (val reason = validatedTitle.reason) {
-                    is IncorrectValidatedDiaryTrackTitle.Reason.MoreThanMaxChars -> {
-                        stringResource(
-                            id = R.string.diary_createTrack_titleMoreThanMaxChars_text,
-                            formatArgs = arrayOf(reason.maxChars)
-                        )
-                    }
-
-                    else -> {
-                        stringResource(id = 0)
-                    }
-                }
-            )
-        }
-    }
     Spacer(modifier = Modifier.height(16.dp))
     FilledTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -180,15 +138,15 @@ private fun EnterBasicInfoSection(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Default
         ),
-        isError = validatedDescription is IncorrectValidatedDiaryTrackDescription
+        isError = validatedDescription is IncorrectDiaryTrackContent
     )
     Spacer(modifier = Modifier.height(16.dp))
-    AnimatedVisibility(visible = validatedDescription is IncorrectValidatedDiaryTrackDescription) {
-        if (validatedDescription is IncorrectValidatedDiaryTrackDescription) {
+    AnimatedVisibility(visible = validatedDescription is IncorrectDiaryTrackContent) {
+        if (validatedDescription is IncorrectDiaryTrackContent) {
             ErrorText(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                 text = when (validatedDescription.reason) {
-                    is IncorrectValidatedDiaryTrackDescription.Reason.Empty -> {
+                    is IncorrectDiaryTrackContent.Reason.Empty -> {
                         stringResource(R.string.diary_createTrack_descriptionEmpty_text)
                     }
                 }
@@ -200,8 +158,7 @@ private fun EnterBasicInfoSection(
 @Composable
 private fun SelectTagsSection(
     state: DiaryCreateTrackViewModel.State,
-    onAddTag: (DiaryTag) -> Unit,
-    onRemoveTag: (DiaryTag) -> Unit,
+    onToggleTag: (DiaryTag) -> Unit,
     onManageTags: () -> Unit
 ) {
     Title(text = stringResource(id = R.string.diary_createTrack_youMaySelectTags_text))
@@ -223,13 +180,7 @@ private fun SelectTagsSection(
                 shape = RoundedCornerShape(32.dp),
                 isSelected = state.selectedTags.contains(tag),
                 interactionType = InteractionType.SELECTION,
-                onClick = {
-                    if (state.selectedTags.contains(tag)) {
-                        onRemoveTag(tag)
-                    } else {
-                        onAddTag(tag)
-                    }
-                }
+                onClick = { onToggleTag(tag) }
             )
         }
     }

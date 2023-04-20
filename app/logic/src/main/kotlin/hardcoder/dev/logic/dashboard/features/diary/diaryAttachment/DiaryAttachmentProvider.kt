@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentGroup as AttachmentEntity
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachment as DiaryAttachmentEntity
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -31,36 +32,23 @@ class DiaryAttachmentProvider(
     fun provideAttachmentByEntityId(attachmentType: AttachmentType, entityId: Int) =
         appDatabase.diaryAttachmentQueries
             .provideAttachmentByEntityId(
-                attachmentTypeId = attachmentTypeIdMapper.mapToId(attachmentType),
-                attachmentId = entityId
+                targetTypeId = attachmentTypeIdMapper.mapToId(attachmentType),
+                targetId = entityId
             )
             .asFlow()
             .map { it.executeAsOneOrNull() }
             .flatMapLatest { attachmentDatabase ->
-                attachmentDatabase?.let {
-                    combine(
-                        when (attachmentTypeIdMapper.mapToType(attachmentDatabase.attachmentTypeId)) {
-                            AttachmentType.FASTING_ENTITY -> {
-                                fastingTrackProvider.provideFastingTrackById(attachmentDatabase.attachmentId)
-                            }
-
-                            AttachmentType.MOOD_TRACKING_ENTITY -> {
-                                moodTrackProvider.provideById(attachmentDatabase.attachmentId)
-                            }
-
-                            AttachmentType.TAG -> {
-                                diaryTagProvider.provideDiaryTagById(attachmentDatabase.attachmentId)
-                            }
-                        }
-                    ) { attachments ->
-                        AttachmentEntity(
+                if (attachmentDatabase == null) flowOf(null)
+                else {
+                    flowOf(
+                        DiaryAttachmentEntity(
+                            id = attachmentDatabase.id,
                             diaryTrackId = attachmentDatabase.diaryTrackId,
-                            fastingTracks = attachments.filterIsInstance<FastingTrack>(),
-                            moodTracks = attachments.filterIsInstance<MoodTrack>(),
-                            tags = attachments.filterIsInstance<DiaryTag>()
+                            targetType = attachmentType,
+                            targetId = attachmentDatabase.targetId
                         )
-                    }
-                } ?: flowOf(null)
+                    )
+                }
             }
 
     fun provideAttachmentOfDiaryTrackById(id: Int) = appDatabase.diaryAttachmentQueries
@@ -70,33 +58,33 @@ class DiaryAttachmentProvider(
         .flatMapLatest { attachments ->
             if (attachments.isEmpty()) flowOf(null)
             else {
-                attachments.toDiaryAttachmentGroup(id)
+                combine(
+                    attachments.map {
+                        provideTargetEntity(attachment = it)
+                    }
+                ) { targetEntityArray ->
+                    AttachmentEntity(
+                        fastingTracks = targetEntityArray.filterIsInstance<FastingTrack>(),
+                        moodTracks = targetEntityArray.filterIsInstance<MoodTrack>(),
+                        tags = targetEntityArray.filterIsInstance<DiaryTag>()
+                    )
+                }
             }
         }
 
-    private fun List<DiaryAttachment>.toDiaryAttachmentGroup(id: Int): Flow<AttachmentEntity> {
-        return combine(
-            map { attachment ->
-                when (attachmentTypeIdMapper.mapToType(attachment.attachmentTypeId)) {
-                    AttachmentType.FASTING_ENTITY -> {
-                        fastingTrackProvider.provideFastingTrackById(attachment.attachmentId)
-                    }
+    private fun provideTargetEntity(attachment: DiaryAttachment): Flow<Any?> {
+        return when (attachmentTypeIdMapper.mapToType(attachment.targetTypeId)) {
+            AttachmentType.FASTING_ENTITY -> {
+                fastingTrackProvider.provideFastingTrackById(attachment.targetId)
+            }
 
-                    AttachmentType.MOOD_TRACKING_ENTITY -> {
-                        moodTrackProvider.provideById(attachment.attachmentId)
-                    }
+            AttachmentType.MOOD_TRACKING_ENTITY -> {
+                moodTrackProvider.provideById(attachment.targetId)
+            }
 
-                    AttachmentType.TAG -> {
-                        diaryTagProvider.provideDiaryTagById(attachment.attachmentId)
-                    }
-                }
-            }) { attachments ->
-            AttachmentEntity(
-                diaryTrackId = id,
-                fastingTracks = attachments.filterIsInstance<FastingTrack>(),
-                moodTracks = attachments.filterIsInstance<MoodTrack>(),
-                tags = attachments.filterIsInstance<DiaryTag>()
-            )
+            AttachmentType.TAG -> {
+                diaryTagProvider.provideDiaryTagById(attachment.targetId)
+            }
         }
     }
 }

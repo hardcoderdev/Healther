@@ -28,9 +28,8 @@ import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagUpdater
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackCreator
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackDeleter
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackDescriptionValidator
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackContentValidator
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackProvider
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackTitleValidator
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackUpdater
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanDurationResolver
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
@@ -408,7 +407,8 @@ class LogicModule(private val context: Context) {
             dispatcher = Dispatchers.IO,
             idGenerator = idGenerator,
             diaryTrackCreator = diaryTrackCreator,
-            moodWithActivityCreator = moodWithActivityCreator
+            moodWithActivityCreator = moodWithActivityCreator,
+            moodTrackProvider = moodTrackProvider
         )
     }
 
@@ -420,7 +420,8 @@ class LogicModule(private val context: Context) {
             moodWithActivityDeleter = moodWithActivityDeleter,
             diaryTrackProvider = diaryTrackProvider,
             diaryTrackUpdater = diaryTrackUpdater,
-            diaryAttachmentProvider = diaryAttachmentProvider
+            diaryAttachmentProvider = diaryAttachmentProvider,
+            attachmentTypeIdMapper = attachmentTypeIdMapper
         )
     }
 
@@ -531,12 +532,8 @@ class LogicModule(private val context: Context) {
         DateRangeFilterTypeProvider()
     }
 
-    val diaryTrackTitleValidator by lazy {
-        DiaryTrackTitleValidator()
-    }
-
-    val diaryTrackDescriptionValidator by lazy {
-        DiaryTrackDescriptionValidator()
+    val diaryTrackContentValidator by lazy {
+        DiaryTrackContentValidator()
     }
 
     private val attachmentTypeIdMapper by lazy {

@@ -4,16 +4,16 @@ class DrinkTypeNameValidator {
 
     fun validate(drinkTypeName: String): ValidatedDrinkTypeName {
         return drinkTypeName.incorrectReason()?.let { reason ->
-            IncorrectValidatedDrinkTypeName(data = drinkTypeName, reason = reason)
+            IncorrectDrinkTypeName(data = drinkTypeName, reason = reason)
         } ?: run {
-            CorrectValidatedDrinkTypeName(data = drinkTypeName)
+            CorrectDrinkTypeName(data = drinkTypeName)
         }
     }
 
-    private fun String.incorrectReason(): IncorrectValidatedDrinkTypeName.Reason? {
+    private fun String.incorrectReason(): IncorrectDrinkTypeName.Reason? {
         return when {
-            isEmpty() -> IncorrectValidatedDrinkTypeName.Reason.Empty
-            length > DRINK_TYPE_NAME_MAX_CHARS -> IncorrectValidatedDrinkTypeName.Reason.MoreThanMaxChars(
+            isEmpty() -> IncorrectDrinkTypeName.Reason.Empty
+            length > DRINK_TYPE_NAME_MAX_CHARS -> IncorrectDrinkTypeName.Reason.MoreThanMaxChars(
                 DRINK_TYPE_NAME_MAX_CHARS
             )
             else -> null
@@ -29,11 +29,11 @@ sealed class ValidatedDrinkTypeName {
     abstract val data: String
 }
 
-data class CorrectValidatedDrinkTypeName(
+data class CorrectDrinkTypeName(
     override val data: String
 ) : ValidatedDrinkTypeName()
 
-data class IncorrectValidatedDrinkTypeName(
+data class IncorrectDrinkTypeName(
     override val data: String,
     val reason: Reason
 ) : ValidatedDrinkTypeName() {

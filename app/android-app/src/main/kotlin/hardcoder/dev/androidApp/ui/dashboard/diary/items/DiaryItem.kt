@@ -23,9 +23,7 @@ import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.card.Card
 import hardcoder.dev.uikit.chip.Chip
 import hardcoder.dev.uikit.text.Description
-import hardcoder.dev.uikit.text.Title
 
-const val FIRST_SENTENCE_LAST_SYMBOL = 40
 private const val MAX_TAGS_VISIBLE_IN_ITEM = 4
 
 @Composable
@@ -33,15 +31,6 @@ fun DiaryItem(
     diaryTrack: DiaryTrack,
     onUpdate: (DiaryTrack) -> Unit
 ) {
-    val descriptionLastSymbol = diaryTrack.description.length
-    val title = diaryTrack.title ?: run {
-        if (descriptionLastSymbol > FIRST_SENTENCE_LAST_SYMBOL) {
-            diaryTrack.description.substring(0, FIRST_SENTENCE_LAST_SYMBOL)
-        } else {
-            diaryTrack.description.substring(0, descriptionLastSymbol - 1)
-        }
-    }
-
     Card<DiaryTrack>(
         interactionType = InteractionType.ACTION,
         onClick = { onUpdate(diaryTrack) }
@@ -51,9 +40,7 @@ fun DiaryItem(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Title(text = title)
-            Spacer(modifier = Modifier.height(16.dp))
-            Description(text = diaryTrack.description)
+            Description(text = diaryTrack.content)
             Spacer(modifier = Modifier.height(8.dp))
             diaryTrack.diaryAttachmentGroup?.tags?.let { tags ->
                 FlowRow(

@@ -12,10 +12,11 @@ class DiaryAttachmentDeleter(
     private val attachmentTypeIdMapper: AttachmentTypeIdMapper
 ) {
 
-    suspend fun deleteAllTagsOfDiaryTrackById(id: Int) = withContext(dispatcher) {
-        appDatabase.diaryAttachmentQueries.deleteAllDiaryAttachmentTagsOfDiaryTrackById(
-            attachmentTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.TAG),
-            diaryTrackId = id
-        )
-    }
+    suspend fun deleteAllDiaryTrackAttachmentsById(targetType: AttachmentType, diaryTrackId: Int) =
+        withContext(dispatcher) {
+            appDatabase.diaryAttachmentQueries.deleteAllDiaryAttachmentTagsOfDiaryTrackById(
+                targetTypeId = attachmentTypeIdMapper.mapToId(targetType),
+                diaryTrackId = diaryTrackId
+            )
+        }
 }

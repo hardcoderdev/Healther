@@ -84,8 +84,7 @@ fun CreateMoodTrackScreen(
                 onUpdateSelectedDate = viewModel::updateSelectedDate,
                 onUpdateNote = viewModel::updateNote,
                 onManageMoodTypes = onManageMoodTypes,
-                onAddActivity = viewModel::addActivity,
-                onRemoveActivity = viewModel::removeActivity,
+                onToggleActivity = viewModel::toggleActivity,
                 onManageActivities = onManageActivities,
                 onCreateTrack = viewModel::createTrack
             )
@@ -106,8 +105,7 @@ private fun CreateMoodTrackContent(
     onUpdateSelectedDate: (LocalDateTime) -> Unit,
     onManageMoodTypes: () -> Unit,
     onUpdateNote: (String) -> Unit,
-    onAddActivity: (Activity) -> Unit,
-    onRemoveActivity: (Activity) -> Unit,
+    onToggleActivity: (Activity) -> Unit,
     onManageActivities: () -> Unit,
     onCreateTrack: () -> Unit
 ) {
@@ -135,8 +133,7 @@ private fun CreateMoodTrackContent(
             Spacer(modifier = Modifier.height(16.dp))
             SelectActivitiesSection(
                 state = state,
-                onAddActivity = onAddActivity,
-                onRemoveActivity = onRemoveActivity,
+                onToggleActivity = onToggleActivity,
                 onManageActivities = onManageActivities
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -222,8 +219,7 @@ private fun MoodTypeManagementButton(onManageMoodTypes: () -> Unit) {
 @Composable
 private fun SelectActivitiesSection(
     state: MoodTrackingTrackCreateViewModel.State,
-    onAddActivity: (Activity) -> Unit,
-    onRemoveActivity: (Activity) -> Unit,
+    onToggleActivity: (Activity) -> Unit,
     onManageActivities: () -> Unit
 ) {
     Title(text = stringResource(id = R.string.moodTracking_createMoodTrack_youMaySelectActivities_text))
@@ -245,13 +241,7 @@ private fun SelectActivitiesSection(
                 shape = RoundedCornerShape(32.dp),
                 isSelected = state.selectedActivities.contains(activity),
                 interactionType = InteractionType.SELECTION,
-                onClick = {
-                    if (state.selectedActivities.contains(activity)) {
-                        onRemoveActivity(activity)
-                    } else {
-                        onAddActivity(activity)
-                    }
-                }
+                onClick = { onToggleActivity(activity) }
             )
         }
     }

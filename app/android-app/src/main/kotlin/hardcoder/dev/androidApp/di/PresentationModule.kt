@@ -216,8 +216,7 @@ class PresentationModule(
 
     fun getDiaryCreateTrackViewModel() = DiaryCreateTrackViewModel(
         diaryTrackCreator = logicModule.diaryTrackCreator,
-        diaryTrackTitleValidator = logicModule.diaryTrackTitleValidator,
-        diaryTrackDescriptionValidator = logicModule.diaryTrackDescriptionValidator,
+        diaryTrackContentValidator = logicModule.diaryTrackContentValidator,
         diaryTagProvider = logicModule.diaryTagProvider
     )
 
@@ -227,8 +226,7 @@ class PresentationModule(
         diaryTrackProvider = logicModule.diaryTrackProvider,
         diaryTrackDeleter = logicModule.diaryTrackDeleter,
         diaryTagProvider = logicModule.diaryTagProvider,
-        diaryTrackTitleValidator = logicModule.diaryTrackTitleValidator,
-        diaryTrackDescriptionValidator = logicModule.diaryTrackDescriptionValidator
+        diaryTrackContentValidator = logicModule.diaryTrackContentValidator
     )
 
     fun getManageTagsViewModel() = ManageTagsViewModel(

@@ -2,6 +2,7 @@ package hardcoder.dev.logic.features.waterTracking.drinkType
 
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
+import hardcoder.dev.logic.icons.LocalIcon
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -14,13 +15,13 @@ class DrinkTypeCreator(
 
     suspend fun create(
         name: String,
-        iconId: Long,
+        icon: LocalIcon,
         hydrationIndexPercentage: Int
     ) = withContext(dispatcher) {
         appDatabase.drinkTypeQueries.insert(
             id = idGenerator.nextId(),
             name = name,
-            iconId = iconId,
+            iconId = icon.id,
             hydrationIndexPercentage = hydrationIndexPercentage
         )
     }

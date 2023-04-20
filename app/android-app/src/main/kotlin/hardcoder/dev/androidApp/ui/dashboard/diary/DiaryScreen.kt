@@ -2,6 +2,7 @@
 
 package hardcoder.dev.androidApp.ui.dashboard.diary
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -71,8 +73,7 @@ fun DiaryScreen(
             FilterBottomSheetContent(
                 state = state.value,
                 onUpdateDateRangeFilterType = viewModel::updateSelectedFilterType,
-                onAddFilterTag = viewModel::addFilterFeatureTag,
-                onRemoveFilterTag = viewModel::removeFilterFeatureTag,
+                onToggleFilterTag = viewModel::toggleFilterTag,
                 onClose = {
                     scope.launch {
                         filterBottomSheetState.toggle()
@@ -172,14 +173,14 @@ private fun ColumnScope.DiaryTrackListSection(
                 attachment.moodTracks.forEach { moodTrack ->
                     DiaryMoodItem(
                         moodTrack = moodTrack,
-                        note = diaryTrack.description,
+                        note = diaryTrack.content,
                         onUpdate = { onUpdateTrack(diaryTrack.id) }
                     )
                 }
                 attachment.fastingTracks.forEach { fastingTrack ->
                     DiaryFastingItem(
                         fastingTrack = fastingTrack,
-                        note = diaryTrack.description,
+                        note = diaryTrack.content,
                         onUpdate = { onUpdateTrack(diaryTrack.id) }
                     )
                 }
@@ -201,17 +202,17 @@ private fun ColumnScope.DiaryTrackListSection(
 
 @Composable
 private fun FilterBottomSheetContent(
+    modifier: Modifier = Modifier,
     state: DiaryViewModel.State,
     onClose: () -> Unit,
     onUpdateDateRangeFilterType: (DateRangeFilterType) -> Unit,
-    onAddFilterTag: (DiaryTag) -> Unit,
-    onRemoveFilterTag: (DiaryTag) -> Unit
+    onToggleFilterTag: (DiaryTag) -> Unit
 ) {
     Column(
-        Modifier
+        modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .height(400.dp)
+            .imePadding()
     ) {
         Row(Modifier.fillMaxWidth()) {
             Title(
@@ -225,8 +226,7 @@ private fun FilterBottomSheetContent(
         Spacer(modifier = Modifier.height(32.dp))
         FilterTagSection(
             state = state,
-            onAddFilterTag = onAddFilterTag,
-            onRemoveFilterTag = onRemoveFilterTag
+            onToggleFilterTag = onToggleFilterTag
         )
     }
 }
@@ -269,8 +269,7 @@ private fun DateRangeSection(
 @Composable
 private fun FilterTagSection(
     state: DiaryViewModel.State,
-    onAddFilterTag: (DiaryTag) -> Unit,
-    onRemoveFilterTag: (DiaryTag) -> Unit
+    onToggleFilterTag: (DiaryTag) -> Unit
 ) {
     Description(text = stringResource(R.string.diary_selectTags_subtitle_bottomSheet_text))
     FlowRow(
@@ -279,21 +278,18 @@ private fun FilterTagSection(
             .horizontalScroll(rememberScrollState()),
         maxItemsInEachRow = 8
     ) {
-        state.tagList.forEach { featureTag ->
+        state.tagList.forEach { diaryTag ->
             Chip(
                 interactionType = InteractionType.SELECTION,
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .wrapContentSize()
                     .padding(end = 8.dp, top = 16.dp),
-                isSelected = state.selectedTagList.contains(featureTag),
-                text = featureTag.name,
+                isSelected = state.selectedTagList.contains(diaryTag),
+                text = diaryTag.name,
                 onClick = {
-                    if (state.selectedTagList.contains(featureTag)) {
-                        onRemoveFilterTag(featureTag)
-                    } else {
-                        onAddFilterTag(featureTag)
-                    }
+                    onToggleFilterTag(diaryTag)
+                    Log.d("ddlepdle", "${state.selectedTagList.contains(diaryTag)}")
                 }
             )
         }

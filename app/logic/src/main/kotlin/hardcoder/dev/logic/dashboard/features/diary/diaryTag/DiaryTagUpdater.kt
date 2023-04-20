@@ -11,6 +11,7 @@ class DiaryTagUpdater(
 
     suspend fun update(diaryTag: DiaryTag) = withContext(dispatcher) {
         appDatabase.diaryTagQueries.update(
+            id = diaryTag.id,
             name = diaryTag.name,
             iconId = diaryTag.icon.id
         )

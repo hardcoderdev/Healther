@@ -2,17 +2,16 @@ import kotlinx.datetime.Instant;
 
 CREATE TABLE DiaryTrack (
     id INTEGER AS Int NOT NULL,
-    title TEXT,
-    description TEXT NOT NULL,
+    content TEXT NOT NULL,
     date INTEGER AS Instant NOT NULL
 );
 
 insert:
-INSERT INTO DiaryTrack (id, title, description, date)
-VALUES (?, ?,?, ?);
+INSERT INTO DiaryTrack (id, content, date)
+VALUES (?,?, ?);
 
 update:
-UPDATE DiaryTrack SET title = ?, description = ? WHERE id = ?;
+UPDATE DiaryTrack SET content = ? WHERE id = ?;
 
 delete:
 DELETE FROM DiaryTrack WHERE id = ?;

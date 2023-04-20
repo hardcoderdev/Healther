@@ -2,7 +2,7 @@ package hardcoder.dev.presentation.dashboard.features.diary.tags
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.logic.dashboard.features.diary.diaryTag.CorrectValidatedDiaryTagName
+import hardcoder.dev.logic.dashboard.features.diary.diaryTag.CorrectDiaryTagName
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagCreator
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagNameValidator
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.ValidatedDiaryTagName
@@ -45,7 +45,7 @@ class CreateTagViewModel(
         validatedTagName ->
         State(
             creationState = creationState,
-            creationAllowed = validatedTagName is CorrectValidatedDiaryTagName,
+            creationAllowed = validatedTagName is CorrectDiaryTagName,
             availableIconsList = availableIconsList,
             selectedIcon = selectedIcon,
             name = tagName,
@@ -75,11 +75,11 @@ class CreateTagViewModel(
     fun createTag() {
         viewModelScope.launch {
             val validatedName = validatedTagName.value
-            require(validatedName is CorrectValidatedDiaryTagName)
+            require(validatedName is CorrectDiaryTagName)
 
             diaryTagCreator.create(
                 name = validatedName.data,
-                iconId = selectedIcon.value.id
+                icon = selectedIcon.value
             )
 
             creationState.value = CreationState.Executed

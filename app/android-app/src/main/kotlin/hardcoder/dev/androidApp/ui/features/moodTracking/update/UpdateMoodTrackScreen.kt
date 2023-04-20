@@ -65,7 +65,7 @@ import kotlinx.datetime.toInstant
 fun UpdateMoodTrackScreen(
     moodTrackId: Int,
     onGoBack: () -> Unit,
-    onManageHobby: () -> Unit,
+    onManageActivities: () -> Unit,
     onManageMoodTypes: () -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
@@ -105,10 +105,9 @@ fun UpdateMoodTrackScreen(
                 onUpdateNote = viewModel::updateNote,
                 onUpdateSelectedDate = viewModel::updateSelectedDate,
                 onManageMoodTypes = onManageMoodTypes,
-                onAddHobby = viewModel::addActivity,
-                onRemoveHobby = viewModel::removeActivity,
-                onManageHobby = onManageHobby,
-                onCreateTrack = viewModel::updateTrack
+                onToggleActivity = viewModel::toggleActivity,
+                onManageActivities = onManageActivities,
+                onUpdateTrack = viewModel::updateTrack
             )
         },
         topBarConfig = TopBarConfig(
@@ -135,10 +134,9 @@ private fun UpdateMoodTrackContent(
     onUpdateSelectedDate: (LocalDateTime) -> Unit,
     onUpdateNote: (String) -> Unit,
     onManageMoodTypes: () -> Unit,
-    onManageHobby: () -> Unit,
-    onAddHobby: (Activity) -> Unit,
-    onRemoveHobby: (Activity) -> Unit,
-    onCreateTrack: () -> Unit
+    onManageActivities: () -> Unit,
+    onToggleActivity: (Activity) -> Unit,
+    onUpdateTrack: () -> Unit
 ) {
     var datePickerDialogVisibility by remember {
         mutableStateOf(false)
@@ -162,11 +160,10 @@ private fun UpdateMoodTrackContent(
             Spacer(modifier = Modifier.height(16.dp))
             EnterNoteSection(state = state, onUpdateNote = onUpdateNote)
             Spacer(modifier = Modifier.height(16.dp))
-            SelectHobbiesSection(
+            SelectActivitiesSection(
                 state = state,
-                onAddActivity = onAddHobby,
-                onRemoveActivity = onRemoveHobby,
-                onManageActivities = onManageHobby
+                onToggleActivity = onToggleActivity,
+                onManageActivities = onManageActivities
             )
             Spacer(modifier = Modifier.height(16.dp))
             SelectDateSection(
@@ -178,7 +175,7 @@ private fun UpdateMoodTrackContent(
         IconTextButton(
             iconResId = R.drawable.ic_save,
             labelResId = R.string.moodTracking_updateMoodTrack_buttonText,
-            onClick = onCreateTrack
+            onClick = onUpdateTrack
         )
         DatePicker(
             onUpdateSelectedDate = onUpdateSelectedDate,
@@ -249,10 +246,9 @@ private fun MoodTypeManagementButton(onManageMoodTypes: () -> Unit) {
 }
 
 @Composable
-private fun SelectHobbiesSection(
+private fun SelectActivitiesSection(
     state: MoodTrackingTrackUpdateViewModel.State,
-    onAddActivity: (Activity) -> Unit,
-    onRemoveActivity: (Activity) -> Unit,
+    onToggleActivity: (Activity) -> Unit,
     onManageActivities: () -> Unit
 ) {
     Title(text = stringResource(id = R.string.moodTracking_createMoodTrack_youMaySelectActivities_text))
@@ -266,21 +262,15 @@ private fun SelectHobbiesSection(
         maxItemsInEachRow = 6
     ) {
         ManagementActivitiesButton(onManageActivities = onManageActivities)
-        state.activityList.forEach { hobbyTrack ->
+        state.activityList.forEach { activity ->
             Chip(
                 modifier = Modifier.padding(top = 8.dp),
-                text = hobbyTrack.name,
-                iconResId = hobbyTrack.icon.resourceId,
+                text = activity.name,
+                iconResId = activity.icon.resourceId,
                 shape = RoundedCornerShape(32.dp),
-                isSelected = state.selectedHobbies.contains(hobbyTrack),
+                isSelected = state.selectedHobbies.contains(activity),
                 interactionType = InteractionType.SELECTION,
-                onClick = {
-                    if (state.selectedHobbies.contains(hobbyTrack)) {
-                        onRemoveActivity(hobbyTrack)
-                    } else {
-                        onAddActivity(hobbyTrack)
-                    }
-                }
+                onClick = { onToggleActivity(activity) }
             )
         }
     }

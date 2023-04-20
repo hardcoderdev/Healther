@@ -9,7 +9,7 @@ INSERT INTO DiaryTag (id, name, iconId)
 VALUES (?, ?, ?);
 
 update:
-UPDATE DiaryTag SET name = ?, iconId = ? WHERE id = id;
+UPDATE DiaryTag SET name = ?, iconId = ? WHERE id = ?;
 
 deleteById:
 DELETE FROM DiaryTag WHERE id = ?;

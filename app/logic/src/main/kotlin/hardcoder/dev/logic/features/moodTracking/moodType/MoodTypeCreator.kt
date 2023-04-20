@@ -2,6 +2,7 @@ package hardcoder.dev.logic.features.moodTracking.moodType
 
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
+import hardcoder.dev.logic.icons.LocalIcon
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -14,14 +15,14 @@ class MoodTypeCreator(
 
     suspend fun create(
         name: String,
-        iconId: Long,
+        icon: LocalIcon,
         positivePercentage: Int
     ) = withContext(dispatcher) {
         appDatabase.moodTypeQueries
             .insert(
                 id = idGenerator.nextId(),
                 name = name,
-                iconId = iconId,
+                iconId = icon.id,
                 positivePercentage = positivePercentage
             )
     }

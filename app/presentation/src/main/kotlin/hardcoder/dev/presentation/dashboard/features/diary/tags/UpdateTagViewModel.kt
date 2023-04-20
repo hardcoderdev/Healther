@@ -4,7 +4,7 @@ import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.logic.dashboard.features.diary.diaryTag.CorrectValidatedDiaryTagName
+import hardcoder.dev.logic.dashboard.features.diary.diaryTag.CorrectDiaryTagName
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagDeleter
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagNameValidator
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagProvider
@@ -14,7 +14,6 @@ import hardcoder.dev.logic.icons.IconResourceProvider
 import hardcoder.dev.logic.icons.LocalIcon
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -64,7 +63,7 @@ class UpdateTagViewModel(
             validatedName = validatedTagName,
             availableIconsList = availableIconsList,
             selectedIcon = iconId,
-            allowUpdate = validatedTagName is CorrectValidatedDiaryTagName
+            allowUpdate = validatedTagName is CorrectDiaryTagName
         )
     }.stateIn(
         scope = viewModelScope,
@@ -91,7 +90,7 @@ class UpdateTagViewModel(
     fun updateTag() {
         viewModelScope.launch {
             val validatedName = validatedTagName.value
-            require(validatedName is CorrectValidatedDiaryTagName)
+            require(validatedName is CorrectDiaryTagName)
 
             diaryTagProvider.provideDiaryTagById(tagId).firstOrNull()?.let {
                 val updatedTrack = it.copy(
@@ -114,8 +113,6 @@ class UpdateTagViewModel(
 
     private fun fillStateWithUpdatedTrack() {
         viewModelScope.launch {
-            selectedIcon.value = availableIconResourceList.first().first()
-
             diaryTagProvider.provideDiaryTagById(tagId).firstOrNull()?.let { tag ->
                 tagName.value = tag.name
                 selectedIcon.value = tag.icon

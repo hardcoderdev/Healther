@@ -24,16 +24,15 @@ class MoodTrackingTrackCreateViewModel(
 ) : ViewModel() {
 
     private val creationState = MutableStateFlow<CreationState>(CreationState.NotExecuted)
-    private var mutableSelectedActivities = mutableListOf<Activity>()
     private val selectedDate = MutableStateFlow(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
     private val selectedMoodType = MutableStateFlow<MoodType?>(null)
-    private val note = MutableStateFlow("")
-    private val selectedActivities = MutableStateFlow<List<Activity>>(mutableListOf())
+    private val note = MutableStateFlow<String?>(null)
     private val moodTypeList = moodTypeProvider.provideAllMoodTypes().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
     )
+    private val selectedActivities = MutableStateFlow<List<Activity>>(mutableListOf())
     private val activityList = activityProvider.provideAllActivities().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -91,18 +90,16 @@ class MoodTrackingTrackCreateViewModel(
         selectedDate.value = localDateTime
     }
 
-    fun addActivity(activity: Activity) {
-        if (selectedActivities.value.contains(activity).not()) {
-            mutableSelectedActivities = selectedActivities.value.toMutableList()
-            mutableSelectedActivities.add(activity)
-            selectedActivities.value = mutableSelectedActivities
+    fun toggleActivity(activity: Activity) {
+        val selectedActivitiesMutableList = selectedActivities.value.toMutableList()
+        val isRemoved = selectedActivitiesMutableList.removeIf { it == activity }
+        if (isRemoved) {
+            selectedActivities.value = selectedActivitiesMutableList
+            return
+        } else {
+            selectedActivitiesMutableList.add(activity)
+            selectedActivities.value = selectedActivitiesMutableList
         }
-    }
-
-    fun removeActivity(activity: Activity) {
-        mutableSelectedActivities = selectedActivities.value.toMutableList()
-        mutableSelectedActivities.remove(activity)
-        selectedActivities.value = mutableSelectedActivities
     }
 
     fun createTrack() {
