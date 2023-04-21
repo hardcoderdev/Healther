@@ -50,7 +50,7 @@ fun rememberBottomSheetState(showed: Boolean): BottomSheetState {
     val materialState = rememberModalBottomSheetState(
         initialValue = if (showed) ModalBottomSheetValue.Expanded
         else ModalBottomSheetValue.Hidden,
-        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded }
+        skipHalfExpanded = true
     )
 
     return remember(materialState) {
