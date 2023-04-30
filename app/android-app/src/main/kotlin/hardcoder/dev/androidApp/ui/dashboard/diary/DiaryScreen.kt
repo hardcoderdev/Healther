@@ -168,33 +168,10 @@ private fun ColumnScope.DiaryTrackListSection(
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         items(items) { diaryTrack ->
-            diaryTrack.diaryAttachmentGroup?.let { attachment ->
-                attachment.moodTracks.forEach { moodTrack ->
-                    DiaryMoodItem(
-                        moodTrack = moodTrack,
-                        note = diaryTrack.content,
-                        onUpdate = { onUpdateTrack(diaryTrack.id) }
-                    )
-                }
-                attachment.fastingTracks.forEach { fastingTrack ->
-                    DiaryFastingItem(
-                        fastingTrack = fastingTrack,
-                        note = diaryTrack.content,
-                        onUpdate = { onUpdateTrack(diaryTrack.id) }
-                    )
-                }
-                if (attachment.tags.isNotEmpty()) {
-                    DiaryItem(
-                        diaryTrack = diaryTrack,
-                        onUpdate = { onUpdateTrack(diaryTrack.id) }
-                    )
-                }
-            } ?: run {
-                DiaryItem(
-                    diaryTrack = diaryTrack,
-                    onUpdate = { onUpdateTrack(it.id) },
-                )
-            }
+            DiaryItem(
+                diaryTrack = diaryTrack,
+                onUpdate = { onUpdateTrack(it.id) },
+            )
         }
     }
 }

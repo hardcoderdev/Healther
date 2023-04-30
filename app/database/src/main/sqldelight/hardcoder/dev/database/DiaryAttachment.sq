@@ -5,15 +5,18 @@ CREATE TABLE DiaryAttachment (
     targetId INTEGER AS Int NOT NULL
 );
 
-create:
+insert:
 INSERT INTO DiaryAttachment (id, diaryTrackId, targetTypeId, targetId)
 VALUES (?, ?, ?, ?);
 
-provideAttachmentByEntityId:
+selectByTarget:
 SELECT * FROM DiaryAttachment WHERE targetTypeId = ? AND targetId = ?;
 
-provideAllAttachmentsOfDiaryTrackById:
+selectByDiaryTrackId:
 SELECT * FROM DiaryAttachment WHERE diaryTrackId = ?;
 
-deleteAllDiaryAttachmentTagsOfDiaryTrackById:
-DELETE FROM DiaryAttachment WHERE targetTypeId = ? AND diaryTrackId = ?;
+deleteByDiaryTrackId:
+DELETE FROM DiaryAttachment WHERE diaryTrackId = ?;
+
+deleteByTarget:
+DELETE FROM DiaryAttachment WHERE targetTypeId = ? AND targetId = ?;

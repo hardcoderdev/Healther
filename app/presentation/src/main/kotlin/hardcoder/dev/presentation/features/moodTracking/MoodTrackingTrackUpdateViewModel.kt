@@ -170,8 +170,8 @@ class MoodTrackingTrackUpdateViewModel(
                     attachmentType = AttachmentType.MOOD_TRACKING_ENTITY,
                     entityId = moodTrackId
                 ).firstOrNull()?.let { attachment ->
-                    diaryTrackProvider.provideDiaryTrackById(attachment.diaryTrackId)
-                        .map { diaryTrack ->
+                    diaryTrackProvider.provideDiaryTrackById(attachment.diaryTrackId).firstOrNull()
+                        .let { diaryTrack ->
                             note.value = diaryTrack?.content ?: ""
                         }
                 }

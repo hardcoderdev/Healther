@@ -16,9 +16,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentGroup as AttachmentEntity
-import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachment as DiaryAttachmentEntity
 import kotlinx.coroutines.flow.map
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachment as DiaryAttachmentEntity
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentGroup as AttachmentEntity
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DiaryAttachmentProvider(
@@ -31,28 +31,25 @@ class DiaryAttachmentProvider(
 
     fun provideAttachmentByEntityId(attachmentType: AttachmentType, entityId: Int) =
         appDatabase.diaryAttachmentQueries
-            .provideAttachmentByEntityId(
+            .selectByTarget(
                 targetTypeId = attachmentTypeIdMapper.mapToId(attachmentType),
                 targetId = entityId
             )
             .asFlow()
-            .map { it.executeAsOneOrNull() }
-            .flatMapLatest { attachmentDatabase ->
-                if (attachmentDatabase == null) flowOf(null)
-                else {
-                    flowOf(
-                        DiaryAttachmentEntity(
-                            id = attachmentDatabase.id,
-                            diaryTrackId = attachmentDatabase.diaryTrackId,
-                            targetType = attachmentType,
-                            targetId = attachmentDatabase.targetId
-                        )
+            .map {
+                it.executeAsOneOrNull()?.let { attachment ->
+                    DiaryAttachmentEntity(
+                        id = attachment.id,
+                        diaryTrackId = attachment.diaryTrackId,
+                        targetType = attachmentType,
+                        targetId = attachment.targetId
                     )
                 }
             }
 
+
     fun provideAttachmentOfDiaryTrackById(id: Int) = appDatabase.diaryAttachmentQueries
-        .provideAllAttachmentsOfDiaryTrackById(id)
+        .selectByDiaryTrackId(id)
         .asFlow()
         .map { it.executeAsList() }
         .flatMapLatest { attachments ->

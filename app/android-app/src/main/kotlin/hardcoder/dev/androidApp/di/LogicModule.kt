@@ -18,8 +18,7 @@ import hardcoder.dev.logic.appPreferences.PredefinedTracksManager
 import hardcoder.dev.logic.dashboard.features.DateRangeFilterTypeMapper
 import hardcoder.dev.logic.dashboard.features.DateRangeFilterTypeProvider
 import hardcoder.dev.logic.dashboard.features.diary.AttachmentTypeIdMapper
-import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentCreator
-import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentDeleter
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentManager
 import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentProvider
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagCreator
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagDeleter
@@ -418,10 +417,8 @@ class LogicModule(private val context: Context) {
             dispatcher = Dispatchers.IO,
             moodWithActivityCreator = moodWithActivityCreator,
             moodWithActivityDeleter = moodWithActivityDeleter,
-            diaryTrackProvider = diaryTrackProvider,
-            diaryTrackUpdater = diaryTrackUpdater,
-            diaryAttachmentProvider = diaryAttachmentProvider,
-            attachmentTypeIdMapper = attachmentTypeIdMapper
+            attachmentTypeIdMapper = attachmentTypeIdMapper,
+            diaryTrackCreator = diaryTrackCreator
         )
     }
 
@@ -497,7 +494,7 @@ class LogicModule(private val context: Context) {
             idGenerator = idGenerator,
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO,
-            diaryAttachmentCreator = diaryAttachmentCreator
+            diaryAttachmentManager = diaryAttachmentManager
         )
     }
 
@@ -505,8 +502,7 @@ class LogicModule(private val context: Context) {
         DiaryTrackUpdater(
             appDatabase = appDatabase,
             dispatcher = Dispatchers.IO,
-            diaryAttachmentCreator = diaryAttachmentCreator,
-            diaryAttachmentDeleter = diaryAttachmentDeleter
+            diaryAttachmentManager = diaryAttachmentManager
         )
     }
 
@@ -540,8 +536,8 @@ class LogicModule(private val context: Context) {
         AttachmentTypeIdMapper()
     }
 
-    private val diaryAttachmentCreator by lazy {
-        DiaryAttachmentCreator(
+    private val diaryAttachmentManager by lazy {
+        DiaryAttachmentManager(
             idGenerator = idGenerator,
             appDatabase = appDatabase,
             attachmentTypeIdMapper = attachmentTypeIdMapper,
@@ -556,14 +552,6 @@ class LogicModule(private val context: Context) {
             fastingTrackProvider = fastingTrackProvider,
             moodTrackProvider = moodTrackProvider,
             diaryTagProvider = diaryTagProvider
-        )
-    }
-
-    val diaryAttachmentDeleter by lazy {
-        DiaryAttachmentDeleter(
-            appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
-            attachmentTypeIdMapper = attachmentTypeIdMapper
         )
     }
 

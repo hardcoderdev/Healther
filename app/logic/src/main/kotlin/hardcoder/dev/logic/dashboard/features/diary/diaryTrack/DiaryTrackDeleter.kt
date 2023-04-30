@@ -11,5 +11,6 @@ class DiaryTrackDeleter(
 
     suspend fun deleteById(id: Int) = withContext(dispatcher) {
         appDatabase.diaryTrackQueries.delete(id)
+        appDatabase.diaryAttachmentQueries.deleteByDiaryTrackId(id)
     }
 }

@@ -41,8 +41,8 @@ fun DiaryItem(
                 .padding(16.dp)
         ) {
             Description(text = diaryTrack.content)
-            Spacer(modifier = Modifier.height(8.dp))
             diaryTrack.diaryAttachmentGroup?.tags?.let { tags ->
+                Spacer(modifier = Modifier.height(8.dp))
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -63,6 +63,14 @@ fun DiaryItem(
                         TagCounterChip(tagsLeftCount = tags.size - MAX_TAGS_VISIBLE_IN_ITEM)
                     }
                 }
+            }
+            diaryTrack.diaryAttachmentGroup?.fastingTracks?.forEach {
+                Spacer(modifier = Modifier.height(8.dp))
+                DiaryFastingItem(fastingTrack = it)
+            }
+            diaryTrack.diaryAttachmentGroup?.moodTracks?.forEach {
+                Spacer(modifier = Modifier.height(8.dp))
+                DiaryMoodItem(moodTrack = it)
             }
         }
     }
