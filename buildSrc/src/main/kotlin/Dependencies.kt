@@ -120,7 +120,6 @@ fun DependencyHandler.addComposeMaterial() {
     implementation(Dependencies.composeTooling)
     implementation(Dependencies.numberPicker)
     implementation(Dependencies.composeCalendar)
-    implementation(Dependencies.composeCalendar)
     implementation(Dependencies.composeCalendarDateTime)
     implementation(Dependencies.accompanistPager)
     implementation(Dependencies.accompanistPagerIndicators)

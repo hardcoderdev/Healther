@@ -10,4 +10,3 @@ data class DiaryAttachmentGroup(
     val tags: List<DiaryTag> = emptyList()
 )
 
-

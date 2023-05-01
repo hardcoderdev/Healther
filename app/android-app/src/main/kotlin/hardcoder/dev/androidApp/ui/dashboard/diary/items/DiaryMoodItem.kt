@@ -10,16 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.di.LocalUIModule
-import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
-import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.uikit.text.Description
-import kotlinx.datetime.Clock
 
 @Composable
 fun DiaryMoodItem(
@@ -45,21 +41,4 @@ fun DiaryMoodItem(
             )
         )
     }
-}
-
-@Preview
-@Composable
-fun DiaryMoodItemPreview() {
-    DiaryMoodItem(
-        moodTrack = MoodTrack(
-            id = 0,
-            moodType = MoodType(
-                id = 0,
-                name = "Happy",
-                icon = LocalIconImpl(0, R.drawable.ic_baseball),
-                positivePercentage = 70
-            ),
-            date = Clock.System.now()
-        )
-    )
 }

@@ -16,7 +16,7 @@
     <string name="diary_selectTags_subtitle_bottomSheet_text">Ваши теги:</string>
     <string name="diary_item_tags_left_count_format">Ещё %d занятий…</string>
 
-    <string name="diary_createTrack_title_topBar">Добавление заметкам</string>
+    <string name="diary_createTrack_title_topBar">Добавление заметки</string>
     <string name="diary_createTrack_enterNote_textField">Заметку вводите здесь…</string>
     <string name="diary_createTrack_selectLinkedFeatureType_text">Привязать заметку к:</string>
     <string name="diary_createTrack_enterTitle_textField">Введите заголовок…</string>
@@ -28,7 +28,7 @@
     <string name="diary_createTrack_manageTags_buttonText">Управление тегами</string>
 
     <string name="diary_updateTrack_selectLinkedFeatureType_text">Привязать заметку к:</string>
-    <string name="diary_updateTrack_title_topBar">Обновление заметкам</string>
+    <string name="diary_updateTrack_title_topBar">Обновление заметки</string>
     <string name="diary_updateTrack_enterTitle_textField">Введите заголовок…</string>
     <string name="diary_updateTrack_titleMoreThanMaxChars_text">Макс. длина заголовка: %d символов!</string>
     <string name="diary_updateTrack_enterNote_textField">Заметку вводите здесь…</string>

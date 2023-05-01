@@ -2,7 +2,6 @@
 
 package hardcoder.dev.androidApp.ui.dashboard.diary
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -31,9 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
-import hardcoder.dev.androidApp.ui.dashboard.diary.items.DiaryFastingItem
 import hardcoder.dev.androidApp.ui.dashboard.diary.items.DiaryItem
-import hardcoder.dev.androidApp.ui.dashboard.diary.items.DiaryMoodItem
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.dashboard.features.DateRangeFilterType
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTag
@@ -198,11 +195,13 @@ private fun FilterBottomSheetContent(
         }
         Spacer(modifier = Modifier.height(32.dp))
         DateRangeSection(state = state, onUpdateDateRangeFilterType = onUpdateDateRangeFilterType)
-        Spacer(modifier = Modifier.height(32.dp))
-        FilterTagSection(
-            state = state,
-            onToggleFilterTag = onToggleFilterTag
-        )
+        if (state.tagList.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(32.dp))
+            FilterTagSection(
+                state = state,
+                onToggleFilterTag = onToggleFilterTag
+            )
+        }
     }
 }
 
@@ -262,10 +261,7 @@ private fun FilterTagSection(
                     .padding(end = 8.dp, top = 16.dp),
                 isSelected = state.selectedTagList.contains(diaryTag),
                 text = diaryTag.name,
-                onClick = {
-                    onToggleFilterTag(diaryTag)
-                    Log.d("ddlepdle", "${state.selectedTagList.contains(diaryTag)}")
-                }
+                onClick = { onToggleFilterTag(diaryTag) }
             )
         }
     }

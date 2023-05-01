@@ -120,8 +120,10 @@ private fun DiaryUpdateTrackContent(
                 state = state,
                 onUpdateText = onUpdateText
             )
-            Spacer(modifier = Modifier.height(32.dp))
-            AttachedEntitySection(diaryAttachmentGroup = state.diaryAttachmentGroup) // TODO HANDLE IF GROUP EMPTY
+            if (state.diaryAttachmentGroup.isAttachmentTracksNotEmpty()) {
+                Spacer(modifier = Modifier.height(32.dp))
+                AttachedEntitySection(diaryAttachmentGroup = state.diaryAttachmentGroup)
+            }
             Spacer(modifier = Modifier.height(32.dp))
             SelectTagsSection(
                 state = state,
@@ -138,6 +140,9 @@ private fun DiaryUpdateTrackContent(
         )
     }
 }
+
+private fun DiaryAttachmentGroup.isAttachmentTracksNotEmpty() =
+    fastingTracks.isNotEmpty() || moodTracks.isNotEmpty()
 
 @Composable
 private fun EnterBasicInfoSection(
