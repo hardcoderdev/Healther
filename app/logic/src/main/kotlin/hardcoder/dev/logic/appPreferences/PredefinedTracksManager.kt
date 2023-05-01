@@ -17,6 +17,7 @@ class PredefinedTracksManager(
 
     private val isDrinkTypeSavedPreferenceKey = booleanPreferencesKey(IS_DRINK_TYPES_SAVED)
     private val isMoodTypesSavedPreferenceKey = booleanPreferencesKey(IS_MOOD_TYPES_SAVED)
+
     private val isMoodTypesSaved = context.healtherDataStore.data.map {
         it[isMoodTypesSavedPreferenceKey] ?: false
     }
@@ -25,10 +26,8 @@ class PredefinedTracksManager(
     }
 
     suspend fun createPredefinedTracksIfNeeded() {
-        when {
-            !isDrinkTypeSaved.first() -> createPredefinedDrinkTypes()
-            !isMoodTypesSaved.first() -> createPredefinedMoodTypes()
-        }
+        if (!isDrinkTypeSaved.first()) createPredefinedDrinkTypes()
+        if (!isMoodTypesSaved.first()) createPredefinedMoodTypes()
     }
 
     private suspend fun createPredefinedDrinkTypes() {

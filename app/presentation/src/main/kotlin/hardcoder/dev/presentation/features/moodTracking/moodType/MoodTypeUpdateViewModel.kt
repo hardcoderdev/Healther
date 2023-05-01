@@ -4,7 +4,7 @@ import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.logic.features.moodTracking.moodType.CorrectValidatedMoodTypeName
+import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeDeleter
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
@@ -66,7 +66,7 @@ class MoodTypeUpdateViewModel(
             availableIconsList = availableIconResourceList,
             selectedIcon = selectedIcon,
             positivePercentage = selectedPositivePercentage,
-            allowUpdate = validatedName is CorrectValidatedMoodTypeName
+            allowUpdate = validatedName is CorrectMoodTypeName
         )
     }.stateIn(
         scope = viewModelScope,
@@ -98,7 +98,7 @@ class MoodTypeUpdateViewModel(
     fun updateMoodType() {
         viewModelScope.launch {
             val validatedName = validatedMoodTypeName.value
-            require(validatedName is CorrectValidatedMoodTypeName)
+            require(validatedName is CorrectMoodTypeName)
 
             moodTypeProvider.provideMoodTypeByTrackId(moodTypeId).firstOrNull()?.let {
                 val updatedTrack = it.copy(

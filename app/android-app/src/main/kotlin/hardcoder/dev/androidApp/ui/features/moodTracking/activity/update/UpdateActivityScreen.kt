@@ -119,13 +119,16 @@ fun UpdateActivityContent(
                 if (validatedActivityName is IncorrectActivityName) {
                     ErrorText(
                         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                        text = when (validatedActivityName.reason) {
+                        text = when (val reason = validatedActivityName.reason) {
                             is IncorrectActivityName.Reason.Empty -> {
                                 stringResource(R.string.moodTracking_updateActivity_nameEmpty_error)
                             }
 
                             is IncorrectActivityName.Reason.MoreThanMaxChars -> {
-                                stringResource(R.string.moodTracking_updateActivity_nameMoreThanMaxChars_error)
+                                stringResource(
+                                    id = R.string.moodTracking_updateActivity_nameMoreThanMaxChars_error,
+                                    formatArgs = arrayOf(reason.maxChars)
+                                )
                             }
                         }
                     )

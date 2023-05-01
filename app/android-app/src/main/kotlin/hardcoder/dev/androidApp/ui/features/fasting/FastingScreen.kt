@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -18,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -44,6 +47,7 @@ import hardcoder.dev.uikit.progressBar.CircularProgressBar
 import hardcoder.dev.uikit.sections.EmptyBlock
 import hardcoder.dev.uikit.sections.EmptySection
 import hardcoder.dev.uikit.text.Description
+import hardcoder.dev.uikit.text.FilledTextField
 import hardcoder.dev.uikit.text.Headline
 import hardcoder.dev.uikit.text.Title
 import kotlin.math.roundToInt
@@ -78,7 +82,8 @@ fun FastingScreen(
                 is FastingViewModel.FastingState.Finished -> {
                     FinishFastingContent(
                         state = fastingState,
-                        onClose = viewModel::clearFasting
+                        onClose = viewModel::clearFasting,
+                        onUpdateNote = viewModel::updateNote
                     )
                 }
             }
@@ -186,7 +191,8 @@ private fun FastingContent(
 @Composable
 private fun FinishFastingContent(
     state: FastingViewModel.FastingState.Finished,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    onUpdateNote: (String) -> Unit
 ) {
     val uiModule = LocalUIModule.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -228,11 +234,14 @@ private fun FinishFastingContent(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Column(Modifier.weight(2f)) {
+        Column(
+            Modifier
+                .weight(2f)
+                .verticalScroll(rememberScrollState())) {
             Image(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp),
+                    .height(200.dp),
                 painter = painterResource(id = R.drawable.fasting_finish_image),
                 contentDescription = stringResource(id = R.string.fasting_finish_image_contentDescription)
             )
@@ -240,7 +249,10 @@ private fun FinishFastingContent(
             Headline(text = stringResource(id = R.string.fasting_finish_text))
             Spacer(modifier = Modifier.height(16.dp))
             Description(text = advicesStringResource)
+            Spacer(modifier = Modifier.height(32.dp))
+            AddNoteSection(state = state, onUpdateNote = onUpdateNote)
         }
+        Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             iconResId = R.drawable.ic_navigate_next,
             labelResId = R.string.fasting_finish_goNext_buttonText,
@@ -348,4 +360,27 @@ private fun FastingChartSection(fastingChartEntries: List<Pair<Int, Long>>) {
     } else {
         Description(text = stringResource(id = R.string.fasting_chartNotEnoughData_text))
     }
+}
+
+@Composable
+private fun AddNoteSection(
+    state: FastingViewModel.FastingState.Finished,
+    onUpdateNote: (String) -> Unit
+) {
+    Title(text = stringResource(id = R.string.fasting_finish_addNoteOptional_text))
+    Spacer(modifier = Modifier.height(16.dp))
+    FilledTextField(
+        value = state.note ?: "",
+        onValueChange = onUpdateNote,
+        label = R.string.fasting_createMoodTrack_enterNote_textField,
+        multiline = true,
+        maxLines = 5,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(120.dp)
+    )
 }

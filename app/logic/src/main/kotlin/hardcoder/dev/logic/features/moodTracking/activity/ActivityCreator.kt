@@ -2,6 +2,7 @@ package hardcoder.dev.logic.features.moodTracking.activity
 
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
+import hardcoder.dev.logic.icons.LocalIcon
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -13,12 +14,12 @@ class ActivityCreator(
 
     suspend fun create(
         name: String,
-        iconId: Long,
+        icon: LocalIcon,
     ) = withContext(dispatcher) {
         appDatabase.activityQueries.insert(
             id = idGenerator.nextId(),
             name = name,
-            iconId = iconId
+            iconId = icon.id
         )
     }
 }

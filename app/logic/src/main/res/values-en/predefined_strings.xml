@@ -13,4 +13,10 @@
     <string name="predefined_moodType_name_neutral">Neutral</string>
     <string name="predefined_moodType_name_not_well">Not good</string>
     <string name="predefined_moodType_name_bad">Badly</string>
+
+    <string name="predefined_diary_filterFeatureType_noFeature">Without feature</string>
+    <string name="predefined_diary_filterFeatureType_waterTrackingFilter">Water balance</string>
+    <string name="predefined_diary_filterFeatureType_pedometerFilter">Pedometer</string>
+    <string name="predefined_diary_filterFeatureType_fastingFilter">Fasting</string>
+    <string name="predefined_diary_filterFeatureType_moodTrackingFilter">Mood tracking</string>
 </resources>

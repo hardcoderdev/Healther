@@ -1,6 +1,12 @@
 package hardcoder.dev.androidApp.di
 
 import android.content.Context
+import hardcoder.dev.presentation.dashboard.features.diary.DiaryCreateTrackViewModel
+import hardcoder.dev.presentation.dashboard.features.diary.DiaryUpdateTrackViewModel
+import hardcoder.dev.presentation.dashboard.features.diary.DiaryViewModel
+import hardcoder.dev.presentation.dashboard.features.diary.tags.CreateTagViewModel
+import hardcoder.dev.presentation.dashboard.features.diary.tags.ManageTagsViewModel
+import hardcoder.dev.presentation.dashboard.features.diary.tags.UpdateTagViewModel
 import hardcoder.dev.presentation.features.fasting.FastingHistoryViewModel
 import hardcoder.dev.presentation.features.fasting.FastingTrackCreateViewModel
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
@@ -143,20 +149,19 @@ class PresentationModule(
     fun getMoodTrackingCreateViewModel() = MoodTrackingTrackCreateViewModel(
         moodTrackCreator = logicModule.moodTrackCreator,
         moodTypeProvider = logicModule.moodTypeProvider,
-        // diaryTrackCreator = logicModule.diaryTrackCreator,
-        activityProvider = logicModule.activityProvider,
-        moodWithActivityCreator = logicModule.moodWithActivityCreator
+        activityProvider = logicModule.activityProvider
     )
 
     fun getMoodTrackingUpdateViewModel(moodTrackId: Int) = MoodTrackingTrackUpdateViewModel(
         moodTrackId = moodTrackId,
-        moodTypeProvider = logicModule.moodTypeProvider,
-        // diaryTrackCreator = logicModule.diaryTrackCreator,
-        activityProvider = logicModule.activityProvider,
-        moodTrackProvider = logicModule.moodTrackProvider,
         moodTrackUpdater = logicModule.moodTrackUpdater,
+        moodTrackDeleter = logicModule.moodTrackDeleter,
+        diaryTrackProvider = logicModule.diaryTrackProvider,
+        moodTrackProvider = logicModule.moodTrackProvider,
+        diaryAttachmentProvider = logicModule.diaryAttachmentProvider,
         moodWithActivityProvider = logicModule.moodWithActivitiesProvider,
-        moodTrackDeleter = logicModule.moodTrackDeleter
+        activityProvider = logicModule.activityProvider,
+        moodTypeProvider = logicModule.moodTypeProvider
     )
 
     fun getMoodTrackingHistoryViewModel() = MoodTrackingHistoryViewModel(
@@ -200,5 +205,46 @@ class PresentationModule(
         activityUpdater = logicModule.activityUpdater,
         activityProvider = logicModule.activityProvider,
         iconResourceProvider = logicModule.activityIconProvider
+    )
+
+    fun getDiaryViewModel() = DiaryViewModel(
+        dateRangeFilterTypeMapper = logicModule.dateRangeFilterTypeMapper,
+        dateRangeFilterTypeProvider = logicModule.dateRangeFilterTypeProvider,
+        diaryTrackProvider = logicModule.diaryTrackProvider,
+        diaryTagProvider = logicModule.diaryTagProvider
+    )
+
+    fun getDiaryCreateTrackViewModel() = DiaryCreateTrackViewModel(
+        diaryTrackCreator = logicModule.diaryTrackCreator,
+        diaryTrackContentValidator = logicModule.diaryTrackContentValidator,
+        diaryTagProvider = logicModule.diaryTagProvider
+    )
+
+    fun getDiaryUpdateTrackViewModel(diaryTrackId: Int) = DiaryUpdateTrackViewModel(
+        diaryTrackId = diaryTrackId,
+        diaryTrackUpdater = logicModule.diaryTrackUpdater,
+        diaryTrackProvider = logicModule.diaryTrackProvider,
+        diaryTrackDeleter = logicModule.diaryTrackDeleter,
+        diaryTagProvider = logicModule.diaryTagProvider,
+        diaryTrackContentValidator = logicModule.diaryTrackContentValidator
+    )
+
+    fun getManageTagsViewModel() = ManageTagsViewModel(
+        diaryTagProvider = logicModule.diaryTagProvider
+    )
+
+    fun getCreateTagViewModel() = CreateTagViewModel(
+        diaryTagCreator = logicModule.diaryTagCreator,
+        diaryTagNameValidator = logicModule.diaryTagNameValidator,
+        iconResourceProvider = logicModule.diaryTagIconProvider
+    )
+
+    fun getUpdateTagViewModel(diaryTagId: Int) = UpdateTagViewModel(
+        tagId = diaryTagId,
+        diaryTagNameValidator = logicModule.diaryTagNameValidator,
+        iconResourceProvider = logicModule.diaryTagIconProvider,
+        diaryTagProvider = logicModule.diaryTagProvider,
+        diaryTagUpdater = logicModule.diaryTagUpdater,
+        diaryTagDeleter = logicModule.diaryTagDeleter
     )
 }

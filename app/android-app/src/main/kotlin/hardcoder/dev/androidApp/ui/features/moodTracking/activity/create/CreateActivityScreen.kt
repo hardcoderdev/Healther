@@ -74,7 +74,7 @@ fun CreateActivityContent(
     onSelectIcon: (LocalIcon) -> Unit,
     onCreate: () -> Unit
 ) {
-    val validatedHobbyName = state.validatedName
+    val validatedActivityName = state.validatedName
 
     Column(
         modifier = Modifier
@@ -96,17 +96,20 @@ fun CreateActivityContent(
                 modifier = Modifier.fillMaxWidth(),
                 isError = state.validatedName is IncorrectActivityName
             )
-            AnimatedVisibility(visible = validatedHobbyName is IncorrectActivityName) {
-                if (validatedHobbyName is IncorrectActivityName) {
+            AnimatedVisibility(visible = validatedActivityName is IncorrectActivityName) {
+                if (validatedActivityName is IncorrectActivityName) {
                     ErrorText(
                         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                        text = when (validatedHobbyName.reason) {
+                        text = when (val reason = validatedActivityName.reason) {
                             is IncorrectActivityName.Reason.Empty -> {
                                 stringResource(R.string.moodTracking_createActivity_nameEmpty_error)
                             }
 
                             is IncorrectActivityName.Reason.MoreThanMaxChars -> {
-                                stringResource(R.string.moodTracking_createActivity_nameMoreThanMaxChars_error)
+                                stringResource(
+                                    id = R.string.moodTracking_createActivity_nameMoreThanMaxChars_error,
+                                    formatArgs = arrayOf(reason.maxChars)
+                                )
                             }
                         }
                     )

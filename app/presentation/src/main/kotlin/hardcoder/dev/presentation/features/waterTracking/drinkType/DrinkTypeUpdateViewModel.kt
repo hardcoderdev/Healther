@@ -4,7 +4,7 @@ import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.logic.features.waterTracking.drinkType.CorrectValidatedDrinkTypeName
+import hardcoder.dev.logic.features.waterTracking.drinkType.CorrectDrinkTypeName
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeDeleter
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeNameValidator
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
@@ -66,7 +66,7 @@ class DrinkTypeUpdateViewModel(
             availableIconsList = availableIconsList,
             selectedIcon = selectedIcon,
             hydrationIndexPercentage = selectedHydrationIndexPercentage,
-            allowUpdate = validatedName is CorrectValidatedDrinkTypeName
+            allowUpdate = validatedName is CorrectDrinkTypeName
         )
     }.stateIn(
         scope = viewModelScope,
@@ -98,7 +98,7 @@ class DrinkTypeUpdateViewModel(
     fun updateDrinkType() {
         viewModelScope.launch {
             val validatedName = validatedDrinkTypeName.value
-            require(validatedName is CorrectValidatedDrinkTypeName)
+            require(validatedName is CorrectDrinkTypeName)
 
             drinkTypeProvider.provideDrinkTypeById(drinkTypeId).firstOrNull()?.let {
                 val updatedTrack = it.copy(

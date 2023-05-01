@@ -6,4 +6,6 @@ sealed class Flow(val startDestination: String, val route: String) {
     object PedometerFlow : Flow(Screen.PedometerFeature.route, "pedometer_flow")
     object FastingFlow : Flow(Screen.FastingFeature.route, "fasting_flow")
     object MoodTrackingFlow : Flow(Screen.MoodTrackingFeature.route, "mood_tracking_flow")
+
+    object DiaryFlow : Flow(Screen.Diary.route, "diary_flow")
 }

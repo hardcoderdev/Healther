@@ -16,6 +16,7 @@ fun ErrorText(
         color = MaterialTheme.colorScheme.error,
         text = text,
         imageVector = Icons.Default.Error,
-        iconTint = MaterialTheme.colorScheme.error
+        iconTint = MaterialTheme.colorScheme.error,
+        style = MaterialTheme.typography.titleSmall
     )
 }

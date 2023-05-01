@@ -21,4 +21,10 @@
     <string name="deleteDialog_yes_option">Удалить</string>
     <string name="deleteDialog_trackDeletionTitle_text">Удаление записи</string>
     <string name="deleteDialog_trackDeletionDescription_text">Вы действительно хотите удалить эту запись?</string>
+
+    <string name="dateRangeFilterType_byDay">День</string>
+    <string name="dateRangeFilterType_byWeek">Неделя</string>
+    <string name="dateRangeFilterType_byMonth">Месяц</string>
+    <string name="dateRangeFilterType_byYear">Год</string>
+    <string name="dateRangeFilterType_byAllPeriod">Весь период</string>
 </resources>

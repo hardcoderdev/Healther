@@ -3,7 +3,7 @@ package hardcoder.dev.presentation.features.waterTracking.drinkType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.logic.features.waterTracking.drinkType.CorrectValidatedDrinkTypeName
+import hardcoder.dev.logic.features.waterTracking.drinkType.CorrectDrinkTypeName
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeCreator
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeNameValidator
 import hardcoder.dev.logic.features.waterTracking.drinkType.ValidatedDrinkTypeName
@@ -53,7 +53,7 @@ class DrinkTypeCreateViewModel(
             availableIconsList = availableIcons,
             selectedIcon = selectedIcon,
             hydrationIndexPercentage = hydrationIndexPercentage,
-            allowCreation = validatedName is CorrectValidatedDrinkTypeName
+            allowCreation = validatedName is CorrectDrinkTypeName
         )
     }.stateIn(
         scope = viewModelScope,
@@ -84,11 +84,11 @@ class DrinkTypeCreateViewModel(
     fun createDrinkType() {
         viewModelScope.launch {
             val validatedName = validatedDrinkTypeName.value
-            require(validatedName is CorrectValidatedDrinkTypeName)
+            require(validatedName is CorrectDrinkTypeName)
 
             drinkTypeCreator.create(
                 name = validatedName.data,
-                iconId = selectedIcon.value.id,
+                icon = selectedIcon.value,
                 hydrationIndexPercentage = selectedHydrationIndexPercentage.value
             )
 

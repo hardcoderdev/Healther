@@ -1,0 +1,22 @@
+CREATE TABLE DiaryAttachment (
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    diaryTrackId INTEGER AS Int NOT NULL,
+    targetTypeId INTEGER AS Int NOT NULL,
+    targetId INTEGER AS Int NOT NULL
+);
+
+insert:
+INSERT INTO DiaryAttachment (id, diaryTrackId, targetTypeId, targetId)
+VALUES (?, ?, ?, ?);
+
+selectByTarget:
+SELECT * FROM DiaryAttachment WHERE targetTypeId = ? AND targetId = ?;
+
+selectByDiaryTrackId:
+SELECT * FROM DiaryAttachment WHERE diaryTrackId = ?;
+
+deleteByDiaryTrackId:
+DELETE FROM DiaryAttachment WHERE diaryTrackId = ?;
+
+deleteByTarget:
+DELETE FROM DiaryAttachment WHERE targetTypeId = ? AND targetId = ?;

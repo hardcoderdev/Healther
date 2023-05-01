@@ -3,6 +3,9 @@ package hardcoder.dev.presentation.features.moodTracking
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
+import hardcoder.dev.logic.dashboard.features.diary.AttachmentType
+import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentProvider
+import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackProvider
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.logic.features.moodTracking.activity.ActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDeleter
@@ -27,8 +30,9 @@ class MoodTrackingTrackUpdateViewModel(
     private val moodTrackId: Int,
     private val moodTrackUpdater: MoodTrackUpdater,
     private val moodTrackDeleter: MoodTrackDeleter,
-    //private val diaryTrackCreator: DiaryTrackCreator,
+    private val diaryTrackProvider: DiaryTrackProvider,
     private val moodTrackProvider: MoodTrackProvider,
+    private val diaryAttachmentProvider: DiaryAttachmentProvider,
     moodWithActivityProvider: MoodWithActivitiesProvider,
     activityProvider: ActivityProvider,
     moodTypeProvider: MoodTypeProvider,
@@ -36,27 +40,28 @@ class MoodTrackingTrackUpdateViewModel(
 
     private val updateState = MutableStateFlow<UpdateState>(UpdateState.NotExecuted)
     private val deleteState = MutableStateFlow<DeleteState>(DeleteState.NotExecuted)
-    private var mutableSelectedActivities = mutableListOf<Activity>()
-    private val selectedDate = MutableStateFlow(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
+    private val selectedDate =
+        MutableStateFlow(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
     private val selectedMoodType = MutableStateFlow<MoodType?>(null)
-    private val note = MutableStateFlow("")
+    private val note = MutableStateFlow<String?>(null)
     private val selectedActivities = MutableStateFlow<List<Activity>>(emptyList())
-    private val initialActivities = moodWithActivityProvider.provideActivityListByMoodTrackId(moodTrackId).map {
-        selectedActivities.value = it
-        it
-    }.stateIn(
+    private val initialActivities =
+        moodWithActivityProvider.provideActivityListByMoodTrackId(moodTrackId).map {
+            selectedActivities.value = it
+            it
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = emptyList()
+        )
+
+    private val activityList = activityProvider.provideAllActivities().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
     )
 
     private val moodTypeList = moodTypeProvider.provideAllMoodTypes().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = emptyList()
-    )
-
-    private val activityList = activityProvider.provideAllActivities().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
@@ -114,18 +119,16 @@ class MoodTrackingTrackUpdateViewModel(
         selectedDate.value = localDateTime
     }
 
-    fun addActivity(activity: Activity) {
-        if (selectedActivities.value.contains(activity).not()) {
-            mutableSelectedActivities = selectedActivities.value.toMutableList()
-            mutableSelectedActivities.add(activity)
-            selectedActivities.value = mutableSelectedActivities
+    fun toggleActivity(activity: Activity) {
+        val selectedActivitiesMutableList = selectedActivities.value.toMutableList()
+        val isRemoved = selectedActivitiesMutableList.removeIf { it == activity }
+        if (isRemoved) {
+            selectedActivities.value = selectedActivitiesMutableList
+            return
+        } else {
+            selectedActivitiesMutableList.add(activity)
+            selectedActivities.value = selectedActivitiesMutableList
         }
-    }
-
-    fun removeActivity(activity: Activity) {
-        mutableSelectedActivities = selectedActivities.value.toMutableList()
-        mutableSelectedActivities.remove(activity)
-        selectedActivities.value = mutableSelectedActivities
     }
 
     fun updateTrack() {
@@ -137,7 +140,11 @@ class MoodTrackingTrackUpdateViewModel(
                     date = selectedDate.value.toInstant(TimeZone.currentSystemDefault())
                 )
 
-                moodTrackUpdater.update(moodTrack, selectedActivities.value)
+                moodTrackUpdater.update(
+                    note = note.value,
+                    moodTrack = moodTrack,
+                    selectedActivities = selectedActivities.value
+                )
             }
 
             updateState.value = UpdateState.Executed
@@ -159,6 +166,15 @@ class MoodTrackingTrackUpdateViewModel(
                 selectedMoodType.value = moodTrack.moodType
                 selectedDate.value = moodTrack.date.toLocalDateTime(TimeZone.currentSystemDefault())
                 selectedActivities.value = initialActivities.value
+                diaryAttachmentProvider.provideAttachmentByEntityId(
+                    attachmentType = AttachmentType.MOOD_TRACKING_ENTITY,
+                    entityId = moodTrackId
+                ).firstOrNull()?.let { attachment ->
+                    diaryTrackProvider.provideDiaryTrackById(attachment.diaryTrackId).firstOrNull()
+                        .let { diaryTrack ->
+                            note.value = diaryTrack?.content ?: ""
+                        }
+                }
             }
         }
     }

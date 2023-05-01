@@ -8,7 +8,6 @@ import hardcoder.dev.logic.features.moodTracking.activity.ActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackCreator
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
-import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityCreator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -20,23 +19,20 @@ import kotlinx.datetime.toLocalDateTime
 
 class MoodTrackingTrackCreateViewModel(
     private val moodTrackCreator: MoodTrackCreator,
-    //private val diaryTrackCreator: DiaryTrackCreator,
-    private val moodWithActivityCreator: MoodWithActivityCreator,
     moodTypeProvider: MoodTypeProvider,
     activityProvider: ActivityProvider
 ) : ViewModel() {
 
     private val creationState = MutableStateFlow<CreationState>(CreationState.NotExecuted)
-    private var mutableSelectedActivities = mutableListOf<Activity>()
     private val selectedDate = MutableStateFlow(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
     private val selectedMoodType = MutableStateFlow<MoodType?>(null)
-    private val note = MutableStateFlow("")
-    private val selectedActivities = MutableStateFlow<List<Activity>>(mutableListOf())
+    private val note = MutableStateFlow<String?>(null)
     private val moodTypeList = moodTypeProvider.provideAllMoodTypes().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = emptyList()
     )
+    private val selectedActivities = MutableStateFlow<List<Activity>>(mutableListOf())
     private val activityList = activityProvider.provideAllActivities().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -94,44 +90,28 @@ class MoodTrackingTrackCreateViewModel(
         selectedDate.value = localDateTime
     }
 
-    fun addActivity(activity: Activity) {
-        if (selectedActivities.value.contains(activity).not()) {
-            mutableSelectedActivities = selectedActivities.value.toMutableList()
-            mutableSelectedActivities.add(activity)
-            selectedActivities.value = mutableSelectedActivities
+    fun toggleActivity(activity: Activity) {
+        val selectedActivitiesMutableList = selectedActivities.value.toMutableList()
+        val isRemoved = selectedActivitiesMutableList.removeIf { it == activity }
+        if (isRemoved) {
+            selectedActivities.value = selectedActivitiesMutableList
+            return
+        } else {
+            selectedActivitiesMutableList.add(activity)
+            selectedActivities.value = selectedActivitiesMutableList
         }
-    }
-
-    fun removeActivity(activity: Activity) {
-        mutableSelectedActivities = selectedActivities.value.toMutableList()
-        mutableSelectedActivities.remove(activity)
-        selectedActivities.value = mutableSelectedActivities
     }
 
     fun createTrack() {
         viewModelScope.launch {
             val selectedMoodType = requireNotNull(selectedMoodType.value)
 
-            val moodTrackId = moodTrackCreator.create(
+            moodTrackCreator.create(
+                note = note.value,
                 moodType = selectedMoodType,
-                date = selectedDate.value
+                date = selectedDate.value,
+                selectedActivities = selectedActivities.value
             )
-
-            if (note.value.isNotEmpty()) {
-//                diaryTrackCreator.create(
-//                    creationTime = creationTime,
-//                    linkedFeatureType = FeatureType.MOOD_TRACKING,
-//                    text = note.value,
-//                    title = null
-//                )
-            }
-
-            selectedActivities.value.forEach { activity ->
-                moodWithActivityCreator.create(
-                    moodTrackId = moodTrackId,
-                    activityId = activity.id
-                )
-            }
 
             creationState.value = CreationState.Executed
         }

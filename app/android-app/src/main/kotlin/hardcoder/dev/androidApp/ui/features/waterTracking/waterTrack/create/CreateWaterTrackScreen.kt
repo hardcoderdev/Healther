@@ -181,11 +181,9 @@ private fun EnterDrunkMillilitersSection(
                     is IncorrectMillilitersInput.Reason.Empty -> {
                         stringResource(R.string.waterTracking_createWaterTrack_millilitersEmpty_text)
                     }
-
                     is IncorrectMillilitersInput.Reason.MoreThanDailyWaterIntake -> {
                         stringResource(R.string.waterTracking_createWaterTrack_millilitersMoreThanDailyWaterIntake_text)
                     }
-
                     else -> {
                         stringResource(id = 0)
                     }

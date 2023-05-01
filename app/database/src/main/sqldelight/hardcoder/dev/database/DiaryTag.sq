@@ -1,0 +1,21 @@
+CREATE TABLE DiaryTag(
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    iconId INTEGER NOT NULL
+);
+
+create:
+INSERT INTO DiaryTag (id, name, iconId)
+VALUES (?, ?, ?);
+
+update:
+UPDATE DiaryTag SET name = ?, iconId = ? WHERE id = ?;
+
+deleteById:
+DELETE FROM DiaryTag WHERE id = ?;
+
+provideDiaryTagById:
+SELECT * FROM DiaryTag WHERE id = ?;
+
+provideAllDiaryTags:
+SELECT * FROM DiaryTag;
