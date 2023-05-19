@@ -17,9 +17,8 @@ import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
-import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.NumberPicker
-import hardcoder.dev.uikit.card.Card
+import hardcoder.dev.uikit.card.SelectionCard
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Headline
 import kotlin.time.Duration.Companion.hours
@@ -43,12 +42,10 @@ fun FastingPlanItem(
     val fastingHoursInMillis = fastingPlanResources.fastingHoursCount.hours.inWholeMilliseconds
     val eatingHoursInMillis = fastingPlanResources.eatingHoursCount.hours.inWholeMilliseconds
 
-    Card(
-        interactionType = InteractionType.SELECTION,
+    SelectionCard(
         modifier = modifier,
-        item = fastingPlan,
-        selectedItem = selectedPlan,
-        onClick = { onSelect(customFastingHours) }
+        isSelected = fastingPlan == selectedPlan,
+        onSelect = { onSelect(customFastingHours) }
     ) {
         Column(
             modifier = Modifier

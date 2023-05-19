@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.create
 
 import androidx.compose.animation.AnimatedVisibility
@@ -36,14 +34,13 @@ import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.waterTracking.IncorrectMillilitersInput
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackCreateViewModel
-import hardcoder.dev.uikit.InteractionType
+import hardcoder.dev.presentation.features.waterTracking.WaterTrackingCreateViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonStyles
 import hardcoder.dev.uikit.buttons.IconTextButton
-import hardcoder.dev.uikit.chip.Chip
+import hardcoder.dev.uikit.chip.ActionChip
 import hardcoder.dev.uikit.dialogs.DatePicker
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.ErrorText
@@ -65,7 +62,7 @@ fun CreateWaterTrackScreen(
     val state = viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = state.value.creationState) {
-        if (state.value.creationState is WaterTrackCreateViewModel.CreationState.Executed) {
+        if (state.value.creationState is WaterTrackingCreateViewModel.CreationState.Executed) {
             onGoBack()
         }
     }
@@ -92,7 +89,7 @@ fun CreateWaterTrackScreen(
 
 @Composable
 private fun CreateWaterTrackContent(
-    state: WaterTrackCreateViewModel.State,
+    state: WaterTrackingCreateViewModel.State,
     onCreateWaterTrack: () -> Unit,
     onUpdateSelectedDrink: (DrinkType) -> Unit,
     onUpdateSelectedDate: (LocalDateTime) -> Unit,
@@ -144,7 +141,7 @@ private fun CreateWaterTrackContent(
 
 @Composable
 private fun EnterDrunkMillilitersSection(
-    state: WaterTrackCreateViewModel.State,
+    state: WaterTrackingCreateViewModel.State,
     updateWaterDrunk: (Int) -> Unit,
 ) {
     val validatedMillilitersCount = state.validatedMillilitersCount
@@ -181,9 +178,11 @@ private fun EnterDrunkMillilitersSection(
                     is IncorrectMillilitersInput.Reason.Empty -> {
                         stringResource(R.string.waterTracking_createWaterTrack_millilitersEmpty_text)
                     }
+
                     is IncorrectMillilitersInput.Reason.MoreThanDailyWaterIntake -> {
                         stringResource(R.string.waterTracking_createWaterTrack_millilitersMoreThanDailyWaterIntake_text)
                     }
+
                     else -> {
                         stringResource(id = 0)
                     }
@@ -193,49 +192,53 @@ private fun EnterDrunkMillilitersSection(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SelectDrinkTypeSection(
-    state: WaterTrackCreateViewModel.State,
+    state: WaterTrackingCreateViewModel.State,
     updateSelectedDrink: (DrinkType) -> Unit,
     onManageDrinkType: () -> Unit
 ) {
     Title(text = stringResource(id = R.string.waterTracking_createWaterTrack_enterDrinkType_text))
     Spacer(modifier = Modifier.height(8.dp))
-    FlowRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState()),
-        maxItemsInEachRow = 8
-    ) {
-        DrinkTypeManagementButton(onManageDrinkType = onManageDrinkType)
-        state.drinks.forEach { drink ->
-            DrinkTypeItem(
-                modifier = Modifier.padding(4.dp),
-                interactionType = InteractionType.SELECTION,
-                drinkType = drink,
-                selectedDrinkType = state.selectedDrink,
-                onSelect = updateSelectedDrink
-            )
+    if (state.drinks.isNotEmpty()) {
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState()),
+            maxItemsInEachRow = 8
+        ) {
+            DrinkTypeManagementButton(onManageDrinkType = onManageDrinkType)
+            state.drinks.forEach { drink ->
+                DrinkTypeItem(
+                    modifier = Modifier.padding(4.dp),
+                    drinkType = drink,
+                    selectedDrinkType = state.selectedDrink,
+                    onSelect = updateSelectedDrink
+                )
+            }
         }
+    } else {
+        DrinkTypeManagementButton(onManageDrinkType = onManageDrinkType)
+        Spacer(modifier = Modifier.height(8.dp))
+        ErrorText(text = stringResource(id = R.string.waterTracking_createWaterTrack_drinkTypeNotSelected_text))
     }
 }
 
 @Composable
 private fun DrinkTypeManagementButton(onManageDrinkType: () -> Unit) {
-    Chip(
+    ActionChip(
         modifier = Modifier.padding(4.dp),
-        interactionType = InteractionType.ACTION,
         onClick = { onManageDrinkType() },
         text = stringResource(id = R.string.waterTracking_createWaterTrack_createDrinkType_management_text),
         iconResId = LocalIconImpl(0, R.drawable.ic_create).resourceId,
-        shape = RoundedCornerShape(32.dp),
-        isSelected = false
+        shape = RoundedCornerShape(32.dp)
     )
 }
 
 @Composable
 private fun SelectDateSection(
-    state: WaterTrackCreateViewModel.State,
+    state: WaterTrackingCreateViewModel.State,
     onShowDatePicker: () -> Unit
 ) {
     val uiModule = LocalUIModule.current

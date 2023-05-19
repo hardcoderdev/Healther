@@ -18,10 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
-import hardcoder.dev.extensions.safeDiv
+import hardcoder.dev.math.safeDiv
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatistic
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackItem
+import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
@@ -43,7 +43,7 @@ fun WaterTrackingScreen(
     onGoBack: () -> Unit,
     onHistoryDetails: () -> Unit,
     onSaveWaterTrack: () -> Unit,
-    onUpdateWaterTrack: (WaterTrackItem) -> Unit
+    onUpdateWaterTrack: (WaterTrackingItem) -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
 
@@ -90,7 +90,7 @@ fun WaterTrackingScreen(
 
 @Composable
 private fun WaterTrackingContent(
-    onUpdateWaterTrack: (WaterTrackItem) -> Unit,
+    onUpdateWaterTrack: (WaterTrackingItem) -> Unit,
     state: WaterTrackingViewModel.State
 ) {
     Column(
@@ -162,7 +162,7 @@ private fun WaterTrackingStatisticSection(waterTrackingStatistic: WaterTrackingS
 @Composable
 private fun ColumnScope.TrackDiarySection(
     state: WaterTrackingViewModel.State,
-    onUpdateWaterTrack: (WaterTrackItem) -> Unit
+    onUpdateWaterTrack: (WaterTrackingItem) -> Unit
 ) {
     Title(text = stringResource(id = R.string.waterTracking_diary_text))
     Spacer(modifier = Modifier.height(8.dp))
@@ -175,7 +175,7 @@ private fun ColumnScope.TrackDiarySection(
     ) {
         items(state.waterTracks) { track ->
             WaterTrackItem(
-                waterTrackItem = track,
+                waterTrackingItem = track,
                 onUpdate = onUpdateWaterTrack
             )
         }

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = Modules.Namespaces.permissions
+    namespace = Modules.Namespaces.Foundation.permissions
     compileSdk = Android.compileSdk
 
     defaultConfig {

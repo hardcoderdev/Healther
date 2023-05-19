@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package hardcoder.dev.androidApp.ui.dashboard.diary
 
 import androidx.compose.foundation.clickable
@@ -39,11 +37,10 @@ import hardcoder.dev.presentation.dashboard.features.diary.DiaryViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.BottomSheet
-import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.chip.Chip
+import hardcoder.dev.uikit.chip.SelectionChip
 import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.rememberBottomSheetState
 import hardcoder.dev.uikit.sections.EmptyBlock
@@ -205,6 +202,7 @@ private fun FilterBottomSheetContent(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun DateRangeSection(
     state: DiaryViewModel.State,
@@ -224,8 +222,7 @@ private fun DateRangeSection(
             val dateRangeFilterTypeResources =
                 dateRangeFilterTypeResourcesProvider.provide(dateRangeFilter)
 
-            Chip(
-                interactionType = InteractionType.SELECTION,
+            SelectionChip(
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .wrapContentSize()
@@ -240,6 +237,7 @@ private fun DateRangeSection(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun FilterTagSection(
     state: DiaryViewModel.State,
@@ -253,8 +251,7 @@ private fun FilterTagSection(
         maxItemsInEachRow = 8
     ) {
         state.tagList.forEach { diaryTag ->
-            Chip(
-                interactionType = InteractionType.SELECTION,
+            SelectionChip(
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .wrapContentSize()

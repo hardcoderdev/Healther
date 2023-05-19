@@ -15,8 +15,8 @@ class DiaryTagProvider(
     fun provideAllDiaryTags() = appDatabase.diaryTagQueries
         .provideAllDiaryTags()
         .asFlow()
-        .map { diaryTagQuery ->
-            diaryTagQuery.executeAsList().map { diaryTagDatabase ->
+        .map {
+            it.executeAsList().map {  diaryTagDatabase ->
                 diaryTagDatabase.toEntity()
             }
         }

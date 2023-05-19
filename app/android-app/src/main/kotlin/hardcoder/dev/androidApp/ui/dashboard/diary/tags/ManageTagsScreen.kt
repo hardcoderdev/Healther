@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package hardcoder.dev.androidApp.ui.dashboard.diary.tags
 
 import androidx.compose.foundation.layout.Arrangement
@@ -19,11 +17,10 @@ import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.presentation.dashboard.features.diary.tags.ManageTagsViewModel
-import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.chip.Chip
+import hardcoder.dev.uikit.chip.ActionChip
 import hardcoder.dev.uikit.sections.EmptySection
 
 @Composable
@@ -55,6 +52,7 @@ fun ManageTagsScreen(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ManageTagsContent(
     state: ManageTagsViewModel.State,
@@ -69,14 +67,12 @@ private fun ManageTagsContent(
             maxItemsInEachRow = 4
         ) {
             state.diaryTagList.forEach { tag ->
-                Chip(
+                ActionChip(
                     modifier = Modifier.padding(top = 8.dp),
                     onClick = { onUpdateTag(tag) },
                     text = tag.name,
-                    interactionType = InteractionType.ACTION,
                     iconResId = tag.icon.resourceId,
-                    shape = RoundedCornerShape(32.dp),
-                    isSelected = state.diaryTagList.contains(tag)
+                    shape = RoundedCornerShape(32.dp)
                 )
             }
         }

@@ -17,10 +17,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.extensions.getEndOfDay
-import hardcoder.dev.extensions.getStartOfDay
+import hardcoder.dev.datetime.getEndOfDay
+import hardcoder.dev.datetime.getStartOfDay
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackItem
+import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingHistoryViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
@@ -38,7 +38,7 @@ import hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.WaterTrackI
 @Composable
 fun WaterTrackingHistoryScreen(
     onGoBack: () -> Unit,
-    onTrackUpdate: (WaterTrackItem) -> Unit
+    onTrackUpdate: (WaterTrackingItem) -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel {
@@ -69,7 +69,7 @@ fun WaterTrackingHistoryScreen(
 private fun WaterTrackingContent(
     state: WaterTrackingHistoryViewModel.State,
     onFetchWaterTracks: (LocalDate) -> Unit,
-    onTrackUpdate: (WaterTrackItem) -> Unit
+    onTrackUpdate: (WaterTrackingItem) -> Unit
 ) {
     val calendarState = rememberSelectableCalendarState(initialSelectionMode = SelectionMode.Single)
 
@@ -91,7 +91,7 @@ private fun WaterTrackingContent(
         )
         Spacer(modifier = Modifier.height(16.dp))
         WaterTracksHistory(
-            waterTrackItems = state.waterTrackItems,
+            waterTrackingItems = state.waterTrackingItems,
             onTrackUpdate = onTrackUpdate
         )
     }
@@ -99,18 +99,18 @@ private fun WaterTrackingContent(
 
 @Composable
 private fun WaterTracksHistory(
-    waterTrackItems: List<WaterTrackItem>,
-    onTrackUpdate: (WaterTrackItem) -> Unit
+    waterTrackingItems: List<WaterTrackingItem>,
+    onTrackUpdate: (WaterTrackingItem) -> Unit
 ) {
-    if (waterTrackItems.isNotEmpty()) {
+    if (waterTrackingItems.isNotEmpty()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
-            items(waterTrackItems) { track ->
+            items(waterTrackingItems) { track ->
                 WaterTrackItemRow(
-                    waterTrackItem = track,
+                    waterTrackingItem = track,
                     onUpdate = onTrackUpdate
                 )
             }

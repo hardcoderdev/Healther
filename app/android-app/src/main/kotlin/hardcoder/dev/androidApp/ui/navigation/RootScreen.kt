@@ -15,7 +15,7 @@ fun RootScreen() {
         composable(route = Screen.Root.route) {
             SplashScreen(
                 onStartSetUp = { navController.navigate(Screen.Welcome.route) },
-                onNavigateToDashboard = { navController.navigate(Screen.Diary.route) }
+                onNavigateToDashboard = { navController.navigate(Screen.WaterTrackingFeature.route) }
             )
         }
         navigation(

@@ -1,6 +1,6 @@
 package hardcoder.dev.logic.features.pedometer
 
-import hardcoder.dev.extensions.safeDiv
+import hardcoder.dev.math.safeDiv
 
 class KilometersResolver {
 

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.update
 
 import androidx.compose.animation.AnimatedVisibility
@@ -33,20 +31,19 @@ import hardcoder.dev.androidApp.ui.features.DeleteTrackDialog
 import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.DrinkTypeItem
 import hardcoder.dev.androidApp.ui.formatters.RegexHolder
 import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
-import hardcoder.dev.extensions.toDate
+import hardcoder.dev.datetime.toDate
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.waterTracking.IncorrectMillilitersInput
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackUpdateViewModel
+import hardcoder.dev.presentation.features.waterTracking.WaterTrackingUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
-import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonStyles
 import hardcoder.dev.uikit.buttons.IconTextButton
-import hardcoder.dev.uikit.chip.Chip
+import hardcoder.dev.uikit.chip.ActionChip
 import hardcoder.dev.uikit.dialogs.DatePicker
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.ErrorText
@@ -68,13 +65,13 @@ fun UpdateWaterTrackScreen(
     val state = viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = state.value.updateState) {
-        if (state.value.updateState is WaterTrackUpdateViewModel.UpdateState.Executed) {
+        if (state.value.updateState is WaterTrackingUpdateViewModel.UpdateState.Executed) {
             onGoBack()
         }
     }
 
     LaunchedEffect(key1 = state.value.deleteState) {
-        if (state.value.deleteState is WaterTrackUpdateViewModel.DeleteState.Executed) {
+        if (state.value.deleteState is WaterTrackingUpdateViewModel.DeleteState.Executed) {
             onGoBack()
         }
     }
@@ -86,8 +83,11 @@ fun UpdateWaterTrackScreen(
     DeleteTrackDialog(
         dialogOpen = dialogOpen,
         onUpdateDialogOpen = { dialogOpen = it },
-        onApprove = viewModel::deleteWaterTrack,
-        onCancel = { dialogOpen = false }
+        onCancel = { dialogOpen = false },
+        onApprove = {
+            viewModel.deleteWaterTrack()
+            dialogOpen = false
+        }
     )
 
     ScaffoldWrapper(
@@ -120,7 +120,7 @@ fun UpdateWaterTrackScreen(
 
 @Composable
 private fun UpdateWaterTrackContent(
-    state: WaterTrackUpdateViewModel.State,
+    state: WaterTrackingUpdateViewModel.State,
     onUpdateWaterTrack: () -> Unit,
     onUpdateSelectedDrink: (DrinkType) -> Unit,
     onUpdateSelectedDate: (LocalDateTime) -> Unit,
@@ -176,7 +176,7 @@ private fun UpdateWaterTrackContent(
 
 @Composable
 private fun EnterDrunkMillilitersSection(
-    state: WaterTrackUpdateViewModel.State,
+    state: WaterTrackingUpdateViewModel.State,
     updateWaterDrunk: (Int) -> Unit,
 ) {
     val validatedMillilitersCount = state.validatedMillilitersCount
@@ -225,9 +225,10 @@ private fun EnterDrunkMillilitersSection(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SelectDrinkTypeSection(
-    state: WaterTrackUpdateViewModel.State,
+    state: WaterTrackingUpdateViewModel.State,
     updateSelectedDrink: (DrinkType) -> Unit,
     onManageDrinkType: () -> Unit
 ) {
@@ -253,20 +254,18 @@ private fun SelectDrinkTypeSection(
 
 @Composable
 private fun DrinkTypeManagementButton(onManageDrinkType: () -> Unit) {
-    Chip(
+    ActionChip(
         modifier = Modifier.padding(4.dp),
-        interactionType = InteractionType.ACTION,
         onClick = { onManageDrinkType() },
         text = stringResource(id = R.string.waterTracking_updateWaterTrack_createDrinkType_management_text),
         iconResId = LocalIconImpl(0, R.drawable.ic_create).resourceId,
-        shape = RoundedCornerShape(32.dp),
-        isSelected = false
+        shape = RoundedCornerShape(32.dp)
     )
 }
 
 @Composable
 private fun SelectDateSection(
-    state: WaterTrackUpdateViewModel.State,
+    state: WaterTrackingUpdateViewModel.State,
     onShowDatePicker: () -> Unit
 ) {
     val selectedDate = state.selectedDate.date.toDate()

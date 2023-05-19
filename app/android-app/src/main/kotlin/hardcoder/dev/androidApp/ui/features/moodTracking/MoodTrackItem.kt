@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package hardcoder.dev.androidApp.ui.features.moodTracking
 
 import androidx.compose.foundation.Image
@@ -26,13 +24,13 @@ import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
-import hardcoder.dev.uikit.InteractionType
-import hardcoder.dev.uikit.card.Card
-import hardcoder.dev.uikit.chip.Chip
+import hardcoder.dev.uikit.card.ActionCard
+import hardcoder.dev.uikit.chip.StaticChip
 import hardcoder.dev.uikit.text.Description
 
 private const val MAX_ACTIVITIES_VISIBLE_IN_ITEM = 4
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MoodTrackItem(
     activitiesList: List<Activity>,
@@ -42,11 +40,7 @@ fun MoodTrackItem(
     val uiModule = LocalUIModule.current
     val dateTimeFormatter = uiModule.dateTimeFormatter
 
-    Card(
-        interactionType = InteractionType.ACTION,
-        onClick = { onUpdate(moodTrack) },
-        item = moodTrack
-    ) {
+    ActionCard(onClick = { onUpdate(moodTrack) },) {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -76,14 +70,12 @@ fun MoodTrackItem(
                 maxItemsInEachRow = 3
             ) {
                 activitiesList.take(MAX_ACTIVITIES_VISIBLE_IN_ITEM).forEach { hobbyTrack ->
-                    Chip(
+                    StaticChip(
                         modifier = Modifier.padding(top = 6.dp, bottom = 6.dp, end = 6.dp),
                         text = hobbyTrack.name,
                         iconResId = hobbyTrack.icon.resourceId,
                         shape = RoundedCornerShape(16.dp),
                         padding = PaddingValues(8.dp),
-                        isSelected = false,
-                        interactionType = InteractionType.STATIC
                     )
                 }
                 if (activitiesList.size > MAX_ACTIVITIES_VISIBLE_IN_ITEM) {
@@ -96,8 +88,7 @@ fun MoodTrackItem(
 
 @Composable
 private fun ActivityCounterChip(activitiesLeftCount: Int) {
-    Chip(
-        interactionType = InteractionType.ACTION,
+    StaticChip(
         shape = RoundedCornerShape(16.dp),
         padding = PaddingValues(8.dp),
         iconResId = R.drawable.ic_list,

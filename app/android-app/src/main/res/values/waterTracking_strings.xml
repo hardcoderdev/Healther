@@ -14,6 +14,7 @@
     <string name="waterTracking_activity_chart">График активности (по часам):</string>
     <string name="waterTracking_diary_text">Дневник выпитого:</string>
 
+    <string name="waterTracking_createWaterTrack_drinkTypeNotSelected_text">Создайте и выберите тип напитка!</string>
     <string name="waterTracking_createWaterTrack_create_title_topBar">Создание записи</string>
     <string name="waterTracking_createWaterTrack_selectDateRange_buttonText">Выбрать дату</string>
     <string name="waterTracking_createWaterTrack_enterMillilitersCount_text">Введите количество выпитого напитка (в мл):</string>

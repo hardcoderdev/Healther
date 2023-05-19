@@ -10,8 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.logic.icons.LocalIcon
-import hardcoder.dev.uikit.InteractionType
-import hardcoder.dev.uikit.card.Card
+import hardcoder.dev.uikit.card.SelectionCard
 import hardcoder.dev.uikit.icons.Icon
 
 @Composable
@@ -21,11 +20,9 @@ fun IconItem(
     selectedIcon: LocalIcon,
     onSelectIcon: (LocalIcon) -> Unit
 ) {
-    Card(
-        interactionType = InteractionType.SELECTION,
-        onClick = { onSelectIcon(icon) },
-        item = icon,
-        selectedItem = selectedIcon,
+    SelectionCard(
+        onSelect = { onSelectIcon(icon) },
+        isSelected = icon == selectedIcon,
         modifier = Modifier.size(60.dp)
     ) {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {

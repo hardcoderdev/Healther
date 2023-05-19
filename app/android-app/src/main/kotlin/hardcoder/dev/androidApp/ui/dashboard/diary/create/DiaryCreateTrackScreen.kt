@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package hardcoder.dev.androidApp.ui.dashboard.diary.create
 
 import androidx.compose.animation.AnimatedVisibility
@@ -32,12 +30,12 @@ import hardcoder.dev.healther.R
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.IncorrectDiaryTrackContent
 import hardcoder.dev.presentation.dashboard.features.diary.DiaryCreateTrackViewModel
-import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.IconTextButton
-import hardcoder.dev.uikit.chip.Chip
+import hardcoder.dev.uikit.chip.ActionChip
+import hardcoder.dev.uikit.chip.SelectionChip
 import hardcoder.dev.uikit.text.ErrorText
 import hardcoder.dev.uikit.text.FilledTextField
 import hardcoder.dev.uikit.text.Title
@@ -155,6 +153,7 @@ private fun EnterBasicInfoSection(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SelectTagsSection(
     state: DiaryCreateTrackViewModel.State,
@@ -173,13 +172,12 @@ private fun SelectTagsSection(
     ) {
         ManagementTagsButton(onManageTags = onManageTags)
         state.tagList.forEach { tag ->
-            Chip(
+            SelectionChip(
                 modifier = Modifier.padding(top = 8.dp),
                 text = tag.name,
                 iconResId = tag.icon.resourceId,
                 shape = RoundedCornerShape(32.dp),
                 isSelected = state.selectedTags.contains(tag),
-                interactionType = InteractionType.SELECTION,
                 onClick = { onToggleTag(tag) }
             )
         }
@@ -188,12 +186,11 @@ private fun SelectTagsSection(
 
 @Composable
 private fun ManagementTagsButton(onManageTags: () -> Unit) {
-    Chip(
+    ActionChip(
         modifier = Modifier.padding(top = 8.dp),
         text = stringResource(id = R.string.diary_createTrack_manageTags_buttonText),
         iconResId = R.drawable.ic_create,
         shape = RoundedCornerShape(32.dp),
-        interactionType = InteractionType.ACTION,
         onClick = onManageTags
     )
 }

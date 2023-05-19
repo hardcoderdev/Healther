@@ -16,29 +16,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackItem
-import hardcoder.dev.uikit.InteractionType
-import hardcoder.dev.uikit.card.Card
+import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
+import hardcoder.dev.uikit.card.ActionCard
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
 
 @Composable
 fun WaterTrackItem(
-    waterTrackItem: WaterTrackItem,
-    onUpdate: (WaterTrackItem) -> Unit
+    waterTrackingItem: WaterTrackingItem,
+    onUpdate: (WaterTrackingItem) -> Unit
 ) {
-    Card<DrinkType>(
-        interactionType = InteractionType.ACTION,
-        onClick = { onUpdate(waterTrackItem) }
-    ) {
+    ActionCard(onClick = { onUpdate(waterTrackingItem) }) {
         Row(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(id = waterTrackItem.drinkType.icon.resourceId),
+                painter = painterResource(id = waterTrackingItem.drinkType.icon.resourceId),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp)
             )
@@ -48,14 +43,14 @@ fun WaterTrackItem(
                     .fillMaxWidth()
                     .weight(2f)
             ) {
-                Title(text = waterTrackItem.drinkType.name)
+                Title(text = waterTrackingItem.drinkType.name)
                 Spacer(modifier = Modifier.height(8.dp))
                 Description(
                     text = stringResource(
                         id = R.string.waterTracking_Item_milliliters_formatText,
                         formatArgs = arrayOf(
-                            waterTrackItem.millilitersCount,
-                            waterTrackItem.resolvedMillilitersCount
+                            waterTrackingItem.millilitersCount,
+                            waterTrackingItem.resolvedMillilitersCount
                         )
                     )
                 )

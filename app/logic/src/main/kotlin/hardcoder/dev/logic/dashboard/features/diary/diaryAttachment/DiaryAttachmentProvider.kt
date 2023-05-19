@@ -47,7 +47,6 @@ class DiaryAttachmentProvider(
                 }
             }
 
-
     fun provideAttachmentOfDiaryTrackById(id: Int) = appDatabase.diaryAttachmentQueries
         .selectByDiaryTrackId(id)
         .asFlow()

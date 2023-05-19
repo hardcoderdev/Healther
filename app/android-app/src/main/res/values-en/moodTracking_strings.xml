@@ -14,6 +14,7 @@
     <string name="moodTracking_activity_chart">Mood chart (per month):</string>
     <string name="moodTracking_diary_text">Mood diary:</string>
 
+    <string name="moodTracking_createMoodTrack_moodTypeNotSelected_text">Create and choose the type of mood!</string>
     <string name="moodTracking_createMoodTrack_title_topBar">Track creation</string>
     <string name="moodTracking_createMoodTrack_enterTitle_textField">Enter title…</string>
     <string name="moodTracking_createMoodTrack_enterNote_textField">Enter your note here…</string>

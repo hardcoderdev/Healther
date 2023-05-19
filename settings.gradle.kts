@@ -20,9 +20,10 @@ include(
     ":app:presentation"
 )
 include(
-    ":foundation:extensions",
     ":foundation:coroutines",
     ":foundation:uikit",
-    ":foundation:utilities",
-    ":foundation:permissions"
+    ":foundation:permissions",
+    ":foundation:sqldelight",
+    ":foundation:datetime",
+    ":foundation:math"
 )

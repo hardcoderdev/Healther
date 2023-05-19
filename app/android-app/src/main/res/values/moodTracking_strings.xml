@@ -14,6 +14,7 @@
     <string name="moodTracking_nowEmpty_text">\nСейчас здесь пусто. Чтобы добавить новую запись, нажмите на кнопку справа внизу. Статистика и график появятся спустя пару часов использования фичи.</string>
     <string name="moodTracking_chartNotEnoughData_text">У нас пока недостаточно данных для отображения графика. Используйте эту фичу и график появится на следующий день!</string>
 
+    <string name="moodTracking_createMoodTrack_moodTypeNotSelected_text">Создайте и выберите тип настроения!</string>
     <string name="moodTracking_createMoodTrack_title_topBar">Создание записи</string>
     <string name="moodTracking_createMoodTrack_enterTitle_textField">Введите заголовок…</string>
     <string name="moodTracking_createMoodTrack_enterNote_textField">Заметку вводите здесь…</string>

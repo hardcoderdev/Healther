@@ -13,8 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
-import hardcoder.dev.uikit.InteractionType
-import hardcoder.dev.uikit.card.Card
+import hardcoder.dev.uikit.card.SelectionCard
 import hardcoder.dev.uikit.text.Label
 
 @Composable
@@ -24,12 +23,10 @@ fun MoodItem(
     selectedMoodType: MoodType?,
     onSelect: () -> Unit
 ) {
-    Card(
-        interactionType = InteractionType.SELECTION,
-        item = moodType,
-        selectedItem = selectedMoodType,
+    SelectionCard(
+        isSelected = moodType == selectedMoodType,
         modifier = modifier,
-        onClick = onSelect
+        onSelect = onSelect
     ) {
         Column(
             modifier = Modifier

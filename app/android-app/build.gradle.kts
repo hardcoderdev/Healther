@@ -77,7 +77,7 @@ android {
 
 dependencies {
     api(project(Modules.Paths.presentation))
-    implementation(project(Modules.Paths.uikit))
+    implementation(project(Modules.Paths.Foundation.uikit))
     addCompose()
     addCoroutines()
     addCommonAndroid()

@@ -31,7 +31,7 @@ class DrinkTypeUpdateViewModel(
     private val updateState = MutableStateFlow<UpdateState>(UpdateState.NotExecuted)
     private val deleteState = MutableStateFlow<DeleteState>(DeleteState.NotExecuted)
     private val availableIconsList = MutableStateFlow(iconResourceProvider.getIcons())
-    private val selectedIcon = MutableStateFlow<LocalIcon>(iconResourceProvider.getIcon(0))
+    private val selectedIcon = MutableStateFlow(iconResourceProvider.getIcon(0))
     private val selectedHydrationIndexPercentage = MutableStateFlow(0)
     private val name = MutableStateFlow<String?>(null)
     private val validatedDrinkTypeName = name.map {

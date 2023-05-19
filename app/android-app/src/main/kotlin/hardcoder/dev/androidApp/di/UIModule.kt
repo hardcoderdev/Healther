@@ -9,6 +9,7 @@ import hardcoder.dev.androidApp.ui.features.pedometer.PedometerRejectedMapper
 import hardcoder.dev.androidApp.ui.features.pedometer.statistic.PedometerStatisticResolver
 import hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.statistic.WaterTrackingStatisticResolver
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
+import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
 import hardcoder.dev.androidApp.ui.formatters.LiquidFormatter
 import hardcoder.dev.androidApp.ui.setUpFlow.gender.GenderResourcesProvider
 
@@ -19,6 +20,10 @@ class UIModule(private val context: Context) {
             context = context,
             defaultAccuracy = DateTimeFormatter.Accuracy.MINUTES
         )
+    }
+
+    val decimalFormatter by lazy {
+        DecimalFormatter()
     }
 
     val genderResourcesProvider by lazy {
@@ -42,7 +47,8 @@ class UIModule(private val context: Context) {
     val pedometerStatisticResolver by lazy {
         PedometerStatisticResolver(
             context = context,
-            dateTimeFormatter = dateTimeFormatter
+            dateTimeFormatter = dateTimeFormatter,
+            decimalFormatter = decimalFormatter
         )
     }
 

@@ -12,7 +12,6 @@ import android.os.Build
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
 import hardcoder.dev.healther.R
-import hardcoder.dev.utilities.VersionChecker
 
 class PedometerNotificationManager(private val context: Context) {
 
@@ -58,7 +57,7 @@ class PedometerNotificationManager(private val context: Context) {
             setOngoing(true)
             setCategory(Notification.CATEGORY_STATUS)
             setVisibility(Notification.VISIBILITY_PUBLIC)
-            if (VersionChecker.isQuinceTart().not()) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                 setPriority(Notification.PRIORITY_HIGH)
             }
         }

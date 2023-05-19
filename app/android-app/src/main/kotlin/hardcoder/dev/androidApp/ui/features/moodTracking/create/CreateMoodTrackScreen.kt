@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package hardcoder.dev.androidApp.ui.features.moodTracking.create
 
 import androidx.compose.foundation.Image
@@ -40,17 +38,18 @@ import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingTrackCreateViewModel
-import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonStyles
 import hardcoder.dev.uikit.buttons.IconTextButton
-import hardcoder.dev.uikit.card.Card
-import hardcoder.dev.uikit.chip.Chip
+import hardcoder.dev.uikit.card.ActionCard
+import hardcoder.dev.uikit.chip.ActionChip
+import hardcoder.dev.uikit.chip.SelectionChip
 import hardcoder.dev.uikit.dialogs.DatePicker
 import hardcoder.dev.uikit.lists.ScrollableTabRow
 import hardcoder.dev.uikit.text.Description
+import hardcoder.dev.uikit.text.ErrorText
 import hardcoder.dev.uikit.text.FilledTextField
 import hardcoder.dev.uikit.text.Label
 import hardcoder.dev.uikit.text.Title
@@ -146,7 +145,8 @@ private fun CreateMoodTrackContent(
         IconTextButton(
             iconResId = R.drawable.ic_save,
             labelResId = R.string.moodTracking_createMoodTrack_buttonText,
-            onClick = onCreateTrack
+            onClick = onCreateTrack,
+            isEnabled = state.creationAllowed
         )
         DatePicker(
             onUpdateSelectedDate = onUpdateSelectedDate,
@@ -167,20 +167,26 @@ private fun SelectMoodSection(
     Column(modifier = Modifier.fillMaxWidth()) {
         Title(text = stringResource(id = R.string.moodTracking_createMoodTrack_howYouFeelYourself_text))
         Spacer(modifier = Modifier.height(16.dp))
-        ScrollableTabRow(selectedTabIndex = state.moodTypeList.indexOf(state.selectedMoodType) + 1) {
+        if (state.moodTypeList.isEmpty()) {
             MoodTypeManagementButton(onManageMoodTypes = onManageMoodTypes)
-            state.moodTypeList.forEach { moodType ->
-                MoodItem(
-                    modifier = Modifier.padding(
-                        start = 4.dp,
-                        end = 16.dp,
-                        top = 16.dp,
-                        bottom = 16.dp
-                    ),
-                    moodType = moodType,
-                    selectedMoodType = state.selectedMoodType,
-                    onSelect = { onUpdateMoodType(moodType) }
-                )
+            Spacer(modifier = Modifier.height(8.dp))
+            ErrorText(text = stringResource(id = R.string.moodTracking_createMoodTrack_moodTypeNotSelected_text))
+        } else {
+            ScrollableTabRow(selectedTabIndex = state.moodTypeList.indexOf(state.selectedMoodType) + 1) {
+                MoodTypeManagementButton(onManageMoodTypes = onManageMoodTypes)
+                state.moodTypeList.forEach { moodType ->
+                    MoodItem(
+                        modifier = Modifier.padding(
+                            start = 4.dp,
+                            end = 16.dp,
+                            top = 16.dp,
+                            bottom = 16.dp
+                        ),
+                        moodType = moodType,
+                        selectedMoodType = state.selectedMoodType,
+                        onSelect = { onUpdateMoodType(moodType) }
+                    )
+                }
             }
         }
     }
@@ -188,8 +194,7 @@ private fun SelectMoodSection(
 
 @Composable
 private fun MoodTypeManagementButton(onManageMoodTypes: () -> Unit) {
-    Card<MoodType>(
-        interactionType = InteractionType.ACTION,
+    ActionCard(
         onClick = onManageMoodTypes,
         modifier = Modifier.padding(
             start = 4.dp,
@@ -216,6 +221,7 @@ private fun MoodTypeManagementButton(onManageMoodTypes: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SelectActivitiesSection(
     state: MoodTrackingTrackCreateViewModel.State,
@@ -234,13 +240,12 @@ private fun SelectActivitiesSection(
     ) {
         ManagementActivitiesButton(onManageActivities = onManageActivities)
         state.activityList.forEach { activity ->
-            Chip(
+            SelectionChip(
                 modifier = Modifier.padding(top = 8.dp),
                 text = activity.name,
                 iconResId = activity.icon.resourceId,
                 shape = RoundedCornerShape(32.dp),
                 isSelected = state.selectedActivities.contains(activity),
-                interactionType = InteractionType.SELECTION,
                 onClick = { onToggleActivity(activity) }
             )
         }
@@ -249,12 +254,11 @@ private fun SelectActivitiesSection(
 
 @Composable
 private fun ManagementActivitiesButton(onManageActivities: () -> Unit) {
-    Chip(
+    ActionChip(
         modifier = Modifier.padding(top = 8.dp),
         text = stringResource(id = R.string.moodTracking_createMoodTrack_manageActivities_buttonText),
         iconResId = R.drawable.ic_create,
         shape = RoundedCornerShape(32.dp),
-        interactionType = InteractionType.ACTION,
         onClick = onManageActivities
     )
 }

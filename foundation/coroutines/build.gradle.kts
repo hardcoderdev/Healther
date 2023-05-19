@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = Modules.Namespaces.coroutines
+    namespace = Modules.Namespaces.Foundation.coroutines
     compileSdk = Android.compileSdk
 
     defaultConfig {

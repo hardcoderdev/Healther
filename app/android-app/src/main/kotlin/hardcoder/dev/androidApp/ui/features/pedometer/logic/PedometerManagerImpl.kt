@@ -3,15 +3,16 @@ package hardcoder.dev.androidApp.ui.features.pedometer.logic
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.app.ActivityCompat
 import hardcoder.dev.androidApp.ui.features.pedometer.PedometerService
-import hardcoder.dev.extensions.hasPermissions
 import hardcoder.dev.permissions.PermissionsController
 import hardcoder.dev.presentation.features.pedometer.Available
 import hardcoder.dev.presentation.features.pedometer.NotAvailable
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
 import hardcoder.dev.presentation.features.pedometer.PedometerManager.Availability
 import hardcoder.dev.presentation.features.pedometer.RejectReason
-import hardcoder.dev.utilities.VersionChecker
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class PedometerManagerImpl(
@@ -21,7 +22,7 @@ class PedometerManagerImpl(
 ) : PedometerManager {
 
     private val permissions by lazy {
-        if (VersionChecker.isTiramisu()) arrayOf(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) arrayOf(
             Manifest.permission.POST_NOTIFICATIONS,
             Manifest.permission.ACTIVITY_RECOGNITION
         ) else arrayOf(
@@ -36,8 +37,11 @@ class PedometerManagerImpl(
     }
 
     override suspend fun startTracking() {
-        if (VersionChecker.isOreo()) context.startForegroundService(serviceIntent)
-        else context.startService(serviceIntent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(serviceIntent)
+        } else {
+            context.startService(serviceIntent)
+        }
 
         isTracking.value = true
     }
@@ -67,7 +71,12 @@ class PedometerManagerImpl(
                 NotAvailable(RejectReason.BatteryNotIgnoreOptimizations)
             }
 
-            !context.hasPermissions(permissions) -> {
+            permissions.any {
+                ActivityCompat.checkSelfPermission(
+                    context,
+                    it
+                ) != PackageManager.PERMISSION_GRANTED
+            } -> {
                 NotAvailable(RejectReason.PermissionsNotGranted)
             }
 

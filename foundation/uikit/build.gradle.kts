@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = Modules.Namespaces.uikit
+    namespace = Modules.Namespaces.Foundation.uikit
     compileSdk = Android.compileSdk
 
     defaultConfig {

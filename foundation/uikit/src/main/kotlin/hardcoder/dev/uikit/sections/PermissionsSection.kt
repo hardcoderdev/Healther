@@ -20,10 +20,9 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.R
 import hardcoder.dev.uikit.buttons.IconTextButton
-import hardcoder.dev.uikit.card.Card
+import hardcoder.dev.uikit.card.StaticCard
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
 
@@ -65,7 +64,7 @@ fun ColumnScope.PermissionsSection(
         Spacer(modifier = Modifier.height(16.dp))
         AnimatedVisibility(visible = rejected != null) {
             rejected?.let {
-                Card<String>(interactionType = InteractionType.STATIC) {
+                StaticCard {
                     Title(
                         modifier = Modifier.padding(16.dp),
                         text = stringResource(id = it.titleResId),

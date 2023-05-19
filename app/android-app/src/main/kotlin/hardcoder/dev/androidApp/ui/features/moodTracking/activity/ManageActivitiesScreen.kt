@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package hardcoder.dev.androidApp.ui.features.moodTracking.activity
 
 import androidx.compose.foundation.layout.Arrangement
@@ -19,11 +17,10 @@ import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.presentation.features.moodTracking.activity.ManageActivitiesViewModel
-import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.chip.Chip
+import hardcoder.dev.uikit.chip.ActionChip
 import hardcoder.dev.uikit.sections.EmptySection
 
 @Composable
@@ -55,6 +52,7 @@ fun ManageActivitiesScreen(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ManageActivitiesContent(
     state: ManageActivitiesViewModel.State,
@@ -69,14 +67,12 @@ private fun ManageActivitiesContent(
             maxItemsInEachRow = 4
         ) {
             state.activityList.forEach { activity ->
-                Chip(
+                ActionChip(
                     modifier = Modifier.padding(top = 8.dp),
                     onClick = { onUpdateActivity(activity) },
                     text = activity.name,
-                    interactionType = InteractionType.ACTION,
                     iconResId = activity.icon.resourceId,
-                    shape = RoundedCornerShape(32.dp),
-                    isSelected = state.activityList.contains(activity)
+                    shape = RoundedCornerShape(32.dp)
                 )
             }
         }

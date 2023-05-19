@@ -13,6 +13,7 @@
     <string name="waterTracking_activity_chart">Activity chart (by hours):</string>
     <string name="waterTracking_diary_text">Drunk diary:</string>
 
+    <string name="waterTracking_createWaterTrack_drinkTypeNotSelected_text">Create and choose the type of drink!</string>
     <string name="waterTracking_createWaterTrack_create_title_topBar">Create an entry</string>
     <string name="waterTracking_createWaterTrack_selectDateRange_buttonText">Select date</string>
     <string name="waterTracking_createWaterTrack_enterMillilitersCount_text">Enter the amount of drink you have drunk (in ml):</string>

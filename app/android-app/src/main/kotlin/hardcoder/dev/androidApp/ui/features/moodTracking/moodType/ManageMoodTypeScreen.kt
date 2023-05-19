@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package hardcoder.dev.androidApp.ui.features.moodTracking.moodType
 
 import androidx.compose.foundation.layout.Arrangement
@@ -19,11 +17,10 @@ import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeManageTracksViewModel
-import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.chip.Chip
+import hardcoder.dev.uikit.chip.ActionChip
 import hardcoder.dev.uikit.sections.EmptySection
 
 @Composable
@@ -55,6 +52,7 @@ fun ManageMoodTypeScreen(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ManageMoodTypeContent(
     state: MoodTypeManageTracksViewModel.State,
@@ -69,14 +67,12 @@ private fun ManageMoodTypeContent(
             maxItemsInEachRow = 4
         ) {
             state.moodTypeList.forEach { moodType ->
-                Chip(
+                ActionChip(
                     modifier = Modifier.padding(top = 8.dp),
                     onClick = { onUpdateMoodType(moodType) },
                     text = moodType.name,
-                    interactionType = InteractionType.ACTION,
                     iconResId = moodType.icon.resourceId,
-                    shape = RoundedCornerShape(32.dp),
-                    isSelected = state.moodTypeList.contains(moodType)
+                    shape = RoundedCornerShape(32.dp)
                 )
             }
         }

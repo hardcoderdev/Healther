@@ -19,7 +19,7 @@ class FastingTrackProvider(
         .provideAllFastingTracks()
         .asFlow()
         .map {
-            it.executeAsList().map { fastingTrackDatabase ->
+            it.executeAsList().map {  fastingTrackDatabase ->
                 fastingTrackDatabase.toEntity()
             }
         }
@@ -27,8 +27,8 @@ class FastingTrackProvider(
     fun provideLastFastingTracks(limitCount: Long) = appDatabase.fastingTrackQueries
         .provideLastFastingTracks(limitCount)
         .asFlow()
-        .map { lastFastingTracksQuery ->
-            lastFastingTracksQuery.executeAsList().map { fastingTrackDatabase ->
+        .map {
+            it.executeAsList().map {  fastingTrackDatabase ->
                 fastingTrackDatabase.toEntity()
             }
         }
@@ -37,7 +37,7 @@ class FastingTrackProvider(
         .provideFastingTrackByStartTime(dayRange.start, dayRange.endInclusive)
         .asFlow()
         .map {
-            it.executeAsList().map { fastingTrackDatabase ->
+            it.executeAsList().map {  fastingTrackDatabase ->
                 fastingTrackDatabase.toEntity()
             }
         }

@@ -6,20 +6,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
-import hardcoder.dev.uikit.InteractionType
-import hardcoder.dev.uikit.chip.Chip
+import hardcoder.dev.uikit.chip.SelectionChip
 
 @Composable
 fun DrinkTypeItem(
     modifier: Modifier = Modifier,
-    interactionType: InteractionType = InteractionType.SELECTION,
     drinkType: DrinkType,
     selectedDrinkType: DrinkType?,
     onSelect: (DrinkType) -> Unit
 ) {
-    Chip(
+    SelectionChip(
         modifier = modifier,
-        interactionType = interactionType,
         onClick = { onSelect(drinkType) },
         text = drinkType.name,
         iconResId = drinkType.icon.resourceId,

@@ -1,7 +1,7 @@
 package hardcoder.dev.logic.dashboard.features
 
-import hardcoder.dev.extensions.getEndOfDay
-import hardcoder.dev.extensions.getStartOfDay
+import hardcoder.dev.datetime.getEndOfDay
+import hardcoder.dev.datetime.getStartOfDay
 import hardcoder.dev.logic.appPreferences.AppPreference
 import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now

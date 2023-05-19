@@ -3,10 +3,10 @@ package hardcoder.dev.presentation.features.waterTracking
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.extensions.getEndOfDay
-import hardcoder.dev.extensions.getStartOfDay
-import hardcoder.dev.extensions.mapItems
-import hardcoder.dev.extensions.millisToLocalDateTime
+import hardcoder.dev.datetime.getEndOfDay
+import hardcoder.dev.datetime.getStartOfDay
+import hardcoder.dev.coroutines.mapItems
+import hardcoder.dev.datetime.millisToLocalDateTime
 import hardcoder.dev.logic.features.waterTracking.WaterIntakeResolver
 import hardcoder.dev.logic.features.waterTracking.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
@@ -34,7 +34,7 @@ class WaterTrackingViewModel(
 
     private val millilitersDrunk = MutableStateFlow(0)
     private val dailyWaterIntake = MutableStateFlow(0)
-    private val waterTracksList = MutableStateFlow<List<WaterTrackItem>>(emptyList())
+    private val waterTracksList = MutableStateFlow<List<WaterTrackingItem>>(emptyList())
     private val hero = heroProvider.requireHero()
 
     private val waterTrackingStatistic =
@@ -123,7 +123,7 @@ class WaterTrackingViewModel(
         val hero: Hero,
         val millisCount: Int,
         val dailyWaterIntake: Int,
-        val waterTracks: List<WaterTrackItem>,
+        val waterTracks: List<WaterTrackingItem>,
         val chartEntries: List<Pair<Int, Int>>,
         val statistic: WaterTrackingStatistic?
     )

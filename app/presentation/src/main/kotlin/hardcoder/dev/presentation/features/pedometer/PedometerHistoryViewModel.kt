@@ -2,7 +2,7 @@ package hardcoder.dev.presentation.features.pedometer
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.extensions.createRangeForCurrentDay
+import hardcoder.dev.datetime.createRangeForCurrentDay
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider

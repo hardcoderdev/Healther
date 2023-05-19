@@ -29,7 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.extensions.safeDiv
+import hardcoder.dev.math.safeDiv
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.logic.features.fasting.track.FastingTrack

@@ -20,12 +20,11 @@ import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.hero.gender.Gender
 import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
-import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.IconTextButton
-import hardcoder.dev.uikit.card.Card
+import hardcoder.dev.uikit.card.SelectionCard
 import hardcoder.dev.uikit.icons.Image
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
@@ -76,15 +75,13 @@ private fun SelectGenderContent(
             Spacer(modifier = Modifier.height(32.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
                 state.availableGenderList.forEach { gender ->
-                    Card(
-                        interactionType = InteractionType.SELECTION,
+                    SelectionCard(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
                             .height(230.dp),
-                        selectedItem = state.selectedGender,
-                        item = gender,
-                        onClick = { onUpdateGender(gender) }
+                        isSelected = gender == state.selectedGender,
+                        onSelect = { onUpdateGender(gender) }
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Image(

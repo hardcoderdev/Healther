@@ -16,18 +16,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.extensions.createRangeForCurrentDay
-import hardcoder.dev.extensions.roundAndFormatToString
+import hardcoder.dev.androidApp.di.LocalUIModule
+import hardcoder.dev.datetime.createRangeForCurrentDay
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
-import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.calendar.CustomMonthHeader
-import hardcoder.dev.uikit.card.Card
-import hardcoder.dev.uikit.card.CardInfo
 import hardcoder.dev.uikit.card.CardInfoItem
+import hardcoder.dev.uikit.card.StaticCard
 import hardcoder.dev.uikit.charts.ActivityLineChart
 import hardcoder.dev.uikit.charts.MINIMUM_ENTRIES_FOR_SHOWING_CHART
 import hardcoder.dev.uikit.text.Description
@@ -116,11 +114,14 @@ private fun PedometerHistoryContent(
 private fun PedometerTracksHistory(
     state: PedometerHistoryViewModel.State
 ) {
+    val uiModule = LocalUIModule.current
+    val decimalFormatter = uiModule.decimalFormatter
+
     Spacer(modifier = Modifier.height(16.dp))
     if (state.totalStepsCount != 0) {
         Title(text = stringResource(id = R.string.pedometer_history_yourIndicatorsForThisDay_text))
         Spacer(modifier = Modifier.height(16.dp))
-        Card<CardInfo>(interactionType = InteractionType.STATIC) {
+        StaticCard {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -135,12 +136,12 @@ private fun PedometerTracksHistory(
                 CardInfoItem(
                     iconResId = R.drawable.ic_my_location,
                     nameResId = R.string.pedometer_kilometersLabel_text,
-                    value = state.totalKilometersCount.roundAndFormatToString()
+                    value = decimalFormatter.roundAndFormatToString(state.totalKilometersCount)
                 )
                 CardInfoItem(
                     iconResId = R.drawable.ic_fire,
                     nameResId = R.string.pedometer_caloriesLabel_text,
-                    value = state.totalCaloriesBurned.roundAndFormatToString()
+                    value = decimalFormatter.roundAndFormatToString(state.totalCaloriesBurned)
                 )
             }
         }

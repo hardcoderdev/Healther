@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package hardcoder.dev.androidApp.ui.features.waterTracking.drinkType
 
 import androidx.compose.foundation.layout.Column
@@ -50,6 +48,7 @@ fun DrinkTypeManageScreen(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun DrinkTypeManageContent(
     state: DrinkTypeManageViewModel.State,

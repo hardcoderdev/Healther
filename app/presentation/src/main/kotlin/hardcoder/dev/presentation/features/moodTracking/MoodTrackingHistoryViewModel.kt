@@ -2,9 +2,9 @@ package hardcoder.dev.presentation.features.moodTracking
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.extensions.createRangeForCurrentDay
-import hardcoder.dev.extensions.getEndOfDay
-import hardcoder.dev.extensions.getStartOfDay
+import hardcoder.dev.datetime.createRangeForCurrentDay
+import hardcoder.dev.datetime.getEndOfDay
+import hardcoder.dev.datetime.getStartOfDay
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDeleter
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider

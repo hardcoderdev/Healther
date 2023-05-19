@@ -18,10 +18,10 @@ android {
 
 dependencies {
     api(project(Modules.Paths.database))
-    api(project(Modules.Paths.extensions))
-    implementation(Dependencies.dateTime)
+    api(project(Modules.Paths.Foundation.datetime))
+    api(project(Modules.Paths.Foundation.math))
+    api(project(Modules.Paths.Foundation.sqldelight))
     implementation(Dependencies.dataStore)
-    implementation(Dependencies.composeCalendarDateTime)
     addData()
     addCoroutines()
 }

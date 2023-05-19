@@ -56,6 +56,7 @@ class MoodTrackingTrackCreateViewModel(
     ) { creationState, moodTypeList, activityList, selectedMoodType,
         selectedActivities, selectedDate, note ->
         State(
+            creationAllowed = selectedMoodType != null,
             creationState = creationState,
             moodTypeList = moodTypeList,
             activityList = activityList,
@@ -68,6 +69,7 @@ class MoodTrackingTrackCreateViewModel(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
+            creationAllowed = false,
             creationState = creationState.value,
             moodTypeList = moodTypeList.value,
             activityList = activityList.value,
@@ -104,11 +106,9 @@ class MoodTrackingTrackCreateViewModel(
 
     fun createTrack() {
         viewModelScope.launch {
-            val selectedMoodType = requireNotNull(selectedMoodType.value)
-
             moodTrackCreator.create(
                 note = note.value,
-                moodType = selectedMoodType,
+                moodType = requireNotNull(selectedMoodType.value),
                 date = selectedDate.value,
                 selectedActivities = selectedActivities.value
             )
@@ -118,6 +118,7 @@ class MoodTrackingTrackCreateViewModel(
     }
 
     data class State(
+        val creationAllowed: Boolean,
         val creationState: CreationState,
         val moodTypeList: List<MoodType>,
         val activityList: List<Activity>,

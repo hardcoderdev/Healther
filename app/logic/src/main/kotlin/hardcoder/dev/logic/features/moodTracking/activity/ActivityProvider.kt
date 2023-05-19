@@ -16,7 +16,7 @@ class ActivityProvider(
         .provideAllActivities()
         .asFlow()
         .map {
-            it.executeAsList().map { activityDatabase ->
+            it.executeAsList().map {  activityDatabase ->
                 activityDatabase.toEntity()
             }
         }

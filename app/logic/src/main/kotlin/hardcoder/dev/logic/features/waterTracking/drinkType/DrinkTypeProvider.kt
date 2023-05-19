@@ -16,7 +16,7 @@ class DrinkTypeProvider(
         .provideAllDrinkTypes()
         .asFlow()
         .map {
-            it.executeAsList().map { drinkTypeDatabase ->
+            it.executeAsList().map {  drinkTypeDatabase ->
                 drinkTypeDatabase.toEntity()
             }
         }

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalLayoutApi::class)
-
 package hardcoder.dev.androidApp.ui.features.moodTracking.update
 
 import androidx.compose.foundation.Image
@@ -43,14 +41,14 @@ import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingTrackUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
-import hardcoder.dev.uikit.InteractionType
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonStyles
 import hardcoder.dev.uikit.buttons.IconTextButton
-import hardcoder.dev.uikit.card.Card
-import hardcoder.dev.uikit.chip.Chip
+import hardcoder.dev.uikit.card.ActionCard
+import hardcoder.dev.uikit.chip.ActionChip
+import hardcoder.dev.uikit.chip.SelectionChip
 import hardcoder.dev.uikit.dialogs.DatePicker
 import hardcoder.dev.uikit.lists.ScrollableTabRow
 import hardcoder.dev.uikit.text.Description
@@ -93,8 +91,11 @@ fun UpdateMoodTrackScreen(
     DeleteTrackDialog(
         dialogOpen = dialogOpen,
         onUpdateDialogOpen = { dialogOpen = it },
-        onApprove = viewModel::deleteTrack,
-        onCancel = { dialogOpen = false }
+        onCancel = { dialogOpen = false },
+        onApprove = {
+            viewModel.deleteTrack()
+            dialogOpen = false
+        }
     )
 
     ScaffoldWrapper(
@@ -217,8 +218,7 @@ private fun SelectMoodSection(
 
 @Composable
 private fun MoodTypeManagementButton(onManageMoodTypes: () -> Unit) {
-    Card<MoodType>(
-        interactionType = InteractionType.ACTION,
+    ActionCard(
         onClick = onManageMoodTypes,
         modifier = Modifier.padding(
             start = 4.dp,
@@ -245,6 +245,7 @@ private fun MoodTypeManagementButton(onManageMoodTypes: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SelectActivitiesSection(
     state: MoodTrackingTrackUpdateViewModel.State,
@@ -263,13 +264,12 @@ private fun SelectActivitiesSection(
     ) {
         ManagementActivitiesButton(onManageActivities = onManageActivities)
         state.activityList.forEach { activity ->
-            Chip(
+            SelectionChip(
                 modifier = Modifier.padding(top = 8.dp),
                 text = activity.name,
                 iconResId = activity.icon.resourceId,
                 shape = RoundedCornerShape(32.dp),
                 isSelected = state.selectedHobbies.contains(activity),
-                interactionType = InteractionType.SELECTION,
                 onClick = { onToggleActivity(activity) }
             )
         }
@@ -278,12 +278,11 @@ private fun SelectActivitiesSection(
 
 @Composable
 private fun ManagementActivitiesButton(onManageActivities: () -> Unit) {
-    Chip(
+    ActionChip(
         modifier = Modifier.padding(top = 8.dp),
         text = stringResource(id = R.string.moodTracking_updateMoodTrack_manageActivities_buttonText),
         iconResId = R.drawable.ic_create,
         shape = RoundedCornerShape(32.dp),
-        interactionType = InteractionType.ACTION,
         onClick = onManageActivities
     )
 }

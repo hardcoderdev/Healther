@@ -22,8 +22,8 @@ import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeManageT
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeUpdateViewModel
 import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
 import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackCreateViewModel
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackUpdateViewModel
+import hardcoder.dev.presentation.features.waterTracking.WaterTrackingCreateViewModel
+import hardcoder.dev.presentation.features.waterTracking.WaterTrackingUpdateViewModel
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingHistoryViewModel
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingViewModel
 import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeCreateViewModel
@@ -84,7 +84,7 @@ class PresentationModule(
         iconResourceProvider = logicModule.drinkTypeIconProvider
     )
 
-    fun getWaterTrackCreateViewModel() = WaterTrackCreateViewModel(
+    fun getWaterTrackCreateViewModel() = WaterTrackingCreateViewModel(
         heroProvider = logicModule.heroProvider,
         waterTrackCreator = logicModule.waterTrackCreator,
         drinkTypeProvider = logicModule.drinkTypeProvider,
@@ -92,7 +92,7 @@ class PresentationModule(
         waterTrackMillilitersValidator = logicModule.waterTrackMillilitersValidator
     )
 
-    fun getWaterTrackUpdateViewModel(waterTrackId: Int) = WaterTrackUpdateViewModel(
+    fun getWaterTrackUpdateViewModel(waterTrackId: Int) = WaterTrackingUpdateViewModel(
         waterTrackId = waterTrackId,
         heroProvider = logicModule.heroProvider,
         waterTrackUpdater = logicModule.waterTrackUpdater,

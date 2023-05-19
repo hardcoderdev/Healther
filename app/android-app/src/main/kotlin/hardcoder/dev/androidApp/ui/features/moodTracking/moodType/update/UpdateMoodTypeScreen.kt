@@ -62,8 +62,11 @@ fun UpdateMoodTypeScreen(
     DeleteTrackDialog(
         dialogOpen = dialogOpen,
         onUpdateDialogOpen = { dialogOpen = it },
-        onApprove = viewModel::deleteById,
-        onCancel = { dialogOpen = false }
+        onCancel = { dialogOpen = false },
+        onApprove = {
+            viewModel.deleteById()
+            dialogOpen = false
+        }
     )
 
     LaunchedEffect(key1 = state.value.updateState) {

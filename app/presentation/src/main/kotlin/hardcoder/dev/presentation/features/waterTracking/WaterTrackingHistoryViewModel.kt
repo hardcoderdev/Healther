@@ -2,8 +2,8 @@ package hardcoder.dev.presentation.features.waterTracking
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.extensions.createRangeForCurrentDay
-import hardcoder.dev.extensions.mapItems
+import hardcoder.dev.datetime.createRangeForCurrentDay
+import hardcoder.dev.coroutines.mapItems
 import hardcoder.dev.logic.features.waterTracking.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
@@ -39,7 +39,7 @@ class WaterTrackingHistoryViewModel(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = State(
-            waterTrackItems = emptyList()
+            waterTrackingItems = emptyList()
         )
     )
 
@@ -47,5 +47,5 @@ class WaterTrackingHistoryViewModel(
         selectedRangeStateFlow.value = range
     }
 
-    data class State(val waterTrackItems: List<WaterTrackItem>)
+    data class State(val waterTrackingItems: List<WaterTrackingItem>)
 }
