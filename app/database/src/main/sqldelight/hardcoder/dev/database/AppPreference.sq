@@ -2,12 +2,13 @@ import kotlinx.datetime.Instant;
 
 CREATE TABLE IF NOT EXISTS AppPreference (
     id INTEGER AS Int NOT NULL PRIMARY KEY,
-    firstLaunchTime INTEGER AS Instant NOT NULL
+    firstLaunchTime INTEGER AS Instant NOT NULL,
+    isAppAlreadyRated INTEGER AS Boolean NOT NULL
 );
 
 upsert:
-INSERT OR REPLACE INTO AppPreference (id, firstLaunchTime)
-VALUES (?, ?);
+INSERT OR REPLACE INTO AppPreference (id, firstLaunchTime, isAppAlreadyRated)
+VALUES (?, ?, ?);
 
 providePreferences:
 SELECT * FROM AppPreference;

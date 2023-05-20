@@ -26,7 +26,12 @@ class HeroCreateViewModel(
                 gender = gender
             )
 
-            appPreferenceUpdater.update(AppPreference(firstLaunchTime = Clock.System.now()))
+            appPreferenceUpdater.update(
+                AppPreference(
+                    firstLaunchTime = Clock.System.now(),
+                    isAppAlreadyRated = false
+                )
+            )
         }
     }
 }

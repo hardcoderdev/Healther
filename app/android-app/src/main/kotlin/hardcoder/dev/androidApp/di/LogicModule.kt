@@ -1,6 +1,7 @@
 package hardcoder.dev.androidApp.di
 
 import android.content.Context
+import com.google.android.play.core.review.ReviewManagerFactory
 import hardcoder.dev.androidApp.ui.dashboard.diary.tags.providers.DiaryTagIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.activity.providers.ActivityIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers.MoodTypeIconProvider
@@ -55,6 +56,7 @@ import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivi
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityDeleter
 import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatisticProvider
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
+import hardcoder.dev.logic.features.pedometer.DailyRateStepsResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
 import hardcoder.dev.logic.features.pedometer.PedometerStepHandler
 import hardcoder.dev.logic.features.pedometer.PedometerStepProvider
@@ -257,6 +259,10 @@ class LogicModule(private val context: Context) {
 
     val permissionsController by lazy {
         PermissionsController()
+    }
+
+    val dailyRateStepsResolver by lazy {
+        DailyRateStepsResolver()
     }
 
     val pedometerManager by lazy {
@@ -590,5 +596,9 @@ class LogicModule(private val context: Context) {
             appDatabase = appDatabase,
             iconResourceProvider = diaryTagIconProvider
         )
+    }
+
+    val reviewManager by lazy {
+        ReviewManagerFactory.create(context)
     }
 }

@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class PedometerManagerImpl(
     private val context: Context,
     private val permissionsController: PermissionsController,
-    private val batteryRequirementsController: BatteryRequirementsController
+    private val batteryRequirementsController: BatteryRequirementsController,
 ) : PedometerManager {
 
     private val permissions by lazy {

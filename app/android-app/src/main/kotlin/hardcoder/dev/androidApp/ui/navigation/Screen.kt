@@ -32,6 +32,7 @@ sealed class Screen(val route: String) {
     }
 
     object Dashboard : Screen("dashboard")
+    object Settings : Screen("settings")
 
     object Diary : Screen("diary")
     object DiaryCreateTrack : Screen("diary_create_track")

@@ -1,12 +1,14 @@
 package hardcoder.dev.androidApp.di
 
 import android.content.Context
-import hardcoder.dev.presentation.dashboard.features.diary.DiaryCreateTrackViewModel
-import hardcoder.dev.presentation.dashboard.features.diary.DiaryUpdateTrackViewModel
-import hardcoder.dev.presentation.dashboard.features.diary.DiaryViewModel
-import hardcoder.dev.presentation.dashboard.features.diary.tags.CreateTagViewModel
-import hardcoder.dev.presentation.dashboard.features.diary.tags.ManageTagsViewModel
-import hardcoder.dev.presentation.dashboard.features.diary.tags.UpdateTagViewModel
+import hardcoder.dev.presentation.dashboard.DashboardViewModel
+import hardcoder.dev.presentation.dashboard.diary.DiaryCreateTrackViewModel
+import hardcoder.dev.presentation.dashboard.diary.DiaryUpdateTrackViewModel
+import hardcoder.dev.presentation.dashboard.diary.DiaryViewModel
+import hardcoder.dev.presentation.dashboard.diary.tags.CreateTagViewModel
+import hardcoder.dev.presentation.dashboard.diary.tags.ManageTagsViewModel
+import hardcoder.dev.presentation.dashboard.diary.tags.UpdateTagViewModel
+import hardcoder.dev.presentation.dashboard.settings.SettingsViewModel
 import hardcoder.dev.presentation.features.fasting.FastingHistoryViewModel
 import hardcoder.dev.presentation.features.fasting.FastingTrackCreateViewModel
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
@@ -39,7 +41,6 @@ class PresentationModule(
     val context: Context,
     val logicModule: LogicModule
 ) {
-
     fun getSplashViewModel() = SplashViewModel(
         appPreferenceProvider = logicModule.appPreferenceProvider
     )
@@ -51,6 +52,25 @@ class PresentationModule(
     )
 
     fun getEnterExerciseStressTimeViewModel() = EnterExerciseStressTimeViewModel()
+
+    fun getDashboardViewModel() = DashboardViewModel(
+        waterTrackProvider = logicModule.waterTrackProvider,
+        waterIntakeResolver = logicModule.waterIntakeResolver,
+        dailyRateStepsResolver = logicModule.dailyRateStepsResolver,
+        waterPercentageResolver = logicModule.waterPercentageResolver,
+        heroProvider = logicModule.heroProvider,
+        pedometerTrackProvider = logicModule.pedometerTrackProvider,
+        fastingTrackProvider = logicModule.fastingTrackProvider,
+        fastingPlanDurationResolver = logicModule.fastingPlanDurationResolver,
+        moodTrackProvider = logicModule.moodTrackProvider,
+        pedometerManager = logicModule.pedometerManager
+    )
+
+    fun getSettingsViewModel() = SettingsViewModel(
+        reviewManager = logicModule.reviewManager,
+        appPreferenceProvider = logicModule.appPreferenceProvider,
+        appPreferenceUpdater = logicModule.appPreferenceUpdater
+    )
 
     fun getHeroCreateViewModel() = HeroCreateViewModel(
         heroCreator = logicModule.heroCreator,

@@ -30,7 +30,7 @@ import hardcoder.dev.presentation.features.moodTracking.activity.CreateActivityV
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.text.ErrorText
 import hardcoder.dev.uikit.text.FilledTextField
 import hardcoder.dev.uikit.text.Title
@@ -135,7 +135,7 @@ fun CreateActivityContent(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        IconTextButton(
+        ButtonWithIcon(
             iconResId = R.drawable.ic_save,
             labelResId = R.string.moodTracking_createActivity_saveTrack_buttonText,
             onClick = onCreate,

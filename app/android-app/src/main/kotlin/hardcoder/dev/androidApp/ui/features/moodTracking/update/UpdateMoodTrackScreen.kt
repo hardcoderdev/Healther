@@ -45,7 +45,7 @@ import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonStyles
-import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.card.ActionCard
 import hardcoder.dev.uikit.chip.ActionChip
 import hardcoder.dev.uikit.chip.SelectionChip
@@ -173,7 +173,7 @@ private fun UpdateMoodTrackContent(
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        IconTextButton(
+        ButtonWithIcon(
             iconResId = R.drawable.ic_save,
             labelResId = R.string.moodTracking_updateMoodTrack_buttonText,
             onClick = onUpdateTrack
@@ -332,7 +332,7 @@ private fun SelectDateSection(
         )
     )
     Spacer(modifier = Modifier.height(16.dp))
-    IconTextButton(
+    ButtonWithIcon(
         iconResId = R.drawable.ic_date_range,
         labelResId = R.string.moodTracking_updateMoodTrack_selectDateRange_buttonText,
         style = ButtonStyles.OUTLINED,

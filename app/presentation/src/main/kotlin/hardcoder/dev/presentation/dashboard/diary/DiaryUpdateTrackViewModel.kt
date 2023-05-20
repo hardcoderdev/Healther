@@ -1,4 +1,4 @@
-package hardcoder.dev.presentation.dashboard.features.diary
+package hardcoder.dev.presentation.dashboard.diary
 
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel

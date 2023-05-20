@@ -25,5 +25,6 @@ include(
     ":foundation:permissions",
     ":foundation:sqldelight",
     ":foundation:datetime",
-    ":foundation:math"
+    ":foundation:math",
+    ":foundation:inappreview"
 )

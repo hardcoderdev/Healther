@@ -21,7 +21,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import hardcoder.dev.uikit.R
-import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.card.StaticCard
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
@@ -86,7 +86,7 @@ fun ColumnScope.PermissionsSection(
         )
     }
     Spacer(modifier = Modifier.height(16.dp))
-    IconTextButton(
+    ButtonWithIcon(
         iconResId = R.drawable.ic_grant_permission,
         labelResId = R.string.default_grantPermission_buttonText,
         onClick = onGrant

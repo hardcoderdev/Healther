@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 enum class ButtonStyles { FILLED, OUTLINED }
 
 @Composable
-fun IconTextButton(
+fun ButtonWithIcon(
     modifier: Modifier = Modifier,
     style: ButtonStyles = ButtonStyles.FILLED,
     @DrawableRes iconResId: Int,
@@ -33,7 +33,7 @@ fun IconTextButton(
                 modifier = modifier.fillMaxWidth(),
                 enabled = isEnabled
             ) {
-                IconButtonContent(
+                ButtonWithIconContent(
                     labelResId = labelResId,
                     iconResourceId = iconResId,
                     contentDescription = labelResId,
@@ -48,7 +48,7 @@ fun IconTextButton(
                 modifier = modifier.fillMaxWidth(),
                 enabled = isEnabled
             ) {
-                IconButtonContent(
+                ButtonWithIconContent(
                     labelResId = labelResId,
                     iconResourceId = iconResId,
                     contentDescription = labelResId,
@@ -60,7 +60,7 @@ fun IconTextButton(
 }
 
 @Composable
-private fun RowScope.IconButtonContent(
+private fun RowScope.ButtonWithIconContent(
     style: ButtonStyles,
     @StringRes labelResId: Int,
     @DrawableRes iconResourceId: Int,

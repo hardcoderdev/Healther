@@ -28,7 +28,7 @@ import hardcoder.dev.uikit.NumberPicker
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.text.Title
 
 @Composable
@@ -104,7 +104,7 @@ private fun EnterExerciseStressContent(
                 )
             }
         }
-        IconTextButton(
+        ButtonWithIcon(
             iconResId = R.drawable.ic_done,
             labelResId = R.string.setUpFlow_enterExerciseStress_next_buttonText,
             onClick = onGoForward

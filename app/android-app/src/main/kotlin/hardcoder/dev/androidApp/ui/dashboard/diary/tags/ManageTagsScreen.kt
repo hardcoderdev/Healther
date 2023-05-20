@@ -16,7 +16,7 @@ import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTag
-import hardcoder.dev.presentation.dashboard.features.diary.tags.ManageTagsViewModel
+import hardcoder.dev.presentation.dashboard.diary.tags.ManageTagsViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType

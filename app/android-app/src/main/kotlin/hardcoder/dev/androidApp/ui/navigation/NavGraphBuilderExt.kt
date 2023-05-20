@@ -84,8 +84,11 @@ fun NavGraphBuilder.setUpDestinations(navController: NavController) {
             exerciseStressTime = Screen.EnterExerciseStress.getExerciseStressTime(it.arguments),
             onGoBack = navController::popBackStack,
             onGoForward = {
-                //navController.navigate(Screen.Dashboard.route)
-                navController.navigate(Screen.Diary.route)
+                navController.navigate(Screen.Dashboard.route) {
+                    popUpTo(Screen.Root.route) {
+                        inclusive = true
+                    }
+                }
             }
         )
     }

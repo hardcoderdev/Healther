@@ -27,7 +27,7 @@ import hardcoder.dev.uikit.NumberPicker
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.text.Title
 
 private const val MINIMUM_WEIGHT = 30
@@ -98,7 +98,7 @@ private fun EnterWeightContent(
                 )
             }
         }
-        IconTextButton(
+        ButtonWithIcon(
             iconResId = R.drawable.ic_done,
             labelResId = R.string.setUpFlow_enterWeight_next_buttonText,
             onClick = onGoForward

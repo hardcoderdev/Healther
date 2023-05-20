@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title_topBar">Настройки</string>
+    <string name="settings_supportCreator_text">Купить кофе разрабу</string>
+    <string name="settings_rateApp_text">Оценить приложение</string>
+    <string name="settings_moreApps_text">Больше приложений</string>
+    <string name="settings_other_text">Прочее:</string>
+    <string name="settings_moreAppsFromDeveloperLink" translatable="false">https://play.google.com/store/apps/dev?id=7383576086355039907</string>
+</resources>

@@ -33,7 +33,7 @@ import hardcoder.dev.healther.R
 import hardcoder.dev.logic.dashboard.features.DateRangeFilterType
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrack
-import hardcoder.dev.presentation.dashboard.features.diary.DiaryViewModel
+import hardcoder.dev.presentation.dashboard.diary.DiaryViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.BottomSheet

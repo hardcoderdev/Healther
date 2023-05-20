@@ -32,13 +32,13 @@ import hardcoder.dev.healther.R
 import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.IncorrectDiaryTrackContent
-import hardcoder.dev.presentation.dashboard.features.diary.DiaryUpdateTrackViewModel
+import hardcoder.dev.presentation.dashboard.diary.DiaryUpdateTrackViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.chip.ActionChip
 import hardcoder.dev.uikit.chip.SelectionChip
 import hardcoder.dev.uikit.text.ErrorText
@@ -130,7 +130,7 @@ private fun DiaryUpdateTrackContent(
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        IconTextButton(
+        ButtonWithIcon(
             iconResId = R.drawable.ic_save,
             labelResId = R.string.diary_createTrack_buttonText,
             onClick = onUpdateTrack,
