@@ -29,7 +29,7 @@ class HeroCreateViewModel(
             appPreferenceUpdater.update(
                 AppPreference(
                     firstLaunchTime = Clock.System.now(),
-                    isAppAlreadyRated = false
+                    lastAppReviewRequestTime = null
                 )
             )
         }

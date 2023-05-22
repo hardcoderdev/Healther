@@ -32,7 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.dashboard.DashboardItem
+import hardcoder.dev.presentation.dashboard.DashboardItem
 import hardcoder.dev.presentation.dashboard.DashboardViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
@@ -128,7 +128,6 @@ private fun LazyListScope.featureSection(
     onStartFasting: () -> Unit,
     onGoToMoodTrackingFeature: () -> Unit
 ) {
-    item { Title(text = stringResource(id = R.string.dashboard_features_text)) }
     items(state.dashboardItems) { feature ->
         when (feature) {
             is DashboardItem.FastingFeature -> {

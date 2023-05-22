@@ -4,5 +4,5 @@ import kotlinx.datetime.Instant
 
 data class AppPreference(
     val firstLaunchTime: Instant,
-    val isAppAlreadyRated: Boolean
+    val lastAppReviewRequestTime: Instant?
 )

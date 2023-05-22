@@ -2,13 +2,13 @@ package hardcoder.dev.androidApp.di
 
 import android.content.Context
 import hardcoder.dev.presentation.dashboard.DashboardViewModel
-import hardcoder.dev.presentation.dashboard.diary.DiaryCreateTrackViewModel
-import hardcoder.dev.presentation.dashboard.diary.DiaryUpdateTrackViewModel
-import hardcoder.dev.presentation.dashboard.diary.DiaryViewModel
-import hardcoder.dev.presentation.dashboard.diary.tags.CreateTagViewModel
-import hardcoder.dev.presentation.dashboard.diary.tags.ManageTagsViewModel
-import hardcoder.dev.presentation.dashboard.diary.tags.UpdateTagViewModel
-import hardcoder.dev.presentation.dashboard.settings.SettingsViewModel
+import hardcoder.dev.presentation.features.diary.DiaryCreateTrackViewModel
+import hardcoder.dev.presentation.features.diary.DiaryUpdateTrackViewModel
+import hardcoder.dev.presentation.features.diary.DiaryViewModel
+import hardcoder.dev.presentation.features.diary.tags.CreateTagViewModel
+import hardcoder.dev.presentation.features.diary.tags.ManageTagsViewModel
+import hardcoder.dev.presentation.features.diary.tags.UpdateTagViewModel
+import hardcoder.dev.presentation.settings.SettingsViewModel
 import hardcoder.dev.presentation.features.fasting.FastingHistoryViewModel
 import hardcoder.dev.presentation.features.fasting.FastingTrackCreateViewModel
 import hardcoder.dev.presentation.features.fasting.FastingViewModel

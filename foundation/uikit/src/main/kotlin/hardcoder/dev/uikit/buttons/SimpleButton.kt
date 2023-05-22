@@ -1,7 +1,6 @@
 package hardcoder.dev.uikit.buttons
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -26,7 +25,7 @@ fun SimpleButton(
                 modifier = modifier.fillMaxWidth(),
                 enabled = isEnabled
             ) {
-                ButtonWithIconContent(labelResId = labelResId)
+                SimpleButtonContent(labelResId = labelResId)
             }
         }
 
@@ -36,18 +35,17 @@ fun SimpleButton(
                 modifier = modifier.fillMaxWidth(),
                 enabled = isEnabled
             ) {
-                ButtonWithIconContent(labelResId = labelResId)
+                SimpleButtonContent(labelResId = labelResId)
             }
         }
     }
 }
 
 @Composable
-private fun RowScope.ButtonWithIconContent(@StringRes labelResId: Int) {
+private fun SimpleButtonContent(@StringRes labelResId: Int) {
     androidx.compose.material3.Text(
         text = stringResource(id = labelResId),
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.titleMedium,
-        modifier = Modifier.weight(2f)
+        style = MaterialTheme.typography.titleMedium
     )
 }

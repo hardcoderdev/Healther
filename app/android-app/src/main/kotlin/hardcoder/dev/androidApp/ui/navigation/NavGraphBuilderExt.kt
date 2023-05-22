@@ -3,12 +3,12 @@ package hardcoder.dev.androidApp.ui.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import hardcoder.dev.androidApp.ui.dashboard.diary.create.DiaryCreateTrackScreen
-import hardcoder.dev.androidApp.ui.dashboard.diary.DiaryScreen
-import hardcoder.dev.androidApp.ui.dashboard.diary.tags.ManageTagsScreen
-import hardcoder.dev.androidApp.ui.dashboard.diary.tags.create.CreateTagScreen
-import hardcoder.dev.androidApp.ui.dashboard.diary.tags.update.UpdateTagScreen
-import hardcoder.dev.androidApp.ui.dashboard.diary.update.DiaryUpdateTrackScreen
+import hardcoder.dev.androidApp.ui.features.diary.create.DiaryCreateTrackScreen
+import hardcoder.dev.androidApp.ui.features.diary.DiaryScreen
+import hardcoder.dev.androidApp.ui.features.diary.tags.ManageTagsScreen
+import hardcoder.dev.androidApp.ui.features.diary.tags.create.CreateTagScreen
+import hardcoder.dev.androidApp.ui.features.diary.tags.update.UpdateTagScreen
+import hardcoder.dev.androidApp.ui.features.diary.update.DiaryUpdateTrackScreen
 import hardcoder.dev.androidApp.ui.features.fasting.FastingScreen
 import hardcoder.dev.androidApp.ui.features.fasting.create.FastingCreationTrackScreen
 import hardcoder.dev.androidApp.ui.features.fasting.history.FastingHistoryScreen
@@ -40,9 +40,7 @@ import hardcoder.dev.logic.hero.gender.Gender
 fun NavGraphBuilder.setUpDestinations(navController: NavController) {
     composable(route = Screen.Welcome.route) {
         WelcomeScreen(
-            onStart = {
-                navController.navigate(Screen.SelectGender.route)
-            }
+            onStart = { navController.navigate(Screen.SelectGender.route) }
         )
     }
     composable(route = Screen.SelectGender.route) {

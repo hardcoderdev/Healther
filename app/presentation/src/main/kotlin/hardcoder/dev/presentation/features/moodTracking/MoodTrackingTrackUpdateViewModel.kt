@@ -3,9 +3,9 @@ package hardcoder.dev.presentation.features.moodTracking
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.coroutines.combine
-import hardcoder.dev.logic.dashboard.features.diary.AttachmentType
-import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentProvider
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackProvider
+import hardcoder.dev.logic.features.diary.AttachmentType
+import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentProvider
+import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.logic.features.moodTracking.activity.ActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDeleter

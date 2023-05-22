@@ -13,7 +13,7 @@ class AppPreferenceUpdater(
         appDatabase.appPreferenceQueries.upsert(
             id = PREFERENCES_ID,
             firstLaunchTime = appPreference.firstLaunchTime,
-            isAppAlreadyRated = appPreference.isAppAlreadyRated
+            lastAppReviewRequestTime = null
         )
     }
 

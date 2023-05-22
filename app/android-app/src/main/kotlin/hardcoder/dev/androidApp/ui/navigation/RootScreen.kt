@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import hardcoder.dev.androidApp.ui.dashboard.DashboardScreen
-import hardcoder.dev.androidApp.ui.dashboard.settings.SettingsScreen
+import hardcoder.dev.androidApp.ui.settings.SettingsScreen
 import hardcoder.dev.androidApp.ui.splash.SplashScreen
 
 @Composable
@@ -15,7 +15,13 @@ fun RootScreen() {
     NavHost(navController = navController, startDestination = Screen.Root.route) {
         composable(route = Screen.Root.route) {
             SplashScreen(
-                onStartSetUp = { navController.navigate(Screen.Welcome.route) },
+                onStartSetUp = {
+                    navController.navigate(Screen.Welcome.route) {
+                        popUpTo(Screen.Root.route) {
+                            inclusive = true
+                        }
+                    }
+                },
                 onNavigateToDashboard = {
                     navController.navigate(Screen.Dashboard.route) {
                         popUpTo(Screen.Root.route) {

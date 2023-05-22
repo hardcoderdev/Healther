@@ -18,6 +18,7 @@ class MainActivity : ComponentActivity() {
         val logicModule = App.instance.presentationModule.logicModule
         logicModule.permissionsController.bind(this)
         logicModule.batteryRequirementsController.bind(this)
+        logicModule.reviewManager.bind(this)
 
         setContent {
             HealtherTheme {

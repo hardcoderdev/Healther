@@ -21,6 +21,7 @@ dependencies {
     api(project(Modules.Paths.Foundation.datetime))
     api(project(Modules.Paths.Foundation.math))
     api(project(Modules.Paths.Foundation.sqldelight))
+    api(project(Modules.Paths.Foundation.inAppReview))
     implementation(Dependencies.dataStore)
     addData()
     addCoroutines()

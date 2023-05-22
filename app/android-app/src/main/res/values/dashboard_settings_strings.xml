@@ -5,5 +5,4 @@
     <string name="settings_rateApp_text">Оценить приложение</string>
     <string name="settings_moreApps_text">Больше приложений</string>
     <string name="settings_other_text">Прочее:</string>
-    <string name="settings_moreAppsFromDeveloperLink" translatable="false">https://play.google.com/store/apps/dev?id=7383576086355039907</string>
 </resources>

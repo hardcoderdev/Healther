@@ -5,8 +5,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
-import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentGroup
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackCreator
+import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
+import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackCreator
 import hardcoder.dev.logic.dataStore.healtherDataStore
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper

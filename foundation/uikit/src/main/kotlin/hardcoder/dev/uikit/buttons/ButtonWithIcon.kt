@@ -15,8 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 
-enum class ButtonStyles { FILLED, OUTLINED }
-
 @Composable
 fun ButtonWithIcon(
     modifier: Modifier = Modifier,

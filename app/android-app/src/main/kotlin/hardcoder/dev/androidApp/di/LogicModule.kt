@@ -2,7 +2,7 @@ package hardcoder.dev.androidApp.di
 
 import android.content.Context
 import com.google.android.play.core.review.ReviewManagerFactory
-import hardcoder.dev.androidApp.ui.dashboard.diary.tags.providers.DiaryTagIconProvider
+import hardcoder.dev.androidApp.ui.features.diary.tags.providers.DiaryTagIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.activity.providers.ActivityIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers.MoodTypeIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers.PredefinedMoodTypeProviderImpl
@@ -10,27 +10,28 @@ import hardcoder.dev.androidApp.ui.features.pedometer.logic.BatteryRequirementsC
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.PedometerManagerImpl
 import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.providers.DrinkTypeIconProvider
 import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.providers.PredefinedDrinkTypeProviderImpl
+import hardcoder.dev.androidApp.ui.settings.AndroidReviewManager
 import hardcoder.dev.database.AppDatabaseFactory
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.logic.DateTimeProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
 import hardcoder.dev.logic.appPreferences.PredefinedTracksManager
-import hardcoder.dev.logic.dashboard.features.DateRangeFilterTypeMapper
-import hardcoder.dev.logic.dashboard.features.DateRangeFilterTypeProvider
-import hardcoder.dev.logic.dashboard.features.diary.AttachmentTypeIdMapper
-import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentManager
-import hardcoder.dev.logic.dashboard.features.diary.diaryAttachment.DiaryAttachmentProvider
-import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagCreator
-import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagDeleter
-import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagNameValidator
-import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagProvider
-import hardcoder.dev.logic.dashboard.features.diary.diaryTag.DiaryTagUpdater
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackCreator
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackDeleter
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackContentValidator
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackProvider
-import hardcoder.dev.logic.dashboard.features.diary.diaryTrack.DiaryTrackUpdater
+import hardcoder.dev.logic.features.diary.DateRangeFilterTypeMapper
+import hardcoder.dev.logic.features.diary.DateRangeFilterTypeProvider
+import hardcoder.dev.logic.features.diary.AttachmentTypeIdMapper
+import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentManager
+import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentProvider
+import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagCreator
+import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagDeleter
+import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagNameValidator
+import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
+import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagUpdater
+import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackCreator
+import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackDeleter
+import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackContentValidator
+import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
+import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackUpdater
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanDurationResolver
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanProvider
@@ -598,7 +599,13 @@ class LogicModule(private val context: Context) {
         )
     }
 
-    val reviewManager by lazy {
+    private val googleReviewManager by lazy {
         ReviewManagerFactory.create(context)
+    }
+
+    val reviewManager by lazy {
+        AndroidReviewManager(
+            reviewManager = googleReviewManager
+        )
     }
 }
