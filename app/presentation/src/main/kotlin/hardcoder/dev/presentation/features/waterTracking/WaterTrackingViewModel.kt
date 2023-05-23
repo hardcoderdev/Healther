@@ -2,47 +2,44 @@ package hardcoder.dev.presentation.features.waterTracking
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.coroutines.combine
 import hardcoder.dev.coroutines.mapItems
-import hardcoder.dev.datetime.getEndOfDay
-import hardcoder.dev.datetime.getStartOfDay
+import hardcoder.dev.datetime.createRangeForCurrentDay
 import hardcoder.dev.datetime.millisToLocalDateTime
-import hardcoder.dev.logic.features.waterTracking.WaterIntakeResolver
 import hardcoder.dev.logic.features.waterTracking.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
+import hardcoder.dev.logic.features.waterTracking.WaterTrackingDailyRateProvider
+import hardcoder.dev.logic.features.waterTracking.WaterTrackingMillilitersDrunkProvider
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatistic
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatisticProvider
-import hardcoder.dev.logic.hero.Hero
-import hardcoder.dev.logic.hero.HeroProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
 class WaterTrackingViewModel(
-    private val waterTrackProvider: WaterTrackProvider,
-    private val waterIntakeResolver: WaterIntakeResolver,
-    private val waterPercentageResolver: WaterPercentageResolver,
-    heroProvider: HeroProvider,
-    waterTrackingStatisticProvider: WaterTrackingStatisticProvider
+    waterTrackProvider: WaterTrackProvider,
+    waterPercentageResolver: WaterPercentageResolver,
+    waterTrackingStatisticProvider: WaterTrackingStatisticProvider,
+    dailyRateProvider: WaterTrackingDailyRateProvider,
+    millilitersDrunkProvider: WaterTrackingMillilitersDrunkProvider
 ) : ViewModel() {
 
-    private val millilitersDrunk = MutableStateFlow(0)
-    private val dailyWaterIntake = MutableStateFlow(0)
-    private val waterTracksList = MutableStateFlow<List<WaterTrackingItem>>(emptyList())
-    private val hero = heroProvider.requireHero()
-
-    private val waterTrackingStatistic =
-        waterTrackingStatisticProvider.provideWaterTrackingStatistic().stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = null
+    private val waterTracksList = waterTrackProvider.provideWaterTracksByDayRange(
+        LocalDate.now().createRangeForCurrentDay()
+    ).mapItems { waterTrack ->
+        waterTrack.toItem(
+            resolvedMillilitersCount = waterPercentageResolver.resolve(
+                drinkType = waterTrack.drinkType,
+                millilitersDrunk = waterTrack.millilitersCount
+            )
         )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = emptyList()
+    )
 
     private val chartEntries = waterTracksList.map { waterTrackList ->
         waterTrackList.groupBy {
@@ -57,19 +54,17 @@ class WaterTrackingViewModel(
     )
 
     val state = combine(
-        millilitersDrunk,
+        millilitersDrunkProvider.provideMillilitersDrunkToday(),
         waterTracksList,
-        dailyWaterIntake,
-        hero,
+        dailyRateProvider.provideDailyRateInMilliliters(),
         chartEntries,
-        waterTrackingStatistic
-    ) { millilitersDrunk, waterTracks, dailyWaterIntake, hero, chartEntries, statistic ->
+        waterTrackingStatisticProvider.provideWaterTrackingStatistic()
+    ) { millilitersDrunk, waterTracks, dailyWaterIntake, chartEntries, statistic ->
         LoadingState.Loaded(
             State(
                 millisCount = millilitersDrunk,
                 waterTracks = waterTracks,
                 dailyWaterIntake = dailyWaterIntake,
-                hero = hero,
                 chartEntries = chartEntries,
                 statistic = statistic
             )
@@ -80,47 +75,7 @@ class WaterTrackingViewModel(
         initialValue = LoadingState.Loading
     )
 
-    init {
-        resolveDailyWaterIntake()
-        fetchWaterTracks()
-    }
-
-    private fun fetchWaterTracks() {
-        viewModelScope.launch {
-            val currentDay = LocalDate.now()
-            val startOfCurrentDay = currentDay.getStartOfDay()
-            val endOfCurrentDay = currentDay.getEndOfDay()
-            waterTrackProvider.provideWaterTracksByDayRange(startOfCurrentDay..endOfCurrentDay)
-                .mapItems { waterTrack ->
-                    waterTrack.toItem(
-                        resolvedMillilitersCount = waterPercentageResolver.resolve(
-                            drinkType = waterTrack.drinkType,
-                            millilitersDrunk = waterTrack.millilitersCount
-                        )
-                    )
-                }
-                .collectLatest { waterTracks ->
-                    val millilitersCount = waterTracks.sumOf { it.resolvedMillilitersCount }
-                    millilitersDrunk.value = millilitersCount
-                    waterTracksList.value = waterTracks
-                }
-        }
-    }
-
-    private fun resolveDailyWaterIntake() {
-        viewModelScope.launch {
-            val currentHero = hero.first()
-
-            dailyWaterIntake.value = waterIntakeResolver.resolve(
-                currentHero.weight,
-                currentHero.exerciseStressTime,
-                currentHero.gender
-            )
-        }
-    }
-
     data class State(
-        val hero: Hero,
         val millisCount: Int,
         val dailyWaterIntake: Int,
         val waterTracks: List<WaterTrackingItem>,

@@ -8,7 +8,6 @@ import hardcoder.dev.presentation.features.diary.DiaryViewModel
 import hardcoder.dev.presentation.features.diary.tags.CreateTagViewModel
 import hardcoder.dev.presentation.features.diary.tags.ManageTagsViewModel
 import hardcoder.dev.presentation.features.diary.tags.UpdateTagViewModel
-import hardcoder.dev.presentation.settings.SettingsViewModel
 import hardcoder.dev.presentation.features.fasting.FastingHistoryViewModel
 import hardcoder.dev.presentation.features.fasting.FastingTrackCreateViewModel
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
@@ -25,8 +24,8 @@ import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeUpdateV
 import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
 import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingCreateViewModel
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackingUpdateViewModel
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingHistoryViewModel
+import hardcoder.dev.presentation.features.waterTracking.WaterTrackingUpdateViewModel
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingViewModel
 import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeCreateViewModel
 import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeManageViewModel
@@ -36,6 +35,7 @@ import hardcoder.dev.presentation.setUpFlow.EnterWeightViewModel
 import hardcoder.dev.presentation.setUpFlow.HeroCreateViewModel
 import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
 import hardcoder.dev.presentation.setUpFlow.SplashViewModel
+import hardcoder.dev.presentation.settings.SettingsViewModel
 
 class PresentationModule(
     val context: Context,
@@ -76,11 +76,11 @@ class PresentationModule(
     )
 
     fun getWaterTrackingViewModel() = WaterTrackingViewModel(
-        heroProvider = logicModule.heroProvider,
         waterTrackProvider = logicModule.waterTrackProvider,
-        waterIntakeResolver = logicModule.waterIntakeResolver,
         waterPercentageResolver = logicModule.waterPercentageResolver,
-        waterTrackingStatisticProvider = logicModule.waterTrackingStatisticProvider
+        waterTrackingStatisticProvider = logicModule.waterTrackingStatisticProvider,
+        dailyRateProvider = logicModule.waterTrackingDailyRateProvider,
+        millilitersDrunkProvider = logicModule.waterTrackingMillilitersDrunkProvider
     )
 
     fun getDrinkTypeManageTracksViewModel() = DrinkTypeManageViewModel(
