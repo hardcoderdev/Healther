@@ -30,8 +30,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.androidApp.di.LocalUIModule
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.healther.R
+import hardcoder.dev.math.safeDiv
 import hardcoder.dev.presentation.dashboard.DashboardItem
 import hardcoder.dev.presentation.dashboard.DashboardViewModel
 import hardcoder.dev.uikit.Action
@@ -176,27 +179,24 @@ private fun WaterTrackingFeatureItem(
             name = R.string.dashboard_water_tracking_feature,
             image = R.drawable.dashboard_feature_water_tracking,
             content = {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Description(
-                        text = stringResource(
-                            id = R.string.dashboard_water_tracking_progress_format,
-                            formatArgs = arrayOf(
-                                waterTrackingFeature.millilitersDrunk ?: 0,
-                                waterTrackingFeature.dailyRateInMilliliters
-                            )
+                Spacer(modifier = Modifier.height(8.dp))
+                Description(
+                    text = stringResource(
+                        id = R.string.dashboard_water_tracking_progress_format,
+                        formatArgs = arrayOf(
+                            waterTrackingFeature.millilitersDrunk,
+                            waterTrackingFeature.dailyRateInMilliliters
                         )
                     )
-                    Spacer(modifier = Modifier.height(12.dp))
-                    LinearProgressBar(
-                        progress = ((waterTrackingFeature.millilitersDrunk?.toFloat()
-                            ?: (0.0f / waterTrackingFeature.dailyRateInMilliliters.toFloat())))
-                            .toString()
-                            .substring(0, 3).toFloat(),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(14.dp))
-                            .height(10.dp)
-                    )
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                LinearProgressBar(
+                    progress = waterTrackingFeature.millilitersDrunk safeDiv waterTrackingFeature.dailyRateInMilliliters,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(14.dp))
+                        .height(10.dp)
+                )
             }
         )
     }
@@ -208,7 +208,7 @@ private fun PedometerFeatureItem(
     onGoToFeature: () -> Unit,
     onTogglePedometerTrackingService: () -> Unit
 ) {
-    val toggleButtonVisibilityCondition = (pedometerFeature.stepsWalked ?: 0) <=
+    val toggleButtonVisibilityCondition = pedometerFeature.stepsWalked <=
             pedometerFeature.dailyRateInSteps && pedometerFeature.permissionsGranted
 
     ActionCard(
@@ -229,31 +229,34 @@ private fun PedometerFeatureItem(
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Title(text = stringResource(id = R.string.dashboard_pedometer_feature))
-                    pedometerFeature.stepsWalked?.let {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Description(
-                            text = stringResource(
-                                id = R.string.dashboard_pedometer_progress_format,
-                                formatArgs = arrayOf(it, pedometerFeature.dailyRateInSteps)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Description(
+                        text = stringResource(
+                            id = R.string.dashboard_pedometer_progress_format,
+                            formatArgs = arrayOf(
+                                pedometerFeature.stepsWalked,
+                                pedometerFeature.dailyRateInSteps
                             )
                         )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        LinearProgressBar(
-                            progress = (it.toFloat() / pedometerFeature.dailyRateInSteps.toFloat())
-                                .toString()
-                                .substring(0, 3).toFloat(),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(14.dp))
-                                .height(10.dp)
-                        )
-                    } ?: run {
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    LinearProgressBar(
+                        progress = pedometerFeature.stepsWalked safeDiv pedometerFeature.dailyRateInSteps,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(14.dp))
+                            .height(10.dp)
+                    )
+                    if (!toggleButtonVisibilityCondition) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Description(text = stringResource(id = R.string.dashboard_pedometer_permissions_not_granted))
                     }
                 }
             }
-            AnimatedVisibility(visible = toggleButtonVisibilityCondition, modifier = Modifier.align(Alignment.TopEnd)) {
+            AnimatedVisibility(
+                visible = toggleButtonVisibilityCondition,
+                modifier = Modifier.align(Alignment.TopEnd)
+            ) {
                 IconButton(
                     style = ButtonStyles.OUTLINED,
                     onClick = onTogglePedometerTrackingService,
@@ -275,6 +278,9 @@ private fun FastingFeatureItem(
     onGoToFeature: () -> Unit,
     onStartFasting: () -> Unit
 ) {
+    val uiModule = LocalUIModule.current
+    val dateTimeFormatter = uiModule.dateTimeFormatter
+
     ActionCard(
         modifier = Modifier.wrapContentHeight(),
         onClick = onGoToFeature
@@ -293,37 +299,58 @@ private fun FastingFeatureItem(
                 Spacer(modifier = Modifier.width(16.dp))
                 Column(Modifier.fillMaxWidth()) {
                     Title(text = stringResource(id = R.string.dashboard_fasting_feature))
-                    fastingFeature.hoursLeft?.let {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Description(
-                            text = stringResource(
-                                id = R.string.dashboard_fasting_progress_format,
-                                formatArgs = arrayOf(it, requireNotNull(fastingFeature.hoursInPlan))
+                    fastingFeature.timeLeftDuration?.let { timeLeftInMillis ->
+                        if (timeLeftInMillis.inWholeHours > requireNotNull(fastingFeature.planDuration).inWholeHours) {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Description(text = stringResource(id = R.string.dashboard_fasting_completed))
+                        } else {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Description(
+                                text = dateTimeFormatter.formatMillisDistance(
+                                    distanceInMillis = timeLeftInMillis.inWholeMilliseconds,
+                                    accuracy = DateTimeFormatter.Accuracy.SECONDS,
+                                    usePlurals = true
+                                )
                             )
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        LinearProgressBar(
-                            progress = (it.toFloat() / requireNotNull(fastingFeature.hoursInPlan).toFloat())
-                                .toString()
-                                .substring(0, 3).toFloat(),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(14.dp))
-                                .height(10.dp)
-                        )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            LinearProgressBar(
+                                progress = timeLeftInMillis.inWholeHours safeDiv requireNotNull(
+                                    fastingFeature.planDuration
+                                ).inWholeHours,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(14.dp))
+                                    .height(10.dp)
+                            )
+                        }
                     } ?: run {
                         Spacer(modifier = Modifier.height(8.dp))
                         Description(text = stringResource(id = R.string.dashboard_fasting_is_not_active))
                     }
                 }
             }
-            ButtonWithIcon(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                labelResId = R.string.dashboard_start_fasting,
-                style = ButtonStyles.OUTLINED,
-                iconResId = R.drawable.ic_play,
-                onClick = onStartFasting
-            )
+            fastingFeature.timeLeftDuration?.let {
+                if (it.inWholeHours > requireNotNull(fastingFeature.planDuration).inWholeHours) {
+                    ButtonWithIcon(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                        labelResId = R.string.dashboard_finish_fasting,
+                        style = ButtonStyles.OUTLINED,
+                        iconResId = R.drawable.ic_save,
+                        onClick = onGoToFeature
+                    )
+                }
+            }
+            AnimatedVisibility(visible = fastingFeature.timeLeftDuration == null) {
+                ButtonWithIcon(
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                    labelResId = R.string.dashboard_start_fasting,
+                    style = ButtonStyles.OUTLINED,
+                    iconResId = R.drawable.ic_play,
+                    onClick = onStartFasting
+                )
+            }
         }
     }
 }

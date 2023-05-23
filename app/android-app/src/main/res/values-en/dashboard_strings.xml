@@ -7,10 +7,11 @@
     <string name="dashboard_water_tracking_feature">Water balance</string>
     <string name="dashboard_water_tracking_progress_format">%d ml from %d</string>
     <string name="dashboard_pedometer_progress_format">%d steps from %d</string>
-    <string name="dashboard_fasting_progress_format">%d hours from %d</string>
     <string name="dashboard_mood_tracking_progress_format">Average mood:</string>
     <string name="dashboard_start_fasting">Start fasting</string>
     <string name="dashboard_fasting_is_not_active">Now you are not fasting.</string>
     <string name="dashboard_pedometer_permissions_not_granted">Permissions not granted.</string>
     <string name="dashboard_mood_tracking_not_specified">You did not specified the mood today.</string>
+    <string name="dashboard_fasting_completed">Fasting completed.</string>
+    <string name="dashboard_finish_fasting">Save fasting</string>
 </resources>

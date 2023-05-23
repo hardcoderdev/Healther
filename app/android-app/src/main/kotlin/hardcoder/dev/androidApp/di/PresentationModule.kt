@@ -54,16 +54,14 @@ class PresentationModule(
     fun getEnterExerciseStressTimeViewModel() = EnterExerciseStressTimeViewModel()
 
     fun getDashboardViewModel() = DashboardViewModel(
-        waterTrackProvider = logicModule.waterTrackProvider,
-        waterIntakeResolver = logicModule.waterIntakeResolver,
         dailyRateStepsResolver = logicModule.dailyRateStepsResolver,
-        waterPercentageResolver = logicModule.waterPercentageResolver,
-        heroProvider = logicModule.heroProvider,
         pedometerTrackProvider = logicModule.pedometerTrackProvider,
-        fastingTrackProvider = logicModule.fastingTrackProvider,
-        fastingPlanDurationResolver = logicModule.fastingPlanDurationResolver,
         moodTrackProvider = logicModule.moodTrackProvider,
-        pedometerManager = logicModule.pedometerManager
+        pedometerManager = logicModule.pedometerManager,
+        currentFastingManager = logicModule.currentFastingManager,
+        dateTimeProvider = logicModule.dateTimeProvider,
+        waterTrackingDailyRateProvider = logicModule.waterTrackingDailyRateProvider,
+        waterTrackingMillilitersDrunkProvider = logicModule.waterTrackingMillilitersDrunkProvider
     )
 
     fun getSettingsViewModel() = SettingsViewModel(

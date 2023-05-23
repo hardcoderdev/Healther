@@ -1,7 +1,7 @@
 package hardcoder.dev.androidApp.di
 
 import android.content.Context
-import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.testing.FakeReviewManager
 import hardcoder.dev.androidApp.ui.features.diary.tags.providers.DiaryTagIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.activity.providers.ActivityIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers.MoodTypeIconProvider
@@ -10,7 +10,7 @@ import hardcoder.dev.androidApp.ui.features.pedometer.logic.BatteryRequirementsC
 import hardcoder.dev.androidApp.ui.features.pedometer.logic.PedometerManagerImpl
 import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.providers.DrinkTypeIconProvider
 import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.providers.PredefinedDrinkTypeProviderImpl
-import hardcoder.dev.androidApp.ui.settings.AndroidReviewManager
+import hardcoder.dev.in_app_review.AndroidReviewManager
 import hardcoder.dev.database.AppDatabaseFactory
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.logic.DateTimeProvider
@@ -71,6 +71,8 @@ import hardcoder.dev.logic.features.waterTracking.WaterTrackDeleter
 import hardcoder.dev.logic.features.waterTracking.WaterTrackMillilitersValidator
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackUpdater
+import hardcoder.dev.logic.features.waterTracking.WaterTrackingDailyRateProvider
+import hardcoder.dev.logic.features.waterTracking.WaterTrackingMillilitersDrunkProvider
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeCreator
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeDeleter
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeNameValidator
@@ -154,6 +156,20 @@ class LogicModule(private val context: Context) {
 
     val waterIntakeResolver by lazy {
         WaterIntakeResolver()
+    }
+
+    val waterTrackingDailyRateProvider by lazy {
+        WaterTrackingDailyRateProvider(
+            waterIntakeResolver = waterIntakeResolver,
+            heroProvider = heroProvider
+        )
+    }
+
+    val waterTrackingMillilitersDrunkProvider by lazy {
+        WaterTrackingMillilitersDrunkProvider(
+            waterTrackProvider = waterTrackProvider,
+            waterPercentageResolver = waterPercentageResolver
+        )
     }
 
     val waterTrackMillilitersValidator by lazy {
@@ -600,7 +616,7 @@ class LogicModule(private val context: Context) {
     }
 
     private val googleReviewManager by lazy {
-        ReviewManagerFactory.create(context)
+        FakeReviewManager(context)
     }
 
     val reviewManager by lazy {

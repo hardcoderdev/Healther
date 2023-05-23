@@ -46,10 +46,7 @@ fun WaterTrackingScreen(
     onUpdateWaterTrack: (WaterTrackingItem) -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
-
-    val viewModel = viewModel {
-        presentationModule.getWaterTrackingViewModel()
-    }
+    val viewModel = viewModel { presentationModule.getWaterTrackingViewModel() }
     val state = viewModel.state.collectAsState()
 
     when (val fetchingState = state.value) {

@@ -11,17 +11,25 @@ class ReviewException(message: String?) : Exception(
     "Something went wrong during review. $message"
 )
 
+class NotAvailableException(message: String?) : Exception(
+    "Google services are not available on your device. $message"
+)
+
 suspend fun ReviewManager.requestReviewFlowAsync(
     activity: Activity
 ) = suspendCoroutine { continuation ->
-    requestReviewFlow().addOnCompleteListener { task ->
-        if (task.isSuccessful) {
-            val reviewInfo: ReviewInfo = task.result
-            launchReviewFlow(activity, reviewInfo).addOnCompleteListener {
-                continuation.resume(it.isSuccessful)
+    try {
+        requestReviewFlow().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val reviewInfo: ReviewInfo = task.result
+                launchReviewFlow(activity, reviewInfo).addOnCompleteListener {
+                    continuation.resume(it.isSuccessful)
+                }
+            } else {
+                continuation.resumeWithException(ReviewException(task.exception?.message))
             }
-        } else {
-            continuation.resumeWithException(ReviewException(task.exception?.message))
         }
+    } catch (e: Exception) {
+        continuation.resumeWithException(NotAvailableException(e.message))
     }
 }

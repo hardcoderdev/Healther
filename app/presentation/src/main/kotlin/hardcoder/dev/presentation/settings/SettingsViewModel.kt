@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
-import hardcoder.dev.logic.settings.ReviewManager
+import hardcoder.dev.in_app_review.ReviewManager
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map

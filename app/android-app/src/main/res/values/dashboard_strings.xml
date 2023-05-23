@@ -7,7 +7,6 @@
     <string name="dashboard_water_tracking_feature">Водный баланс</string>
     <string name="dashboard_water_tracking_progress_format">%d мл из %d</string>
     <string name="dashboard_pedometer_progress_format">%d шагов из %d</string>
-    <string name="dashboard_fasting_progress_format">%d часов из %d</string>
     <string name="dashboard_mood_tracking_progress_format">Среднее настроение:</string>
     <string name="dashboard_start_fasting">Начать голодание</string>
     <string name="dashboard_fasting_is_not_active">Сейчас вы не голодаете.</string>

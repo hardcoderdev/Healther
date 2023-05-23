@@ -3,17 +3,16 @@ package hardcoder.dev.presentation.dashboard
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.datetime.createRangeForCurrentDay
-import hardcoder.dev.logic.features.fasting.plan.FastingPlanDurationResolver
-import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
+import hardcoder.dev.logic.DateTimeProvider
+import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logic.features.pedometer.DailyRateStepsResolver
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
-import hardcoder.dev.logic.features.waterTracking.WaterIntakeResolver
-import hardcoder.dev.logic.features.waterTracking.WaterPercentageResolver
-import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
-import hardcoder.dev.logic.hero.HeroProvider
+import hardcoder.dev.logic.features.waterTracking.WaterTrackingDailyRateProvider
+import hardcoder.dev.logic.features.waterTracking.WaterTrackingMillilitersDrunkProvider
 import hardcoder.dev.presentation.features.pedometer.Available
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
+import hardcoder.dev.presentation.features.pedometer.toggleTracking
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -21,76 +20,29 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 
 class DashboardViewModel(
-    private val waterIntakeResolver: WaterIntakeResolver,
     private val dailyRateStepsResolver: DailyRateStepsResolver,
     private val pedometerManager: PedometerManager,
-    private val waterPercentageResolver: WaterPercentageResolver,
-    private val fastingPlanDurationResolver: FastingPlanDurationResolver,
-    waterTrackProvider: WaterTrackProvider,
-    heroProvider: HeroProvider,
+    dateTimeProvider: DateTimeProvider,
+    waterTrackingDailyRateProvider: WaterTrackingDailyRateProvider,
+    waterTrackingMillilitersDrunkProvider: WaterTrackingMillilitersDrunkProvider,
     pedometerTrackProvider: PedometerTrackProvider,
-    fastingTrackProvider: FastingTrackProvider,
+    currentFastingManager: CurrentFastingManager,
     moodTrackProvider: MoodTrackProvider
 ) : ViewModel() {
 
-    private val hero = heroProvider.requireHero().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
-    )
-
-    private val waterTracks = waterTrackProvider.provideWaterTracksByDayRange(
-        LocalDate.now().createRangeForCurrentDay()
-    ).stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = emptyList()
-    )
-
-    private val isPedometerRunning = pedometerManager.isTracking.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = false
-    )
-
-    private val isPedometerAvailable = pedometerManager.availability.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = false
-    )
-
     private val waterTrackingFeature = combine(
-        waterTracks,
-        hero.filterNotNull()
-    ) { waterTrackList, hero ->
-        val dailyRateInMilliliters = waterIntakeResolver.resolve(
-            hero.weight,
-            hero.exerciseStressTime,
-            hero.gender
+        waterTrackingDailyRateProvider.provideDailyRateInMilliliters(),
+        waterTrackingMillilitersDrunkProvider.provideMillilitersDrunkToday()
+    ) { dailyRateInMilliliters, millilitersDrunk ->
+        DashboardItem.WaterTrackingFeature(
+            millilitersDrunk = millilitersDrunk,
+            dailyRateInMilliliters = dailyRateInMilliliters
         )
-
-        if (waterTrackList.isNotEmpty()) {
-            val millilitersDrunk = waterTrackList.sumOf { waterTrack ->
-                waterPercentageResolver.resolve(
-                    waterTrack.drinkType,
-                    waterTrack.millilitersCount
-                )
-            }
-
-            DashboardItem.WaterTrackingFeature(
-                millilitersDrunk = millilitersDrunk,
-                dailyRateInMilliliters = dailyRateInMilliliters
-            )
-        } else {
-            DashboardItem.WaterTrackingFeature(
-                millilitersDrunk = null,
-                dailyRateInMilliliters = dailyRateInMilliliters
-            )
-        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -101,55 +53,41 @@ class DashboardViewModel(
         pedometerTrackProvider.providePedometerTracksByRange(
             LocalDate.now().createRangeForCurrentDay()
         ),
-        isPedometerRunning,
-        isPedometerAvailable
+        pedometerManager.isTracking,
+        pedometerManager.availability
     ) { pedometerTrackList, isPedometerRunning, availability ->
         val dailyRateInSteps = dailyRateStepsResolver.resolve()
+        val stepsWalked = pedometerTrackList.sumOf { it.stepsCount }
 
-        if (pedometerTrackList.isNotEmpty()) {
-            val stepsWalked = pedometerTrackList.sumOf { it.stepsCount }
-
-            DashboardItem.PedometerFeature(
-                stepsWalked = stepsWalked,
-                dailyRateInSteps = dailyRateInSteps,
-                isPedometerRunning = isPedometerRunning,
-                permissionsGranted = availability is Available
-            )
-        } else {
-            DashboardItem.PedometerFeature(
-                stepsWalked = null,
-                dailyRateInSteps = dailyRateInSteps,
-                isPedometerRunning = isPedometerRunning,
-                permissionsGranted = availability is Available
-            )
-        }
+        DashboardItem.PedometerFeature(
+            stepsWalked = stepsWalked,
+            dailyRateInSteps = dailyRateInSteps,
+            isPedometerRunning = isPedometerRunning,
+            permissionsGranted = availability is Available
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = null
     )
 
-    private val fastingFeature = fastingTrackProvider.provideFastingTracksByStartTime(
-        LocalDate.now().createRangeForCurrentDay()
-    ).map { fastingTrackList ->
-        if (fastingTrackList.isNotEmpty() && fastingTrackList[0].interruptedTime == null) {
-            val currentFastingTrack = fastingTrackList[0]
-
-            val hoursInPlan = fastingPlanDurationResolver.resolve(
-                currentFastingTrack.fastingPlan,
-                null
-            )
-
-            val hoursLeft = Clock.System.now() - currentFastingTrack.startTime
+    private val fastingFeature = combine(
+        dateTimeProvider.currentTimeFlow(),
+        currentFastingManager.provideCurrentFastingTrack()
+    ) { currentTime, currentFastingTrack ->
+        currentFastingTrack?.let {
+            val timeLeftInMillis = currentTime.toInstant(
+                TimeZone.currentSystemDefault()
+            ) - currentFastingTrack.startTime
 
             DashboardItem.FastingFeature(
-                hoursLeft = hoursLeft.inWholeHours.toInt(),
-                hoursInPlan = hoursInPlan.toInt()
+                timeLeftDuration = timeLeftInMillis,
+                planDuration = currentFastingTrack.duration,
             )
-        } else {
+        } ?: run {
             DashboardItem.FastingFeature(
-                hoursLeft = null,
-                hoursInPlan = null
+                timeLeftDuration = null,
+                planDuration = null,
             )
         }
     }.stateIn(
@@ -202,13 +140,7 @@ class DashboardViewModel(
 
     fun onTogglePedometerTrackingService() {
         viewModelScope.launch {
-            pedometerManager.apply {
-                if (isTracking.value) {
-                    stopTracking()
-                } else {
-                    startTracking()
-                }
-            }
+            pedometerManager.toggleTracking()
         }
     }
 
