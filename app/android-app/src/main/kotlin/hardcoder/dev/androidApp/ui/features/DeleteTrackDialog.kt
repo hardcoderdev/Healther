@@ -24,7 +24,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import hardcoder.dev.healther.R
 import hardcoder.dev.uikit.buttons.ButtonStyles
-import hardcoder.dev.uikit.buttons.TextButton
+import hardcoder.dev.uikit.buttons.SimpleButton
 import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.text.Label
 import hardcoder.dev.uikit.text.Title
@@ -66,13 +66,13 @@ fun DeleteTrackDialog(
                     Label(text = stringResource(R.string.deleteDialog_trackDeletionDescription_text))
                     Spacer(modifier = Modifier.height(16.dp))
                     Row(horizontalArrangement = Arrangement.End) {
-                        TextButton(
+                        SimpleButton(
                             modifier = Modifier.weight(1f),
                             labelResId = R.string.deleteDialog_yes_option,
                             onClick = onApprove
                         )
                         Spacer(modifier = Modifier.width(16.dp))
-                        TextButton(
+                        SimpleButton(
                             modifier = Modifier.weight(1f),
                             labelResId = R.string.deleteDialog_no_option,
                             onClick = onCancel,

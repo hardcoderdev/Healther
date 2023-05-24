@@ -24,7 +24,7 @@ import hardcoder.dev.presentation.features.fasting.FastingTrackCreateViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
 
@@ -74,7 +74,7 @@ private fun FastingCreationTrackContent(
             SelectPlanSection(state = state, onUpdateSelectedPlan = onUpdateSelectedPlan)
         }
         Spacer(modifier = Modifier.height(16.dp))
-        IconTextButton(
+        ButtonWithIcon(
             iconResId = R.drawable.ic_play,
             labelResId = R.string.fasting_createFastingTrack_start_buttonText,
             onClick = onStartFasting,

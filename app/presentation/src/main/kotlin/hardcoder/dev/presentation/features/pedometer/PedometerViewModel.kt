@@ -129,11 +129,7 @@ class PedometerViewModel(
                 requestBattery()
                 requestPermissions()
                 initialPermissionsScreenShowed.value = true
-                if (isTracking.value) {
-                    stopTracking()
-                } else {
-                    startTracking()
-                }
+                toggleTracking()
             }
         }
     }

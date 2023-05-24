@@ -13,7 +13,7 @@ import hardcoder.dev.healther.R
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.text.Title
 
 @Composable
@@ -37,7 +37,7 @@ private fun WelcomeContent(onStart: () -> Unit) {
             Title(text = stringResource(id = R.string.setUpFlow_welcome_beforeWeStart_text))
         }
         Spacer(modifier = Modifier.height(32.dp))
-        IconTextButton(
+        ButtonWithIcon(
             labelResId = R.string.setUpFlow_welcome_letsStart_buttonText,
             iconResId = R.drawable.ic_play,
             onClick = onStart

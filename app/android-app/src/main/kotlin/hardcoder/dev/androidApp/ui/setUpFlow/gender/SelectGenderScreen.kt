@@ -23,7 +23,7 @@ import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.card.SelectionCard
 import hardcoder.dev.uikit.icons.Image
 import hardcoder.dev.uikit.text.Description
@@ -97,7 +97,7 @@ private fun SelectGenderContent(
             Spacer(modifier = Modifier.height(32.dp))
             Description(text = stringResource(id = R.string.setUpFlow_selectGender_forWhatGender_text))
         }
-        IconTextButton(
+        ButtonWithIcon(
             iconResId = R.drawable.ic_done,
             labelResId = R.string.setUpFlow_selectGender_next_buttonText,
             onClick = onGoForward

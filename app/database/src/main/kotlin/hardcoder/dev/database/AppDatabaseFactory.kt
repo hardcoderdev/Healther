@@ -13,7 +13,9 @@ object AppDatabaseFactory {
             name = name
         ),
         AppPreferenceAdapter = AppPreference.Adapter(
-            firstLaunchTimeAdapter = InstantAdapter),
+            firstLaunchTimeAdapter = InstantAdapter,
+            lastAppReviewRequestTimeAdapter = InstantAdapter
+        ),
         WaterTrackAdapter = WaterTrack.Adapter(dateAdapter = InstantAdapter),
         PedometerTrackAdapter = PedometerTrack.Adapter(
             startTimeAdapter = InstantAdapter,

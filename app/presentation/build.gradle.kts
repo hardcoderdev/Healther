@@ -20,6 +20,7 @@ dependencies {
     api(project(Modules.Paths.logic))
     api(project(Modules.Paths.Foundation.coroutines))
     api(project(Modules.Paths.Foundation.permissions))
+    api(project(Modules.Paths.Foundation.inAppReview))
 
     implementation(Dependencies.lifecycleViewModelKtx)
     implementation(Dependencies.composeCalendarDateTime)

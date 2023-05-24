@@ -15,5 +15,8 @@ class AppPreferenceProvider(private val appDatabase: AppDatabase) {
             it.executeAsOneOrNull()?.toEntity()
         }
 
-    private fun AppPreference.toEntity() = AppPreferenceEntity(firstLaunchTime)
+    private fun AppPreference.toEntity() = AppPreferenceEntity(
+        firstLaunchTime = firstLaunchTime,
+        lastAppReviewRequestTime = lastAppReviewRequestTime
+    )
 }

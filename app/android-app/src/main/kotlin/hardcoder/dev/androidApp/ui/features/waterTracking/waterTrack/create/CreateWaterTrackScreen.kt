@@ -39,7 +39,7 @@ import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonStyles
-import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.chip.ActionChip
 import hardcoder.dev.uikit.dialogs.DatePicker
 import hardcoder.dev.uikit.text.Description
@@ -123,7 +123,7 @@ private fun CreateWaterTrackContent(
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        IconTextButton(
+        ButtonWithIcon(
             iconResId = R.drawable.ic_done,
             labelResId = R.string.waterTracking_createWaterTrack_saveEntry_buttonText,
             onClick = onCreateWaterTrack,
@@ -255,7 +255,7 @@ private fun SelectDateSection(
         )
     )
     Spacer(modifier = Modifier.height(16.dp))
-    IconTextButton(
+    ButtonWithIcon(
         iconResId = R.drawable.ic_date_range,
         labelResId = R.string.waterTracking_createWaterTrack_selectDateRange_buttonText,
         style = ButtonStyles.OUTLINED,

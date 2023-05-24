@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title_topBar">Settings</string>
+    <string name="settings_supportCreator_text">Buy coffee for developer</string>
+    <string name="settings_rateApp_text">Rate the app</string>
+    <string name="settings_moreApps_text">More apps</string>
+    <string name="settings_other_text">Other:</string>
+</resources>

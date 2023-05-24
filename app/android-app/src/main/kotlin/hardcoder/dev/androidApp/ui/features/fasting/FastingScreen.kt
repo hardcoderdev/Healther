@@ -40,7 +40,7 @@ import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.Statistics
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.charts.ActivityColumnChart
 import hardcoder.dev.uikit.charts.MINIMUM_ENTRIES_FOR_SHOWING_CHART
 import hardcoder.dev.uikit.progressBar.CircularProgressBar
@@ -143,7 +143,7 @@ private fun NotFastingContent(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        IconTextButton(
+        ButtonWithIcon(
             iconResId = R.drawable.ic_play,
             labelResId = R.string.fasting_start_buttonText,
             onClick = onCreateFastingTrack
@@ -180,7 +180,7 @@ private fun FastingContent(
             }
         }
         Spacer(modifier = Modifier.height(32.dp))
-        IconTextButton(
+        ButtonWithIcon(
             iconResId = R.drawable.ic_close,
             labelResId = R.string.fasting_interrupt_buttonText,
             onClick = onEndFasting
@@ -253,7 +253,7 @@ private fun FinishFastingContent(
             AddNoteSection(state = state, onUpdateNote = onUpdateNote)
         }
         Spacer(modifier = Modifier.height(16.dp))
-        IconTextButton(
+        ButtonWithIcon(
             iconResId = R.drawable.ic_navigate_next,
             labelResId = R.string.fasting_finish_goNext_buttonText,
             onClick = onClose

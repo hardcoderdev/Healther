@@ -66,7 +66,10 @@ fun ScaffoldWrapper(
         contentWindowInsets = WindowInsets.systemBars,
         topBar = {
             when (topBarConfig.type) {
-                is TopBarType.TitleTopBar -> SimpleTopBar(titleResId = topBarConfig.type.titleResId)
+                is TopBarType.TitleTopBar -> SimpleTopBar(
+                    titleResId = topBarConfig.type.titleResId,
+                    actionConfig = actionConfig
+                )
                 is TopBarType.TopBarWithNavigationBack -> GoBackTopBar(
                     titleResId = topBarConfig.type.titleResId,
                     onGoBack = topBarConfig.type.onGoBack,
@@ -138,14 +141,27 @@ sealed class TopBarType {
 }
 
 @Composable
-private fun SimpleTopBar(@StringRes titleResId: Int) {
+private fun SimpleTopBar(
+    @StringRes titleResId: Int,
+    actionConfig: ActionConfig? = null
+) {
     TopAppBar(
         title = { Text(text = stringResource(id = titleResId)) },
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
             titleContentColor = MaterialTheme.colorScheme.onPrimary,
             navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-        )
+        ),
+        actions = {
+            actionConfig?.let {
+                it.actions.forEach { action ->
+                    IconButton(
+                        onClick = action.onActionClick,
+                        iconResId = action.iconResId
+                    )
+                }
+            }
+        }
     )
 }
 

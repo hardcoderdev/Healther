@@ -14,6 +14,14 @@ interface PedometerManager {
     sealed class Availability
 }
 
+suspend inline fun PedometerManager.toggleTracking() {
+    if (isTracking.value) {
+        stopTracking()
+    } else {
+        startTracking()
+    }
+}
+
 object Available : PedometerManager.Availability()
 
 data class NotAvailable(

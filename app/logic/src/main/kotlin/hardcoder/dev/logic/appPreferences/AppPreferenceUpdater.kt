@@ -12,7 +12,8 @@ class AppPreferenceUpdater(
     suspend fun update(appPreference: AppPreference) = withContext(dispatcher) {
         appDatabase.appPreferenceQueries.upsert(
             id = PREFERENCES_ID,
-            firstLaunchTime = appPreference.firstLaunchTime
+            firstLaunchTime = appPreference.firstLaunchTime,
+            lastAppReviewRequestTime = null
         )
     }
 

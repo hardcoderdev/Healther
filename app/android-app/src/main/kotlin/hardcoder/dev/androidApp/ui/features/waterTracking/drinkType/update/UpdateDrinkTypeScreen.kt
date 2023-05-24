@@ -38,7 +38,7 @@ import hardcoder.dev.uikit.IntSlider
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.buttons.IconTextButton
+import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.FilledTextField
@@ -136,7 +136,7 @@ private fun UpdateDrinkTypeContent(
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        IconTextButton(
+        ButtonWithIcon(
             iconResId = R.drawable.ic_save,
             labelResId = R.string.waterTracking_updateDrinkType_createTrack_buttonText,
             onClick = onUpdateDrinkType,

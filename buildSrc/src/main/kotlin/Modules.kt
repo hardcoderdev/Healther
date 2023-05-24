@@ -13,6 +13,7 @@ object Modules {
             const val sqldelight = "hardcoder.dev.sqldelight"
             const val datetime = "hardcoder.dev.datetime"
             const val math = "hardcoder.dev.math"
+            const val inAppReview = "hardcoder.dev.inappreview"
         }
     }
 
@@ -29,6 +30,7 @@ object Modules {
             val sqldelight = mapOf("path" to ":foundation:sqldelight")
             val datetime = mapOf("path" to ":foundation:datetime")
             val math = mapOf("path" to ":foundation:math")
+            val inAppReview = mapOf("path" to ":foundation:inappreview")
         }
     }
 }
