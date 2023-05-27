@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -20,10 +19,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.controller.InputController
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.hero.gender.Gender
-import hardcoder.dev.presentation.setUpFlow.EnterWeightViewModel
-import hardcoder.dev.uikit.NumberPicker
+import hardcoder.dev.uikit.NumberInput
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -44,14 +43,17 @@ fun EnterWeightScreen(
     val enterWeightViewModel = viewModel {
         presentationModule.getEnterWeightViewModel()
     }
-    val state = enterWeightViewModel.state.collectAsState()
 
     ScaffoldWrapper(
         content = {
             EnterWeightContent(
-                state = state.value,
-                onGoForward = { onGoForward(gender, state.value.weight) },
-                onUpdateWeight = enterWeightViewModel::updateWeight
+                onGoForward = {
+                    onGoForward(
+                        gender,
+                        enterWeightViewModel.weightInputController.state.value.input
+                    )
+                },
+                enterWeightViewModel.weightInputController
             )
         },
         topBarConfig = TopBarConfig(
@@ -65,9 +67,8 @@ fun EnterWeightScreen(
 
 @Composable
 private fun EnterWeightContent(
-    onUpdateWeight: (Int) -> Unit,
     onGoForward: () -> Unit,
-    state: EnterWeightViewModel.State
+    weightInputController: InputController<Int>,
 ) {
     Column(
         modifier = Modifier
@@ -82,11 +83,10 @@ private fun EnterWeightContent(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                NumberPicker(
-                    value = state.weight,
-                    range = MINIMUM_WEIGHT..MAXIMUM_WEIGHT,
-                    onValueChange = onUpdateWeight,
-                    modifier = Modifier.weight(1.8f)
+                NumberInput(
+                    modifier = Modifier.weight(1.8f),
+                    controller = weightInputController,
+                    range = MINIMUM_WEIGHT..MAXIMUM_WEIGHT
                 )
                 Spacer(modifier = Modifier.width(32.dp))
                 Image(

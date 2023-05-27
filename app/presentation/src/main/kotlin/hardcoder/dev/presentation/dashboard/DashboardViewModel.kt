@@ -2,6 +2,8 @@ package hardcoder.dev.presentation.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.datetime.createRangeForCurrentDay
 import hardcoder.dev.logic.DateTimeProvider
 import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
@@ -14,12 +16,8 @@ import hardcoder.dev.presentation.features.pedometer.Available
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
 import hardcoder.dev.presentation.features.pedometer.toggleTracking
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -27,51 +25,57 @@ import kotlinx.datetime.toInstant
 class DashboardViewModel(
     private val dailyRateStepsResolver: DailyRateStepsResolver,
     private val pedometerManager: PedometerManager,
-    dateTimeProvider: DateTimeProvider,
-    waterTrackingDailyRateProvider: WaterTrackingDailyRateProvider,
-    waterTrackingMillilitersDrunkProvider: WaterTrackingMillilitersDrunkProvider,
-    pedometerTrackProvider: PedometerTrackProvider,
-    currentFastingManager: CurrentFastingManager,
-    moodTrackProvider: MoodTrackProvider
+    private val dateTimeProvider: DateTimeProvider,
+    private val waterTrackingDailyRateProvider: WaterTrackingDailyRateProvider,
+    private val waterTrackingMillilitersDrunkProvider: WaterTrackingMillilitersDrunkProvider,
+    private val pedometerTrackProvider: PedometerTrackProvider,
+    private val currentFastingManager: CurrentFastingManager,
+    private val moodTrackProvider: MoodTrackProvider
 ) : ViewModel() {
 
-    private val waterTrackingFeature = combine(
-        waterTrackingDailyRateProvider.provideDailyRateInMilliliters(),
-        waterTrackingMillilitersDrunkProvider.provideMillilitersDrunkToday()
-    ) { dailyRateInMilliliters, millilitersDrunk ->
-        DashboardItem.WaterTrackingFeature(
-            millilitersDrunk = millilitersDrunk,
-            dailyRateInMilliliters = dailyRateInMilliliters
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
+    val itemsLoadingController = LoadingController(
+        coroutineScope = viewModelScope,
+        flow = combine(
+            waterTrackingItem(),
+            pedometerItem(),
+            fastingItem(),
+            moodTrackingItemFlow()
+        ) { waterTrackingItem, pedometerItem, fastingItem, moodTrackingItem ->
+            listOf(
+                waterTrackingItem,
+                pedometerItem,
+                fastingItem,
+                moodTrackingItem
+            )
+        }
     )
 
-    private val pedometerFeature = combine(
+    val pedometerToggleController = ToggleController(
+        coroutineScope = viewModelScope,
+        toggle = pedometerManager::toggleTracking,
+        isActiveFlow = pedometerManager.isTracking
+    )
+
+    private fun waterTrackingItem() = waterTrackingMillilitersDrunkProvider
+        .provideMillilitersDrunkToDailyRateToday()
+        .map(DashboardItem::WaterTrackingFeature)
+
+    private fun pedometerItem() = combine(
         pedometerTrackProvider.providePedometerTracksByRange(
             LocalDate.now().createRangeForCurrentDay()
         ),
         pedometerManager.isTracking,
         pedometerManager.availability
     ) { pedometerTrackList, isPedometerRunning, availability ->
-        val dailyRateInSteps = dailyRateStepsResolver.resolve()
-        val stepsWalked = pedometerTrackList.sumOf { it.stepsCount }
-
         DashboardItem.PedometerFeature(
-            stepsWalked = stepsWalked,
-            dailyRateInSteps = dailyRateInSteps,
+            stepsWalked = pedometerTrackList.sumOf { it.stepsCount },
+            dailyRateInSteps = dailyRateStepsResolver.resolve(),
             isPedometerRunning = isPedometerRunning,
             permissionsGranted = availability is Available
         )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
-    )
+    }
 
-    private val fastingFeature = combine(
+    private fun fastingItem() = combine(
         dateTimeProvider.currentTimeFlow(),
         currentFastingManager.provideCurrentFastingTrack()
     ) { currentTime, currentFastingTrack ->
@@ -84,67 +88,21 @@ class DashboardViewModel(
                 timeLeftDuration = timeLeftInMillis,
                 planDuration = currentFastingTrack.duration,
             )
-        } ?: run {
-            DashboardItem.FastingFeature(
-                timeLeftDuration = null,
-                planDuration = null,
-            )
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
-    )
-
-    private val moodTrackingFeature = moodTrackProvider.provideAllMoodTracksByDayRange(
-        LocalDate.now().createRangeForCurrentDay()
-    ).map { moodTrackList ->
-        if (moodTrackList.isNotEmpty()) {
-            val averageMoodToday = moodTrackList.groupingBy {
-                it.moodType
-            }.eachCount().maxBy {
-                it.value
-            }.key
-
-            DashboardItem.MoodTrackingFeature(averageMoodToday = averageMoodToday)
-        } else {
-            DashboardItem.MoodTrackingFeature(averageMoodToday = null)
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
-    )
-
-    val state = combine(
-        waterTrackingFeature.filterNotNull(),
-        pedometerFeature.filterNotNull(),
-        fastingFeature.filterNotNull(),
-        moodTrackingFeature.filterNotNull()
-    ) { waterTrackingFeature, pedometerFeature, fastingFeature, moodTrackingFeature ->
-        State(
-            dashboardItems = listOf(
-                waterTrackingFeature,
-                pedometerFeature,
-                fastingFeature,
-                moodTrackingFeature
-            )
+        } ?: DashboardItem.FastingFeature(
+            timeLeftDuration = null,
+            planDuration = null,
         )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = State(
-            dashboardItems = emptyList()
-        )
-    )
-
-    fun onTogglePedometerTrackingService() {
-        viewModelScope.launch {
-            pedometerManager.toggleTracking()
-        }
     }
 
-    data class State(
-        val dashboardItems: List<DashboardItem>
-    )
+    private fun moodTrackingItemFlow() = moodTrackProvider.provideAllMoodTracksByDayRange(
+        LocalDate.now().createRangeForCurrentDay()
+    ).map { moodTrackList ->
+        DashboardItem.MoodTrackingFeature(
+            averageMoodToday = moodTrackList.groupingBy {
+                it.moodType
+            }.eachCount().maxByOrNull {
+                it.value
+            }?.key
+        )
+    }
 }

@@ -1,8 +1,8 @@
 package hardcoder.dev.in_app_review
 
 import android.app.Activity
-import com.google.android.play.core.review.ReviewManager as GoogleReviewManager
 import java.lang.ref.WeakReference
+import com.google.android.play.core.review.ReviewManager as GoogleReviewManager
 
 class AndroidReviewManager(private val reviewManager: GoogleReviewManager) : ReviewManager {
 
@@ -12,7 +12,7 @@ class AndroidReviewManager(private val reviewManager: GoogleReviewManager) : Rev
         this.activity = WeakReference(activity)
     }
 
-    override suspend fun launchReviewFlow(): Boolean {
-        return activity.get()?.let { reviewManager.requestReviewFlowAsync(it) } ?: false
-    }
+    override suspend fun launchReviewFlow() = runCatching {
+        reviewManager.requestReviewFlowAsync(activity.get()!!)
+    }.isSuccess
 }

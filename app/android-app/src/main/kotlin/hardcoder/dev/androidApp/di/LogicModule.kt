@@ -168,7 +168,8 @@ class LogicModule(private val context: Context) {
     val waterTrackingMillilitersDrunkProvider by lazy {
         WaterTrackingMillilitersDrunkProvider(
             waterTrackProvider = waterTrackProvider,
-            waterPercentageResolver = waterPercentageResolver
+            waterPercentageResolver = waterPercentageResolver,
+            waterTrackingDailyRateProvider = waterTrackingDailyRateProvider
         )
     }
 
@@ -318,9 +319,9 @@ class LogicModule(private val context: Context) {
 
     val pedometerStatisticProvider by lazy {
         PedometerStatisticProvider(
-            appDatabase = appDatabase,
             kilometersResolver = kilometersResolver,
-            caloriesResolver = caloriesResolver
+            caloriesResolver = caloriesResolver,
+            pedometerTrackProvider = pedometerTrackProvider
         )
     }
 

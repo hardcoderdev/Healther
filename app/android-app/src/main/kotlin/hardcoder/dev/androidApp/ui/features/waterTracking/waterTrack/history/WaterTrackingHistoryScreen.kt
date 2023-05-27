@@ -11,17 +11,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.controller.InputController
+import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.datetime.createRangeForCurrentDay
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
 import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackingHistoryViewModel
+import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -31,6 +33,7 @@ import io.github.boguszpawlowski.composecalendar.SelectableCalendar
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
 import hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.WaterTrackItem as WaterTrackItemRow
@@ -44,16 +47,13 @@ fun WaterTrackingHistoryScreen(
     val viewModel = viewModel {
         presentationModule.getWaterTrackingHistoryViewModel()
     }
-    val state = viewModel.state.collectAsState()
 
     ScaffoldWrapper(
         content = {
             WaterTrackingContent(
-                state = state.value,
                 onTrackUpdate = onTrackUpdate,
-                onFetchWaterTracks = {
-                    viewModel.selectRange(it.getStartOfDay()..it.getEndOfDay())
-                }
+                dateRangeInputController = viewModel.dateRangeInputController,
+                itemsLoadingController = viewModel.itemsLoadingController
             )
         },
         topBarConfig = TopBarConfig(
@@ -67,17 +67,18 @@ fun WaterTrackingHistoryScreen(
 
 @Composable
 private fun WaterTrackingContent(
-    state: WaterTrackingHistoryViewModel.State,
-    onFetchWaterTracks: (LocalDate) -> Unit,
-    onTrackUpdate: (WaterTrackingItem) -> Unit
+    onTrackUpdate: (WaterTrackingItem) -> Unit,
+    dateRangeInputController: InputController<ClosedRange<Instant>>,
+    itemsLoadingController: LoadingController<List<WaterTrackingItem>>
 ) {
     val calendarState = rememberSelectableCalendarState(initialSelectionMode = SelectionMode.Single)
 
     LaunchedEffect(key1 = calendarState.selectionState.selection) {
         if (calendarState.selectionState.selection.isNotEmpty()) {
-            onFetchWaterTracks(calendarState.selectionState.selection.first().toKotlinLocalDate())
+            val date = calendarState.selectionState.selection.first().toKotlinLocalDate()
+            dateRangeInputController.changeInput(date.getStartOfDay()..date.getEndOfDay())
         } else {
-            onFetchWaterTracks(LocalDate.now())
+            dateRangeInputController.changeInput(LocalDate.now().createRangeForCurrentDay())
         }
     }
 
@@ -91,7 +92,7 @@ private fun WaterTrackingContent(
         )
         Spacer(modifier = Modifier.height(16.dp))
         WaterTracksHistory(
-            waterTrackingItems = state.waterTrackingItems,
+            itemsLoadingController = itemsLoadingController,
             onTrackUpdate = onTrackUpdate
         )
     }
@@ -99,25 +100,27 @@ private fun WaterTrackingContent(
 
 @Composable
 private fun WaterTracksHistory(
-    waterTrackingItems: List<WaterTrackingItem>,
+    itemsLoadingController: LoadingController<List<WaterTrackingItem>>,
     onTrackUpdate: (WaterTrackingItem) -> Unit
 ) {
-    if (waterTrackingItems.isNotEmpty()) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(vertical = 16.dp)
-        ) {
-            items(waterTrackingItems) { track ->
-                WaterTrackItemRow(
-                    waterTrackingItem = track,
-                    onUpdate = onTrackUpdate
-                )
+    LoadingContainer(controller = itemsLoadingController) { waterTrackingItems ->
+        if (waterTrackingItems.isNotEmpty()) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(vertical = 16.dp)
+            ) {
+                items(waterTrackingItems) { track ->
+                    WaterTrackItemRow(
+                        waterTrackingItem = track,
+                        onUpdate = onTrackUpdate
+                    )
+                }
             }
+        } else {
+            Spacer(modifier = Modifier.height(16.dp))
+            Description(text = stringResource(id = R.string.waterTracking_history_emptyDayHistory_text))
         }
-    } else {
-        Spacer(modifier = Modifier.height(16.dp))
-        Description(text = stringResource(id = R.string.waterTracking_history_emptyDayHistory_text))
     }
 }
 

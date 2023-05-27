@@ -2,6 +2,7 @@ package hardcoder.dev.presentation.setUpFlow
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.logic.appPreferences.AppPreference
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
 import hardcoder.dev.logic.hero.HeroCreator
@@ -10,16 +11,16 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 
 class HeroCreateViewModel(
-    private val appPreferenceUpdater: AppPreferenceUpdater,
-    private val heroCreator: HeroCreator
+    appPreferenceUpdater: AppPreferenceUpdater,
+    heroCreator: HeroCreator,
+    gender: Gender,
+    weight: Int,
+    exerciseStressTime: Int
 ) : ViewModel() {
 
-    fun createUserHero(
-        gender: Gender,
-        weight: Int,
-        exerciseStressTime: Int
-    ) {
-        viewModelScope.launch {
+    val creationController = SingleRequestController(
+        coroutineScope = viewModelScope,
+        request = {
             heroCreator.createHero(
                 weight = weight,
                 exerciseStressTime = exerciseStressTime,
@@ -33,5 +34,5 @@ class HeroCreateViewModel(
                 )
             )
         }
-    }
+    )
 }

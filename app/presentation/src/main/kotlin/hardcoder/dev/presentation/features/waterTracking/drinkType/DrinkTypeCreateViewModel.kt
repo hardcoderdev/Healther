@@ -2,116 +2,55 @@ package hardcoder.dev.presentation.features.waterTracking.drinkType
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.coroutines.combine
+import hardcoder.dev.controller.InputController
+import hardcoder.dev.controller.SingleRequestController
+import hardcoder.dev.controller.SingleSelectionController
+import hardcoder.dev.controller.ValidatedInputController
+import hardcoder.dev.controller.requireSelectedItem
+import hardcoder.dev.controller.validateAndRequire
 import hardcoder.dev.logic.features.waterTracking.drinkType.CorrectDrinkTypeName
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeCreator
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeNameValidator
-import hardcoder.dev.logic.features.waterTracking.drinkType.ValidatedDrinkTypeName
 import hardcoder.dev.logic.icons.IconResourceProvider
-import hardcoder.dev.logic.icons.LocalIcon
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 class DrinkTypeCreateViewModel(
-    private val drinkTypeCreator: DrinkTypeCreator,
-    private val drinkTypeNameValidator: DrinkTypeNameValidator,
+    drinkTypeCreator: DrinkTypeCreator,
+    drinkTypeNameValidator: DrinkTypeNameValidator,
     iconResourceProvider: IconResourceProvider
 ) : ViewModel() {
 
-    private val creationState = MutableStateFlow<CreationState>(CreationState.NotExecuted)
-    private val availableIconsList = MutableStateFlow(iconResourceProvider.getIcons())
-    private val selectedIcon = MutableStateFlow(iconResourceProvider.getIcon(0))
-    private val selectedHydrationIndexPercentage =
-        MutableStateFlow(DEFAULT_HYDRATION_INDEX_PERCENTAGE)
-    private val name = MutableStateFlow<String?>(null)
-    private val validatedDrinkTypeName = name.map {
-        it?.let {
-            drinkTypeNameValidator.validate(it)
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
+    val nameInputController = ValidatedInputController(
+        coroutineScope = viewModelScope,
+        initialInput = "",
+        validation = drinkTypeNameValidator::validate
     )
 
-    val state = combine(
-        creationState,
-        name,
-        validatedDrinkTypeName,
-        availableIconsList,
-        selectedIcon,
-        selectedHydrationIndexPercentage
-    ) { creationState, name, validatedName, availableIcons,
-        selectedIcon, hydrationIndexPercentage ->
-        State(
-            creationState = creationState,
-            name = name,
-            validatedDrinkTypeName = validatedName,
-            availableIconsList = availableIcons,
-            selectedIcon = selectedIcon,
-            hydrationIndexPercentage = hydrationIndexPercentage,
-            allowCreation = validatedName is CorrectDrinkTypeName
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = State(
-            allowCreation = false,
-            creationState = creationState.value,
-            name = name.value,
-            validatedDrinkTypeName = validatedDrinkTypeName.value,
-            availableIconsList = availableIconsList.value,
-            selectedIcon = selectedIcon.value,
-            hydrationIndexPercentage = selectedHydrationIndexPercentage.value
-        )
+    val iconSelectionController = SingleSelectionController(
+        coroutineScope = viewModelScope,
+        items = iconResourceProvider.getIcons()
     )
 
-    fun updateName(newName: String) {
-        name.value = newName
-    }
+    val waterPercentageInputController = InputController(
+        coroutineScope = viewModelScope,
+        initialInput = DEFAULT_WATER_PERCENTAGE,
+    )
 
-    fun updateSelectedIcon(icon: LocalIcon) {
-        selectedIcon.value = icon
-    }
-
-    fun updateHydrationIndexPercentage(hydrationIndexPercentage: Int) {
-        selectedHydrationIndexPercentage.value = hydrationIndexPercentage
-    }
-
-    fun createDrinkType() {
-        viewModelScope.launch {
-            val validatedName = validatedDrinkTypeName.value
-            require(validatedName is CorrectDrinkTypeName)
-
+    val creationController = SingleRequestController(
+        coroutineScope = viewModelScope,
+        request = {
             drinkTypeCreator.create(
-                name = validatedName.data,
-                icon = selectedIcon.value,
-                hydrationIndexPercentage = selectedHydrationIndexPercentage.value
+                name = nameInputController.validateAndRequire(),
+                icon = iconSelectionController.requireSelectedItem(),
+                hydrationIndexPercentage = waterPercentageInputController.state.value.input,
             )
-
-            creationState.value = CreationState.Executed
+        },
+        isAllowedFlow = nameInputController.state.map {
+            it.validationResult == null || it.validationResult is CorrectDrinkTypeName
         }
-    }
-
-    data class State(
-        val allowCreation: Boolean,
-        val creationState: CreationState,
-        val name: String?,
-        val validatedDrinkTypeName: ValidatedDrinkTypeName?,
-        val availableIconsList: List<LocalIcon>,
-        val selectedIcon: LocalIcon,
-        val hydrationIndexPercentage: Int
     )
-
-    sealed class CreationState {
-        object Executed : CreationState()
-        object NotExecuted : CreationState()
-    }
 
     private companion object {
-        const val DEFAULT_HYDRATION_INDEX_PERCENTAGE = 30
+        const val DEFAULT_WATER_PERCENTAGE = 30
     }
 }

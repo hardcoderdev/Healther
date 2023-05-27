@@ -6,14 +6,14 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
-import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeManageViewModel
+import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -29,13 +29,12 @@ fun DrinkTypeManageScreen(
     val viewModel = viewModel {
         presentationModule.getDrinkTypeManageTracksViewModel()
     }
-    val state = viewModel.state.collectAsState()
 
     ScaffoldWrapper(
         content = {
             DrinkTypeManageContent(
-                state = state.value,
-                onUpdateDrinkType = onUpdateDrinkType
+                onUpdateDrinkType = onUpdateDrinkType,
+                viewModel.drinkTypesLoadingController
             )
         },
         onFabClick = onCreateDrinkType,
@@ -51,32 +50,37 @@ fun DrinkTypeManageScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun DrinkTypeManageContent(
-    state: DrinkTypeManageViewModel.State,
-    onUpdateDrinkType: (DrinkType) -> Unit
+    onUpdateDrinkType: (DrinkType) -> Unit,
+    drinkTypesLoadingController: LoadingController<List<DrinkType>>
 ) {
-    if (state.drinkTypeList.isNotEmpty()) {
-        FlowRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            maxItemsInEachRow = 4
-        ) {
-            state.drinkTypeList.forEach { drinkType ->
-                DrinkTypeItem(
-                    modifier = Modifier.padding(top = 8.dp, start = 8.dp),
-                    drinkType = drinkType,
-                    selectedDrinkType = null,
-                    onSelect = onUpdateDrinkType
-                )
+    LoadingContainer(
+        controller = drinkTypesLoadingController,
+        loadedContent = { drinkTypeList ->
+            if (drinkTypeList.isNotEmpty()) {
+                FlowRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    maxItemsInEachRow = 4
+                ) {
+                    drinkTypeList.forEach { drinkType ->
+                        DrinkTypeItem(
+                            modifier = Modifier.padding(top = 8.dp, start = 8.dp),
+                            drinkType = drinkType,
+                            selectedDrinkType = null,
+                            onSelect = onUpdateDrinkType
+                        )
+                    }
+                }
+            } else {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    EmptySection(emptyTitleResId = R.string.waterTracking_nowEmpty_text)
+                }
             }
         }
-    } else {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            EmptySection(emptyTitleResId = R.string.waterTracking_nowEmpty_text)
-        }
-    }
+    )
 }

@@ -24,15 +24,9 @@ class PedometerRejectedMapper {
         )
     }
 
-    fun mapReasonToRejected(rejectReason: RejectReason, isInitialScreenShowed: Boolean): Rejected? {
-        return if (isInitialScreenShowed.not()) {
-            when (rejectReason) {
-                RejectReason.BatteryNotIgnoreOptimizations -> PedometerDefaults.BatteryRejected
-                RejectReason.PermissionsNotGranted -> PedometerDefaults.PermissionsRejected
-                RejectReason.ServiceNotAvailable -> PedometerDefaults.ServiceNotAvailableRejected
-            }
-        } else {
-            null
-        }
+    fun mapReasonToRejected(rejectReason: RejectReason) = when (rejectReason) {
+        RejectReason.BatteryNotIgnoreOptimizations -> PedometerDefaults.BatteryRejected
+        RejectReason.PermissionsNotGranted -> PedometerDefaults.PermissionsRejected
+        RejectReason.ServiceNotAvailable -> PedometerDefaults.ServiceNotAvailableRejected
     }
 }

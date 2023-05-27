@@ -12,19 +12,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
-import hardcoder.dev.math.safeDiv
+import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.healther.R
+import hardcoder.dev.logic.features.waterTracking.MillilitersDrunkToDailyRate
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatistic
+import hardcoder.dev.math.safeDiv
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
+import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.Statistics
 import hardcoder.dev.uikit.TopBarConfig
@@ -47,93 +50,105 @@ fun WaterTrackingScreen(
 ) {
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel { presentationModule.getWaterTrackingViewModel() }
-    val state = viewModel.state.collectAsState()
+    val millilitersDrunkState by viewModel.millilitersDrunkLoadingController.state.collectAsState()
 
-    when (val fetchingState = state.value) {
-        is WaterTrackingViewModel.LoadingState.Loaded -> {
-            val dailyWaterIntake = fetchingState.state.dailyWaterIntake
-            val millisCount = fetchingState.state.millisCount
+    val showFab = (millilitersDrunkState as? LoadingController.State.Loaded)?.data?.let {
+        it.millilitersDrunkCount < it.dailyWaterIntake
+    } ?: false
 
-            ScaffoldWrapper(
-                content = {
-                    WaterTrackingContent(
-                        state = fetchingState.state,
-                        onUpdateWaterTrack = onUpdateWaterTrack
-                    )
-                },
-                onFabClick = if (millisCount < dailyWaterIntake) onSaveWaterTrack else null,
-                actionConfig = ActionConfig(
-                    actions = listOf(
-                        Action(
-                            iconResId = R.drawable.ic_history,
-                            onActionClick = onHistoryDetails
-                        )
-                    )
-                ),
-                topBarConfig = TopBarConfig(
-                    type = TopBarType.TopBarWithNavigationBack(
-                        titleResId = R.string.waterTracking_title_topBar,
-                        onGoBack = onGoBack
-                    )
+    ScaffoldWrapper(
+        content = {
+            WaterTrackingContent(
+                onUpdateWaterTrack = onUpdateWaterTrack,
+                waterTracksLoadingController = viewModel.waterTracksLoadingController,
+                chartEntriesLoadingController = viewModel.chartEntriesLoadingController,
+                statisticLoadingController = viewModel.statisticLoadingController,
+                millilitersDrunkLoadingController = viewModel.millilitersDrunkLoadingController
+            )
+        },
+        onFabClick = if (showFab) onSaveWaterTrack else null,
+        actionConfig = ActionConfig(
+            actions = listOf(
+                Action(
+                    iconResId = R.drawable.ic_history,
+                    onActionClick = onHistoryDetails
                 )
             )
-        }
-
-        is WaterTrackingViewModel.LoadingState.Loading -> {
-            /* no-op */
-        }
-    }
+        ),
+        topBarConfig = TopBarConfig(
+            type = TopBarType.TopBarWithNavigationBack(
+                titleResId = R.string.waterTracking_title_topBar,
+                onGoBack = onGoBack
+            )
+        )
+    )
 }
 
 @Composable
 private fun WaterTrackingContent(
     onUpdateWaterTrack: (WaterTrackingItem) -> Unit,
-    state: WaterTrackingViewModel.State
+    waterTracksLoadingController: LoadingController<List<WaterTrackingItem>>,
+    chartEntriesLoadingController: LoadingController<List<Pair<Int, Int>>>,
+    statisticLoadingController: LoadingController<WaterTrackingStatistic?>,
+    millilitersDrunkLoadingController: LoadingController<MillilitersDrunkToDailyRate>,
 ) {
     Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxSize()
     ) {
-        DailyRateSection(state = state)
-        Spacer(modifier = Modifier.height(32.dp))
-        if (state.chartEntries.isNotEmpty() && state.statistic != null) {
-            WaterTrackingStatisticSection(waterTrackingStatistic = requireNotNull(state.statistic))
+        LoadingContainer(
+            controller1 = waterTracksLoadingController,
+            controller2 = chartEntriesLoadingController,
+            controller3 = statisticLoadingController,
+            controller4 = millilitersDrunkLoadingController,
+        ) { waterTracks, chartEntries, statistic, millilitersDrunk ->
+            DailyRateSection(millilitersDrunk)
+
             Spacer(modifier = Modifier.height(32.dp))
-            WaterTrackingChartSection(state = state)
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-        if (state.waterTracks.isNotEmpty()) {
-            TrackDiarySection(state = state, onUpdateWaterTrack = onUpdateWaterTrack)
-        } else {
-            EmptySection(emptyTitleResId = R.string.waterTracking_nowEmpty_text)
+
+            if (chartEntries.isNotEmpty() && statistic != null) {
+                WaterTrackingStatisticSection(statistic)
+                Spacer(modifier = Modifier.height(32.dp))
+                WaterTrackingChartSection(chartEntries)
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            if (waterTracks.isNotEmpty()) {
+                TrackDiarySection(
+                    waterTracks = waterTracks,
+                    onUpdateWaterTrack = onUpdateWaterTrack
+                )
+            } else {
+                EmptySection(emptyTitleResId = R.string.waterTracking_nowEmpty_text)
+            }
         }
     }
 }
 
 @Composable
-private fun DailyRateSection(state: WaterTrackingViewModel.State) {
+private fun DailyRateSection(millilitersDrunk: MillilitersDrunkToDailyRate) {
     Headline(
         text = stringResource(
             id = R.string.waterTracking_millilitersCount_formatText,
             formatArgs = arrayOf(
-                state.millisCount,
-                state.dailyWaterIntake
+                millilitersDrunk.millilitersDrunkCount,
+                millilitersDrunk.dailyWaterIntake
             )
         )
     )
     Spacer(modifier = Modifier.height(16.dp))
-    LinearProgressBar(progress = state.millisCount safeDiv state.dailyWaterIntake)
+    LinearProgressBar(progress = millilitersDrunk.millilitersDrunkCount safeDiv millilitersDrunk.dailyWaterIntake)
 }
 
 @Composable
-private fun WaterTrackingChartSection(state: WaterTrackingViewModel.State) {
+private fun WaterTrackingChartSection(chartEntries: List<Pair<Int, Int>>) {
     Title(text = stringResource(id = R.string.waterTracking_activity_chart))
     Spacer(modifier = Modifier.height(16.dp))
-    if (state.chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
+    if (chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
         ActivityLineChart(
             modifier = Modifier.height(100.dp),
-            chartEntries = state.chartEntries,
+            chartEntries = chartEntries,
             xAxisValueFormatter = { value, _ ->
                 value.roundToInt().toString()
             },
@@ -158,7 +173,7 @@ private fun WaterTrackingStatisticSection(waterTrackingStatistic: WaterTrackingS
 
 @Composable
 private fun ColumnScope.TrackDiarySection(
-    state: WaterTrackingViewModel.State,
+    waterTracks: List<WaterTrackingItem>,
     onUpdateWaterTrack: (WaterTrackingItem) -> Unit
 ) {
     Title(text = stringResource(id = R.string.waterTracking_diary_text))
@@ -170,7 +185,7 @@ private fun ColumnScope.TrackDiarySection(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
-        items(state.waterTracks) { track ->
+        items(waterTracks) { track ->
             WaterTrackItem(
                 waterTrackingItem = track,
                 onUpdate = onUpdateWaterTrack

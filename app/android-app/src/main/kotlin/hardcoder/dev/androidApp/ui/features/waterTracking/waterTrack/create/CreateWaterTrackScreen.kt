@@ -1,6 +1,5 @@
 package hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.create
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -14,7 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,21 +29,29 @@ import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.DrinkTypeItem
 import hardcoder.dev.androidApp.ui.formatters.RegexHolder
 import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
+import hardcoder.dev.controller.InputController
+import hardcoder.dev.controller.SingleRequestController
+import hardcoder.dev.controller.SingleSelectionController
+import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.features.waterTracking.IncorrectMillilitersInput
+import hardcoder.dev.logic.features.waterTracking.IncorrectMillilitersCount
+import hardcoder.dev.logic.features.waterTracking.ValidatedMillilitersCount
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackingCreateViewModel
+import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonStyles
 import hardcoder.dev.uikit.buttons.ButtonWithIcon
+import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.chip.ActionChip
 import hardcoder.dev.uikit.dialogs.DatePicker
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.ErrorText
-import hardcoder.dev.uikit.text.FilledTextField
 import hardcoder.dev.uikit.text.Title
+import hardcoder.dev.uikit.text.ValidatedInputField
+import hardcoder.dev.uikit.text.rememberInputAdapter
+import hardcoder.dev.uikit.text.rememberValidationResourcesAdapter
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -59,23 +65,18 @@ fun CreateWaterTrackScreen(
     val viewModel = viewModel {
         presentationModule.getWaterTrackCreateViewModel()
     }
-    val state = viewModel.state.collectAsState()
 
-    LaunchedEffect(key1 = state.value.creationState) {
-        if (state.value.creationState is WaterTrackingCreateViewModel.CreationState.Executed) {
-            onGoBack()
-        }
-    }
+
+    LaunchedEffectWhenExecuted(viewModel.creationController, onGoBack)
 
     ScaffoldWrapper(
         content = {
             CreateWaterTrackContent(
-                state = state.value,
-                onUpdateWaterDrunk = viewModel::updateWaterDrunk,
-                onUpdateSelectedDate = viewModel::updateSelectedDate,
-                onUpdateSelectedDrink = viewModel::updateSelectedDrink,
-                onCreateWaterTrack = viewModel::createWaterTrack,
-                onManageDrinkType = onManageDrinkType
+                onManageDrinkType = onManageDrinkType,
+                millilitersDrunkInputController = viewModel.millilitersDrunkInputController,
+                drinkSelectionController = viewModel.drinkSelectionController,
+                dateInputController = viewModel.dateInputController,
+                creationController = viewModel.creationController
             )
         },
         topBarConfig = TopBarConfig(
@@ -89,12 +90,11 @@ fun CreateWaterTrackScreen(
 
 @Composable
 private fun CreateWaterTrackContent(
-    state: WaterTrackingCreateViewModel.State,
-    onCreateWaterTrack: () -> Unit,
-    onUpdateSelectedDrink: (DrinkType) -> Unit,
-    onUpdateSelectedDate: (LocalDateTime) -> Unit,
-    onUpdateWaterDrunk: (Int) -> Unit,
-    onManageDrinkType: () -> Unit
+    onManageDrinkType: () -> Unit,
+    millilitersDrunkInputController: ValidatedInputController<Int, ValidatedMillilitersCount>,
+    drinkSelectionController: SingleSelectionController<DrinkType>,
+    dateInputController: InputController<LocalDateTime>,
+    creationController: SingleRequestController
 ) {
     var datePickerDialogVisibility by remember {
         mutableStateOf(false)
@@ -106,31 +106,27 @@ private fun CreateWaterTrackContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState())
         ) {
-            EnterDrunkMillilitersSection(
-                updateWaterDrunk = onUpdateWaterDrunk,
-                state = state
-            )
+            EnterDrunkMillilitersSection(millilitersDrunkInputController)
             Spacer(modifier = Modifier.height(32.dp))
             SelectDrinkTypeSection(
-                state = state,
-                updateSelectedDrink = onUpdateSelectedDrink,
+                drinkSelectionController = drinkSelectionController,
                 onManageDrinkType = onManageDrinkType
             )
             Spacer(modifier = Modifier.height(32.dp))
             SelectDateSection(
-                state = state,
+                dateInputController = dateInputController,
                 onShowDatePicker = { datePickerDialogVisibility = !datePickerDialogVisibility }
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        ButtonWithIcon(
+        RequestButtonWithIcon(
+            controller = creationController,
             iconResId = R.drawable.ic_done,
             labelResId = R.string.waterTracking_createWaterTrack_saveEntry_buttonText,
-            onClick = onCreateWaterTrack,
-            isEnabled = state.creationAllowed
         )
+
         DatePicker(
-            onUpdateSelectedDate = onUpdateSelectedDate,
+            onUpdateSelectedDate = dateInputController::changeInput,
             isShowing = datePickerDialogVisibility,
             onClose = {
                 datePickerDialogVisibility = !datePickerDialogVisibility
@@ -141,21 +137,22 @@ private fun CreateWaterTrackContent(
 
 @Composable
 private fun EnterDrunkMillilitersSection(
-    state: WaterTrackingCreateViewModel.State,
-    updateWaterDrunk: (Int) -> Unit,
+    millilitersDrunkInputController: ValidatedInputController<Int, ValidatedMillilitersCount>,
 ) {
-    val validatedMillilitersCount = state.validatedMillilitersCount
-    val validatedByRegexMillilitersCount = validatedMillilitersCount?.data ?: 0
-
     Title(text = stringResource(id = R.string.waterTracking_createWaterTrack_enterMillilitersCount_text))
     Spacer(modifier = Modifier.height(16.dp))
-    FilledTextField(
-        value = validatedByRegexMillilitersCount.toString(),
-        onValueChange = {
-            try {
-                updateWaterDrunk(it.toInt())
-            } catch (e: NumberFormatException) {
-                updateWaterDrunk(0)
+    ValidatedInputField(
+        modifier = Modifier.fillMaxWidth(),
+        controller = millilitersDrunkInputController,
+        inputAdapter = rememberInputAdapter(
+            decodeInput = { it.toString() },
+            encodeInput = { it.toIntOrNull() ?: 0 }
+        ),
+        validationAdapter = rememberValidationResourcesAdapter {
+            if (it !is IncorrectMillilitersCount) null
+            else when (it.reason) {
+                is IncorrectMillilitersCount.Reason.Empty -> R.string.waterTracking_createWaterTrack_millilitersEmpty_text
+                is IncorrectMillilitersCount.Reason.MoreThanDailyWaterIntake -> R.string.waterTracking_createWaterTrack_millilitersMoreThanDailyWaterIntake_text
             }
         },
         regex = RegexHolder.textFieldDigitRegex,
@@ -163,65 +160,46 @@ private fun EnterDrunkMillilitersSection(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done
-        ),
-        modifier = Modifier.fillMaxWidth(),
-        isError = state.validatedMillilitersCount is IncorrectMillilitersInput
+        )
     )
-
-    AnimatedVisibility(
-        visible = validatedMillilitersCount is IncorrectMillilitersInput
-    ) {
-        if (validatedMillilitersCount is IncorrectMillilitersInput) {
-            ErrorText(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                text = when (validatedMillilitersCount.reason) {
-                    is IncorrectMillilitersInput.Reason.Empty -> {
-                        stringResource(R.string.waterTracking_createWaterTrack_millilitersEmpty_text)
-                    }
-
-                    is IncorrectMillilitersInput.Reason.MoreThanDailyWaterIntake -> {
-                        stringResource(R.string.waterTracking_createWaterTrack_millilitersMoreThanDailyWaterIntake_text)
-                    }
-
-                    else -> {
-                        stringResource(id = 0)
-                    }
-                }
-            )
-        }
-    }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SelectDrinkTypeSection(
-    state: WaterTrackingCreateViewModel.State,
-    updateSelectedDrink: (DrinkType) -> Unit,
+    drinkSelectionController: SingleSelectionController<DrinkType>,
     onManageDrinkType: () -> Unit
 ) {
     Title(text = stringResource(id = R.string.waterTracking_createWaterTrack_enterDrinkType_text))
     Spacer(modifier = Modifier.height(8.dp))
-    if (state.drinks.isNotEmpty()) {
-        FlowRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
-            maxItemsInEachRow = 8
-        ) {
-            DrinkTypeManagementButton(onManageDrinkType = onManageDrinkType)
-            state.drinks.forEach { drink ->
-                DrinkTypeItem(
-                    modifier = Modifier.padding(4.dp),
-                    drinkType = drink,
-                    selectedDrinkType = state.selectedDrink,
-                    onSelect = updateSelectedDrink
-                )
+
+    when (val state = drinkSelectionController.state.collectAsState().value) {
+        is SingleSelectionController.State.Loaded -> {
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState()),
+                maxItemsInEachRow = 8
+            ) {
+                DrinkTypeManagementButton(onManageDrinkType = onManageDrinkType)
+                state.items.forEach { drink ->
+                    DrinkTypeItem(
+                        modifier = Modifier.padding(4.dp),
+                        drinkType = drink,
+                        selectedDrinkType = state.selectedItem,
+                        onSelect = { drinkSelectionController.select(drink) }
+                    )
+                }
             }
         }
-    } else {
-        DrinkTypeManagementButton(onManageDrinkType = onManageDrinkType)
-        Spacer(modifier = Modifier.height(8.dp))
-        ErrorText(text = stringResource(id = R.string.waterTracking_createWaterTrack_drinkTypeNotSelected_text))
+
+        SingleSelectionController.State.Empty -> {
+            DrinkTypeManagementButton(onManageDrinkType = onManageDrinkType)
+            Spacer(modifier = Modifier.height(8.dp))
+            ErrorText(text = stringResource(id = R.string.waterTracking_createWaterTrack_drinkTypeNotSelected_text))
+        }
+
+        SingleSelectionController.State.Loading -> {}
     }
 }
 
@@ -238,12 +216,13 @@ private fun DrinkTypeManagementButton(onManageDrinkType: () -> Unit) {
 
 @Composable
 private fun SelectDateSection(
-    state: WaterTrackingCreateViewModel.State,
+    dateInputController: InputController<LocalDateTime>,
     onShowDatePicker: () -> Unit
 ) {
+    val state by dateInputController.state.collectAsState()
     val uiModule = LocalUIModule.current
     val dateTimeFormatter = uiModule.dateTimeFormatter
-    val selectedDate = state.selectedDate.toInstant(TimeZone.currentSystemDefault())
+    val selectedDate = state.input.toInstant(TimeZone.currentSystemDefault())
     val formattedDate = dateTimeFormatter.formatDateTime(selectedDate)
 
     Title(text = stringResource(id = R.string.waterTracking_createWaterTrack_selectAnotherDate_text))

@@ -1,153 +1,81 @@
 package hardcoder.dev.presentation.features.waterTracking.drinkType
 
-import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.coroutines.combine
+import hardcoder.dev.controller.InputController
+import hardcoder.dev.controller.SingleRequestController
+import hardcoder.dev.controller.SingleSelectionController
+import hardcoder.dev.controller.ValidatedInputController
+import hardcoder.dev.controller.requireSelectedItem
+import hardcoder.dev.controller.validateAndRequire
 import hardcoder.dev.logic.features.waterTracking.drinkType.CorrectDrinkTypeName
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeDeleter
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeNameValidator
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeUpdater
-import hardcoder.dev.logic.features.waterTracking.drinkType.ValidatedDrinkTypeName
 import hardcoder.dev.logic.icons.IconResourceProvider
-import hardcoder.dev.logic.icons.LocalIcon
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class DrinkTypeUpdateViewModel(
-    private val drinkTypeId: Int,
-    private val drinkTypeNameValidator: DrinkTypeNameValidator,
-    private val drinkTypeProvider: DrinkTypeProvider,
-    private val drinkTypeUpdater: DrinkTypeUpdater,
-    private val drinkTypeDeleter: DrinkTypeDeleter,
+    drinkTypeId: Int,
+    drinkTypeNameValidator: DrinkTypeNameValidator,
+    drinkTypeProvider: DrinkTypeProvider,
+    drinkTypeUpdater: DrinkTypeUpdater,
+    drinkTypeDeleter: DrinkTypeDeleter,
     iconResourceProvider: IconResourceProvider,
 ) : ViewModel() {
 
-    private val updateState = MutableStateFlow<UpdateState>(UpdateState.NotExecuted)
-    private val deleteState = MutableStateFlow<DeleteState>(DeleteState.NotExecuted)
-    private val availableIconsList = MutableStateFlow(iconResourceProvider.getIcons())
-    private val selectedIcon = MutableStateFlow(iconResourceProvider.getIcon(0))
-    private val selectedHydrationIndexPercentage = MutableStateFlow(0)
-    private val name = MutableStateFlow<String?>(null)
-    private val validatedDrinkTypeName = name.map {
-        it?.let {
-            drinkTypeNameValidator.validate(it)
+    private val initialDrinkType = MutableStateFlow<DrinkType?>(null)
+
+    val nameInputController = ValidatedInputController(
+        coroutineScope = viewModelScope,
+        initialInput = "",
+        validation = drinkTypeNameValidator::validate
+    )
+
+    val iconSelectionController = SingleSelectionController(
+        coroutineScope = viewModelScope,
+        items = iconResourceProvider.getIcons()
+    )
+
+    val waterPercentageInputController = InputController(
+        coroutineScope = viewModelScope,
+        initialInput = 0,
+    )
+
+    val updatingController = SingleRequestController(
+        coroutineScope = viewModelScope,
+        request = {
+            drinkTypeUpdater.update(
+                id = drinkTypeId,
+                name = nameInputController.validateAndRequire(),
+                icon = iconSelectionController.requireSelectedItem(),
+                hydrationIndexPercentage = waterPercentageInputController.state.value.input
+            )
+        },
+        isAllowedFlow = nameInputController.state.map {
+            it.validationResult == null || it.validationResult is CorrectDrinkTypeName
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
+    )
+
+    val deletionController = SingleRequestController(
+        coroutineScope = viewModelScope,
+        request = {
+            drinkTypeDeleter.deleteById(drinkTypeId)
+        }
     )
 
     init {
-        fillStateWithUpdatedTrack()
-    }
-
-    val state = combine(
-        updateState,
-        deleteState,
-        name,
-        validatedDrinkTypeName,
-        availableIconsList,
-        selectedIcon,
-        selectedHydrationIndexPercentage
-    ) { updateState, deleteState, name, validatedName,
-        availableIconsList, selectedIcon, selectedHydrationIndexPercentage ->
-        State(
-            updateState = updateState,
-            deleteState = deleteState,
-            name = name,
-            validatedDrinkTypeName = validatedName,
-            availableIconsList = availableIconsList,
-            selectedIcon = selectedIcon,
-            hydrationIndexPercentage = selectedHydrationIndexPercentage,
-            allowUpdate = validatedName is CorrectDrinkTypeName
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = State(
-            updateState = updateState.value,
-            deleteState = deleteState.value,
-            name = name.value,
-            validatedDrinkTypeName = validatedDrinkTypeName.value,
-            availableIconsList = availableIconsList.value,
-            selectedIcon = selectedIcon.value,
-            hydrationIndexPercentage = selectedHydrationIndexPercentage.value,
-            allowUpdate = false
-        )
-    )
-
-    fun updateName(newName: String) {
-        name.value = newName
-    }
-
-    fun updateSelectedIcon(icon: LocalIcon) {
-        selectedIcon.value = icon
-    }
-
-    fun updateHydrationIndexPercentage(hydrationIndexPercentage: Int) {
-        selectedHydrationIndexPercentage.value = hydrationIndexPercentage
-    }
-
-    fun updateDrinkType() {
         viewModelScope.launch {
-            val validatedName = validatedDrinkTypeName.value
-            require(validatedName is CorrectDrinkTypeName)
-
-            drinkTypeProvider.provideDrinkTypeById(drinkTypeId).firstOrNull()?.let {
-                val updatedTrack = it.copy(
-                    id = drinkTypeId,
-                    name = validatedName.data,
-                    icon = selectedIcon.value,
-                    hydrationIndexPercentage = selectedHydrationIndexPercentage.value
-                )
-                drinkTypeUpdater.update(updatedTrack)
-                updateState.value = UpdateState.Executed
-            } ?: throw Resources.NotFoundException("Track not found by it's id")
+            val drinkType = drinkTypeProvider.provideDrinkTypeById(drinkTypeId).first()!!
+            initialDrinkType.value = drinkType
+            nameInputController.changeInput(drinkType.name)
+            waterPercentageInputController.changeInput(drinkType.hydrationIndexPercentage)
+            iconSelectionController.select(drinkType.icon)
         }
-    }
-
-    fun deleteById() {
-        viewModelScope.launch {
-            drinkTypeDeleter.deleteById(drinkTypeId)
-            deleteState.value = DeleteState.Executed
-        }
-    }
-
-    private fun fillStateWithUpdatedTrack() {
-        viewModelScope.launch {
-            drinkTypeProvider.provideDrinkTypeById(drinkTypeId).firstOrNull()?.let { drinkType ->
-                name.value = drinkType.name
-                selectedHydrationIndexPercentage.value = drinkType.hydrationIndexPercentage
-                selectedIcon.value = drinkType.icon
-            }
-        }
-    }
-
-    data class State(
-        val updateState: UpdateState,
-        val deleteState: DeleteState,
-        val allowUpdate: Boolean,
-        val name: String?,
-        val validatedDrinkTypeName: ValidatedDrinkTypeName?,
-        val availableIconsList: List<LocalIcon>,
-        val selectedIcon: LocalIcon,
-        val hydrationIndexPercentage: Int
-    )
-
-    sealed class UpdateState {
-        object Executed : UpdateState()
-        object NotExecuted : UpdateState()
-    }
-
-    sealed class DeleteState {
-        object Executed : DeleteState()
-        object NotExecuted : DeleteState()
     }
 }

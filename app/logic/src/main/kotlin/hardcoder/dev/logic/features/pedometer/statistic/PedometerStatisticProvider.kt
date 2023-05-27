@@ -1,88 +1,57 @@
 package hardcoder.dev.logic.features.pedometer.statistic
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.PedometerTrack
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
+import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
+import hardcoder.dev.math.safeAverage
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Instant
 import kotlin.math.roundToInt
-import kotlin.time.Duration.Companion.milliseconds
-import hardcoder.dev.logic.features.pedometer.PedometerTrack as PedometerTrackEntity
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 class PedometerStatisticProvider(
-    private val appDatabase: AppDatabase,
     private val kilometersResolver: KilometersResolver,
-    private val caloriesResolver: CaloriesResolver
+    private val caloriesResolver: CaloriesResolver,
+    private val pedometerTrackProvider: PedometerTrackProvider
 ) {
 
-    fun providePedometerStatistic() = appDatabase.pedometerTrackQueries
-        .provideAllPedometerTracks()
-        .asFlow()
-        .map { pedometerTrackQuery ->
-            pedometerTrackQuery.executeAsList().map {
-                it.toEntity()
-            }
-        }.map { pedometerTracks ->
-            val totalSteps = pedometerTracks.takeIf {
-                it.isNotEmpty()
-            }?.sumOf { it.stepsCount }
+    fun providePedometerStatistic(
+        range: ClosedRange<Instant> = Instant.DISTANT_PAST..Instant.DISTANT_FUTURE
+    ) = pedometerTrackProvider.providePedometerTracksByRange(range).map { pedometerTracks ->
+        val totalSteps = pedometerTracks.sumOf { it.stepsCount }
 
-            val totalKilometers = totalSteps?.let {
-                kilometersResolver.resolve(it)
-            }
+        val totalKilometers = kilometersResolver.resolve(totalSteps)
 
-            val totalDuration = pedometerTracks.takeIf {
-                it.isNotEmpty()
-            }?.sumOf {
-                it.range.endInclusive.toEpochMilliseconds() - it.range.start.toEpochMilliseconds()
-            }?.milliseconds
+        val totalDuration = pedometerTracks.sumOf {
+            it.range.endInclusive.epochSeconds - it.range.start.epochSeconds
+        }.seconds
 
-            val totalCalories = totalSteps?.let {
-                caloriesResolver.resolve(totalSteps)
-            }
+        val totalCalories = caloriesResolver.resolve(totalSteps)
 
-            val averageSteps = pedometerTracks.takeIf {
-                it.isNotEmpty()
-            }?.map {
-                it.stepsCount
-            }?.average()?.roundToInt()
+        val averageSteps = pedometerTracks.map { it.stepsCount }.safeAverage().roundToInt()
 
-            val averageKilometers = pedometerTracks.takeIf {
-                it.isNotEmpty()
-            }?.map {
-                kilometersResolver.resolve(it.stepsCount)
-            }?.average()?.toFloat()
+        val averageKilometers = pedometerTracks.map {
+            kilometersResolver.resolve(it.stepsCount)
+        }.safeAverage().toFloat()
 
-            val averageDuration = pedometerTracks.takeIf {
-                it.isNotEmpty()
-            }?.map {
-                it.range.endInclusive.toEpochMilliseconds() - it.range.start.toEpochMilliseconds()
-            }?.average()?.milliseconds
+        val averageDuration = pedometerTracks.map {
+            it.range.endInclusive.epochSeconds - it.range.start.epochSeconds
+        }.safeAverage().seconds
 
-            val averageCalories = pedometerTracks.takeIf {
-                it.isNotEmpty()
-            }?.map {
-                caloriesResolver.resolve(it.stepsCount)
-            }?.average()?.toFloat()
+        val averageCalories = pedometerTracks.map {
+            caloriesResolver.resolve(it.stepsCount)
+        }.safeAverage().toFloat()
 
-            if (pedometerTracks.isNotEmpty()) {
-                PedometerStatistic(
-                    totalSteps = totalSteps,
-                    totalKilometers = totalKilometers,
-                    totalDuration = totalDuration,
-                    totalCalories = totalCalories,
-                    averageSteps = averageSteps,
-                    averageKilometers = averageKilometers,
-                    averageDuration = averageDuration,
-                    averageCalories = averageCalories
-                )
-            } else {
-                null
-            }
-        }
-
-    private fun PedometerTrack.toEntity() = PedometerTrackEntity(
-        id, stepsCount, startTime..endTime
-    )
+        PedometerStatistic(
+            totalSteps = totalSteps,
+            totalKilometers = totalKilometers,
+            totalDuration = totalDuration,
+            totalCalories = totalCalories,
+            averageSteps = averageSteps,
+            averageKilometers = averageKilometers,
+            averageDuration = averageDuration,
+            averageCalories = averageCalories
+        )
+    }
 }

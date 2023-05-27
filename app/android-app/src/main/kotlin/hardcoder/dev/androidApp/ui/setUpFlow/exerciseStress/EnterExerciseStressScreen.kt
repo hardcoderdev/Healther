@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,14 +20,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.controller.InputController
+import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.hero.gender.Gender
-import hardcoder.dev.presentation.setUpFlow.EnterExerciseStressTimeViewModel
-import hardcoder.dev.uikit.NumberPicker
+import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
+import hardcoder.dev.uikit.NumberInput
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.buttons.ButtonWithIcon
+import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.text.Title
 
 @Composable
@@ -45,19 +46,20 @@ fun EnterExerciseStressScreen(
         presentationModule.getEnterExerciseStressTimeViewModel()
     }
     val heroCreateViewModel = viewModel {
-        presentationModule.getHeroCreateViewModel()
+        presentationModule.getHeroCreateViewModel(
+            gender = gender,
+            weight = weight,
+            exerciseStressTime = exerciseStressTime
+        )
     }
-    val state = enterExerciseStressTimeViewModel.state.collectAsState()
+
+    LaunchedEffectWhenExecuted(heroCreateViewModel.creationController, onGoForward)
 
     ScaffoldWrapper(
         content = {
             EnterExerciseStressContent(
-                state = state.value,
-                onGoForward = {
-                    heroCreateViewModel.createUserHero(gender, weight, exerciseStressTime)
-                    onGoForward()
-                },
-                onUpdateExerciseStressTime = enterExerciseStressTimeViewModel::updateExerciseStressTime
+                heroCreateViewModel.creationController,
+                enterExerciseStressTimeViewModel.exerciseStressTimeInputController
             )
         },
         topBarConfig = TopBarConfig(
@@ -71,9 +73,8 @@ fun EnterExerciseStressScreen(
 
 @Composable
 private fun EnterExerciseStressContent(
-    state: EnterExerciseStressTimeViewModel.State,
-    onUpdateExerciseStressTime: (Int) -> Unit,
-    onGoForward: () -> Unit
+    heroCreationController: SingleRequestController,
+    exerciseStressTimeInputController: InputController<Int>
 ) {
     Column(
         modifier = Modifier
@@ -88,11 +89,10 @@ private fun EnterExerciseStressContent(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                NumberPicker(
-                    value = state.exerciseStressTime,
-                    range = MINIMUM_HOURS..MAXIMUM_HOURS,
-                    onValueChange = { onUpdateExerciseStressTime(it) },
-                    modifier = Modifier.weight(1.8f)
+                NumberInput(
+                    modifier = Modifier.weight(1.8f),
+                    controller = exerciseStressTimeInputController,
+                    range = MINIMUM_HOURS..MAXIMUM_HOURS
                 )
                 Spacer(modifier = Modifier.width(32.dp))
                 Image(
@@ -104,10 +104,10 @@ private fun EnterExerciseStressContent(
                 )
             }
         }
-        ButtonWithIcon(
+        RequestButtonWithIcon(
+            controller = heroCreationController,
             iconResId = R.drawable.ic_done,
-            labelResId = R.string.setUpFlow_enterExerciseStress_next_buttonText,
-            onClick = onGoForward
+            labelResId = R.string.setUpFlow_enterExerciseStress_next_buttonText
         )
     }
 }

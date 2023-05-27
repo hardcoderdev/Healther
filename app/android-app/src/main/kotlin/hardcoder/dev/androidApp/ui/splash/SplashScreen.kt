@@ -2,10 +2,9 @@ package hardcoder.dev.androidApp.ui.splash
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.presentation.setUpFlow.SplashViewModel
+import hardcoder.dev.uikit.LoadingContainer
 
 @Composable
 fun SplashScreen(onStartSetUp: () -> Unit, onNavigateToDashboard: () -> Unit) {
@@ -13,21 +12,17 @@ fun SplashScreen(onStartSetUp: () -> Unit, onNavigateToDashboard: () -> Unit) {
     val splashViewModel = viewModel {
         presentationModule.getSplashViewModel()
     }
-    val state = splashViewModel.state.collectAsState()
 
-    LaunchedEffect(key1 = state.value) {
-        when (val fetchingState = state.value) {
-            is SplashViewModel.FetchingState.Loaded -> {
-                if (!fetchingState.state.isFirstLaunch) {
-                    onNavigateToDashboard()
-                } else {
+    LoadingContainer(
+        controller = splashViewModel.isFirstLaunchLoadingController,
+        loadedContent = { isFirstLaunch ->
+            LaunchedEffect(isFirstLaunch) {
+                if (isFirstLaunch) {
                     onStartSetUp()
+                } else {
+                    onNavigateToDashboard()
                 }
             }
-
-            is SplashViewModel.FetchingState.Loading -> {
-                /* no-op */
-            }
         }
-    }
+    )
 }

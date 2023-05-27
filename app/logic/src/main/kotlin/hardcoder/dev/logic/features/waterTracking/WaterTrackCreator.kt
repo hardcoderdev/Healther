@@ -17,13 +17,13 @@ class WaterTrackCreator(
 
     suspend fun createWaterTrack(
         date: LocalDateTime,
-        millilitersCount: Int,
+        millilitersCount: CorrectMillilitersCount,
         drinkType: DrinkType
     ) = withContext(dispatcher) {
         appDatabase.waterTrackQueries.insert(
             id = idGenerator.nextId(),
             date = date.toInstant(TimeZone.currentSystemDefault()),
-            millilitersCount = millilitersCount,
+            millilitersCount = millilitersCount.data,
             drinkTypeId = drinkType.id
         )
     }
