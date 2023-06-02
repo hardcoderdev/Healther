@@ -53,6 +53,8 @@
     <string name="waterTracking_createDrinkType_selectHydrationIndex_text">Specify the drink hydration index:</string>
     <string name="waterTracking_createDrinkType_selectedIndex_formatText">Selected index: %d%%</string>
     <string name="waterTracking_createDrinkType_createTrack_buttonText">Save a drink</string>
+    <string name="waterTracking_createDrinkType_nameEmpty">This field can\'t be empty!</string>
+    <string name="waterTracking_createDrinkType_nameMoreThanMaxCharsError">Max characters: %d</string>
 
     <string name="waterTracking_updateDrinkType_title_topBar">Drink type update</string>
     <string name="waterTracking_updateDrinkType_selectedIndex_formatText">Selected index: %d%%</string>
@@ -63,5 +65,7 @@
     <string name="waterTracking_updateDrinkType_enterName_textField">Like a gin tonic…</string>
     <string name="waterTracking_updateDrinkType_enterName_text">Enter the name of the drink:</string>
     <string name="waterTracking_updateDrinkType_createTrack_buttonText">Update drink type</string>
+    <string name="waterTracking_updateDrinkType_nameEmpty">This field can\'t be empty!</string>
+    <string name="waterTracking_updateDrinkType_nameMoreThanMaxCharsError">Max characters: %d</string>
 
 </resources>

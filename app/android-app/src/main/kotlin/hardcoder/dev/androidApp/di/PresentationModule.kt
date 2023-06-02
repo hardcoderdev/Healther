@@ -186,7 +186,6 @@ class PresentationModule(
     )
 
     fun getMoodTrackingHistoryViewModel() = MoodTrackingHistoryViewModel(
-        moodTrackDeleter = logicModule.moodTrackDeleter,
         moodWithActivitiesProvider = logicModule.moodWithActivitiesProvider
     )
 

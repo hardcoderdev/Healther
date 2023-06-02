@@ -25,7 +25,6 @@ import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.uikit.modifiers.onFocusLost
 
-
 interface TextFieldInputAdapter<INPUT> {
     fun decodeInput(input: INPUT): String?
     fun encodeInput(input: String): INPUT

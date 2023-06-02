@@ -2,11 +2,14 @@ package hardcoder.dev.presentation.features.diary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.coroutines.combine
+import hardcoder.dev.controller.InputController
+import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.MultiSelectionController
+import hardcoder.dev.controller.SingleSelectionController
+import hardcoder.dev.controller.selectedItemsOrEmptySet
 import hardcoder.dev.logic.features.diary.DateRangeFilterType
 import hardcoder.dev.logic.features.diary.DateRangeFilterTypeMapper
 import hardcoder.dev.logic.features.diary.DateRangeFilterTypeProvider
-import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
@@ -14,6 +17,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -25,14 +29,7 @@ class DiaryViewModel(
 ) : ViewModel() {
 
     private val selectedDateRangeFilterType = MutableStateFlow(DateRangeFilterType.BY_DAY)
-    private val dateRangeFilterTypes =
-        dateRangeFilterTypeProvider.provideAllDateRangeFilters().stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = emptyList()
-        )
-    private val selectedTagList = MutableStateFlow<List<DiaryTag>>(emptyList())
-    private val searchText = MutableStateFlow("")
+
     private val diaryTrackList = selectedDateRangeFilterType.flatMapLatest {
         diaryTrackProvider.provideAllDiaryTracksByDateRange(dateRangeFilterTypeMapper.map(it))
     }.stateIn(
@@ -41,68 +38,41 @@ class DiaryViewModel(
         initialValue = emptyList()
     )
 
-    private val tagList = diaryTagProvider.provideAllDiaryTags().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = emptyList()
+    val dateRangeFilterTypeSelectionController = SingleSelectionController(
+        coroutineScope = viewModelScope,
+        itemsFlow = dateRangeFilterTypeProvider.provideAllDateRangeFilters()
     )
 
-    val state = combine(
-        tagList,
-        selectedTagList,
-        searchText,
-        dateRangeFilterTypes,
-        selectedDateRangeFilterType,
-        diaryTrackList
-    ) { tagList, selectedTagList, searchText, dateRangeFilterTypes,
-        selectedDateRangeFilterType, diaryTrackList ->
-        State(
-            tagList = tagList,
-            searchText = searchText,
-            filteredTrackList = diaryTrackList.filterTracks(searchText),
-            dateRangeFilterTypes = dateRangeFilterTypes,
-            selectedDateRangeFilterType = selectedDateRangeFilterType,
-            diaryTrackList = diaryTrackList,
-            selectedTagList = selectedTagList
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = State(
-            tagList = tagList.value,
-            searchText = searchText.value,
-            filteredTrackList = emptyList(),
-            dateRangeFilterTypes = dateRangeFilterTypes.value,
-            selectedDateRangeFilterType = selectedDateRangeFilterType.value,
-            diaryTrackList = diaryTrackList.value,
-            selectedTagList = selectedTagList.value
-        )
+    val tagMultiSelectionController = MultiSelectionController(
+        coroutineScope = viewModelScope,
+        itemsFlow = diaryTagProvider.provideAllDiaryTags()
     )
 
-    fun updateSelectedFilterType(type: DateRangeFilterType) {
-        selectedDateRangeFilterType.value = type
-    }
+    val searchTextInputController = InputController(
+        coroutineScope = viewModelScope,
+        initialInput = ""
+    )
 
-    fun updateSearchText(text: String) {
-        searchText.value = text
-    }
+    val diaryTrackLoadingController = LoadingController(
+        coroutineScope = viewModelScope,
+        flow = diaryTrackList
+    )
 
-    fun toggleFilterTag(diaryTag: DiaryTag) {
-        val selectedTagMutableList = selectedTagList.value.toMutableList()
-        val isRemoved = selectedTagMutableList.removeIf { it == diaryTag }
-        if (isRemoved) {
-            selectedTagList.value = selectedTagMutableList
-            return
-        } else {
-            selectedTagMutableList.add(diaryTag)
-            selectedTagList.value = selectedTagMutableList
+    val filteredTrackLoadingController = LoadingController(
+        coroutineScope = viewModelScope,
+        flow = diaryTrackList.map { diaryTrackList ->
+            diaryTrackList.filterTracks(
+                searchTextInputController.state.value.input
+            )
         }
-    }
+    )
 
     private fun List<DiaryTrack>.filterTracks(searchText: String): List<DiaryTrack> {
+        val selectedTagList = tagMultiSelectionController.selectedItemsOrEmptySet()
+
         return if (searchText.isNotEmpty()) {
             val searchedDiaryTrackList = searchDiaryTracks(searchText, this)
-            return if (selectedTagList.value.isNotEmpty()) {
+            return if (selectedTagList.isNotEmpty()) {
                 filterDiaryTracksByTags(searchedDiaryTrackList)
             } else {
                 searchedDiaryTrackList
@@ -113,11 +83,12 @@ class DiaryViewModel(
     }
 
     private fun filterDiaryTracksByTags(diaryTrackList: List<DiaryTrack>): List<DiaryTrack> {
+        val selectedTagList = tagMultiSelectionController.selectedItemsOrEmptySet()
         val filteredTrackList = mutableListOf<DiaryTrack>()
 
         diaryTrackList.forEach { diaryTrack ->
             diaryTrack.diaryAttachmentGroup?.tags?.let { tags ->
-                if (tags.containsAll(selectedTagList.value)) {
+                if (tags.containsAll(selectedTagList)) {
                     filteredTrackList.add(diaryTrack)
                 }
             }
@@ -142,14 +113,4 @@ class DiaryViewModel(
 
         return filteredTrackList
     }
-
-    data class State(
-        val dateRangeFilterTypes: List<DateRangeFilterType>,
-        val selectedDateRangeFilterType: DateRangeFilterType,
-        val searchText: String,
-        val tagList: List<DiaryTag>,
-        val selectedTagList: List<DiaryTag>,
-        val diaryTrackList: List<DiaryTrack>,
-        val filteredTrackList: List<DiaryTrack>
-    )
 }

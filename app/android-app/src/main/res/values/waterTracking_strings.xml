@@ -54,6 +54,8 @@
     <string name="waterTracking_createDrinkType_selectHydrationIndex_text">Укажите индекс гидратации напитка:</string>
     <string name="waterTracking_createDrinkType_selectedIndex_formatText">Выбранный индекс: %d%%</string>
     <string name="waterTracking_createDrinkType_createTrack_buttonText">Сохранить напиток</string>
+    <string name="waterTracking_createDrinkType_nameEmpty">Это поле не может быть пустым!</string>
+    <string name="waterTracking_createDrinkType_nameMoreThanMaxCharsError">Максимальное кол-во символов: %d</string>
 
     <string name="waterTracking_updateDrinkType_title_topBar">Обновление напитка</string>
     <string name="waterTracking_updateDrinkType_selectedIndex_formatText">Выбранный индекс: %d%%</string>
@@ -64,4 +66,6 @@
     <string name="waterTracking_updateDrinkType_enterName_textField">Например, Джин-тоник…</string>
     <string name="waterTracking_updateDrinkType_enterName_text">Введите название напитка:</string>
     <string name="waterTracking_updateDrinkType_createTrack_buttonText">Обновить напиток</string>
+    <string name="waterTracking_updateDrinkType_nameEmpty">Это поле не может быть пустым!</string>
+    <string name="waterTracking_updateDrinkType_nameMoreThanMaxCharsError">Максимальное кол-во символов: %d</string>
 </resources>

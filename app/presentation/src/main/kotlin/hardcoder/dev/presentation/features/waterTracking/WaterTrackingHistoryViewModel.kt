@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.coroutines.mapItems
-import hardcoder.dev.datetime.createRangeForCurrentDay
+import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.logic.features.waterTracking.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
@@ -21,10 +21,10 @@ class WaterTrackingHistoryViewModel(
 
     val dateRangeInputController = InputController(
         coroutineScope = viewModelScope,
-        initialInput = LocalDate.now().createRangeForCurrentDay()
+        initialInput = LocalDate.now().createRangeForThisDay()
     )
 
-    val itemsLoadingController = LoadingController(
+    val waterTracksLoadingController = LoadingController(
         coroutineScope = viewModelScope,
         flow = dateRangeInputController.state.flatMapLatest { range ->
             waterTrackProvider.provideWaterTracksByDayRange(range.input)

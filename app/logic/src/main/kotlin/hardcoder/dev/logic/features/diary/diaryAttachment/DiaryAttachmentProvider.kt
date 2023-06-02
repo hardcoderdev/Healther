@@ -62,7 +62,7 @@ class DiaryAttachmentProvider(
                     AttachmentEntity(
                         fastingTracks = targetEntityArray.filterIsInstance<FastingTrack>(),
                         moodTracks = targetEntityArray.filterIsInstance<MoodTrack>(),
-                        tags = targetEntityArray.filterIsInstance<DiaryTag>()
+                        tags = targetEntityArray.filterIsInstance<DiaryTag>().toSet()
                     )
                 }
             }

@@ -62,10 +62,7 @@ fun CreateWaterTrackScreen(
     onManageDrinkType: () -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getWaterTrackCreateViewModel()
-    }
-
+    val viewModel = viewModel { presentationModule.getWaterTrackCreateViewModel() }
 
     LaunchedEffectWhenExecuted(viewModel.creationController, onGoBack)
 
@@ -124,7 +121,6 @@ private fun CreateWaterTrackContent(
             iconResId = R.drawable.ic_done,
             labelResId = R.string.waterTracking_createWaterTrack_saveEntry_buttonText,
         )
-
         DatePicker(
             onUpdateSelectedDate = dateInputController::changeInput,
             isShowing = datePickerDialogVisibility,

@@ -42,7 +42,7 @@ class DrinkTypeCreateViewModel(
             drinkTypeCreator.create(
                 name = nameInputController.validateAndRequire(),
                 icon = iconSelectionController.requireSelectedItem(),
-                hydrationIndexPercentage = waterPercentageInputController.state.value.input,
+                hydrationIndexPercentage = waterPercentageInputController.state.value.input
             )
         },
         isAllowedFlow = nameInputController.state.map {

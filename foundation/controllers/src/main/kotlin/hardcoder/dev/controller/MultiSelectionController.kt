@@ -45,3 +45,9 @@ class MultiSelectionController<T>(
 }
 
 fun <T> MultiSelectionController<T>.toggleItem(item: T) = toggleItems(listOf(item))
+
+fun <T> MultiSelectionController<T>.requireSelectedItems() =
+    (state.value as MultiSelectionController.State.Loaded).selectedItems
+
+fun <T> MultiSelectionController<T>.selectedItemsOrEmptySet() =
+    (state.value as MultiSelectionController.State.Loaded).selectedItems.ifEmpty { emptySet() }

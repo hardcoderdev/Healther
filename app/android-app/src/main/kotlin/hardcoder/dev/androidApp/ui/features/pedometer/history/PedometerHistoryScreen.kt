@@ -17,7 +17,7 @@ import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.datetime.createRangeForCurrentDay
+import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.uikit.LoadingContainer
@@ -43,16 +43,14 @@ import kotlin.math.roundToInt
 @Composable
 fun PedometerHistoryScreen(onGoBack: () -> Unit) {
     val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getPedometerHistoryViewModel()
-    }
+    val viewModel = viewModel { presentationModule.getPedometerHistoryViewModel() }
 
     ScaffoldWrapper(
         content = {
             PedometerHistoryContent(
-                viewModel.dateRangeInputController,
-                viewModel.statisticLoadingController,
-                viewModel.chartEntriesLoadingController
+                dateRangeInputController = viewModel.dateRangeInputController,
+                statisticLoadingController = viewModel.statisticLoadingController,
+                chartEntriesLoadingController = viewModel.chartEntriesLoadingController
             )
         },
         topBarConfig = TopBarConfig(
@@ -75,7 +73,7 @@ private fun PedometerHistoryContent(
     LaunchedEffect(key1 = calendarState.selectionState.selection) {
         val date = calendarState.selectionState.selection
             .firstOrNull()?.toKotlinLocalDate() ?: LocalDate.now()
-        dateRangeInputController.changeInput(date.createRangeForCurrentDay())
+        dateRangeInputController.changeInput(date.createRangeForThisDay())
     }
 
     LoadingContainer(

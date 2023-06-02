@@ -62,12 +62,12 @@ fun PedometerScreen(
     ScaffoldWrapper(
         content = {
             PedometerContent(
-                viewModel.chartEntriesLoadingController,
-                viewModel.dailyRateStepsLoadingController,
-                viewModel.pedometerAvailabilityLoadingController,
-                viewModel.todayStatisticLoadingController,
-                viewModel.statisticLoadingController,
-                viewModel.pedometerToggleController
+                chartEntriesLoadingController = viewModel.chartEntriesLoadingController,
+                dailyRateStepsLoadingController = viewModel.dailyRateStepsLoadingController,
+                pedometerAvailabilityLoadingController = viewModel.pedometerAvailabilityLoadingController,
+                todayStatisticLoadingController = viewModel.todayStatisticLoadingController,
+                statisticLoadingController = viewModel.statisticLoadingController,
+                pedometerToggleController = viewModel.pedometerToggleController
             )
         },
         topBarConfig = TopBarConfig(
@@ -184,7 +184,7 @@ private fun DailyRateSection(
             Headline(
                 text = stringResource(
                     id = R.string.pedometer_stepCountFormat_text,
-                    todayStatistic.totalSteps ?: 0,
+                    todayStatistic.totalSteps,
                     dailyRateSteps
                 )
             )
@@ -205,7 +205,6 @@ private fun DailyRateSection(
         Spacer(modifier = Modifier.height(16.dp))
         LinearProgressBar(progress = todayStatistic.totalSteps safeDiv dailyRateSteps)
     }
-
 }
 
 @Composable

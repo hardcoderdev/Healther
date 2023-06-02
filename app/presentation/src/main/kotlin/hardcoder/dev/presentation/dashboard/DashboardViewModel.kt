@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
-import hardcoder.dev.datetime.createRangeForCurrentDay
+import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.logic.DateTimeProvider
 import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
@@ -62,7 +62,7 @@ class DashboardViewModel(
 
     private fun pedometerItem() = combine(
         pedometerTrackProvider.providePedometerTracksByRange(
-            LocalDate.now().createRangeForCurrentDay()
+            LocalDate.now().createRangeForThisDay()
         ),
         pedometerManager.isTracking,
         pedometerManager.availability
@@ -95,7 +95,7 @@ class DashboardViewModel(
     }
 
     private fun moodTrackingItemFlow() = moodTrackProvider.provideAllMoodTracksByDayRange(
-        LocalDate.now().createRangeForCurrentDay()
+        LocalDate.now().createRangeForThisDay()
     ).map { moodTrackList ->
         DashboardItem.MoodTrackingFeature(
             averageMoodToday = moodTrackList.groupingBy {

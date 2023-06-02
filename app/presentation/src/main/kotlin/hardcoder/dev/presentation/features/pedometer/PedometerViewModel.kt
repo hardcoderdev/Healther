@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
-import hardcoder.dev.datetime.createRangeForCurrentDay
+import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatisticProvider
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
@@ -33,14 +33,14 @@ class PedometerViewModel(
     val todayStatisticLoadingController = LoadingController(
         coroutineScope = viewModelScope,
         flow = pedometerStatisticProvider.providePedometerStatistic(
-            range = LocalDate.now().createRangeForCurrentDay(TimeZone.currentSystemDefault())
+            range = LocalDate.now().createRangeForThisDay(TimeZone.currentSystemDefault())
         )
     )
 
     val chartEntriesLoadingController = LoadingController(
         coroutineScope = viewModelScope,
         flow = pedometerTrackProvider.providePedometerTracksByRange(
-            LocalDate.now().createRangeForCurrentDay(timeZone = TimeZone.currentSystemDefault())
+            LocalDate.now().createRangeForThisDay(timeZone = TimeZone.currentSystemDefault())
         ).map { pedometerTracks ->
             pedometerTracks.groupBy {
                 it.range.start.toLocalDateTime(TimeZone.currentSystemDefault()).hour

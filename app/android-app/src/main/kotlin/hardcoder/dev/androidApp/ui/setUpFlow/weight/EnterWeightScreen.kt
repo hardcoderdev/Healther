@@ -39,21 +39,18 @@ fun EnterWeightScreen(
     onGoForward: (Gender, Int) -> Unit,
 ) {
     val presentationModule = LocalPresentationModule.current
-
-    val enterWeightViewModel = viewModel {
-        presentationModule.getEnterWeightViewModel()
-    }
+    val enterWeightViewModel = viewModel { presentationModule.getEnterWeightViewModel() }
 
     ScaffoldWrapper(
         content = {
             EnterWeightContent(
+                weightInputController = enterWeightViewModel.weightInputController,
                 onGoForward = {
                     onGoForward(
                         gender,
                         enterWeightViewModel.weightInputController.state.value.input
                     )
-                },
-                enterWeightViewModel.weightInputController
+                }
             )
         },
         topBarConfig = TopBarConfig(

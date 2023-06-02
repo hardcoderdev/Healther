@@ -24,6 +24,7 @@
     <string name="moodTracking_createMoodTrack_youMaySelectActivities_text">Вы можете отметить чем занимались:</string>
     <string name="moodTracking_createMoodTrack_manageActivities_buttonText">Управление занятиями</string>
 
+    <string name="moodTracking_updateMoodTrack_moodTypeNotSelected_text">Создайте и выберите тип настроения!</string>
     <string name="moodTracking_updateMoodTrack_enterTitle_textField">Введите заголовок…</string>
     <string name="moodTracking_updateMoodTrack_enterNote_textField">Заметку вводите здесь…</string>
     <string name="moodTracking_updateMoodTrack_buttonText">Обновить запись</string>
@@ -70,6 +71,8 @@
     <string name="moodTracking_createMoodTrack_selectDateRange_buttonText">Выбрать дату</string>
     <string name="moodTracking_createMoodTrack_selectedDate_formatText">Выбранная дата: %s</string>
     <string name="moodTracking_createMoodTrack_selectAnotherDate_text">\nХотите сделать запись на другую дату?</string>
+    <string name="moodTracking_createMoodType_nameEmpty_error">Название не может быть пустым!</string>
+    <string name="moodTracking_createMoodType_nameMoreThanMaxChars_error">Максимальное кол-во символов: %d</string>
 
     <string name="moodTracking_updateMoodType_title_topBar">Обновление настроения</string>
     <string name="moodTracking_updateMoodType_createTrack_buttonText">Обновить настроение</string>
@@ -82,4 +85,6 @@
     <string name="moodTracking_updateMoodTrack_selectAnotherDate_text">Хотите сделать запись на другую дату?</string>
     <string name="moodTracking_updateMoodTrack_selectedDate_formatText">Выбранная дата: %s</string>
     <string name="moodTracking_updateMoodTrack_selectDateRange_buttonText">Выбрать дату</string>
+    <string name="moodTracking_updateMoodType_nameEmpty_error">Название не может быть пустым!</string>
+    <string name="moodTracking_updateMoodType_nameMoreThanMaxChars_error">Максимальное кол-во символов: %d</string>
 </resources>

@@ -10,5 +10,4 @@ class EnterWeightViewModel : ViewModel() {
         coroutineScope = viewModelScope,
         initialInput = 0
     )
-
 }

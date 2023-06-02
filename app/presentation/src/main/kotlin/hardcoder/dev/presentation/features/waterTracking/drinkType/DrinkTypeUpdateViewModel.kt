@@ -47,7 +47,7 @@ class DrinkTypeUpdateViewModel(
         initialInput = 0,
     )
 
-    val updatingController = SingleRequestController(
+    val updateController = SingleRequestController(
         coroutineScope = viewModelScope,
         request = {
             drinkTypeUpdater.update(

@@ -1,5 +1,6 @@
 package hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.create
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -40,24 +42,23 @@ import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
 import hardcoder.dev.uikit.text.ValidatedTextField
 import hardcoder.dev.uikit.text.rememberValidationAdapter
-import hardcoder.dev.uikit.text.rememberValidationResourcesAdapter
 
 @Composable
 fun CreateDrinkTypeScreen(onGoBack: () -> Unit) {
+    val context = LocalContext.current
     val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getDrinkTypeCreateViewModel()
-    }
+    val viewModel = viewModel { presentationModule.getDrinkTypeCreateViewModel() }
 
     LaunchedEffectWhenExecuted(viewModel.creationController, onGoBack)
 
     ScaffoldWrapper(
         content = {
             CreateDrinkTypeContent(
-                viewModel.nameInputController,
-                viewModel.iconSelectionController,
-                viewModel.waterPercentageInputController,
-                viewModel.creationController
+                context = context,
+                nameInputController = viewModel.nameInputController,
+                iconSelectionController = viewModel.iconSelectionController,
+                waterPercentageInputController = viewModel.waterPercentageInputController,
+                creationController = viewModel.creationController
             )
         },
         topBarConfig = TopBarConfig(
@@ -71,6 +72,7 @@ fun CreateDrinkTypeScreen(onGoBack: () -> Unit) {
 
 @Composable
 private fun CreateDrinkTypeContent(
+    context: Context,
     nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
     iconSelectionController: SingleSelectionController<LocalIcon>,
     waterPercentageInputController: InputController<Int>,
@@ -86,24 +88,25 @@ private fun CreateDrinkTypeContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState())
         ) {
-            EnterDrinkTypeNameSection(nameInputController)
+            EnterDrinkTypeNameSection(context = context, nameInputController = nameInputController)
             Spacer(modifier = Modifier.height(32.dp))
-            SelectIconSection(iconSelectionController)
+            SelectIconSection(iconSelectionController = iconSelectionController)
             Spacer(modifier = Modifier.height(32.dp))
-            EnterDrinkHydrationIndexPercentageSection(waterPercentageInputController)
+            EnterDrinkHydrationIndexPercentageSection(waterPercentageInputController = waterPercentageInputController)
         }
         Spacer(modifier = Modifier.height(16.dp))
         RequestButtonWithIcon(
             controller = creationController,
             iconResId = R.drawable.ic_save,
-            labelResId = R.string.waterTracking_createDrinkType_createTrack_buttonText,
+            labelResId = R.string.waterTracking_createDrinkType_createTrack_buttonText
         )
     }
 }
 
 @Composable
 private fun EnterDrinkTypeNameSection(
-    nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
+    context: Context,
+    nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>
 ) {
     Title(text = stringResource(id = R.string.waterTracking_createDrinkType_enterName_text))
     Spacer(modifier = Modifier.height(16.dp))
@@ -114,8 +117,16 @@ private fun EnterDrinkTypeNameSection(
         validationAdapter = rememberValidationAdapter {
             if (it !is IncorrectDrinkTypeName) null
             else when (val reason = it.reason) {
-                IncorrectDrinkTypeName.Reason.Empty -> "empty"
-                is IncorrectDrinkTypeName.Reason.MoreThanMaxChars -> "to long ${reason.maxChars}"
+                is IncorrectDrinkTypeName.Reason.Empty -> {
+                    context.getString(R.string.waterTracking_createDrinkType_nameEmpty)
+                }
+
+                is IncorrectDrinkTypeName.Reason.MoreThanMaxChars -> {
+                    context.getString(
+                        R.string.waterTracking_createDrinkType_nameMoreThanMaxCharsError,
+                        reason.maxChars
+                    )
+                }
             }
         },
         leadingIcon = {
@@ -130,9 +141,7 @@ private fun EnterDrinkTypeNameSection(
 }
 
 @Composable
-private fun SelectIconSection(
-    iconSelectionController: SingleSelectionController<LocalIcon>
-) {
+private fun SelectIconSection(iconSelectionController: SingleSelectionController<LocalIcon>) {
     Title(text = stringResource(id = R.string.waterTracking_createDrinkType_selectIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
     SingleCardSelectionHorizontalGrid(

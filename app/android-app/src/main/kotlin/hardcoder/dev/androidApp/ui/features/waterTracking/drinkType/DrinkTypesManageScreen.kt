@@ -26,15 +26,13 @@ fun DrinkTypeManageScreen(
     onUpdateDrinkType: (DrinkType) -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getDrinkTypeManageTracksViewModel()
-    }
+    val viewModel = viewModel { presentationModule.getDrinkTypeManageTracksViewModel() }
 
     ScaffoldWrapper(
         content = {
             DrinkTypeManageContent(
                 onUpdateDrinkType = onUpdateDrinkType,
-                viewModel.drinkTypesLoadingController
+                drinkTypesLoadingController = viewModel.drinkTypesLoadingController
             )
         },
         onFabClick = onCreateDrinkType,

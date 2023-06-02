@@ -7,6 +7,7 @@ import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import kotlinx.coroutines.flow.map
 
 class SplashViewModel(appPreferenceProvider: AppPreferenceProvider) : ViewModel() {
+
     val isFirstLaunchLoadingController = LoadingController(
         coroutineScope = viewModelScope,
         flow = appPreferenceProvider.provideAppPreference().map { it == null }

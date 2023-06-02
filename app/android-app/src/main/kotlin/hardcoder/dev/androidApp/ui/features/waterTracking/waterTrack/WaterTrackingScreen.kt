@@ -104,7 +104,6 @@ private fun WaterTrackingContent(
             controller4 = millilitersDrunkLoadingController,
         ) { waterTracks, chartEntries, statistic, millilitersDrunk ->
             DailyRateSection(millilitersDrunk)
-
             Spacer(modifier = Modifier.height(32.dp))
 
             if (chartEntries.isNotEmpty() && statistic != null) {

@@ -1,5 +1,6 @@
 package hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.update
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -52,10 +54,9 @@ fun UpdateDrinkTypeScreen(
     drinkTypeId: Int,
     onGoBack: () -> Unit
 ) {
+    val context = LocalContext.current
     val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getDrinkTypeUpdateViewModel(drinkTypeId)
-    }
+    val viewModel = viewModel { presentationModule.getDrinkTypeUpdateViewModel(drinkTypeId) }
 
     var dialogOpen by remember {
         mutableStateOf(false)
@@ -72,15 +73,16 @@ fun UpdateDrinkTypeScreen(
     )
 
     LaunchedEffectWhenExecuted(viewModel.deletionController, onGoBack)
-    LaunchedEffectWhenExecuted(viewModel.updatingController, onGoBack)
+    LaunchedEffectWhenExecuted(viewModel.updateController, onGoBack)
 
     ScaffoldWrapper(
         content = {
             UpdateDrinkTypeContent(
-                viewModel.nameInputController,
-                viewModel.iconSelectionController,
-                viewModel.waterPercentageInputController,
-                viewModel.updatingController
+                context = context,
+                nameInputController = viewModel.nameInputController,
+                iconSelectionController = viewModel.iconSelectionController,
+                waterPercentageInputController = viewModel.waterPercentageInputController,
+                updateController = viewModel.updateController
             )
         },
         topBarConfig = TopBarConfig(
@@ -102,10 +104,11 @@ fun UpdateDrinkTypeScreen(
 
 @Composable
 private fun UpdateDrinkTypeContent(
+    context: Context,
     nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
     iconSelectionController: SingleSelectionController<LocalIcon>,
     waterPercentageInputController: InputController<Int>,
-    updatingController: SingleRequestController
+    updateController: SingleRequestController
 ) {
     Column(
         Modifier
@@ -117,7 +120,7 @@ private fun UpdateDrinkTypeContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState())
         ) {
-            EnterDrinkTypeNameSection(nameInputController)
+            EnterDrinkTypeNameSection(context = context, nameInputController = nameInputController)
             Spacer(modifier = Modifier.height(32.dp))
             SelectIconSection(iconSelectionController)
             Spacer(modifier = Modifier.height(32.dp))
@@ -125,7 +128,7 @@ private fun UpdateDrinkTypeContent(
         }
         Spacer(modifier = Modifier.height(16.dp))
         RequestButtonWithIcon(
-            controller = updatingController,
+            controller = updateController,
             iconResId = R.drawable.ic_save,
             labelResId = R.string.waterTracking_updateDrinkType_createTrack_buttonText,
         )
@@ -134,6 +137,7 @@ private fun UpdateDrinkTypeContent(
 
 @Composable
 private fun EnterDrinkTypeNameSection(
+    context: Context,
     nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
 ) {
     Title(text = stringResource(id = R.string.waterTracking_updateDrinkType_enterName_text))
@@ -145,8 +149,16 @@ private fun EnterDrinkTypeNameSection(
         validationAdapter = rememberValidationAdapter {
             if (it !is IncorrectDrinkTypeName) null
             else when (val reason = it.reason) {
-                IncorrectDrinkTypeName.Reason.Empty -> "empty"
-                is IncorrectDrinkTypeName.Reason.MoreThanMaxChars -> "to long ${reason.maxChars}"
+                is IncorrectDrinkTypeName.Reason.Empty -> {
+                    context.getString(R.string.waterTracking_updateDrinkType_nameEmpty)
+                }
+
+                is IncorrectDrinkTypeName.Reason.MoreThanMaxChars -> {
+                    context.getString(
+                        R.string.waterTracking_updateDrinkType_nameMoreThanMaxCharsError,
+                        reason.maxChars
+                    )
+                }
             }
         },
         leadingIcon = {

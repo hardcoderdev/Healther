@@ -14,16 +14,16 @@ class MoodTypeCreator(
 ) {
 
     suspend fun create(
-        name: String,
+        name: CorrectMoodTypeName,
         icon: LocalIcon,
-        positivePercentage: Int
+        positiveIndex: Int
     ) = withContext(dispatcher) {
         appDatabase.moodTypeQueries
             .insert(
                 id = idGenerator.nextId(),
-                name = name,
+                name = name.data,
                 iconId = icon.id,
-                positivePercentage = positivePercentage
+                positivePercentage = positiveIndex
             )
     }
 

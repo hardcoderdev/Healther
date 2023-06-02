@@ -10,5 +10,4 @@ class EnterExerciseStressTimeViewModel : ViewModel() {
         coroutineScope = viewModelScope,
         initialInput = 0
     )
-
 }

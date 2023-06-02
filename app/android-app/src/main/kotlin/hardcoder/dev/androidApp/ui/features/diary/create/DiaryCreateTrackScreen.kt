@@ -1,22 +1,18 @@
 package hardcoder.dev.androidApp.ui.features.diary.create
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,19 +22,25 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.controller.MultiSelectionController
+import hardcoder.dev.controller.SingleRequestController
+import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.IncorrectDiaryTrackContent
-import hardcoder.dev.presentation.features.diary.DiaryCreateTrackViewModel
+import hardcoder.dev.logic.features.diary.diaryTrack.ValidatedDiaryTrackContent
+import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
+import hardcoder.dev.uikit.lists.flowRow.MultiSelectionChipFlowRow
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.buttons.ButtonWithIcon
+import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.chip.ActionChip
-import hardcoder.dev.uikit.chip.SelectionChip
-import hardcoder.dev.uikit.text.ErrorText
-import hardcoder.dev.uikit.text.FilledTextField
+import hardcoder.dev.uikit.icons.Icon
+import hardcoder.dev.uikit.text.Label
 import hardcoder.dev.uikit.text.Title
+import hardcoder.dev.uikit.text.ValidatedTextField
+import hardcoder.dev.uikit.text.rememberValidationResourcesAdapter
 
 @Composable
 fun DiaryCreateTrackScreen(
@@ -46,24 +48,16 @@ fun DiaryCreateTrackScreen(
     onManageTags: () -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getDiaryCreateTrackViewModel()
-    }
-    val state = viewModel.state.collectAsState()
+    val viewModel = viewModel { presentationModule.getDiaryCreateTrackViewModel() }
 
-    LaunchedEffect(key1 = state.value.creationState) {
-        if (state.value.creationState is DiaryCreateTrackViewModel.CreationState.Executed) {
-            onGoBack()
-        }
-    }
+    LaunchedEffectWhenExecuted(controller = viewModel.creationController, action = onGoBack)
 
     ScaffoldWrapper(
         content = {
             DiaryCreateTrackContent(
-                state = state.value,
-                onUpdateText = viewModel::updateContent,
-                onCreateTrack = viewModel::createTrack,
-                onToggleTag = viewModel::toggleTag,
+                contentController = viewModel.contentController,
+                creationController = viewModel.creationController,
+                tagMultiSelectionController = viewModel.tagMultiSelectionController,
                 onManageTags = onManageTags
             )
         },
@@ -78,10 +72,9 @@ fun DiaryCreateTrackScreen(
 
 @Composable
 private fun DiaryCreateTrackContent(
-    state: DiaryCreateTrackViewModel.State,
-    onUpdateText: (String) -> Unit,
-    onCreateTrack: () -> Unit,
-    onToggleTag: (DiaryTag) -> Unit,
+    contentController: ValidatedInputController<String, ValidatedDiaryTrackContent>,
+    creationController: SingleRequestController,
+    tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     onManageTags: () -> Unit
 ) {
     Column(
@@ -94,40 +87,29 @@ private fun DiaryCreateTrackContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState())
         ) {
-            EnterBasicInfoSection(
-                state = state,
-                onUpdateText = onUpdateText
-            )
+            EnterBasicInfoSection(contentController = contentController)
             Spacer(modifier = Modifier.height(32.dp))
             SelectTagsSection(
-                state = state,
-                onToggleTag = onToggleTag,
+                tagMultiSelectionController = tagMultiSelectionController,
                 onManageTags = onManageTags
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        ButtonWithIcon(
+        RequestButtonWithIcon(
+            controller = creationController,
             iconResId = R.drawable.ic_save,
-            labelResId = R.string.diary_createTrack_buttonText,
-            onClick = onCreateTrack,
-            isEnabled = state.creationAllowed
+            labelResId = R.string.diary_createTrack_buttonText
         )
     }
 }
 
 @Composable
-private fun EnterBasicInfoSection(
-    state: DiaryCreateTrackViewModel.State,
-    onUpdateText: (String) -> Unit
-) {
-    val validatedDescription = state.validatedDiaryTrackContent
-
+private fun EnterBasicInfoSection(contentController: ValidatedInputController<String, ValidatedDiaryTrackContent>) {
     Title(text = stringResource(id = R.string.diary_createTrack_enterInfo_text))
     Spacer(modifier = Modifier.height(16.dp))
-    FilledTextField(
+    ValidatedTextField(
+        controller = contentController,
         modifier = Modifier.fillMaxWidth(),
-        value = state.description ?: "",
-        onValueChange = onUpdateText,
         label = R.string.diary_createTrack_enterNote_textField,
         multiline = true,
         minLines = 5,
@@ -136,52 +118,41 @@ private fun EnterBasicInfoSection(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Default
         ),
-        isError = validatedDescription is IncorrectDiaryTrackContent
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    AnimatedVisibility(visible = validatedDescription is IncorrectDiaryTrackContent) {
-        if (validatedDescription is IncorrectDiaryTrackContent) {
-            ErrorText(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                text = when (validatedDescription.reason) {
-                    is IncorrectDiaryTrackContent.Reason.Empty -> {
-                        stringResource(R.string.diary_createTrack_descriptionEmpty_text)
-                    }
-                }
-            )
+        validationAdapter = rememberValidationResourcesAdapter {
+            if (it !is IncorrectDiaryTrackContent) null
+            else when (it.reason) {
+                IncorrectDiaryTrackContent.Reason.Empty -> R.string.diary_createTrack_descriptionEmpty_text
+            }
         }
-    }
+    )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SelectTagsSection(
-    state: DiaryCreateTrackViewModel.State,
-    onToggleTag: (DiaryTag) -> Unit,
+    tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     onManageTags: () -> Unit
 ) {
     Title(text = stringResource(id = R.string.diary_createTrack_youMaySelectTags_text))
     Spacer(modifier = Modifier.height(16.dp))
-    FlowRow(
+    MultiSelectionChipFlowRow(
+        controller = tagMultiSelectionController,
+        maxItemsInEachRow = 6,
         modifier = Modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState()),
+        itemModifier = Modifier.padding(top = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        maxItemsInEachRow = 6
-    ) {
-        ManagementTagsButton(onManageTags = onManageTags)
-        state.tagList.forEach { tag ->
-            SelectionChip(
-                modifier = Modifier.padding(top = 8.dp),
-                text = tag.name,
-                iconResId = tag.icon.resourceId,
-                shape = RoundedCornerShape(32.dp),
-                isSelected = state.selectedTags.contains(tag),
-                onClick = { onToggleTag(tag) }
+        actionButton = { ManagementTagsButton(onManageTags = onManageTags) },
+        itemContent = { diaryTag, _ ->
+            Icon(
+                iconResId = diaryTag.icon.resourceId,
+                contentDescription = diaryTag.name
             )
+            Spacer(modifier = Modifier.width(8.dp))
+            Label(text = diaryTag.name)
         }
-    }
+    )
 }
 
 @Composable

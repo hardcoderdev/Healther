@@ -1,6 +1,7 @@
 package hardcoder.dev.logic.features.diary.diaryTag
 
 import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.logic.icons.LocalIcon
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -9,11 +10,15 @@ class DiaryTagUpdater(
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun update(diaryTag: DiaryTag) = withContext(dispatcher) {
+    suspend fun update(
+        id: Int,
+        name: CorrectDiaryTagName,
+        icon: LocalIcon
+    ) = withContext(dispatcher) {
         appDatabase.diaryTagQueries.update(
-            id = diaryTag.id,
-            name = diaryTag.name,
-            iconId = diaryTag.icon.id
+            id = id,
+            name = name.data,
+            iconId = icon.id
         )
     }
 }

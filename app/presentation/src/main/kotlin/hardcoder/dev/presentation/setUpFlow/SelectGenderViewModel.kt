@@ -11,5 +11,4 @@ class SelectGenderViewModel(genderProvider: GenderProvider) : ViewModel() {
         coroutineScope = viewModelScope,
         itemsFlow = genderProvider.provideAllGenders()
     )
-
 }

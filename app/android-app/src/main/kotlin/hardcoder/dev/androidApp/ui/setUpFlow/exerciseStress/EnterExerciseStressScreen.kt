@@ -41,10 +41,7 @@ fun EnterExerciseStressScreen(
     onGoForward: () -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
-
-    val enterExerciseStressTimeViewModel = viewModel {
-        presentationModule.getEnterExerciseStressTimeViewModel()
-    }
+    val enterExerciseStressTimeViewModel = viewModel { presentationModule.getEnterExerciseStressTimeViewModel() }
     val heroCreateViewModel = viewModel {
         presentationModule.getHeroCreateViewModel(
             gender = gender,

@@ -24,6 +24,7 @@
     <string name="moodTracking_createMoodTrack_youMaySelectActivities_text">You can mark what you did:</string>
     <string name="moodTracking_createMoodTrack_manageActivities_buttonText">Activity management</string>
 
+    <string name="moodTracking_updateMoodTrack_moodTypeNotSelected_text">Create and choose the type of mood!</string>
     <string name="moodTracking_updateMoodTrack_enterNote_textField">Enter your note here…</string>
     <string name="moodTracking_updateMoodTrack_enterTitle_textField">Enter title…</string>
     <string name="moodTracking_updateMoodTrack_buttonText">Update track</string>
@@ -70,6 +71,8 @@
     <string name="moodTracking_createMoodTrack_selectDateRange_buttonText">Select date</string>
     <string name="moodTracking_createMoodTrack_selectedDate_formatText">Selected date: %s</string>
     <string name="moodTracking_createMoodTrack_selectAnotherDate_text">Do you want to save the mood for another date?</string>
+    <string name="moodTracking_createMoodType_nameEmpty_error">The name can\'t be empty!</string>
+    <string name="moodTracking_createMoodType_nameMoreThanMaxChars_error">Max characters: %d</string>
 
     <string name="moodTracking_updateMoodType_title_topBar">Mood update</string>
     <string name="moodTracking_updateMoodType_createTrack_buttonText">Update mood</string>
@@ -82,4 +85,6 @@
     <string name="moodTracking_updateMoodTrack_selectAnotherDate_text">Do you want to save the mood for another date?</string>
     <string name="moodTracking_updateMoodTrack_selectedDate_formatText">Selected date: %s</string>
     <string name="moodTracking_updateMoodTrack_selectDateRange_buttonText">Select date</string>
+    <string name="moodTracking_updateMoodType_nameEmpty_error">The name can\'t be empty!</string>
+    <string name="moodTracking_updateMoodType_nameMoreThanMaxChars_error">Max characters: %d</string>
 </resources>

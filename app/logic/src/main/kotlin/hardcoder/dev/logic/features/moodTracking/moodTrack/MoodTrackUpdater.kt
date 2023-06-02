@@ -25,7 +25,7 @@ class MoodTrackUpdater(
     suspend fun update(
         note: String?,
         moodTrack: MoodTrack,
-        selectedActivities: List<Activity>
+        selectedActivities: Set<Activity>
     ) = withContext(dispatcher) {
         appDatabase.moodTrackQueries.update(
             id = moodTrack.id,

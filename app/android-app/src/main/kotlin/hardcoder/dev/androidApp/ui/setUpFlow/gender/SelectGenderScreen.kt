@@ -33,9 +33,7 @@ fun SelectGenderScreen(
     onGoForward: (Gender) -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
-    val selectedGenderViewModel = viewModel {
-        presentationModule.getSelectGenderViewModel()
-    }
+    val selectedGenderViewModel = viewModel { presentationModule.getSelectGenderViewModel() }
 
     ScaffoldWrapper(
         content = {

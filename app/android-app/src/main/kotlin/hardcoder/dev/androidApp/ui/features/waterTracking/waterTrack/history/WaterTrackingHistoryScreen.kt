@@ -18,7 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.datetime.createRangeForCurrentDay
+import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
 import hardcoder.dev.healther.R
@@ -53,7 +53,7 @@ fun WaterTrackingHistoryScreen(
             WaterTrackingContent(
                 onTrackUpdate = onTrackUpdate,
                 dateRangeInputController = viewModel.dateRangeInputController,
-                itemsLoadingController = viewModel.itemsLoadingController
+                itemsLoadingController = viewModel.waterTracksLoadingController
             )
         },
         topBarConfig = TopBarConfig(
@@ -78,7 +78,7 @@ private fun WaterTrackingContent(
             val date = calendarState.selectionState.selection.first().toKotlinLocalDate()
             dateRangeInputController.changeInput(date.getStartOfDay()..date.getEndOfDay())
         } else {
-            dateRangeInputController.changeInput(LocalDate.now().createRangeForCurrentDay())
+            dateRangeInputController.changeInput(LocalDate.now().createRangeForThisDay())
         }
     }
 

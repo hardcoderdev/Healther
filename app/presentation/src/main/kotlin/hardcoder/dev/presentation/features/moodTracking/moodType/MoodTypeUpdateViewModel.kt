@@ -1,22 +1,21 @@
 package hardcoder.dev.presentation.features.moodTracking.moodType
 
-import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.coroutines.combine
+import hardcoder.dev.controller.InputController
+import hardcoder.dev.controller.SingleRequestController
+import hardcoder.dev.controller.SingleSelectionController
+import hardcoder.dev.controller.ValidatedInputController
+import hardcoder.dev.controller.requireSelectedItem
+import hardcoder.dev.controller.validateAndRequire
 import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeDeleter
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeUpdater
-import hardcoder.dev.logic.features.moodTracking.moodType.ValidatedMoodTypeName
 import hardcoder.dev.logic.icons.IconResourceProvider
-import hardcoder.dev.logic.icons.LocalIcon
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class MoodTypeUpdateViewModel(
@@ -28,126 +27,51 @@ class MoodTypeUpdateViewModel(
     iconResourceProvider: IconResourceProvider
 ) : ViewModel() {
 
-    private val updateState = MutableStateFlow<UpdateState>(UpdateState.NotExecuted)
-    private val deleteState = MutableStateFlow<DeleteState>(DeleteState.NotExecuted)
-    private val availableIconResourceList = MutableStateFlow(iconResourceProvider.getIcons())
-    private val selectedIcon = MutableStateFlow(iconResourceProvider.getIcon(0))
-    private val selectedPositivePercentage = MutableStateFlow(0)
-    private val name = MutableStateFlow<String?>(null)
-    private val validatedMoodTypeName = name.map {
-        it?.let {
-            moodTypeNameValidator.validate(it)
+    val moodTypeNameController = ValidatedInputController(
+        coroutineScope = viewModelScope,
+        initialInput = "",
+        validation = moodTypeNameValidator::validate
+    )
+
+    val iconSelectionController = SingleSelectionController(
+        coroutineScope = viewModelScope,
+        items = iconResourceProvider.getIcons()
+    )
+
+    val positiveIndexController = InputController(
+        coroutineScope = viewModelScope,
+        initialInput = 0
+    )
+
+    val updateController = SingleRequestController(
+        coroutineScope = viewModelScope,
+        request = {
+            moodTypeUpdater.update(
+                id = moodTypeId,
+                name = moodTypeNameController.validateAndRequire(),
+                icon = iconSelectionController.requireSelectedItem(),
+                positivePercentage = positiveIndexController.state.value.input
+            )
+        },
+        isAllowedFlow = moodTypeNameController.state.map {
+            it.validationResult == null || it.validationResult is CorrectMoodTypeName
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
+    )
+
+    val deleteController = SingleRequestController(
+        coroutineScope = viewModelScope,
+        request = {
+            moodTypeDeleter.deleteById(moodTypeId)
+        }
     )
 
     init {
-        fillStateWithUpdatedTrack()
-    }
-
-    val state = combine(
-        updateState,
-        deleteState,
-        name,
-        validatedMoodTypeName,
-        availableIconResourceList,
-        selectedIcon,
-        selectedPositivePercentage
-    ) { updateState, deleteState, name, validatedName,
-        availableIconResourceList, selectedIcon, selectedPositivePercentage ->
-        State(
-            updateState = updateState,
-            deleteState = deleteState,
-            name = name,
-            validatedMoodTypeName = validatedName,
-            availableIconsList = availableIconResourceList,
-            selectedIcon = selectedIcon,
-            positivePercentage = selectedPositivePercentage,
-            allowUpdate = validatedName is CorrectMoodTypeName
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = State(
-            updateState = updateState.value,
-            deleteState = deleteState.value,
-            name = name.value,
-            validatedMoodTypeName = validatedMoodTypeName.value,
-            availableIconsList = availableIconResourceList.value,
-            selectedIcon = selectedIcon.value,
-            positivePercentage = selectedPositivePercentage.value,
-            allowUpdate = false
-        )
-    )
-
-    fun updateName(newName: String) {
-        name.value = newName
-    }
-
-    fun updateSelectedIcon(icon: LocalIcon) {
-        selectedIcon.value = icon
-    }
-
-    fun updatePositivePercentage(positivePercentage: Int) {
-        selectedPositivePercentage.value = positivePercentage
-    }
-
-    fun updateMoodType() {
-        viewModelScope.launch {
-            val validatedName = validatedMoodTypeName.value
-            require(validatedName is CorrectMoodTypeName)
-
-            moodTypeProvider.provideMoodTypeByTrackId(moodTypeId).firstOrNull()?.let {
-                val updatedTrack = it.copy(
-                    id = moodTypeId,
-                    name = validatedName.data,
-                    icon = selectedIcon.value,
-                    positivePercentage = selectedPositivePercentage.value
-                )
-                moodTypeUpdater.update(updatedTrack)
-                updateState.value = UpdateState.Executed
-            } ?: throw Resources.NotFoundException("Track not found by it's id")
-        }
-    }
-
-    fun deleteById() {
-        viewModelScope.launch {
-            moodTypeDeleter.deleteById(moodTypeId)
-            deleteState.value = DeleteState.Executed
-        }
-    }
-
-    private fun fillStateWithUpdatedTrack() {
         viewModelScope.launch {
             moodTypeProvider.provideMoodTypeByTrackId(moodTypeId).firstOrNull()?.let { moodType ->
-                name.value = moodType.name
-                selectedIcon.value = moodType.icon
-                selectedPositivePercentage.value = moodType.positivePercentage
+                moodTypeNameController.changeInput(moodType.name)
+                iconSelectionController.select(moodType.icon)
+                positiveIndexController.changeInput(moodType.positivePercentage)
             }
         }
-    }
-
-    data class State(
-        val updateState: UpdateState,
-        val deleteState: DeleteState,
-        val allowUpdate: Boolean,
-        val name: String?,
-        val validatedMoodTypeName: ValidatedMoodTypeName?,
-        val availableIconsList: List<LocalIcon>,
-        val selectedIcon: LocalIcon,
-        val positivePercentage: Int
-    )
-
-    sealed class UpdateState {
-        object Executed : UpdateState()
-        object NotExecuted : UpdateState()
-    }
-
-    sealed class DeleteState {
-        object Executed : DeleteState()
-        object NotExecuted : DeleteState()
     }
 }

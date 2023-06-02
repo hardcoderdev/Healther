@@ -17,7 +17,7 @@ fun DrinkTypeItem(
 ) {
     SelectionChip(
         modifier = modifier,
-        onClick = { onSelect(drinkType) },
+        onSelect = { onSelect(drinkType) },
         text = drinkType.name,
         iconResId = drinkType.icon.resourceId,
         shape = RoundedCornerShape(32.dp),

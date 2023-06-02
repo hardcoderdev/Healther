@@ -11,5 +11,4 @@ class DrinkTypeManageViewModel(drinkTypeProvider: DrinkTypeProvider) : ViewModel
         coroutineScope = viewModelScope,
         flow = drinkTypeProvider.provideAllDrinkTypes()
     )
-
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.coroutines.mapItems
-import hardcoder.dev.datetime.createRangeForCurrentDay
+import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.datetime.millisToLocalDateTime
 import hardcoder.dev.logic.features.waterTracking.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
@@ -25,7 +25,7 @@ class WaterTrackingViewModel(
     val waterTracksLoadingController = LoadingController(
         coroutineScope = viewModelScope,
         flow = waterTrackProvider.provideWaterTracksByDayRange(
-            LocalDate.now().createRangeForCurrentDay()
+            LocalDate.now().createRangeForThisDay()
         ).mapItems { waterTrack ->
             waterTrack.toItem(
                 resolvedMillilitersCount = waterPercentageResolver.resolve(

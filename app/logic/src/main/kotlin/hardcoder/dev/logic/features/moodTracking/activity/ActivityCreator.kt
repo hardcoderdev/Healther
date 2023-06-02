@@ -13,12 +13,12 @@ class ActivityCreator(
 ) {
 
     suspend fun create(
-        name: String,
+        name: CorrectActivityName,
         icon: LocalIcon,
     ) = withContext(dispatcher) {
         appDatabase.activityQueries.insert(
             id = idGenerator.nextId(),
-            name = name,
+            name = name.data,
             iconId = icon.id
         )
     }

@@ -29,7 +29,10 @@ sealed class ValidatedActivityName {
     abstract val data: String
 }
 
-data class CorrectActivityName(override val data: String) : ValidatedActivityName()
+data class CorrectActivityName(
+    override val data: String
+) : ValidatedActivityName()
+
 data class IncorrectActivityName(
     override val data: String,
     val reason: Reason
