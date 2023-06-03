@@ -20,7 +20,7 @@ import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
 import hardcoder.dev.uikit.ScaffoldWrapper
-import hardcoder.dev.uikit.SingleSelectionLazyColumn
+import hardcoder.dev.uikit.SingleCardSelectionLazyColumn
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
@@ -87,18 +87,15 @@ private fun SelectPlanSection(
         Spacer(modifier = Modifier.height(16.dp))
         Description(text = stringResource(id = R.string.fasting_createFastingTrack_planDifficulty_text))
         Spacer(modifier = Modifier.height(16.dp))
-        SingleSelectionLazyColumn(
+        SingleCardSelectionLazyColumn(
             modifier = Modifier.fillMaxWidth(),
+            itemModifier = { Modifier.fillMaxWidth() },
             contentPadding = PaddingValues(vertical = 12.dp),
             controller = fastingPlanSelectionController,
-            itemContent = { fastingPlan, selectedPlan ->
+            itemContent = { fastingPlan, _ ->
                 FastingPlanItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    fastingPlan = fastingPlan,
-                    selectedPlan = selectedPlan,
-                    onSelect = {
-                        fastingPlanSelectionController.select(fastingPlan)
-                    }
+                    customFastingHoursInputController = customFastingHoursInputController,
+                    fastingPlan = fastingPlan
                 )
             }
         )

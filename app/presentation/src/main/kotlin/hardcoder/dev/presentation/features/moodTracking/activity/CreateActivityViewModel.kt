@@ -39,7 +39,7 @@ class CreateActivityViewModel(
             )
         },
         isAllowedFlow = activityNameController.state.map {
-            it.validationResult == null || it.validationResult is CorrectActivityName
+            it.validationResult is CorrectActivityName
         }
     )
 }

@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class MultiSelectionController<T>(
@@ -50,4 +51,10 @@ fun <T> MultiSelectionController<T>.requireSelectedItems() =
     (state.value as MultiSelectionController.State.Loaded).selectedItems
 
 fun <T> MultiSelectionController<T>.selectedItemsOrEmptySet() =
-    (state.value as MultiSelectionController.State.Loaded).selectedItems.ifEmpty { emptySet() }
+    state.map {
+        if (it is MultiSelectionController.State.Loaded) {
+            it.selectedItems
+        } else {
+            emptySet()
+        }
+    }

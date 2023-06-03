@@ -7,7 +7,7 @@ import hardcoder.dev.controller.MultiSelectionController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
 import hardcoder.dev.controller.requireSelectedItem
-import hardcoder.dev.controller.selectedItemsOrEmptySet
+import hardcoder.dev.controller.requireSelectedItems
 import hardcoder.dev.logic.features.moodTracking.activity.ActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackCreator
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
@@ -48,7 +48,7 @@ class MoodTrackingTrackCreateViewModel(
                 note = noteController.state.value.input,
                 moodType = moodTypeSelectionController.requireSelectedItem(),
                 date = dateController.state.value.input,
-                selectedActivities = activitiesMultiSelectionController.selectedItemsOrEmptySet()
+                selectedActivities = activitiesMultiSelectionController.requireSelectedItems()
             )
         }
     )

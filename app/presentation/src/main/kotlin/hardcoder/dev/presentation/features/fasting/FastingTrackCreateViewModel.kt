@@ -19,7 +19,7 @@ class FastingTrackCreateViewModel(
 
     val customFastingHoursInputController = InputController(
         coroutineScope = viewModelScope,
-        initialInput = 0
+        initialInput = DEFAULT_CUSTOM_FASTING_HOURS
     )
 
     val fastingPlanSelectionController = SingleSelectionController(
@@ -40,4 +40,8 @@ class FastingTrackCreateViewModel(
             )
         }
     )
+
+    private companion object {
+        const val DEFAULT_CUSTOM_FASTING_HOURS = 4
+    }
 }

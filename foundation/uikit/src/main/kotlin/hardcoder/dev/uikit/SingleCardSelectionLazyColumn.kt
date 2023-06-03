@@ -3,20 +3,23 @@ package hardcoder.dev.uikit
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.SingleSelectionController
+import hardcoder.dev.uikit.card.SelectionCard
 
 @Composable
-fun <T> SingleSelectionLazyColumn(
+fun <T> SingleCardSelectionLazyColumn(
     controller: SingleSelectionController<T>,
     modifier: Modifier = Modifier,
+    itemModifier: LazyItemScope.() -> Modifier = { Modifier },
     verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(16.dp),
     contentPadding: PaddingValues = PaddingValues(16.dp),
-    itemContent: @Composable (item: T, selectedItem: T) -> Unit,
+    itemContent: @Composable (item: T, isSelected: Boolean) -> Unit,
     emptyContent: @Composable () -> Unit = { DefaultEmptyContent() },
     loadingContent: @Composable () -> Unit = { DefaultLoadingContent() }
 ) {
@@ -28,10 +31,15 @@ fun <T> SingleSelectionLazyColumn(
                 verticalArrangement = verticalArrangement
             ) {
                 items(state.items) { item ->
-                    itemContent(
-                        item = item,
-                        selectedItem = state.selectedItem
-                    )
+                    val isSelected = state.selectedItem == item
+
+                    SelectionCard(
+                        modifier = itemModifier(),
+                        isSelected = isSelected,
+                        onSelect = { controller.select(item) }
+                    ) {
+                        itemContent(item, isSelected)
+                    }
                 }
             }
         }

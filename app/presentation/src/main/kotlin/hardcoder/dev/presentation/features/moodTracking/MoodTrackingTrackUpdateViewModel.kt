@@ -7,7 +7,7 @@ import hardcoder.dev.controller.MultiSelectionController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
 import hardcoder.dev.controller.requireSelectedItem
-import hardcoder.dev.controller.selectedItemsOrEmptySet
+import hardcoder.dev.controller.requireSelectedItems
 import hardcoder.dev.coroutines.firstNotNull
 import hardcoder.dev.logic.features.diary.AttachmentType
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentProvider
@@ -20,10 +20,8 @@ import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackUpdater
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -41,6 +39,8 @@ class MoodTrackingTrackUpdateViewModel(
     activityProvider: ActivityProvider,
     moodTypeProvider: MoodTypeProvider,
 ) : ViewModel() {
+
+    private val selectedActivities = MutableStateFlow<List<Activity>>(emptyList())
 
     val dateController = InputController(
         coroutineScope = viewModelScope,
@@ -62,17 +62,6 @@ class MoodTrackingTrackUpdateViewModel(
         itemsFlow = activityProvider.provideAllActivities()
     )
 
-    private val selectedActivities = MutableStateFlow<List<Activity>>(emptyList())
-    private val initialActivities =
-        moodWithActivityProvider.provideActivityListByMoodTrackId(moodTrackId).map {
-            selectedActivities.value = it
-            it
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = emptyList()
-        )
-
     val updateController = SingleRequestController(
         coroutineScope = viewModelScope,
         request = {
@@ -85,7 +74,7 @@ class MoodTrackingTrackUpdateViewModel(
                 moodTrackUpdater.update(
                     note = noteInputController.state.value.input,
                     moodTrack = moodTrack,
-                    selectedActivities = activitiesMultiSelectionController.selectedItemsOrEmptySet()
+                    selectedActivities = activitiesMultiSelectionController.requireSelectedItems()
                 )
             }
         }
@@ -101,11 +90,10 @@ class MoodTrackingTrackUpdateViewModel(
             val moodTrack = moodTrackProvider.provideById(moodTrackId).firstNotNull()
             moodTypeSelectionController.select(moodTrack.moodType)
             dateController.changeInput(moodTrack.date.toLocalDateTime(TimeZone.currentSystemDefault()))
-            selectedActivities.value = initialActivities.value
-//            moodWithActivityProvider.provideActivityListByMoodTrackId(moodTrackId).map {
-//                selectedActivities.value = it
-//                it
-//            }
+            activitiesMultiSelectionController.toggleItems(
+                moodWithActivityProvider.provideActivityListByMoodTrackId(moodTrackId).first()
+            )
+
             diaryAttachmentProvider.provideAttachmentByEntityId(
                 attachmentType = AttachmentType.MOOD_TRACKING_ENTITY,
                 entityId = moodTrackId

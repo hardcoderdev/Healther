@@ -6,7 +6,7 @@ import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.MultiSelectionController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.ValidatedInputController
-import hardcoder.dev.controller.selectedItemsOrEmptySet
+import hardcoder.dev.controller.requireSelectedItems
 import hardcoder.dev.controller.validateAndRequire
 import hardcoder.dev.coroutines.firstNotNull
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
@@ -40,12 +40,13 @@ class DiaryUpdateTrackViewModel(
     val diaryAttachmentsLoadingController = LoadingController(
         coroutineScope = viewModelScope,
         flow = initialDiaryTrack.filterNotNull().map { diaryTrack ->
-            val diaryAttachmentGroup = diaryTrack.diaryAttachmentGroup!!
-            ReadOnlyDiaryAttachments(
-                moodTracks = diaryAttachmentGroup.moodTracks,
-                fastingTracks = diaryAttachmentGroup.fastingTracks,
-                tags = diaryAttachmentGroup.tags
-            )
+            diaryTrack.diaryAttachmentGroup?.let { diaryAttachmentGroup ->
+                ReadOnlyDiaryAttachments(
+                    moodTracks = diaryAttachmentGroup.moodTracks,
+                    fastingTracks = diaryAttachmentGroup.fastingTracks,
+                    tags = diaryAttachmentGroup.tags
+                )
+            } ?: ReadOnlyDiaryAttachments()
         }
     )
 
@@ -74,7 +75,7 @@ class DiaryUpdateTrackViewModel(
                 id = diaryTrackId,
                 content = contentInputController.validateAndRequire(),
                 diaryAttachmentGroup = initialDiaryTrack.firstNotNull().diaryAttachmentGroup?.copy(
-                    tags = tagMultiSelectionController.selectedItemsOrEmptySet()
+                    tags = tagMultiSelectionController.requireSelectedItems()
                 ) ?: DiaryAttachmentGroup()
             )
         },
@@ -87,15 +88,16 @@ class DiaryUpdateTrackViewModel(
         viewModelScope.launch {
             val diaryTrack = diaryTrackProvider.provideDiaryTrackById(diaryTrackId).first()!!
             initialDiaryTrack.value = diaryTrack
+            tagMultiSelectionController.toggleItems(diaryTrack.diaryAttachmentGroup?.tags?.toList() ?: emptyList())
             contentInputController.changeInput(diaryTrack.content)
         }
     }
 
     data class ReadOnlyDiaryAttachments(
-        val moodTracks: List<MoodTrack>,
-        val fastingTracks: List<FastingTrack>,
-        val tags: Set<DiaryTag>
+        val moodTracks: List<MoodTrack> = emptyList(),
+        val fastingTracks: List<FastingTrack> = emptyList(),
+        val tags: Set<DiaryTag> = emptySet()
     ) {
-        val isNotEmpty = fastingTracks.isNotEmpty() || moodTracks.isNotEmpty()
+        val isEmpty = fastingTracks.isEmpty() && moodTracks.isEmpty()
     }
 }

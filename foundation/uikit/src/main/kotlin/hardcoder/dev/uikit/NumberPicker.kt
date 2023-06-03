@@ -29,9 +29,9 @@ fun NumberPicker(
 
 @Composable
 fun NumberInput(
+    modifier: Modifier = Modifier,
     controller: InputController<Int>,
-    range: IntRange,
-    modifier: Modifier = Modifier
+    range: IntRange
 ) {
     val state by controller.state.collectAsState()
 

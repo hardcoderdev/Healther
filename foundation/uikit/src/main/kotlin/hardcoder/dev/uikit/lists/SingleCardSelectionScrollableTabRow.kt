@@ -2,13 +2,16 @@ package hardcoder.dev.uikit.lists
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import hardcoder.dev.controller.SingleSelectionController
+import hardcoder.dev.uikit.card.SelectionCard
 
 @Composable
-fun <T> SingleSelectionScrollableTabRow(
+fun <T> SingleCardSelectionScrollableTabRow(
     controller: SingleSelectionController<T>,
+    itemModifier: () -> Modifier = { Modifier },
     actionButton: @Composable () -> Unit = {},
-    itemContent: @Composable (items: List<T>, selectedItem: T) -> Unit,
+    itemContent: @Composable (item: T, isSelected: Boolean) -> Unit,
     emptyContent: @Composable () -> Unit = { DefaultEmptyContent() },
     loadingContent: @Composable () -> Unit = { DefaultLoadingContent() }
 ) {
@@ -16,10 +19,16 @@ fun <T> SingleSelectionScrollableTabRow(
         is SingleSelectionController.State.Loaded -> {
             ScrollableTabRow(selectedTabIndex = state.items.indexOf(state.selectedItem) + 1) {
                 actionButton()
-                itemContent(
-                    items = state.items,
-                    selectedItem = state.selectedItem
-                )
+                state.items.forEach { item ->
+                    val isSelected = state.selectedItem == item
+                    SelectionCard(
+                        modifier = itemModifier(),
+                        isSelected = isSelected,
+                        onSelect = { controller.select(item) }
+                    ) {
+                        itemContent(item, isSelected)
+                    }
+                }
             }
         }
 

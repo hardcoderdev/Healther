@@ -44,6 +44,7 @@ import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.chip.ActionChip
+import hardcoder.dev.uikit.chip.content.ChipIconDefaultContent
 import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.lists.flowRow.MultiSelectionChipFlowRow
 import hardcoder.dev.uikit.text.Label
@@ -118,7 +119,7 @@ private fun DiaryUpdateTrackContent(
             LoadingContainer(
                 controller = diaryAttachmentsLoadingController,
                 loadedContent = { readOnlyAttachments ->
-                    if (readOnlyAttachments.isNotEmpty) {
+                    if (!readOnlyAttachments.isEmpty) {
                         Spacer(modifier = Modifier.height(32.dp))
                         AttachedEntitySection(readOnlyDiaryAttachments = readOnlyAttachments)
                     }
@@ -202,13 +203,12 @@ private fun SelectTagsSection(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         actionButton = { ManagementTagsButton(onManageTags = onManageTags) },
+        emptyContent = { ManagementTagsButton(onManageTags = onManageTags) },
         itemContent = { tag, _ ->
-            Icon(
+            ChipIconDefaultContent(
                 iconResId = tag.icon.resourceId,
-                contentDescription = tag.name
+                name = tag.name
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Label(text = tag.name)
         }
     )
 }

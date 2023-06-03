@@ -2,11 +2,10 @@ package hardcoder.dev.presentation.features.diary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.MultiSelectionController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.ValidatedInputController
-import hardcoder.dev.controller.selectedItemsOrEmptySet
+import hardcoder.dev.controller.requireSelectedItems
 import hardcoder.dev.controller.validateAndRequire
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
@@ -24,11 +23,6 @@ class DiaryCreateTrackViewModel(
     diaryTrackContentValidator: DiaryTrackContentValidator
 ) : ViewModel() {
 
-    val dateInputController = InputController(
-        coroutineScope = viewModelScope,
-        initialInput = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-    )
-
     val contentController = ValidatedInputController(
         coroutineScope = viewModelScope,
         initialInput = "",
@@ -44,15 +38,13 @@ class DiaryCreateTrackViewModel(
         coroutineScope = viewModelScope,
         request = {
             diaryTrackCreator.create(
-                content = contentController.validateAndRequire<String>().trim(),
-                date = dateInputController.state.value.input,
-                diaryAttachmentGroup = DiaryAttachmentGroup(
-                    tags = tagMultiSelectionController.selectedItemsOrEmptySet()
-                )
+                content = contentController.validateAndRequire<CorrectDiaryTrackContent>().data.trim(),
+                date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+                diaryAttachmentGroup = DiaryAttachmentGroup(tags = tagMultiSelectionController.requireSelectedItems())
             )
         },
         isAllowedFlow = contentController.state.map {
-            it.validationResult == null || it.validationResult is CorrectDiaryTrackContent
+            it.validationResult is CorrectDiaryTrackContent
         }
     )
 }

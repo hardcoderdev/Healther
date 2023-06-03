@@ -50,9 +50,9 @@ import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.card.ActionCard
 import hardcoder.dev.uikit.chip.ActionChip
+import hardcoder.dev.uikit.chip.content.ChipIconDefaultContent
 import hardcoder.dev.uikit.dialogs.DatePicker
-import hardcoder.dev.uikit.icons.Icon
-import hardcoder.dev.uikit.lists.SingleSelectionScrollableTabRow
+import hardcoder.dev.uikit.lists.SingleCardSelectionScrollableTabRow
 import hardcoder.dev.uikit.lists.flowRow.MultiSelectionChipFlowRow
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.ErrorText
@@ -85,7 +85,7 @@ fun UpdateMoodTrackScreen(
         onUpdateDialogOpen = { dialogOpen = it },
         onCancel = { dialogOpen = false },
         onApprove = {
-            viewModel.deleteController::request
+            viewModel.deleteController.request()
             dialogOpen = false
         }
     )
@@ -186,7 +186,7 @@ private fun SelectMoodSection(
     Column(modifier = Modifier.fillMaxWidth()) {
         Title(text = stringResource(id = R.string.moodTracking_createMoodTrack_howYouFeelYourself_text))
         Spacer(modifier = Modifier.height(16.dp))
-        SingleSelectionScrollableTabRow(
+        SingleCardSelectionScrollableTabRow(
             controller = moodTypeSelectionController,
             actionButton = { MoodTypeManagementButton(onManageMoodTypes = onManageMoodTypes) },
             emptyContent = {
@@ -194,20 +194,16 @@ private fun SelectMoodSection(
                 Spacer(modifier = Modifier.height(8.dp))
                 ErrorText(text = stringResource(id = R.string.moodTracking_updateMoodTrack_moodTypeNotSelected_text))
             },
-            itemContent = { moodTypeList, selectedMoodType ->
-                moodTypeList.forEach { moodType ->
-                    MoodItem(
-                        modifier = Modifier.padding(
-                            start = 4.dp,
-                            end = 16.dp,
-                            top = 16.dp,
-                            bottom = 16.dp
-                        ),
-                        moodType = moodType,
-                        selectedMoodType = selectedMoodType,
-                        onSelect = { moodTypeSelectionController.select(moodType) }
+            itemContent = { moodType, _ ->
+                MoodItem(
+                    moodType = moodType,
+                    modifier = Modifier.padding(
+                        start = 4.dp,
+                        end = 16.dp,
+                        top = 16.dp,
+                        bottom = 16.dp
                     )
-                }
+                )
             }
         )
     }
@@ -261,12 +257,10 @@ private fun SelectActivitiesSection(
         emptyContent = { ManagementActivitiesButton(onManageActivities = onManageActivities) },
         actionButton = { ManagementActivitiesButton(onManageActivities = onManageActivities) },
         itemContent = { activity, _ ->
-            Icon(
+            ChipIconDefaultContent(
                 iconResId = activity.icon.resourceId,
-                contentDescription = activity.name
+                name = activity.name
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Label(text = activity.name)
         }
     )
 }

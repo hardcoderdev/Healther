@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -32,7 +31,7 @@ import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.MultiSelectionController
 import hardcoder.dev.controller.SingleSelectionController
-import hardcoder.dev.controller.selectedItemsOrEmptySet
+import hardcoder.dev.controller.requireSelectedItems
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.diary.DateRangeFilterType
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
@@ -44,6 +43,7 @@ import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
+import hardcoder.dev.uikit.chip.content.ChipIconDefaultContent
 import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.lists.flowRow.MultiSelectionChipFlowRow
 import hardcoder.dev.uikit.lists.flowRow.SingleSelectionChipFlowRow
@@ -94,15 +94,11 @@ fun DiaryScreen(
                 )
             },
             topBarConfig = TopBarConfig(
-                type = TopBarType.SearchTopBar(
+                type = TopBarType.SearchTopBarController(
+                    controller = viewModel.searchTextInputController,
                     titleResId = R.string.diary_title_topBar,
-                    searchText = searchText.value.input,
                     placeholderText = R.string.diary_searchTrack_textField,
-                    onGoBack = onGoBack,
-                    onSearchTextChanged = viewModel.searchTextInputController::changeInput,
-                    onClearClick = {
-                        viewModel.searchTextInputController.changeInput("")
-                    }
+                    onGoBack = onGoBack
                 )
             ),
             actionConfig = ActionConfig(
@@ -144,8 +140,7 @@ private fun DiaryContent(
                         EmptySection(emptyTitleResId = R.string.diary_nowEmpty_text)
                     }
 
-                    searchText.isEmpty() && tagMultiSelectionController.selectedItemsOrEmptySet()
-                        .isEmpty() -> {
+                    searchText.isEmpty() && tagMultiSelectionController.requireSelectedItems().isEmpty() -> {
                         DiaryTrackListSection(items = diaryTrackList, onUpdateTrack = onUpdateTrack)
                     }
 
@@ -261,12 +256,10 @@ private fun FilterTagSection(tagMultiSelectionController: MultiSelectionControll
         maxItemsInEachRow = 8,
         chipShape = RoundedCornerShape(16.dp),
         itemContent = { tag, _ ->
-            Icon(
+            ChipIconDefaultContent(
                 iconResId = tag.icon.resourceId,
-                contentDescription = tag.name
+                name = tag.name
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Label(text = tag.name)
         }
     )
 }

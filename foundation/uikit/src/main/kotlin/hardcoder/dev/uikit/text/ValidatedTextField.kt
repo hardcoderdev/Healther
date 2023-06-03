@@ -17,6 +17,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
@@ -73,10 +74,16 @@ private object TextFieldEmptyAdapter : TextFieldValidationAdapter<Nothing> {
     override fun errorMessage(result: Nothing?): String? = null
 }
 
+enum class TextFieldStyle {
+    FILLED, OUTLINED
+}
+
 @Composable
 fun TextField(
-    controller: InputController<String>,
     modifier: Modifier = Modifier,
+    controller: InputController<String>,
+    textFieldStyle: TextFieldStyle = TextFieldStyle.FILLED,
+    textStyle: TextStyle = TextStyle.Default,
     @StringRes label: Int? = null,
     multiline: Boolean = false,
     minLines: Int = 1,
@@ -89,9 +96,11 @@ fun TextField(
     regex: Regex? = null
 ) {
     ValidatedTextField(
+        textFieldStyle = textFieldStyle,
         controller = controller,
         validationAdapter = TextFieldEmptyAdapter,
         modifier = modifier,
+        textStyle = textStyle,
         label = label,
         multiline = multiline,
         minLines = minLines,
@@ -107,9 +116,11 @@ fun TextField(
 
 @Composable
 fun <VALIDATION_RESULT> ValidatedTextField(
+    modifier: Modifier = Modifier,
     controller: ValidatedInputController<String, VALIDATION_RESULT>,
     validationAdapter: TextFieldValidationAdapter<VALIDATION_RESULT>,
-    modifier: Modifier = Modifier,
+    textFieldStyle: TextFieldStyle = TextFieldStyle.FILLED,
+    textStyle: TextStyle = TextStyle.Default,
     @StringRes label: Int? = null,
     multiline: Boolean = false,
     minLines: Int = 1,
@@ -125,6 +136,8 @@ fun <VALIDATION_RESULT> ValidatedTextField(
         controller = controller,
         inputAdapter = TextInputAdapter,
         validationAdapter = validationAdapter,
+        textFieldStyle = textFieldStyle,
+        textStyle = textStyle,
         modifier = modifier,
         label = label,
         multiline = multiline,
@@ -143,10 +156,12 @@ fun <VALIDATION_RESULT> ValidatedTextField(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun <INPUT, VALIDATION_RESULT> ValidatedInputField(
+    modifier: Modifier = Modifier,
     controller: ValidatedInputController<INPUT, VALIDATION_RESULT>,
     inputAdapter: TextFieldInputAdapter<INPUT>,
     validationAdapter: TextFieldValidationAdapter<VALIDATION_RESULT>,
-    modifier: Modifier = Modifier,
+    textFieldStyle: TextFieldStyle = TextFieldStyle.FILLED,
+    textStyle: TextStyle = TextStyle.Default,
     @StringRes label: Int? = null,
     multiline: Boolean = false,
     minLines: Int = 1,
@@ -176,22 +191,46 @@ fun <INPUT, VALIDATION_RESULT> ValidatedInputField(
         )
     }
 
-    FilledTextField(
-        modifier = modifier.onFocusLost(controller::validate),
-        value = inputAdapter.decodeInput(state.input).orEmpty(),
-        onValueChange = { controller.changeInput(inputAdapter.encodeInput(it)) },
-        isError = error != null,
-        label = label,
-        multiline = multiline,
-        minLines = minLines,
-        maxLines = maxLines,
-        visualTransformation = visualTransformation,
-        keyboardOptions = finalKeyboardOptions,
-        keyboardActions = finalKeyboardActions,
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-        regex = regex,
-    )
+    when (textFieldStyle) {
+        TextFieldStyle.FILLED -> {
+            FilledTextField(
+                modifier = modifier.onFocusLost(controller::validate),
+                value = inputAdapter.decodeInput(state.input).orEmpty(),
+                onValueChange = { controller.changeInput(inputAdapter.encodeInput(it)) },
+                label = label,
+                textStyle = textStyle,
+                multiline = multiline,
+                minLines = minLines,
+                maxLines = maxLines,
+                visualTransformation = visualTransformation,
+                keyboardOptions = finalKeyboardOptions,
+                keyboardActions = finalKeyboardActions,
+                isError = error != null,
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
+                regex = regex,
+
+            )
+        }
+        TextFieldStyle.OUTLINED -> {
+            OutlinedTextField(
+                modifier = modifier.onFocusLost(controller::validate),
+                value = inputAdapter.decodeInput(state.input).orEmpty(),
+                onValueChange = { controller.changeInput(inputAdapter.encodeInput(it)) },
+                isError = error != null,
+                textStyle = textStyle,
+                label = label,
+                multiline = multiline,
+                maxLines = maxLines,
+                visualTransformation = visualTransformation,
+                keyboardOptions = finalKeyboardOptions,
+                keyboardActions = finalKeyboardActions,
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
+                regex = regex,
+            )
+        }
+    }
 
     AnimatedVisibility(
         visible = error != null,

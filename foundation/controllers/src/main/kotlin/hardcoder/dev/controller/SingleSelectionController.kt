@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class SingleSelectionController<T>(
@@ -56,3 +57,12 @@ fun <T> SingleSelectionController(
 
 fun <T> SingleSelectionController<T>.requireSelectedItem() =
     (state.value as SingleSelectionController.State.Loaded).selectedItem
+
+fun <T> SingleSelectionController<T>.selectedItemsOrEmptySet() =
+    state.map {
+        if (it is SingleSelectionController.State.Loaded) {
+            it.selectedItem
+        } else {
+            null
+        }
+    }
