@@ -29,6 +29,7 @@ import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.controller.InputController
+import hardcoder.dev.controller.MultiRequestController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.math.safeDiv
 import hardcoder.dev.healther.R
@@ -170,7 +171,7 @@ private fun NotFastingContent(
 private fun FastingContent(
     state: FastingViewModel.FastingState.Fasting,
     fastingStatistic: FastingStatistic?,
-    interruptFastingController: SingleRequestController
+    interruptFastingController: MultiRequestController
 ) {
     Column(
         modifier = Modifier

@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
@@ -22,7 +23,7 @@ class DateRangeFilterTypeMapper(appPreferenceProvider: AppPreferenceProvider) {
     ).value
 
     private val map = mapOf(
-        DateRangeFilterType.BY_ALL_PERIOD to requireNotNull(appPreferences).firstLaunchTime
+        DateRangeFilterType.BY_ALL_PERIOD to Clock.System.now()
                 ..LocalDate.now().getEndOfDay(),
         DateRangeFilterType.BY_DAY to LocalDate.now().getStartOfDay()
                 ..LocalDate.now().getEndOfDay(),

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.MultiRequestController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
@@ -117,14 +118,14 @@ class FastingViewModel(
         }
     )
 
-    val interruptFastingController = SingleRequestController(
+    val interruptFastingController = MultiRequestController(
         coroutineScope = viewModelScope,
         request = {
             currentFastingManager.interruptFasting()
         }
     )
 
-    val finishFastingController = SingleRequestController(
+    val finishFastingController = MultiRequestController(
         coroutineScope = viewModelScope,
         request = {
             currentFastingManager.clearFasting(note = noteInputController.state.value.input)

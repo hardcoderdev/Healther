@@ -37,14 +37,22 @@ class DiaryCreateTrackViewModel(
     val creationController = SingleRequestController(
         coroutineScope = viewModelScope,
         request = {
+            val tagMultiSelectionControllerState = tagMultiSelectionController.state.value
+
             diaryTrackCreator.create(
-                content = contentController.validateAndRequire<CorrectDiaryTrackContent>().data.trim(),
+                content = contentController.validateAndRequire<CorrectDiaryTrackContent>().data,
                 date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
-                diaryAttachmentGroup = DiaryAttachmentGroup(tags = tagMultiSelectionController.requireSelectedItems())
+                diaryAttachmentGroup = DiaryAttachmentGroup(
+                    tags = if (tagMultiSelectionController.state.value is MultiSelectionController.State.Empty) {
+                        emptySet()
+                    } else {
+                        tagMultiSelectionController.requireSelectedItems()
+                    }
+                )
             )
         },
         isAllowedFlow = contentController.state.map {
-            it.validationResult is CorrectDiaryTrackContent
+            it.validationResult == null || it.validationResult is CorrectDiaryTrackContent
         }
     )
 }

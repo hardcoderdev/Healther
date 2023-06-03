@@ -140,7 +140,7 @@ private fun DiaryContent(
                         EmptySection(emptyTitleResId = R.string.diary_nowEmpty_text)
                     }
 
-                    searchText.isEmpty() && tagMultiSelectionController.requireSelectedItems().isEmpty() -> {
+                    searchText.isEmpty() && tagMultiSelectionController.state.collectAsState().value is MultiSelectionController.State.Empty -> {
                         DiaryTrackListSection(items = diaryTrackList, onUpdateTrack = onUpdateTrack)
                     }
 
