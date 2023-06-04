@@ -13,12 +13,12 @@ class DiaryTagCreator(
 ) {
 
     suspend fun create(
-        name: String,
+        name: CorrectDiaryTagName,
         icon: LocalIcon
     ) = withContext(dispatcher) {
         appDatabase.diaryTagQueries.create(
             id = idGenerator.nextId(),
-            name = name,
+            name = name.data,
             iconId = icon.id
         )
     }

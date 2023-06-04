@@ -4,8 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,25 +32,32 @@ import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.features.DeleteTrackDialog
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodItem
 import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.controller.InputController
+import hardcoder.dev.controller.MultiSelectionController
+import hardcoder.dev.controller.SingleRequestController
+import hardcoder.dev.controller.SingleSelectionController
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
-import hardcoder.dev.presentation.features.moodTracking.MoodTrackingTrackUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
+import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonStyles
 import hardcoder.dev.uikit.buttons.ButtonWithIcon
+import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.card.ActionCard
 import hardcoder.dev.uikit.chip.ActionChip
-import hardcoder.dev.uikit.chip.SelectionChip
+import hardcoder.dev.uikit.chip.content.ChipIconDefaultContent
 import hardcoder.dev.uikit.dialogs.DatePicker
-import hardcoder.dev.uikit.lists.ScrollableTabRow
+import hardcoder.dev.uikit.lists.SingleCardSelectionScrollableTabRow
+import hardcoder.dev.uikit.lists.flowRow.MultiSelectionChipFlowRow
 import hardcoder.dev.uikit.text.Description
-import hardcoder.dev.uikit.text.FilledTextField
+import hardcoder.dev.uikit.text.ErrorText
 import hardcoder.dev.uikit.text.Label
+import hardcoder.dev.uikit.text.TextField
 import hardcoder.dev.uikit.text.Title
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -67,22 +71,10 @@ fun UpdateMoodTrackScreen(
     onManageMoodTypes: () -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getMoodTrackingUpdateViewModel(moodTrackId)
-    }
-    val state = viewModel.state.collectAsState()
+    val viewModel = viewModel { presentationModule.getMoodTrackingUpdateViewModel(moodTrackId) }
 
-    LaunchedEffect(key1 = state.value.updateState) {
-        if (state.value.updateState is MoodTrackingTrackUpdateViewModel.UpdateState.Executed) {
-            onGoBack()
-        }
-    }
-
-    LaunchedEffect(key1 = state.value.deleteState) {
-        if (state.value.deleteState is MoodTrackingTrackUpdateViewModel.DeleteState.Executed) {
-            onGoBack()
-        }
-    }
+    LaunchedEffectWhenExecuted(controller = viewModel.updateController, action = onGoBack)
+    LaunchedEffectWhenExecuted(controller = viewModel.deleteController, action = onGoBack)
 
     var dialogOpen by remember {
         mutableStateOf(false)
@@ -93,7 +85,7 @@ fun UpdateMoodTrackScreen(
         onUpdateDialogOpen = { dialogOpen = it },
         onCancel = { dialogOpen = false },
         onApprove = {
-            viewModel.deleteTrack()
+            viewModel.deleteController.request()
             dialogOpen = false
         }
     )
@@ -101,14 +93,13 @@ fun UpdateMoodTrackScreen(
     ScaffoldWrapper(
         content = {
             UpdateMoodTrackContent(
-                state = state.value,
-                onUpdateMoodType = viewModel::updateSelectedMoodType,
-                onUpdateNote = viewModel::updateNote,
-                onUpdateSelectedDate = viewModel::updateSelectedDate,
+                dateInputController = viewModel.dateController,
+                noteInputController = viewModel.noteInputController,
+                moodTypeSelectionController = viewModel.moodTypeSelectionController,
+                updateController = viewModel.updateController,
+                multiSelectionController = viewModel.activitiesMultiSelectionController,
                 onManageMoodTypes = onManageMoodTypes,
-                onToggleActivity = viewModel::toggleActivity,
                 onManageActivities = onManageActivities,
-                onUpdateTrack = viewModel::updateTrack
             )
         },
         topBarConfig = TopBarConfig(
@@ -130,14 +121,13 @@ fun UpdateMoodTrackScreen(
 
 @Composable
 private fun UpdateMoodTrackContent(
-    state: MoodTrackingTrackUpdateViewModel.State,
-    onUpdateMoodType: (MoodType) -> Unit,
-    onUpdateSelectedDate: (LocalDateTime) -> Unit,
-    onUpdateNote: (String) -> Unit,
+    moodTypeSelectionController: SingleSelectionController<MoodType>,
+    multiSelectionController: MultiSelectionController<Activity>,
+    dateInputController: InputController<LocalDateTime>,
+    noteInputController: InputController<String>,
+    updateController: SingleRequestController,
     onManageMoodTypes: () -> Unit,
-    onManageActivities: () -> Unit,
-    onToggleActivity: (Activity) -> Unit,
-    onUpdateTrack: () -> Unit
+    onManageActivities: () -> Unit
 ) {
     var datePickerDialogVisibility by remember {
         mutableStateOf(false)
@@ -154,32 +144,32 @@ private fun UpdateMoodTrackContent(
                 .verticalScroll(rememberScrollState())
         ) {
             SelectMoodSection(
-                state = state,
-                onUpdateMoodType = onUpdateMoodType,
+                moodTypeSelectionController = moodTypeSelectionController,
                 onManageMoodTypes = onManageMoodTypes
             )
             Spacer(modifier = Modifier.height(16.dp))
-            EnterNoteSection(state = state, onUpdateNote = onUpdateNote)
+            EnterNoteSection(noteInputController = noteInputController)
             Spacer(modifier = Modifier.height(16.dp))
             SelectActivitiesSection(
-                state = state,
-                onToggleActivity = onToggleActivity,
+                multiSelectionController = multiSelectionController,
                 onManageActivities = onManageActivities
             )
             Spacer(modifier = Modifier.height(16.dp))
             SelectDateSection(
-                state = state,
-                onShowDatePicker = { datePickerDialogVisibility = !datePickerDialogVisibility }
+                dateInputController = dateInputController,
+                onShowDatePicker = {
+                    datePickerDialogVisibility = !datePickerDialogVisibility
+                }
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        ButtonWithIcon(
+        RequestButtonWithIcon(
+            controller = updateController,
             iconResId = R.drawable.ic_save,
-            labelResId = R.string.moodTracking_updateMoodTrack_buttonText,
-            onClick = onUpdateTrack
+            labelResId = R.string.moodTracking_updateMoodTrack_buttonText
         )
         DatePicker(
-            onUpdateSelectedDate = onUpdateSelectedDate,
+            onUpdateSelectedDate = dateInputController::changeInput,
             isShowing = datePickerDialogVisibility,
             onClose = {
                 datePickerDialogVisibility = !datePickerDialogVisibility
@@ -190,29 +180,32 @@ private fun UpdateMoodTrackContent(
 
 @Composable
 private fun SelectMoodSection(
-    state: MoodTrackingTrackUpdateViewModel.State,
-    onUpdateMoodType: (MoodType) -> Unit,
+    moodTypeSelectionController: SingleSelectionController<MoodType>,
     onManageMoodTypes: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Title(text = stringResource(id = R.string.moodTracking_createMoodTrack_howYouFeelYourself_text))
         Spacer(modifier = Modifier.height(16.dp))
-        ScrollableTabRow(selectedTabIndex = state.moodTypeList.indexOf(state.selectedMoodType)) {
-            MoodTypeManagementButton(onManageMoodTypes = onManageMoodTypes)
-            state.moodTypeList.forEach { moodType ->
+        SingleCardSelectionScrollableTabRow(
+            controller = moodTypeSelectionController,
+            actionButton = { MoodTypeManagementButton(onManageMoodTypes = onManageMoodTypes) },
+            emptyContent = {
+                MoodTypeManagementButton(onManageMoodTypes = onManageMoodTypes)
+                Spacer(modifier = Modifier.height(8.dp))
+                ErrorText(text = stringResource(id = R.string.moodTracking_updateMoodTrack_moodTypeNotSelected_text))
+            },
+            itemContent = { moodType, _ ->
                 MoodItem(
+                    moodType = moodType,
                     modifier = Modifier.padding(
                         start = 4.dp,
                         end = 16.dp,
                         top = 16.dp,
                         bottom = 16.dp
-                    ),
-                    moodType = moodType,
-                    selectedMoodType = state.selectedMoodType,
-                    onSelect = { onUpdateMoodType(moodType) }
+                    )
                 )
             }
-        }
+        )
     }
 }
 
@@ -245,35 +238,31 @@ private fun MoodTypeManagementButton(onManageMoodTypes: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SelectActivitiesSection(
-    state: MoodTrackingTrackUpdateViewModel.State,
-    onToggleActivity: (Activity) -> Unit,
+    multiSelectionController: MultiSelectionController<Activity>,
     onManageActivities: () -> Unit
 ) {
     Title(text = stringResource(id = R.string.moodTracking_createMoodTrack_youMaySelectActivities_text))
     Spacer(modifier = Modifier.height(16.dp))
-    FlowRow(
+    MultiSelectionChipFlowRow(
+        controller = multiSelectionController,
+        maxItemsInEachRow = 6,
         modifier = Modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        maxItemsInEachRow = 6
-    ) {
-        ManagementActivitiesButton(onManageActivities = onManageActivities)
-        state.activityList.forEach { activity ->
-            SelectionChip(
-                modifier = Modifier.padding(top = 8.dp),
-                text = activity.name,
+        itemModifier = Modifier.padding(top = 8.dp),
+        emptyContent = { ManagementActivitiesButton(onManageActivities = onManageActivities) },
+        actionButton = { ManagementActivitiesButton(onManageActivities = onManageActivities) },
+        itemContent = { activity, _ ->
+            ChipIconDefaultContent(
                 iconResId = activity.icon.resourceId,
-                shape = RoundedCornerShape(32.dp),
-                isSelected = state.selectedHobbies.contains(activity),
-                onClick = { onToggleActivity(activity) }
+                name = activity.name
             )
         }
-    }
+    )
 }
 
 @Composable
@@ -289,16 +278,12 @@ private fun ManagementActivitiesButton(onManageActivities: () -> Unit) {
 
 
 @Composable
-private fun EnterNoteSection(
-    state: MoodTrackingTrackUpdateViewModel.State,
-    onUpdateNote: (String) -> Unit
-) {
+private fun EnterNoteSection(noteInputController: InputController<String>) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Title(text = stringResource(id = R.string.moodTracking_createMoodTrack_youCanAddNote_text))
         Spacer(modifier = Modifier.height(16.dp))
-        FilledTextField(
-            value = state.note ?: "",
-            onValueChange = onUpdateNote,
+        TextField(
+            controller = noteInputController,
             label = R.string.moodTracking_updateMoodTrack_enterNote_textField,
             multiline = true,
             maxLines = 5,
@@ -315,12 +300,15 @@ private fun EnterNoteSection(
 
 @Composable
 private fun SelectDateSection(
-    state: MoodTrackingTrackUpdateViewModel.State,
+    dateInputController: InputController<LocalDateTime>,
     onShowDatePicker: () -> Unit
 ) {
     val uiModule = LocalUIModule.current
     val dateTimeFormatter = uiModule.dateTimeFormatter
-    val selectedDate = state.selectedDate.toInstant(TimeZone.currentSystemDefault())
+    val dateInputControllerState = dateInputController.state.collectAsState()
+
+    val selectedDate =
+        dateInputControllerState.value.input.toInstant(TimeZone.currentSystemDefault())
     val formattedDate = dateTimeFormatter.formatDateTime(selectedDate)
 
     Title(text = stringResource(id = R.string.moodTracking_updateMoodTrack_selectAnotherDate_text))

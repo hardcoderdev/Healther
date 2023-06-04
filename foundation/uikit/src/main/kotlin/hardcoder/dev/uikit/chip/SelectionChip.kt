@@ -29,7 +29,7 @@ import hardcoder.dev.uikit.text.Text
 @Composable
 fun SelectionChip(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+    onSelect: () -> Unit,
     text: String,
     isSelected: Boolean = false,
     padding: PaddingValues = PaddingValues(16.dp),
@@ -51,7 +51,7 @@ fun SelectionChip(
             .border(selectedBorder, shape)
             .clip(shape)
             .clickable(enabled = true, role = Role.Switch) {
-                onClick()
+                onSelect()
             }
             .padding(padding)
             .wrapContentWidth()

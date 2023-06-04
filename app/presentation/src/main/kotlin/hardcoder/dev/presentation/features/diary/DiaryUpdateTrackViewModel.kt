@@ -1,25 +1,29 @@
 package hardcoder.dev.presentation.features.diary
 
-import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.coroutines.combine
+import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.MultiSelectionController
+import hardcoder.dev.controller.SingleRequestController
+import hardcoder.dev.controller.ValidatedInputController
+import hardcoder.dev.controller.requireSelectedItems
+import hardcoder.dev.controller.validateAndRequire
+import hardcoder.dev.coroutines.firstNotNull
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.CorrectDiaryTrackContent
+import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackDeleter
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackContentValidator
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackUpdater
-import hardcoder.dev.logic.features.diary.diaryTrack.ValidatedDiaryTrackContent
+import hardcoder.dev.logic.features.fasting.track.FastingTrack
+import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DiaryUpdateTrackViewModel(
@@ -31,134 +35,69 @@ class DiaryUpdateTrackViewModel(
     diaryTrackContentValidator: DiaryTrackContentValidator
 ) : ViewModel() {
 
-    private val updateState = MutableStateFlow<UpdateState>(UpdateState.NotExecuted)
-    private val deleteState = MutableStateFlow<DeleteState>(DeleteState.NotExecuted)
-    private val content = MutableStateFlow<String?>(null)
-    private val validatedContent = content.map {
-        it?.let {
-            diaryTrackContentValidator.validate(it)
+    private val initialDiaryTrack = MutableStateFlow<DiaryTrack?>(null)
+
+    val diaryAttachmentsLoadingController = LoadingController(
+        coroutineScope = viewModelScope,
+        flow = initialDiaryTrack.filterNotNull().map { diaryTrack ->
+            diaryTrack.diaryAttachmentGroup?.let { diaryAttachmentGroup ->
+                ReadOnlyDiaryAttachments(
+                    moodTracks = diaryAttachmentGroup.moodTracks,
+                    fastingTracks = diaryAttachmentGroup.fastingTracks,
+                    tags = diaryAttachmentGroup.tags
+                )
+            } ?: ReadOnlyDiaryAttachments()
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
     )
 
-    private val tagList = diaryTagProvider.provideAllDiaryTags().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = emptyList()
+    val contentInputController = ValidatedInputController(
+        coroutineScope = viewModelScope,
+        initialInput = "",
+        validation = diaryTrackContentValidator::validate
     )
 
-    private val diaryAttachmentGroup = MutableStateFlow(DiaryAttachmentGroup())
+    val tagMultiSelectionController = MultiSelectionController(
+        coroutineScope = viewModelScope,
+        itemsFlow = diaryTagProvider.provideAllDiaryTags()
+    )
+
+    val deleteController = SingleRequestController(
+        coroutineScope = viewModelScope,
+        request = {
+            diaryTrackDeleter.deleteById(diaryTrackId)
+        }
+    )
+
+    val updateController = SingleRequestController(
+        coroutineScope = viewModelScope,
+        request = {
+            diaryTrackUpdater.update(
+                id = diaryTrackId,
+                content = contentInputController.validateAndRequire(),
+                diaryAttachmentGroup = initialDiaryTrack.firstNotNull().diaryAttachmentGroup?.copy(
+                    tags = tagMultiSelectionController.requireSelectedItems()
+                ) ?: DiaryAttachmentGroup()
+            )
+        },
+        isAllowedFlow = contentInputController.state.map {
+            it.validationResult == null || it.validationResult is CorrectDiaryTrackContent
+        }
+    )
 
     init {
-        fillStateWithUpdatedTrack()
-    }
-
-    val state = combine(
-        updateState,
-        deleteState,
-        content,
-        validatedContent,
-        tagList,
-        diaryAttachmentGroup
-    ) { updateState, deleteState, content, validatedContent,
-        tagList, diaryAttachmentGroup ->
-        State(
-            updateAllowed = validatedContent is CorrectDiaryTrackContent,
-            updateState = updateState,
-            deleteState = deleteState,
-            content = content,
-            validatedContent = validatedContent,
-            tagList = tagList,
-            diaryAttachmentGroup = diaryAttachmentGroup
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = State(
-            updateAllowed = false,
-            updateState = updateState.value,
-            deleteState = deleteState.value,
-            content = content.value,
-            validatedContent = validatedContent.value,
-            tagList = tagList.value,
-            diaryAttachmentGroup = diaryAttachmentGroup.value
-        )
-    )
-
-    fun updateContent(newText: String) {
-        content.value = newText
-    }
-
-    fun toggleTag(diaryTag: DiaryTag) {
-        val selectedTagMutableList = diaryAttachmentGroup.value.tags.toMutableList()
-        val isRemoved = selectedTagMutableList.removeIf { it == diaryTag }
-        if (isRemoved) {
-            diaryAttachmentGroup.update { previousGroup ->
-                previousGroup.copy(tags = selectedTagMutableList)
-            }
-            return
-        } else {
-            selectedTagMutableList.add(diaryTag)
-            diaryAttachmentGroup.update { previousGroup ->
-                previousGroup.copy(tags = selectedTagMutableList)
-            }
-        }
-    }
-
-    fun deleteTrackById() {
         viewModelScope.launch {
-            diaryTrackDeleter.deleteById(diaryTrackId)
-            deleteState.value = DeleteState.Executed
+            val diaryTrack = diaryTrackProvider.provideDiaryTrackById(diaryTrackId).first()!!
+            initialDiaryTrack.value = diaryTrack
+            tagMultiSelectionController.toggleItems(diaryTrack.diaryAttachmentGroup?.tags?.toList() ?: emptyList())
+            contentInputController.changeInput(diaryTrack.content)
         }
     }
 
-    fun updateTrack() {
-        viewModelScope.launch {
-            val validatedContent = validatedContent.value
-            require(validatedContent is CorrectDiaryTrackContent)
-
-            diaryTrackProvider.provideDiaryTrackById(diaryTrackId).firstOrNull()?.let {
-                val updatedTrack = it.copy(content = validatedContent.data.trim())
-
-                diaryTrackUpdater.update(
-                    diaryTrack = updatedTrack,
-                    diaryAttachmentGroup = diaryAttachmentGroup.value
-                )
-            } ?: throw Resources.NotFoundException("Track not found by it's id")
-
-            updateState.value = UpdateState.Executed
-        }
+    data class ReadOnlyDiaryAttachments(
+        val moodTracks: List<MoodTrack> = emptyList(),
+        val fastingTracks: List<FastingTrack> = emptyList(),
+        val tags: Set<DiaryTag> = emptySet()
+    ) {
+        val isEmpty = fastingTracks.isEmpty() && moodTracks.isEmpty()
     }
-
-    private fun fillStateWithUpdatedTrack() {
-        viewModelScope.launch {
-            diaryTrackProvider.provideDiaryTrackById(diaryTrackId).first()?.let { track ->
-                content.value = track.content
-                diaryAttachmentGroup.value = track.diaryAttachmentGroup ?: DiaryAttachmentGroup()
-            }
-        }
-    }
-
-    sealed class UpdateState {
-        object NotExecuted : UpdateState()
-        object Executed : UpdateState()
-    }
-
-    sealed class DeleteState {
-        object NotExecuted : DeleteState()
-        object Executed : DeleteState()
-    }
-
-    data class State(
-        val updateAllowed: Boolean,
-        val updateState: UpdateState,
-        val deleteState: DeleteState,
-        val content: String?,
-        val validatedContent: ValidatedDiaryTrackContent?,
-        val tagList: List<DiaryTag>,
-        val diaryAttachmentGroup: DiaryAttachmentGroup
-    )
 }

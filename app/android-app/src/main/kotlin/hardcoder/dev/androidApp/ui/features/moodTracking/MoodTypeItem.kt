@@ -13,35 +13,26 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
-import hardcoder.dev.uikit.card.SelectionCard
 import hardcoder.dev.uikit.text.Label
 
 @Composable
 fun MoodItem(
     modifier: Modifier = Modifier,
-    moodType: MoodType,
-    selectedMoodType: MoodType?,
-    onSelect: () -> Unit
+    moodType: MoodType
 ) {
-    SelectionCard(
-        isSelected = moodType == selectedMoodType,
-        modifier = modifier,
-        onSelect = onSelect
+    Column(
+        modifier = modifier
+            .width(130.dp)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier
-                .width(130.dp)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                modifier = Modifier.height(60.dp),
-                painter = painterResource(id = moodType.icon.resourceId),
-                contentDescription = moodType.name,
-                alignment = Alignment.Center
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Label(text = moodType.name)
-        }
+        Image(
+            modifier = Modifier.height(60.dp),
+            painter = painterResource(id = moodType.icon.resourceId),
+            contentDescription = moodType.name,
+            alignment = Alignment.Center
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Label(text = moodType.name)
     }
 }

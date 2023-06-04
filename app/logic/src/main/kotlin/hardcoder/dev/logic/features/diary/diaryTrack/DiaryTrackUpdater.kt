@@ -13,16 +13,17 @@ class DiaryTrackUpdater(
 ) {
 
     suspend fun update(
-        diaryTrack: DiaryTrack,
+        id: Int,
+        content: CorrectDiaryTrackContent,
         diaryAttachmentGroup: DiaryAttachmentGroup
     ) = withContext(dispatcher) {
         appDatabase.diaryTrackQueries.update(
-            id = diaryTrack.id,
-            content = diaryTrack.content,
+            id = id,
+            content = content.data,
         )
 
         diaryAttachmentManager.attach(
-            diaryTrackId = diaryTrack.id,
+            diaryTrackId = id,
             attachmentGroup = diaryAttachmentGroup
         )
     }

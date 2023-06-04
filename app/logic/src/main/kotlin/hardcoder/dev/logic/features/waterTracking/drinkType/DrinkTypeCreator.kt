@@ -14,13 +14,13 @@ class DrinkTypeCreator(
 ) {
 
     suspend fun create(
-        name: String,
+        name: CorrectDrinkTypeName,
         icon: LocalIcon,
         hydrationIndexPercentage: Int
     ) = withContext(dispatcher) {
         appDatabase.drinkTypeQueries.insert(
             id = idGenerator.nextId(),
-            name = name,
+            name = name.data,
             iconId = icon.id,
             hydrationIndexPercentage = hydrationIndexPercentage
         )

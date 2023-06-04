@@ -13,7 +13,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -29,6 +28,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
+import hardcoder.dev.controller.InputController
+import hardcoder.dev.controller.MultiRequestController
+import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.math.safeDiv
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
@@ -36,19 +38,21 @@ import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
+import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.Statistics
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonWithIcon
+import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.charts.ActivityColumnChart
 import hardcoder.dev.uikit.charts.MINIMUM_ENTRIES_FOR_SHOWING_CHART
 import hardcoder.dev.uikit.progressBar.CircularProgressBar
 import hardcoder.dev.uikit.sections.EmptyBlock
 import hardcoder.dev.uikit.sections.EmptySection
 import hardcoder.dev.uikit.text.Description
-import hardcoder.dev.uikit.text.FilledTextField
 import hardcoder.dev.uikit.text.Headline
+import hardcoder.dev.uikit.text.TextField
 import hardcoder.dev.uikit.text.Title
 import kotlin.math.roundToInt
 
@@ -60,58 +64,68 @@ fun FastingScreen(
 ) {
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel { presentationModule.getFastingViewModel() }
-    val state = viewModel.state.collectAsState()
 
-    ScaffoldWrapper(
-        content = {
-            when (val fastingState = state.value) {
-                is FastingViewModel.FastingState.NotFasting -> {
-                    NotFastingContent(
-                        state = fastingState,
-                        onCreateFastingTrack = onCreateTrack
+    LoadingContainer(
+        controller1 = viewModel.fastingStateLoadingController,
+        controller2 = viewModel.statisticLoadingController,
+        controller3 = viewModel.chartEntriesLoadingController,
+        controller4 = viewModel.lastThreeFastingTrackLoadingController,
+        loadedContent = { fastingState, statistic, chartEntries, lastThreeFastingTrackList ->
+            ScaffoldWrapper(
+                content = {
+                    when (fastingState) {
+                        is FastingViewModel.FastingState.NotFasting -> {
+                            NotFastingContent(
+                                onCreateFastingTrack = onCreateTrack,
+                                fastingStatistic = statistic,
+                                fastingChartEntries = chartEntries,
+                                lastFastingTracks = lastThreeFastingTrackList
+                            )
+                        }
+
+                        is FastingViewModel.FastingState.Fasting -> {
+                            FastingContent(
+                                state = fastingState,
+                                fastingStatistic = statistic,
+                                interruptFastingController = viewModel.interruptFastingController
+                            )
+                        }
+
+                        is FastingViewModel.FastingState.Finished -> {
+                            FinishFastingContent(
+                                state = fastingState,
+                                onClose = viewModel.finishFastingController::request,
+                                noteInputController = viewModel.noteInputController
+                            )
+                        }
+                    }
+                },
+                actionConfig = if (fastingState is FastingViewModel.FastingState.NotFasting) {
+                    ActionConfig(
+                        actions = listOf(
+                            Action(
+                                iconResId = R.drawable.ic_history,
+                                onActionClick = onHistoryDetails
+                            )
+                        )
+                    )
+                } else {
+                    null
+                },
+                topBarConfig = if (fastingState is FastingViewModel.FastingState.Finished) {
+                    TopBarConfig(
+                        type = TopBarType.TitleTopBar(
+                            titleResId = R.string.fasting_finish_title_topBar
+                        )
+                    )
+                } else {
+                    TopBarConfig(
+                        type = TopBarType.TopBarWithNavigationBack(
+                            titleResId = R.string.fasting_title_topBar,
+                            onGoBack = onGoBack
+                        )
                     )
                 }
-
-                is FastingViewModel.FastingState.Fasting -> {
-                    FastingContent(
-                        state = fastingState,
-                        onEndFasting = viewModel::interruptTrack
-                    )
-                }
-
-                is FastingViewModel.FastingState.Finished -> {
-                    FinishFastingContent(
-                        state = fastingState,
-                        onClose = viewModel::clearFasting,
-                        onUpdateNote = viewModel::updateNote
-                    )
-                }
-            }
-        },
-        actionConfig = if (state.value is FastingViewModel.FastingState.NotFasting) {
-            ActionConfig(
-                actions = listOf(
-                    Action(
-                        iconResId = R.drawable.ic_history,
-                        onActionClick = onHistoryDetails
-                    )
-                )
-            )
-        } else {
-            null
-        },
-        topBarConfig = if (state.value is FastingViewModel.FastingState.Finished) {
-            TopBarConfig(
-                type = TopBarType.TitleTopBar(
-                    titleResId = R.string.fasting_finish_title_topBar
-                )
-            )
-        } else {
-            TopBarConfig(
-                type = TopBarType.TopBarWithNavigationBack(
-                    titleResId = R.string.fasting_title_topBar,
-                    onGoBack = onGoBack
-                )
             )
         }
     )
@@ -119,7 +133,9 @@ fun FastingScreen(
 
 @Composable
 private fun NotFastingContent(
-    state: FastingViewModel.FastingState.NotFasting,
+    fastingChartEntries: List<Pair<Int, Long>>,
+    fastingStatistic: FastingStatistic?,
+    lastFastingTracks: List<FastingTrack>,
     onCreateFastingTrack: () -> Unit
 ) {
     Column(
@@ -132,12 +148,12 @@ private fun NotFastingContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState())
         ) {
-            FastingLastTracksSection(lastFastingTrackList = state.lastFastingTracks)
+            FastingLastTracksSection(lastFastingTrackList = lastFastingTracks)
             Spacer(modifier = Modifier.height(32.dp))
-            state.fastingStatistic?.let { statistic ->
+            fastingStatistic?.let { statistic ->
                 FastingStatisticSection(statistic = statistic)
                 Spacer(modifier = Modifier.height(32.dp))
-                FastingChartSection(fastingChartEntries = state.chartEntries)
+                FastingChartSection(fastingChartEntries = fastingChartEntries)
             } ?: run {
                 EmptySection(emptyTitleResId = R.string.fasting_nowEmpty_text)
             }
@@ -154,7 +170,8 @@ private fun NotFastingContent(
 @Composable
 private fun FastingContent(
     state: FastingViewModel.FastingState.Fasting,
-    onEndFasting: () -> Unit
+    fastingStatistic: FastingStatistic?,
+    interruptFastingController: MultiRequestController
 ) {
     Column(
         modifier = Modifier
@@ -170,7 +187,7 @@ private fun FastingContent(
             Spacer(modifier = Modifier.height(64.dp))
             FastingInfoSection(state = state)
             Spacer(modifier = Modifier.height(16.dp))
-            state.fastingStatistic?.let { statistic ->
+            fastingStatistic?.let { statistic ->
                 FastingStatisticSection(statistic = statistic)
             } ?: run {
                 EmptyBlock(
@@ -180,10 +197,10 @@ private fun FastingContent(
             }
         }
         Spacer(modifier = Modifier.height(32.dp))
-        ButtonWithIcon(
+        RequestButtonWithIcon(
+            controller = interruptFastingController,
             iconResId = R.drawable.ic_close,
-            labelResId = R.string.fasting_interrupt_buttonText,
-            onClick = onEndFasting
+            labelResId = R.string.fasting_interrupt_buttonText
         )
     }
 }
@@ -191,8 +208,8 @@ private fun FastingContent(
 @Composable
 private fun FinishFastingContent(
     state: FastingViewModel.FastingState.Finished,
-    onClose: () -> Unit,
-    onUpdateNote: (String) -> Unit
+    noteInputController: InputController<String>,
+    onClose: () -> Unit
 ) {
     val uiModule = LocalUIModule.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -250,7 +267,7 @@ private fun FinishFastingContent(
             Spacer(modifier = Modifier.height(16.dp))
             Description(text = advicesStringResource)
             Spacer(modifier = Modifier.height(32.dp))
-            AddNoteSection(state = state, onUpdateNote = onUpdateNote)
+            AddNoteSection(noteInputController = noteInputController)
         }
         Spacer(modifier = Modifier.height(16.dp))
         ButtonWithIcon(
@@ -363,15 +380,11 @@ private fun FastingChartSection(fastingChartEntries: List<Pair<Int, Long>>) {
 }
 
 @Composable
-private fun AddNoteSection(
-    state: FastingViewModel.FastingState.Finished,
-    onUpdateNote: (String) -> Unit
-) {
+private fun AddNoteSection(noteInputController: InputController<String>) {
     Title(text = stringResource(id = R.string.fasting_finish_addNoteOptional_text))
     Spacer(modifier = Modifier.height(16.dp))
-    FilledTextField(
-        value = state.note ?: "",
-        onValueChange = onUpdateNote,
+    TextField(
+        controller = noteInputController,
         label = R.string.fasting_createMoodTrack_enterNote_textField,
         multiline = true,
         maxLines = 5,

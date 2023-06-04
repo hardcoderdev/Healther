@@ -28,7 +28,7 @@ class MoodTrackCreator(
         note: String?,
         moodType: MoodType,
         date: LocalDateTime,
-        selectedActivities: List<Activity>
+        selectedActivities: Set<Activity>
     ) = withContext(dispatcher) {
         val moodTrackId = idGenerator.nextId()
 

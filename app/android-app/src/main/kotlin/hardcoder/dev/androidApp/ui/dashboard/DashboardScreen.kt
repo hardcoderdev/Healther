@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,12 +32,14 @@ import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.healther.R
 import hardcoder.dev.math.safeDiv
 import hardcoder.dev.presentation.dashboard.DashboardItem
-import hardcoder.dev.presentation.dashboard.DashboardViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
+import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -61,18 +62,17 @@ fun DashboardScreen(
 ) {
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel { presentationModule.getDashboardViewModel() }
-    val state = viewModel.state.collectAsState()
 
     ScaffoldWrapper(
         content = {
             DashboardContent(
-                state = state.value,
                 onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
                 onGoToPedometerFeature = onGoToPedometerFeature,
-                onTogglePedometerTrackingService = viewModel::onTogglePedometerTrackingService,
                 onGoToFastingFeature = onGoToFastingFeature,
                 onStartFasting = onStartFasting,
-                onGoToMoodTrackingFeature = onGoToMoodTrackingFeature
+                onGoToMoodTrackingFeature = onGoToMoodTrackingFeature,
+                itemsLoadingController = viewModel.itemsLoadingController,
+                pedometerToggleController = viewModel.pedometerToggleController
             )
         },
         topBarConfig = TopBarConfig(
@@ -93,37 +93,39 @@ fun DashboardScreen(
 
 @Composable
 private fun DashboardContent(
-    state: DashboardViewModel.State,
     onGoToWaterTrackingFeature: () -> Unit,
     onGoToPedometerFeature: () -> Unit,
-    onTogglePedometerTrackingService: () -> Unit,
     onGoToFastingFeature: () -> Unit,
     onStartFasting: () -> Unit,
-    onGoToMoodTrackingFeature: () -> Unit
+    onGoToMoodTrackingFeature: () -> Unit,
+    itemsLoadingController: LoadingController<List<DashboardItem>>,
+    pedometerToggleController: ToggleController
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp)
-    ) {
-        // TODO USER CHARACTER SECTION WILL BE HERE
-        featureSection(
-            state = state,
-            onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
-            onGoToPedometerFeature = onGoToPedometerFeature,
-            onTogglePedometerTrackingService = onTogglePedometerTrackingService,
-            onGoToFastingFeature = onGoToFastingFeature,
-            onStartFasting = onStartFasting,
-            onGoToMoodTrackingFeature = onGoToMoodTrackingFeature
-        )
+    LoadingContainer(controller = itemsLoadingController) { items ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp)
+        ) {
+            // TODO USER CHARACTER SECTION WILL BE HERE
+            featureSection(
+                items = items,
+                onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
+                onGoToPedometerFeature = onGoToPedometerFeature,
+                onTogglePedometerTrackingService = pedometerToggleController::toggle,
+                onGoToFastingFeature = onGoToFastingFeature,
+                onStartFasting = onStartFasting,
+                onGoToMoodTrackingFeature = onGoToMoodTrackingFeature
+            )
+        }
     }
 }
 
 
 private fun LazyListScope.featureSection(
-    state: DashboardViewModel.State,
+    items: List<DashboardItem>,
     onGoToWaterTrackingFeature: () -> Unit,
     onGoToPedometerFeature: () -> Unit,
     onTogglePedometerTrackingService: () -> Unit,
@@ -131,7 +133,7 @@ private fun LazyListScope.featureSection(
     onStartFasting: () -> Unit,
     onGoToMoodTrackingFeature: () -> Unit
 ) {
-    items(state.dashboardItems) { feature ->
+    items(items) { feature ->
         when (feature) {
             is DashboardItem.FastingFeature -> {
                 FastingFeatureItem(
@@ -184,14 +186,14 @@ private fun WaterTrackingFeatureItem(
                     text = stringResource(
                         id = R.string.dashboard_water_tracking_progress_format,
                         formatArgs = arrayOf(
-                            waterTrackingFeature.millilitersDrunk,
-                            waterTrackingFeature.dailyRateInMilliliters
+                            waterTrackingFeature.millilitersDrunk.millilitersDrunkCount,
+                            waterTrackingFeature.millilitersDrunk.dailyWaterIntake
                         )
                     )
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 LinearProgressBar(
-                    progress = waterTrackingFeature.millilitersDrunk safeDiv waterTrackingFeature.dailyRateInMilliliters,
+                    progress = waterTrackingFeature.millilitersDrunk.millilitersDrunkCount safeDiv waterTrackingFeature.millilitersDrunk.dailyWaterIntake,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(14.dp))

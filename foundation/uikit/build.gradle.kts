@@ -27,6 +27,7 @@ android {
 }
 
 dependencies {
+    api(project(Modules.Paths.Foundation.controllers))
     addComposeMaterial()
     implementation(Dependencies.dateTime)
     implementation(Dependencies.composeCalendarDateTime)

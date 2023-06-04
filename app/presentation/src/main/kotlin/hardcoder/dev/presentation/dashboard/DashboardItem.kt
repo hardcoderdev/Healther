@@ -1,12 +1,12 @@
 package hardcoder.dev.presentation.dashboard
 
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
+import hardcoder.dev.logic.features.waterTracking.MillilitersDrunkToDailyRate
 import kotlin.time.Duration
 
 sealed class DashboardItem {
     data class WaterTrackingFeature(
-        val millilitersDrunk: Int,
-        val dailyRateInMilliliters: Int
+        val millilitersDrunk: MillilitersDrunkToDailyRate
     ) : DashboardItem()
 
     data class PedometerFeature(

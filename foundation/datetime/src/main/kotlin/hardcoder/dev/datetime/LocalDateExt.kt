@@ -23,7 +23,7 @@ fun LocalDate.getEndOfDay(
     return atTime(LocalTime(hour = 23, minute = 59, second = 59)).toInstant(timeZone)
 }
 
-fun LocalDate.createRangeForCurrentDay(timeZone: TimeZone = TimeZone.currentSystemDefault()): ClosedRange<Instant> {
+fun LocalDate.createRangeForThisDay(timeZone: TimeZone = TimeZone.currentSystemDefault()): ClosedRange<Instant> {
     return getStartOfDay(timeZone)..getEndOfDay(timeZone)
 }
 

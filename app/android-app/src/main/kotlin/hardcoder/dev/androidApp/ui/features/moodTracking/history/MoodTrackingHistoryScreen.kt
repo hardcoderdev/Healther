@@ -11,17 +11,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodTrackItem
+import hardcoder.dev.controller.InputController
+import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
-import hardcoder.dev.presentation.features.moodTracking.MoodTrackingHistoryViewModel
+import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -31,6 +33,7 @@ import io.github.boguszpawlowski.composecalendar.SelectableCalendar
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
 
@@ -40,18 +43,14 @@ fun MoodTrackingHistoryScreen(
     onTrackUpdate: (MoodTrack) -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getMoodTrackingHistoryViewModel()
-    }
-    val state = viewModel.state.collectAsState()
+    val viewModel = viewModel { presentationModule.getMoodTrackingHistoryViewModel() }
 
     ScaffoldWrapper(
         content = {
             MoodTrackingHistoryContent(
-                state = state.value,
-                onFetchMoodTracks = viewModel::updateSelectedRange,
-                onTrackDelete = viewModel::deleteTrack,
-                onTrackUpdate = onTrackUpdate
+                onTrackUpdate = onTrackUpdate,
+                dateRangeInputController = viewModel.dateRangeInputController,
+                moodWithActivitiesLoadingController = viewModel.moodWithActivityLoadingController
             )
         },
         topBarConfig = TopBarConfig(
@@ -65,19 +64,16 @@ fun MoodTrackingHistoryScreen(
 
 @Composable
 private fun MoodTrackingHistoryContent(
-    state: MoodTrackingHistoryViewModel.State,
-    onFetchMoodTracks: (LocalDate) -> Unit,
-    onTrackUpdate: (MoodTrack) -> Unit,
-    onTrackDelete: (Int) -> Unit
+    moodWithActivitiesLoadingController: LoadingController<List<MoodWithActivities>>,
+    dateRangeInputController: InputController<ClosedRange<Instant>>,
+    onTrackUpdate: (MoodTrack) -> Unit
 ) {
     val calendarState = rememberSelectableCalendarState(initialSelectionMode = SelectionMode.Single)
 
     LaunchedEffect(key1 = calendarState.selectionState.selection) {
-        if (calendarState.selectionState.selection.isNotEmpty()) {
-            onFetchMoodTracks(calendarState.selectionState.selection.first().toKotlinLocalDate())
-        } else {
-            onFetchMoodTracks(LocalDate.now())
-        }
+        val date = calendarState.selectionState.selection
+            .firstOrNull()?.toKotlinLocalDate() ?: LocalDate.now()
+        dateRangeInputController.changeInput(date.createRangeForThisDay())
     }
 
     Column(Modifier.padding(16.dp)) {
@@ -89,34 +85,37 @@ private fun MoodTrackingHistoryContent(
         )
         Spacer(modifier = Modifier.height(16.dp))
         MoodTracksHistory(
-            moodTrackList = state.moodWithActivityList,
-            onTrackUpdate = onTrackUpdate,
-            onTrackDelete = onTrackDelete
+            moodWithActivitiesLoadingController = moodWithActivitiesLoadingController,
+            onTrackUpdate = onTrackUpdate
         )
     }
 }
 
 @Composable
 private fun MoodTracksHistory(
-    moodTrackList: List<MoodWithActivities>,
-    onTrackDelete: (Int) -> Unit,
+    moodWithActivitiesLoadingController: LoadingController<List<MoodWithActivities>>,
     onTrackUpdate: (MoodTrack) -> Unit
 ) {
-    if (moodTrackList.isNotEmpty()) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(vertical = 16.dp)
-        ) {
-            items(moodTrackList) { track ->
-                MoodTrackItem(
-                    moodTrack = track.moodTrack,
-                    onUpdate = onTrackUpdate,
-                    activitiesList = track.activityList
-                )
+    LoadingContainer(
+        controller = moodWithActivitiesLoadingController,
+        loadedContent = { moodWithActivitiesList ->
+            if (moodWithActivitiesList.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    contentPadding = PaddingValues(vertical = 16.dp)
+                ) {
+                    items(moodWithActivitiesList) { moodWithActivityTrack ->
+                        MoodTrackItem(
+                            moodTrack = moodWithActivityTrack.moodTrack,
+                            onUpdate = onTrackUpdate,
+                            activitiesList = moodWithActivityTrack.activityList
+                        )
+                    }
+                }
+            } else {
+                Description(text = stringResource(id = R.string.moodTracking_history_emptyDay_text))
             }
         }
-    } else {
-        Description(text = stringResource(id = R.string.moodTracking_history_emptyDay_text))
-    }
+    )
 }

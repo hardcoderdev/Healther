@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package hardcoder.dev.uikit.text
 
 import androidx.annotation.StringRes
@@ -19,6 +17,7 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,6 +27,7 @@ fun OutlinedTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     @StringRes label: Int? = null,
+    textStyle: TextStyle,
     multiline: Boolean = false,
     maxLines: Int = Int.MAX_VALUE,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -70,16 +70,19 @@ fun OutlinedTextField(
         isError = isError,
         readOnly = readOnly,
         leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon
+        trailingIcon = trailingIcon,
+        textStyle = textStyle
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilledTextField(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
     @StringRes label: Int? = null,
+    textStyle: TextStyle,
     multiline: Boolean = false,
     minLines: Int = 1,
     maxLines: Int = Int.MAX_VALUE,
@@ -88,8 +91,8 @@ fun FilledTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     isError: Boolean = false,
     readOnly: Boolean = false,
-    leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable() (() -> Unit)? = null,
+    trailingIcon: @Composable() (() -> Unit)? = null,
     regex: Regex? = null,
     onFocusChanged: (FocusState) -> Unit = {}
 ) {
@@ -133,6 +136,7 @@ fun FilledTextField(
         isError = isError,
         readOnly = readOnly,
         leadingIcon = leadingIcon,
-        trailingIcon = if (focusState?.hasFocus == true) trailingIcon else null
+        trailingIcon = if (focusState?.hasFocus == true) trailingIcon else null,
+        textStyle = textStyle
     )
 }

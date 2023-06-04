@@ -8,15 +8,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
-import hardcoder.dev.presentation.features.diary.tags.ManageTagsViewModel
+import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -30,15 +30,12 @@ fun ManageTagsScreen(
     onUpdateTag: (DiaryTag) -> Unit
 ) {
     val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getManageTagsViewModel()
-    }
-    val state = viewModel.state.collectAsState()
+    val viewModel = viewModel { presentationModule.getManageTagsViewModel() }
 
     ScaffoldWrapper(
         content = {
             ManageTagsContent(
-                state = state.value,
+                tagsLoadingController = viewModel.diaryTagsLoadingController,
                 onUpdateTag = onUpdateTag
             )
         },
@@ -55,34 +52,39 @@ fun ManageTagsScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ManageTagsContent(
-    state: ManageTagsViewModel.State,
+    tagsLoadingController: LoadingController<List<DiaryTag>>,
     onUpdateTag: (DiaryTag) -> Unit
 ) {
-    if (state.diaryTagList.isNotEmpty()) {
-        FlowRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            maxItemsInEachRow = 4
-        ) {
-            state.diaryTagList.forEach { tag ->
-                ActionChip(
-                    modifier = Modifier.padding(top = 8.dp),
-                    onClick = { onUpdateTag(tag) },
-                    text = tag.name,
-                    iconResId = tag.icon.resourceId,
-                    shape = RoundedCornerShape(32.dp)
-                )
+    LoadingContainer(
+        controller = tagsLoadingController,
+        loadedContent = { diaryTagList ->
+            if (diaryTagList.isNotEmpty()) {
+                FlowRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    maxItemsInEachRow = 4
+                ) {
+                    diaryTagList.forEach { tag ->
+                        ActionChip(
+                            modifier = Modifier.padding(top = 8.dp),
+                            onClick = { onUpdateTag(tag) },
+                            text = tag.name,
+                            iconResId = tag.icon.resourceId,
+                            shape = RoundedCornerShape(32.dp)
+                        )
+                    }
+                }
+            } else {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    EmptySection(emptyTitleResId = R.string.diary_manageTags_nowEmpty_text)
+                }
             }
         }
-    } else {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            EmptySection(emptyTitleResId = R.string.diary_manageTags_nowEmpty_text)
-        }
-    }
+    )
 }

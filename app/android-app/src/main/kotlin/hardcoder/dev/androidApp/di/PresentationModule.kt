@@ -1,6 +1,7 @@
 package hardcoder.dev.androidApp.di
 
 import android.content.Context
+import hardcoder.dev.logic.hero.gender.Gender
 import hardcoder.dev.presentation.dashboard.DashboardViewModel
 import hardcoder.dev.presentation.features.diary.DiaryCreateTrackViewModel
 import hardcoder.dev.presentation.features.diary.DiaryUpdateTrackViewModel
@@ -70,16 +71,22 @@ class PresentationModule(
         appPreferenceUpdater = logicModule.appPreferenceUpdater
     )
 
-    fun getHeroCreateViewModel() = HeroCreateViewModel(
+    fun getHeroCreateViewModel(
+        gender: Gender,
+        weight: Int,
+        exerciseStressTime: Int
+    ) = HeroCreateViewModel(
         heroCreator = logicModule.heroCreator,
-        appPreferenceUpdater = logicModule.appPreferenceUpdater
+        appPreferenceUpdater = logicModule.appPreferenceUpdater,
+        gender = gender,
+        weight = weight,
+        exerciseStressTime = exerciseStressTime
     )
 
     fun getWaterTrackingViewModel() = WaterTrackingViewModel(
         waterTrackProvider = logicModule.waterTrackProvider,
         waterPercentageResolver = logicModule.waterPercentageResolver,
         waterTrackingStatisticProvider = logicModule.waterTrackingStatisticProvider,
-        dailyRateProvider = logicModule.waterTrackingDailyRateProvider,
         millilitersDrunkProvider = logicModule.waterTrackingMillilitersDrunkProvider
     )
 
@@ -103,22 +110,21 @@ class PresentationModule(
     )
 
     fun getWaterTrackCreateViewModel() = WaterTrackingCreateViewModel(
-        heroProvider = logicModule.heroProvider,
         waterTrackCreator = logicModule.waterTrackCreator,
         drinkTypeProvider = logicModule.drinkTypeProvider,
-        waterIntakeResolver = logicModule.waterIntakeResolver,
-        waterTrackMillilitersValidator = logicModule.waterTrackMillilitersValidator
+        waterTrackMillilitersValidator = logicModule.waterTrackMillilitersValidator,
+        dateTimeProvider = logicModule.dateTimeProvider,
+        waterTrackingDailyRateProvider = logicModule.waterTrackingDailyRateProvider
     )
 
     fun getWaterTrackUpdateViewModel(waterTrackId: Int) = WaterTrackingUpdateViewModel(
         waterTrackId = waterTrackId,
-        heroProvider = logicModule.heroProvider,
         waterTrackUpdater = logicModule.waterTrackUpdater,
         waterTrackProvider = logicModule.waterTrackProvider,
         drinkTypeProvider = logicModule.drinkTypeProvider,
         waterTrackMillilitersValidator = logicModule.waterTrackMillilitersValidator,
-        waterIntakeResolver = logicModule.waterIntakeResolver,
-        waterTrackDeleter = logicModule.waterTrackDeleter
+        waterTrackDeleter = logicModule.waterTrackDeleter,
+        waterTrackingDailyRateProvider = logicModule.waterTrackingDailyRateProvider
     )
 
     fun getWaterTrackingHistoryViewModel() = WaterTrackingHistoryViewModel(
@@ -128,16 +134,13 @@ class PresentationModule(
 
     fun getPedometerViewModel() = PedometerViewModel(
         pedometerManager = logicModule.pedometerManager,
-        kilometersResolver = logicModule.kilometersResolver,
-        caloriesResolver = logicModule.caloriesResolver,
         pedometerTrackProvider = logicModule.pedometerTrackProvider,
         pedometerStatisticProvider = logicModule.pedometerStatisticProvider
     )
 
     fun getPedometerHistoryViewModel() = PedometerHistoryViewModel(
-        kilometersResolver = logicModule.kilometersResolver,
-        caloriesResolver = logicModule.caloriesResolver,
-        pedometerTrackProvider = logicModule.pedometerTrackProvider
+        pedometerTrackProvider = logicModule.pedometerTrackProvider,
+        pedometerStatisticProvider = logicModule.pedometerStatisticProvider
     )
 
     fun getFastingViewModel() = FastingViewModel(
@@ -183,7 +186,6 @@ class PresentationModule(
     )
 
     fun getMoodTrackingHistoryViewModel() = MoodTrackingHistoryViewModel(
-        moodTrackDeleter = logicModule.moodTrackDeleter,
         moodWithActivitiesProvider = logicModule.moodWithActivitiesProvider
     )
 

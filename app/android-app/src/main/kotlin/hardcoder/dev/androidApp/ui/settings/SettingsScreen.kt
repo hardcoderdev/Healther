@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -15,27 +14,31 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.settings.SettingsViewModel
+import hardcoder.dev.logic.appPreferences.AppPreference
+import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonWithIcon
+import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.text.Title
 
-private const val DEVELOPER_PAGE_LINK = "https://play.google.com/store/apps/dev?id=7383576086355039907"
+private const val DEVELOPER_PAGE_LINK =
+    "https://play.google.com/store/apps/dev?id=7383576086355039907"
 
 @Composable
 fun SettingsScreen(onGoBack: () -> Unit) {
     val presentationModule = LocalPresentationModule.current
     val viewModel = viewModel { presentationModule.getSettingsViewModel() }
-    val state = viewModel.state.collectAsState()
 
     ScaffoldWrapper(
         content = {
             SettingsContent(
-                state = state.value,
-                onLaunchReviewFlow = viewModel::launchInAppReviewFlow
+                viewModel.preferencesLoadingController,
+                viewModel.appReviewRequestController
             )
         },
         topBarConfig = TopBarConfig(
@@ -49,45 +52,50 @@ fun SettingsScreen(onGoBack: () -> Unit) {
 
 @Composable
 private fun SettingsContent(
-    state: SettingsViewModel.State,
-    onLaunchReviewFlow: () -> Unit
+    preferencesLoadingController: LoadingController<AppPreference>,
+    appReviewRequestController: SingleRequestController
 ) {
     val context = LocalContext.current
 
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Title(text = stringResource(id = R.string.settings_other_text))
-        Spacer(modifier = Modifier.height(16.dp))
-        ButtonWithIcon(
-            iconResId = R.drawable.ic_apps,
-            labelResId = R.string.settings_moreApps_text,
-            onClick = {
-                Intent().apply {
-                    action = Intent.ACTION_VIEW
-                    data = DEVELOPER_PAGE_LINK.toUri()
-                }.also {
-                    context.startActivity(it)
+    LoadingContainer(
+        controller = preferencesLoadingController,
+        loadedContent = { preferences ->
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Title(text = stringResource(id = R.string.settings_other_text))
+                Spacer(modifier = Modifier.height(16.dp))
+                ButtonWithIcon(
+                    iconResId = R.drawable.ic_apps,
+                    labelResId = R.string.settings_moreApps_text,
+                    onClick = {
+                        Intent().apply {
+                            action = Intent.ACTION_VIEW
+                            data = DEVELOPER_PAGE_LINK.toUri()
+                        }.also {
+                            context.startActivity(it)
+                        }
+                    }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                ButtonWithIcon(
+                    iconResId = R.drawable.ic_coffee,
+                    labelResId = R.string.settings_supportCreator_text,
+                    onClick = {
+                        // TODO MAKE BILLING LOGIC
+                    }
+                )
+                if (preferences.lastAppReviewRequestTime == null) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    RequestButtonWithIcon(
+                        controller = appReviewRequestController,
+                        iconResId = R.drawable.ic_rate,
+                        labelResId = R.string.settings_rateApp_text,
+                    )
                 }
             }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        ButtonWithIcon(
-            iconResId = R.drawable.ic_coffee,
-            labelResId = R.string.settings_supportCreator_text,
-            onClick = {
-                // TODO MAKE BILLING LOGIC
-            }
-        )
-        if (!state.isAppAlreadyRated) {
-            Spacer(modifier = Modifier.height(16.dp))
-            ButtonWithIcon(
-                iconResId = R.drawable.ic_rate,
-                labelResId = R.string.settings_rateApp_text,
-                onClick = onLaunchReviewFlow
-            )
         }
-    }
+    )
 }

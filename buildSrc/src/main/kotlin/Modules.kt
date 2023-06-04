@@ -8,6 +8,7 @@ object Modules {
         object Foundation {
             const val permissions = "hardcoder.dev.permissions"
             const val coroutines = "hardcoder.dev.coroutines"
+            const val controllers = "hardcoder.dev.controllers"
             const val uikit = "hardcoder.dev.uikit"
             const val utilities = "hardcoder.dev.utilities"
             const val sqldelight = "hardcoder.dev.sqldelight"
@@ -25,6 +26,7 @@ object Modules {
         object Foundation {
             val permissions = mapOf("path" to ":foundation:permissions")
             val coroutines = mapOf("path" to ":foundation:coroutines")
+            val controllers = mapOf("path" to ":foundation:controllers")
             val uikit = mapOf("path" to ":foundation:uikit")
             val utilities = mapOf("path" to ":foundation:utilities")
             val sqldelight = mapOf("path" to ":foundation:sqldelight")

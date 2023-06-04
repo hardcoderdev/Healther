@@ -1,24 +1,22 @@
 package hardcoder.dev.androidApp.ui.features.diary.update
 
-import androidx.compose.animation.AnimatedVisibility
+import android.content.Context
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,22 +26,31 @@ import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.fasting.FastingItem
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodTrackItem
 import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.MultiSelectionController
+import hardcoder.dev.controller.SingleRequestController
+import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.healther.R
-import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.IncorrectDiaryTrackContent
+import hardcoder.dev.logic.features.diary.diaryTrack.ValidatedDiaryTrackContent
 import hardcoder.dev.presentation.features.diary.DiaryUpdateTrackViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
+import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
+import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
-import hardcoder.dev.uikit.buttons.ButtonWithIcon
+import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.chip.ActionChip
-import hardcoder.dev.uikit.chip.SelectionChip
-import hardcoder.dev.uikit.text.ErrorText
-import hardcoder.dev.uikit.text.FilledTextField
+import hardcoder.dev.uikit.chip.content.ChipIconDefaultContent
+import hardcoder.dev.uikit.icons.Icon
+import hardcoder.dev.uikit.lists.flowRow.MultiSelectionChipFlowRow
+import hardcoder.dev.uikit.text.Label
 import hardcoder.dev.uikit.text.Title
+import hardcoder.dev.uikit.text.ValidatedTextField
+import hardcoder.dev.uikit.text.rememberValidationAdapter
 
 @Composable
 fun DiaryUpdateTrackScreen(
@@ -51,31 +58,21 @@ fun DiaryUpdateTrackScreen(
     onGoBack: () -> Unit,
     onManageTags: () -> Unit
 ) {
+    val context = LocalContext.current
     val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getDiaryUpdateTrackViewModel(diaryTrackId)
-    }
-    val state = viewModel.state.collectAsState()
+    val viewModel = viewModel { presentationModule.getDiaryUpdateTrackViewModel(diaryTrackId) }
 
-    LaunchedEffect(key1 = state.value.updateState) {
-        if (state.value.updateState is DiaryUpdateTrackViewModel.UpdateState.Executed) {
-            onGoBack()
-        }
-    }
-
-    LaunchedEffect(key1 = state.value.deleteState) {
-        if (state.value.deleteState is DiaryUpdateTrackViewModel.DeleteState.Executed) {
-            onGoBack()
-        }
-    }
+    LaunchedEffectWhenExecuted(controller = viewModel.updateController, action = onGoBack)
+    LaunchedEffectWhenExecuted(controller = viewModel.deleteController, action = onGoBack)
 
     ScaffoldWrapper(
         content = {
             DiaryUpdateTrackContent(
-                state = state.value,
-                onUpdateText = viewModel::updateContent,
-                onUpdateTrack = viewModel::updateTrack,
-                onToggleTag = viewModel::toggleTag,
+                context = context,
+                contentInputController = viewModel.contentInputController,
+                tagMultiSelectionController = viewModel.tagMultiSelectionController,
+                updateController = viewModel.updateController,
+                diaryAttachmentsLoadingController = viewModel.diaryAttachmentsLoadingController,
                 onManageTags = onManageTags
             )
         },
@@ -89,7 +86,7 @@ fun DiaryUpdateTrackScreen(
             actions = listOf(
                 Action(
                     iconResId = R.drawable.ic_delete,
-                    onActionClick = viewModel::deleteTrackById
+                    onActionClick = viewModel.deleteController::request
                 )
             )
         )
@@ -98,10 +95,11 @@ fun DiaryUpdateTrackScreen(
 
 @Composable
 private fun DiaryUpdateTrackContent(
-    state: DiaryUpdateTrackViewModel.State,
-    onUpdateText: (String) -> Unit,
-    onUpdateTrack: () -> Unit,
-    onToggleTag: (DiaryTag) -> Unit,
+    context: Context,
+    diaryAttachmentsLoadingController: LoadingController<DiaryUpdateTrackViewModel.ReadOnlyDiaryAttachments>,
+    contentInputController: ValidatedInputController<String, ValidatedDiaryTrackContent>,
+    tagMultiSelectionController: MultiSelectionController<DiaryTag>,
+    updateController: SingleRequestController,
     onManageTags: () -> Unit
 ) {
     Column(
@@ -115,46 +113,43 @@ private fun DiaryUpdateTrackContent(
                 .verticalScroll(rememberScrollState())
         ) {
             EnterBasicInfoSection(
-                state = state,
-                onUpdateText = onUpdateText
+                context = context,
+                contentInputController = contentInputController
             )
-            if (state.diaryAttachmentGroup.isAttachmentTracksNotEmpty()) {
-                Spacer(modifier = Modifier.height(32.dp))
-                AttachedEntitySection(diaryAttachmentGroup = state.diaryAttachmentGroup)
-            }
+            LoadingContainer(
+                controller = diaryAttachmentsLoadingController,
+                loadedContent = { readOnlyAttachments ->
+                    if (!readOnlyAttachments.isEmpty) {
+                        Spacer(modifier = Modifier.height(32.dp))
+                        AttachedEntitySection(readOnlyDiaryAttachments = readOnlyAttachments)
+                    }
+                }
+            )
             Spacer(modifier = Modifier.height(32.dp))
             SelectTagsSection(
-                state = state,
-                onToggleTag = onToggleTag,
+                tagMultiSelectionController = tagMultiSelectionController,
                 onManageTags = onManageTags
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        ButtonWithIcon(
+        RequestButtonWithIcon(
+            controller = updateController,
             iconResId = R.drawable.ic_save,
-            labelResId = R.string.diary_createTrack_buttonText,
-            onClick = onUpdateTrack,
-            isEnabled = state.updateAllowed
+            labelResId = R.string.diary_createTrack_buttonText
         )
     }
 }
 
-private fun DiaryAttachmentGroup.isAttachmentTracksNotEmpty() =
-    fastingTracks.isNotEmpty() || moodTracks.isNotEmpty()
-
 @Composable
 private fun EnterBasicInfoSection(
-    state: DiaryUpdateTrackViewModel.State,
-    onUpdateText: (String) -> Unit
+    context: Context,
+    contentInputController: ValidatedInputController<String, ValidatedDiaryTrackContent>
 ) {
-    val validatedDescription = state.validatedContent
-
     Title(text = stringResource(id = R.string.diary_updateTrack_enterInfo_text))
     Spacer(modifier = Modifier.height(16.dp))
-    FilledTextField(
+    ValidatedTextField(
+        controller = contentInputController,
         modifier = Modifier.fillMaxWidth(),
-        value = state.content ?: "",
-        onValueChange = onUpdateText,
         label = R.string.diary_updateTrack_enterNote_textField,
         multiline = true,
         minLines = 5,
@@ -163,31 +158,25 @@ private fun EnterBasicInfoSection(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Default
         ),
-        isError = validatedDescription is IncorrectDiaryTrackContent
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    AnimatedVisibility(visible = validatedDescription is IncorrectDiaryTrackContent) {
-        if (validatedDescription is IncorrectDiaryTrackContent) {
-            ErrorText(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                text = when (validatedDescription.reason) {
-                    is IncorrectDiaryTrackContent.Reason.Empty -> {
-                        stringResource(R.string.diary_updateTrack_descriptionEmpty_text)
-                    }
+        validationAdapter = rememberValidationAdapter {
+            if (it !is IncorrectDiaryTrackContent) null
+            else when (it.reason) {
+                is IncorrectDiaryTrackContent.Reason.Empty -> {
+                    context.getString(R.string.diary_updateTrack_descriptionEmpty_text)
                 }
-            )
+            }
         }
-    }
+    )
 }
 
 @Composable
-private fun AttachedEntitySection(diaryAttachmentGroup: DiaryAttachmentGroup) {
+private fun AttachedEntitySection(readOnlyDiaryAttachments: DiaryUpdateTrackViewModel.ReadOnlyDiaryAttachments) {
     Title(text = stringResource(id = R.string.diary_updateTrack_attachedEntity_text))
     Spacer(modifier = Modifier.height(16.dp))
-    diaryAttachmentGroup.fastingTracks.forEach { fastingTrack ->
+    readOnlyDiaryAttachments.fastingTracks.forEach { fastingTrack ->
         FastingItem(fastingTrack = fastingTrack)
     }
-    diaryAttachmentGroup.moodTracks.forEach { moodTrack ->
+    readOnlyDiaryAttachments.moodTracks.forEach { moodTrack ->
         MoodTrackItem(
             activitiesList = emptyList(),
             moodTrack = moodTrack,
@@ -197,35 +186,31 @@ private fun AttachedEntitySection(diaryAttachmentGroup: DiaryAttachmentGroup) {
     Spacer(modifier = Modifier.height(16.dp))
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SelectTagsSection(
-    state: DiaryUpdateTrackViewModel.State,
-    onToggleTag: (DiaryTag) -> Unit,
+    tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     onManageTags: () -> Unit
 ) {
     Title(text = stringResource(id = R.string.diary_updateTrack_youMaySelectTags_text))
     Spacer(modifier = Modifier.height(16.dp))
-    FlowRow(
+    MultiSelectionChipFlowRow(
+        controller = tagMultiSelectionController,
+        maxItemsInEachRow = 6,
         modifier = Modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState()),
+        itemModifier = Modifier.padding(top = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        maxItemsInEachRow = 6
-    ) {
-        ManagementTagsButton(onManageTags = onManageTags)
-        state.tagList.forEach { tag ->
-            SelectionChip(
-                modifier = Modifier.padding(top = 8.dp),
-                text = tag.name,
+        actionButton = { ManagementTagsButton(onManageTags = onManageTags) },
+        emptyContent = { ManagementTagsButton(onManageTags = onManageTags) },
+        itemContent = { tag, _ ->
+            ChipIconDefaultContent(
                 iconResId = tag.icon.resourceId,
-                shape = RoundedCornerShape(32.dp),
-                isSelected = state.diaryAttachmentGroup.tags.contains(tag),
-                onClick = { onToggleTag(tag) }
+                name = tag.name
             )
         }
-    }
+    )
 }
 
 @Composable

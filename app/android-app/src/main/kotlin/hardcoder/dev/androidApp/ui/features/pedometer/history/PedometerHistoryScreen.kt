@@ -9,17 +9,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
-import hardcoder.dev.datetime.createRangeForCurrentDay
+import hardcoder.dev.controller.InputController
+import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.healther.R
-import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
+import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
+import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
@@ -34,6 +35,7 @@ import io.github.boguszpawlowski.composecalendar.SelectableCalendar
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
 import kotlin.math.roundToInt
@@ -41,18 +43,14 @@ import kotlin.math.roundToInt
 @Composable
 fun PedometerHistoryScreen(onGoBack: () -> Unit) {
     val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getPedometerHistoryViewModel()
-    }
-    val state by viewModel.state.collectAsState()
+    val viewModel = viewModel { presentationModule.getPedometerHistoryViewModel() }
 
     ScaffoldWrapper(
         content = {
             PedometerHistoryContent(
-                state = state,
-                onFetchPedometerTracks = {
-                    viewModel.selectRange(it.createRangeForCurrentDay())
-                }
+                dateRangeInputController = viewModel.dateRangeInputController,
+                statisticLoadingController = viewModel.statisticLoadingController,
+                chartEntriesLoadingController = viewModel.chartEntriesLoadingController
             )
         },
         topBarConfig = TopBarConfig(
@@ -66,59 +64,61 @@ fun PedometerHistoryScreen(onGoBack: () -> Unit) {
 
 @Composable
 private fun PedometerHistoryContent(
-    state: PedometerHistoryViewModel.State,
-    onFetchPedometerTracks: (LocalDate) -> Unit
+    dateRangeInputController: InputController<ClosedRange<Instant>>,
+    statisticLoadingController: LoadingController<PedometerStatistic>,
+    chartEntriesLoadingController: LoadingController<List<Pair<Int, Int>>>
 ) {
     val calendarState = rememberSelectableCalendarState(initialSelectionMode = SelectionMode.Single)
 
     LaunchedEffect(key1 = calendarState.selectionState.selection) {
-        if (calendarState.selectionState.selection.isNotEmpty()) {
-            onFetchPedometerTracks(
-                calendarState.selectionState.selection.first().toKotlinLocalDate()
-            )
-        } else {
-            onFetchPedometerTracks(LocalDate.now())
-        }
+        val date = calendarState.selectionState.selection
+            .firstOrNull()?.toKotlinLocalDate() ?: LocalDate.now()
+        dateRangeInputController.changeInput(date.createRangeForThisDay())
     }
 
-    Column(Modifier.padding(16.dp)) {
-        SelectableCalendar(
-            calendarState = calendarState,
-            monthHeader = { monthState ->
-                CustomMonthHeader(monthState = monthState)
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        PedometerTracksHistory(state = state)
-        Spacer(modifier = Modifier.height(16.dp))
-        if (state.chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
-            ActivityLineChart(
-                modifier = Modifier.weight(2f),
-                chartEntries = state.chartEntries,
-                xAxisValueFormatter = { value, _ ->
-                    value.roundToInt().toString()
-                },
-                yAxisValueFormatter = { value, _ ->
-                    value.roundToInt().toString()
+    LoadingContainer(
+        controller1 = statisticLoadingController,
+        controller2 = chartEntriesLoadingController
+    ) { statistic, chartEntries ->
+        Column(Modifier.padding(16.dp)) {
+            SelectableCalendar(
+                calendarState = calendarState,
+                monthHeader = { monthState ->
+                    CustomMonthHeader(monthState = monthState)
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             )
-        } else {
             Spacer(modifier = Modifier.height(16.dp))
-            Description(text = stringResource(id = R.string.pedometer_history_weDontHaveEnoughDataToShowChart_text))
+            PedometerTracksHistory(statistic)
+            Spacer(modifier = Modifier.height(16.dp))
+            if (chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
+                ActivityLineChart(
+                    modifier = Modifier.weight(2f),
+                    chartEntries = chartEntries,
+                    xAxisValueFormatter = { value, _ ->
+                        value.roundToInt().toString()
+                    },
+                    yAxisValueFormatter = { value, _ ->
+                        value.roundToInt().toString()
+                    }
+                )
+            } else {
+                Spacer(modifier = Modifier.height(16.dp))
+                Description(text = stringResource(id = R.string.pedometer_history_weDontHaveEnoughDataToShowChart_text))
+            }
         }
     }
 }
 
 @Composable
 private fun PedometerTracksHistory(
-    state: PedometerHistoryViewModel.State
+    state: PedometerStatistic
 ) {
     val uiModule = LocalUIModule.current
     val decimalFormatter = uiModule.decimalFormatter
 
     Spacer(modifier = Modifier.height(16.dp))
-    if (state.totalStepsCount != 0) {
+    if (state.totalSteps != 0) {
         Title(text = stringResource(id = R.string.pedometer_history_yourIndicatorsForThisDay_text))
         Spacer(modifier = Modifier.height(16.dp))
         StaticCard {
@@ -131,17 +131,17 @@ private fun PedometerTracksHistory(
                 CardInfoItem(
                     iconResId = R.drawable.ic_directions_walk,
                     nameResId = R.string.pedometer_stepsLabel_text,
-                    value = state.totalStepsCount.toString()
+                    value = state.totalSteps.toString()
                 )
                 CardInfoItem(
                     iconResId = R.drawable.ic_my_location,
                     nameResId = R.string.pedometer_kilometersLabel_text,
-                    value = decimalFormatter.roundAndFormatToString(state.totalKilometersCount)
+                    value = decimalFormatter.roundAndFormatToString(state.totalKilometers)
                 )
                 CardInfoItem(
                     iconResId = R.drawable.ic_fire,
                     nameResId = R.string.pedometer_caloriesLabel_text,
-                    value = decimalFormatter.roundAndFormatToString(state.totalCaloriesBurned)
+                    value = decimalFormatter.roundAndFormatToString(state.totalCalories)
                 )
             }
         }
