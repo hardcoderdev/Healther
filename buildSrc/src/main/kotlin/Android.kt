@@ -2,27 +2,11 @@ object Android {
 
     const val compileSdk = 34
 
-    object Classpaths {
-        object Versions {
-            const val kotlin = "1.8.20"
-            const val gradle = "8.2.0"
-            const val navigation = "2.4.2"
-        }
-
-        const val gradle = "com.android.tools.build:gradle:${Versions.gradle}"
-        const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-        const val navigation = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
-    }
-
     object PackagingOptions {
         const val license = "/META-INF/{AL2.0,LGPL2.1}"
         const val native = "/META-INF/native/*"
         const val indexList = "/META-INF/INDEX.LIST"
         const val dependencies = "META-INF/DEPENDENCIES"
-    }
-
-    object Repositories {
-        const val jitpack = "https://jitpack.io"
     }
 
     object DefaultConfig {

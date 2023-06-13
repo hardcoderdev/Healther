@@ -10,7 +10,6 @@ object Modules {
             const val coroutines = "hardcoder.dev.coroutines"
             const val controllers = "hardcoder.dev.controllers"
             const val uikit = "hardcoder.dev.uikit"
-            const val utilities = "hardcoder.dev.utilities"
             const val sqldelight = "hardcoder.dev.sqldelight"
             const val datetime = "hardcoder.dev.datetime"
             const val math = "hardcoder.dev.math"
