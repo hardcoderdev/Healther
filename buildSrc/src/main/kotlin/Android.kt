@@ -1,11 +1,11 @@
 object Android {
 
-    const val compileSdk = 33
+    const val compileSdk = 34
 
     object Classpaths {
         object Versions {
-            const val kotlin = "1.7.20"
-            const val gradle = "8.0.0-alpha10"
+            const val kotlin = "1.8.20"
+            const val gradle = "8.2.0"
             const val navigation = "2.4.2"
         }
 
@@ -27,7 +27,7 @@ object Android {
 
     object DefaultConfig {
         const val applicationId = "hardcoder.dev.healther"
-        const val minSdk = 24
+        const val minSdk = 26
         const val targetSdk = 33
 
         const val instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -37,7 +37,7 @@ object Android {
     }
 
     object KotlinOptions {
-        const val jvmTargetVersion = "11"
+        const val jvmTargetVersion = "17"
     }
 
     object ComposeOptions {

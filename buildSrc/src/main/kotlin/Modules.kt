@@ -17,22 +17,4 @@ object Modules {
             const val inAppReview = "hardcoder.dev.inappreview"
         }
     }
-
-    object Paths {
-        val database = mapOf("path" to ":app:database")
-        val presentation = mapOf("path" to ":app:presentation")
-        val logic = mapOf("path" to ":app:logic")
-
-        object Foundation {
-            val permissions = mapOf("path" to ":foundation:permissions")
-            val coroutines = mapOf("path" to ":foundation:coroutines")
-            val controllers = mapOf("path" to ":foundation:controllers")
-            val uikit = mapOf("path" to ":foundation:uikit")
-            val utilities = mapOf("path" to ":foundation:utilities")
-            val sqldelight = mapOf("path" to ":foundation:sqldelight")
-            val datetime = mapOf("path" to ":foundation:datetime")
-            val math = mapOf("path" to ":foundation:math")
-            val inAppReview = mapOf("path" to ":foundation:inappreview")
-        }
-    }
 }

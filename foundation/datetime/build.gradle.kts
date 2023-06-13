@@ -1,6 +1,6 @@
 plugins {
-    id(Plugins.Android.library)
-    id(Plugins.Kotlin.kotlinLibrary)
+    alias(libs.plugins.com.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -11,13 +11,9 @@ android {
         multiDexEnabled = true
         minSdk = Android.DefaultConfig.minSdk
     }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
 }
 
 dependencies {
-    api(Dependencies.dateTime)
-    api(Dependencies.composeCalendarDateTime)
+    api(libs.kotlin.datetime)
+    api(libs.compose.calendar.datetime)
 }

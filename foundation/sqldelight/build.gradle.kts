@@ -1,6 +1,6 @@
 plugins {
-    id(Plugins.Android.library)
-    id(Plugins.Kotlin.kotlinLibrary)
+    alias(libs.plugins.com.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -10,13 +10,11 @@ android {
     defaultConfig {
         minSdk = Android.DefaultConfig.minSdk
     }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
 }
 
 dependencies {
-    api(project(Modules.Paths.Foundation.coroutines))
-    addData()
+    api(projects.foundation.coroutines)
+    implementation(libs.preferences.ktx)
+    implementation(libs.sql.delight.driver)
+    implementation(libs.sql.delight.coroutines.ext)
 }

@@ -1,6 +1,6 @@
 plugins {
-    id(Plugins.Android.library)
-    id(Plugins.Kotlin.kotlinLibrary)
+    alias(libs.plugins.com.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -10,13 +10,10 @@ android {
     defaultConfig {
         minSdk = Android.DefaultConfig.minSdk
     }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
 }
 
 dependencies {
-    addCoroutines()
-    implementation(Dependencies.activityKtx)
+    implementation(libs.kotlin.coroutines.core)
+    implementation(libs.kotlin.coroutines.android)
+    implementation(libs.activity.ktx)
 }

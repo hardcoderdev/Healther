@@ -1,11 +1,10 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id(Plugins.Android.application)
-    kotlin(Plugins.Kotlin.android)
-    kotlin(Plugins.Kotlin.kapt)
-    id(Plugins.serialization)
-    id(Plugins.navigationSafeArgs)
+    alias(libs.plugins.com.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.navigation.safe.args)
 }
 
 android {
@@ -48,9 +47,8 @@ android {
     }
 
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
@@ -61,7 +59,7 @@ android {
         kotlinCompilerExtensionVersion = Android.ComposeOptions.kotlinCompilerExtensionVersion
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += Android.PackagingOptions.license
             excludes += Android.PackagingOptions.native
@@ -76,9 +74,20 @@ android {
 }
 
 dependencies {
-    api(project(Modules.Paths.presentation))
-    implementation(project(Modules.Paths.Foundation.uikit))
-    addCompose()
-    addCoroutines()
-    addCommonAndroid()
+    implementation(projects.app.presentation)
+    implementation(projects.foundation.uikit)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.graphics)
+    implementation(libs.compose.navigation)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.accompanist.flowrow)
+    implementation(libs.compose.calendar)
+    implementation(libs.compose.calendar.datetime)
+    implementation(libs.compose.coil)
+    implementation(libs.kotlin.coroutines.core)
+    implementation(libs.kotlin.coroutines.android)
+    implementation(libs.core.ktx)
+    implementation(libs.activity.ktx)
+    implementation(libs.lifecycle.viewmodel.compose)
+    debugImplementation(libs.compose.debug.tooling)
 }

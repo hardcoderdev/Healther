@@ -1,0 +1,69 @@
+[versions]
+android-gradle-plugin = "8.2.0-alpha07"
+kotlin = "1.8.22"
+core-ktx = "1.10.1"
+play-core = "1.10.3"
+activity-ktx = "1.8.0-alpha05"
+compose-bom = "2023.06.00"
+lifecycle-viewmodel-compose = "2.6.1"
+activity-compose = "1.7.2"
+kotlin-coroutines = "1.7.1"
+kotlin-datetime = "0.4.0"
+data-store = "1.0.0"
+sql-delight = "1.5.4"
+ktor-client = "2.3.0"
+coil-compose = "2.2.2"
+lottie-compose = "6.0.0"
+navigation-component = "2.6.0"
+compose-charts = "1.6.4"
+compose-calendar = "1.0.2"
+compose-number-picker = "1.0.3"
+compose-accompanist = "0.29.1-alpha"
+preferences-ktx = "1.2.0"
+
+[libraries]
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity-ktx" }
+play-core = { module = "com.google.android.play:core", version.ref = "play-core" }
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-viewmodel-compose"}
+kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
+kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
+data-store = { module = "androidx.datastore:datastore-preferences", version.ref = "data-store" }
+sql-delight-coroutines-ext = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sql-delight" }
+sql-delight-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "sql-delight" }
+preferences-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferences-ktx" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor-client" }
+ktor-client-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-client" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor-client" }
+ktor-client-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor-client" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-graphics = { module = "androidx.compose.ui:ui-graphics" }
+compose-tooling = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-debug-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-material = { module = "androidx.compose.material3:material3" }
+compose-extended-icons = { module = "androidx.compose.material:material-icons-extended" }
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-component" }
+compose-charts = { module = "com.patrykandpatrick.vico:compose-m3", version.ref = "compose-charts" }
+compose-calendar = { module = "io.github.boguszpawlowski.composecalendar:composecalendar", version.ref = "compose-calendar" }
+compose-calendar-datetime = { module = "io.github.boguszpawlowski.composecalendar:kotlinx-datetime", version.ref = "compose-calendar" }
+compose-number-picker = { module = "com.chargemap.compose:numberpicker", version.ref = "compose-number-picker" }
+compose-accompanist-viewpager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose-accompanist" }
+compose-accompanist-viewpager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose-accompanist" }
+compose-accompanist-flowrow = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "compose-accompanist" }
+compose-coil = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
+compose-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
+compose-activity = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+
+
+[plugins]
+com-android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+com-android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+navigation-safe-args = { id = "androidx.navigation.safeargs", version.ref = "navigation-component" }
+sql-delight = { id = "com.squareup.sqldelight", version.ref = "sql-delight" }

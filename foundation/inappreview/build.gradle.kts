@@ -1,6 +1,6 @@
 plugins {
-    id(Plugins.Android.library)
-    id(Plugins.Kotlin.kotlinLibrary)
+    alias(libs.plugins.com.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -13,5 +13,5 @@ android {
 }
 
 dependencies {
-    api(Dependencies.playCore)
+    api(libs.play.core)
 }
