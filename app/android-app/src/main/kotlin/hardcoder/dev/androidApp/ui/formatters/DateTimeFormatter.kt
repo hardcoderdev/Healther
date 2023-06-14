@@ -118,6 +118,5 @@ class DateTimeFormatter(
 
     companion object {
         private val dateFormatStyle = FormatStyle.LONG
-        private const val timeZoneFormatStyle = android.icu.util.TimeZone.LONG_GMT
     }
 }
