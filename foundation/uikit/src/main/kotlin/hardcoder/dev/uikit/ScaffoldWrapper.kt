@@ -34,7 +34,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -73,6 +73,7 @@ fun ScaffoldWrapper(
                     titleResId = topBarConfig.type.titleResId,
                     actionConfig = actionConfig
                 )
+
                 is TopBarType.TopBarWithNavigationBack -> GoBackTopBar(
                     titleResId = topBarConfig.type.titleResId,
                     onGoBack = topBarConfig.type.onGoBack,
@@ -98,7 +99,7 @@ fun ScaffoldWrapper(
                     onGoBack = topBarConfig.type.onGoBack
                 )
 
-                is TopBarType.WithoutTopBar -> null
+                is TopBarType.WithoutTopBar -> {}
             }
         },
         floatingActionButton = {
@@ -141,7 +142,7 @@ sealed class TopBarType {
         val onGoBack: () -> Unit
     ) : TopBarType()
 
-    data class SearchTopBar (
+    data class SearchTopBar(
         @StringRes val titleResId: Int,
         val searchText: String,
         @StringRes val placeholderText: Int,
@@ -165,10 +166,9 @@ private fun SimpleTopBar(
 ) {
     TopAppBar(
         title = { Text(text = stringResource(id = titleResId)) },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
+        colors = topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+            titleContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         actions = {
             actionConfig?.let {
@@ -192,10 +192,9 @@ private fun GoBackTopBar(
 ) {
     TopAppBar(
         title = { Text(text = stringResource(id = titleResId)) },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
+        colors = topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+            titleContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         navigationIcon = {
             IconButton(onClick = onGoBack, iconResId = R.drawable.ic_top_bar_back)
@@ -292,10 +291,12 @@ fun SearchTopBar(
                                 style = MaterialTheme.typography.labelLarge
                             )
                         },
-                        colors = TextFieldDefaults.textFieldColors(
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,
-                            containerColor = MaterialTheme.colorScheme.primaryContainer
                         ),
                         trailingIcon = {
                             Icon(
@@ -326,10 +327,9 @@ fun SearchTopBar(
                 }
             }
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
+        colors = topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+            titleContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         navigationIcon = {
             AnimatedVisibility(
@@ -417,10 +417,12 @@ fun SearchTopBar(
                                 style = MaterialTheme.typography.labelLarge
                             )
                         },
-                        colors = TextFieldDefaults.textFieldColors(
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,
-                            containerColor = MaterialTheme.colorScheme.primaryContainer
                         ),
                         trailingIcon = {
                             Icon(
@@ -452,10 +454,9 @@ fun SearchTopBar(
             }
 
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
+        colors = topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+            titleContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         navigationIcon = {
             AnimatedVisibility(

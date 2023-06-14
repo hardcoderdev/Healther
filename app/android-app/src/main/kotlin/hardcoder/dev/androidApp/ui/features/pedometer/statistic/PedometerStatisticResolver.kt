@@ -18,62 +18,42 @@ class PedometerStatisticResolver(
             StatisticData(
                 name = context.getString(R.string.pedometer_statistic_total_steps),
                 value = statistic.totalSteps.toString()
-                    ?: context.getString(R.string.pedometer_statistic_not_enough_data_text)
             ),
             StatisticData(
                 name = context.getString(R.string.pedometer_statistic_total_kilometers),
-                value = statistic.totalKilometers?.let {
+                value = statistic.totalKilometers.let {
                     decimalFormatter.roundAndFormatToString(it)
-                } ?: context.getString(
-                    R.string.pedometer_statistic_not_enough_data_text
-                )
+                }
             ),
             StatisticData(
                 name = context.getString(R.string.pedometer_statistic_total_time),
-                value = statistic.totalDuration?.let {
-                    dateTimeFormatter.formatMillisDistance(
-                        distanceInMillis = it.inWholeMilliseconds,
-                        accuracy = DateTimeFormatter.Accuracy.MINUTES
-                    )
-                } ?: context.getString(R.string.pedometer_statistic_not_enough_data_text)
+                value = dateTimeFormatter.formatMillisDistance(
+                    distanceInMillis = statistic.totalDuration.inWholeMilliseconds,
+                    accuracy = DateTimeFormatter.Accuracy.MINUTES
+                )
             ),
             StatisticData(
                 name = context.getString(R.string.pedometer_statistic_total_calories),
-                value = statistic.totalCalories?.let {
-                    decimalFormatter.roundAndFormatToString(it)
-                } ?: context.getString(
-                    R.string.pedometer_statistic_not_enough_data_text
-                )
+                value = decimalFormatter.roundAndFormatToString(statistic.totalCalories)
             ),
             StatisticData(
                 name = context.getString(R.string.pedometer_statistic_average_steps),
-                value = statistic.averageSteps?.toString()
-                    ?: context.getString(R.string.pedometer_statistic_not_enough_data_text)
+                value = statistic.averageSteps.toString()
             ),
             StatisticData(
                 name = context.getString(R.string.pedometer_statistic_average_kilometers),
-                value = statistic.averageKilometers?.let {
-                    decimalFormatter.roundAndFormatToString(it)
-                } ?: context.getString(
-                    R.string.pedometer_statistic_not_enough_data_text
-                )
+                value = decimalFormatter.roundAndFormatToString(statistic.averageKilometers)
             ),
             StatisticData(
                 name = context.getString(R.string.pedometer_statistic_average_time),
-                value = statistic.averageDuration?.let {
-                    dateTimeFormatter.formatMillisDistance(
-                        distanceInMillis = it.inWholeMilliseconds,
-                        accuracy = DateTimeFormatter.Accuracy.MINUTES
-                    )
-                } ?: context.getString(R.string.pedometer_statistic_not_enough_data_text)
+                value = dateTimeFormatter.formatMillisDistance(
+                    distanceInMillis = statistic.averageDuration.inWholeMilliseconds,
+                    accuracy = DateTimeFormatter.Accuracy.MINUTES
+                )
             ),
             StatisticData(
                 name = context.getString(R.string.pedometer_statistic_average_calories),
-                value = statistic.averageCalories?.let {
-                    decimalFormatter.roundAndFormatToString(it)
-                } ?: context.getString(
-                    R.string.pedometer_statistic_not_enough_data_text
-                )
+                value = decimalFormatter.roundAndFormatToString(statistic.averageCalories)
             )
         )
     }

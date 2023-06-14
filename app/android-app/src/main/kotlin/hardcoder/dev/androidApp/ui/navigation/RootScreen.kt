@@ -24,7 +24,7 @@ fun RootScreen() {
                     }
                 },
                 onNavigateToDashboard = {
-                    navController.navigate(Screen.Dashboard.route) {
+                    navController.navigate(Screen.Diary.route) {
                         popUpTo(Screen.Root.route) {
                             inclusive = true
                         }

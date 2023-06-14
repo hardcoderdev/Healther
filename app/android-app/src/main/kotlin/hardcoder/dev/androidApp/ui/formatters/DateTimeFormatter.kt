@@ -4,10 +4,8 @@ import android.content.Context
 import android.text.format.DateFormat
 import hardcoderdev.healther.app.android.app.R
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
 import java.time.format.DateTimeFormatter
@@ -25,10 +23,6 @@ class DateTimeFormatter(
         else "hh:mm a"
     )
 
-    fun formatDate(
-        instant: Instant,
-    ) = formatDate(instant.toLocalDateTime(appTimeZone).date)
-
     fun formatTime(
         instant: Instant
     ): String {
@@ -40,10 +34,6 @@ class DateTimeFormatter(
         instant: Instant,
     ) = formatDateTime(instant.toLocalDateTime(appTimeZone))
 
-    private fun formatDate(
-        date: LocalDate,
-    ) = dateFormatter.format(date.toJavaLocalDate())!!
-
     private fun formatDateTime(
         dateTime: LocalDateTime
     ): String {
@@ -54,13 +44,6 @@ class DateTimeFormatter(
             jDateTime.toLocalTime()
         )
     }
-
-    private fun formatTimeZone(
-        timeZone: TimeZone
-    ) = android.icu.util.TimeZone.getTimeZone(timeZone.id).getDisplayName(
-        false,
-        timeZoneFormatStyle
-    )!!
 
     fun formatMillisDistance(
         distanceInMillis: Long,

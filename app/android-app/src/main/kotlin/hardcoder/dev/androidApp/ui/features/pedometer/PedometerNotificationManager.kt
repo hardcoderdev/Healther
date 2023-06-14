@@ -18,7 +18,8 @@ class PedometerNotificationManager(private val context: Context) {
     private var currentNotification: Notification? = null
     private var notificationBuilder: Notification.Builder? = null
     private val contentIntentDeepLinkUri by lazy {
-        context.getString(R.string.pedometer_notificationManager_contentIntent_deeplinkPattern).toUri()
+        context.getString(R.string.pedometer_notificationManager_contentIntent_deeplinkPattern)
+            .toUri()
     }
     private val pedometerChannelId by lazy {
         context.getString(R.string.pedometer_notificationManagerChannelId)
@@ -30,12 +31,7 @@ class PedometerNotificationManager(private val context: Context) {
     fun getNotification(initialStepCount: Int): Notification? {
         val channelId = createNotificationChannel()
 
-        notificationBuilder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification.Builder(context, channelId)
-        } else {
-            Notification.Builder(context)
-        }
-
+        notificationBuilder = Notification.Builder(context, channelId)
         val contentIntent = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(Intent(Intent.ACTION_VIEW, contentIntentDeepLinkUri))
             getPendingIntent(
@@ -81,24 +77,21 @@ class PedometerNotificationManager(private val context: Context) {
     }
 
     private fun createNotificationChannel(): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel(
-                pedometerChannelId,
-                pedometerChannelName,
-                NotificationManager.IMPORTANCE_NONE
-            ).apply {
-                lightColor = Color.GREEN
-                lockscreenVisibility = Notification.VISIBILITY_PRIVATE
-                importance = NotificationManager.IMPORTANCE_DEFAULT
-            }.also {
-                val service =
-                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                service.createNotificationChannel(it)
-            }
-            pedometerChannelId
-        } else {
-            ""
+        NotificationChannel(
+            pedometerChannelId,
+            pedometerChannelName,
+            NotificationManager.IMPORTANCE_NONE
+        ).apply {
+            lightColor = Color.GREEN
+            lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            importance = NotificationManager.IMPORTANCE_DEFAULT
+        }.also {
+            val service =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            service.createNotificationChannel(it)
         }
+
+        return pedometerChannelId
     }
 
     companion object {
