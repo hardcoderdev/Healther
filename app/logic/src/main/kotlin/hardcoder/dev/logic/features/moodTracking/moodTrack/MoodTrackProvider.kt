@@ -5,10 +5,12 @@ import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.MoodTrack
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack as MoodTrackEntity
@@ -16,7 +18,8 @@ import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack as MoodTrac
 @OptIn(ExperimentalCoroutinesApi::class)
 class MoodTrackProvider(
     private val appDatabase: AppDatabase,
-    private val moodTypeProvider: MoodTypeProvider
+    private val moodTypeProvider: MoodTypeProvider,
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
     fun provideAllMoodTracksByDayRange(dayRange: ClosedRange<Instant>) =
@@ -37,7 +40,7 @@ class MoodTrackProvider(
                 ) {
                     it.toList()
                 }
-            }
+            }.flowOn(ioDispatcher)
 
     fun provideById(id: Int) = appDatabase.moodTrackQueries
         .provideMoodTrackById(id)
@@ -52,7 +55,7 @@ class MoodTrackProvider(
                     moodTrack.toEntity(moodType!!)
                 }
             }
-        }
+        }.flowOn(ioDispatcher)
 
     private fun MoodTrack.toEntity(moodType: MoodType) = MoodTrackEntity(
         id = id,

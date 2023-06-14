@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 
 class MoodTypeUpdater(
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend fun update(
@@ -15,7 +15,7 @@ class MoodTypeUpdater(
         name: CorrectMoodTypeName,
         icon: LocalIcon,
         positivePercentage: Int
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         appDatabase.moodTypeQueries.update(
             name = name.data,
             iconId = icon.id,

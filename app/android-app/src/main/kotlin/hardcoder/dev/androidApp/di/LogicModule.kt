@@ -111,7 +111,7 @@ class LogicModule(private val context: Context) {
     val heroCreator by lazy {
         HeroCreator(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
+            ioDispatcher = Dispatchers.IO,
             genderIdMapper = genderIdMapper
         )
     }
@@ -119,7 +119,7 @@ class LogicModule(private val context: Context) {
     val heroUpdater by lazy {
         HeroUpdater(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
+            ioDispatcher = Dispatchers.IO,
             genderIdMapper = genderIdMapper
         )
     }
@@ -127,19 +127,23 @@ class LogicModule(private val context: Context) {
     val heroProvider by lazy {
         HeroProvider(
             appDatabase = appDatabase,
-            genderIdMapper = genderIdMapper
+            genderIdMapper = genderIdMapper,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val appPreferenceUpdater by lazy {
         AppPreferenceUpdater(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val appPreferenceProvider by lazy {
-        AppPreferenceProvider(appDatabase = appDatabase)
+        AppPreferenceProvider(
+            appDatabase = appDatabase,
+            ioDispatcher = Dispatchers.IO
+        )
     }
 
     val dateTimeProvider by lazy {
@@ -161,7 +165,8 @@ class LogicModule(private val context: Context) {
     val waterTrackingDailyRateProvider by lazy {
         WaterTrackingDailyRateProvider(
             waterIntakeResolver = waterIntakeResolver,
-            heroProvider = heroProvider
+            heroProvider = heroProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -169,7 +174,8 @@ class LogicModule(private val context: Context) {
         WaterTrackingMillilitersDrunkProvider(
             waterTrackProvider = waterTrackProvider,
             waterPercentageResolver = waterPercentageResolver,
-            waterTrackingDailyRateProvider = waterTrackingDailyRateProvider
+            waterTrackingDailyRateProvider = waterTrackingDailyRateProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -181,35 +187,37 @@ class LogicModule(private val context: Context) {
         WaterTrackCreator(
             idGenerator = idGenerator,
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val waterTrackUpdater by lazy {
         WaterTrackUpdater(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val waterTrackDeleter by lazy {
         WaterTrackDeleter(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val waterTrackProvider by lazy {
         WaterTrackProvider(
             appDatabase = appDatabase,
-            drinkTypeProvider = drinkTypeProvider
+            drinkTypeProvider = drinkTypeProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val waterTrackingStatisticProvider by lazy {
         WaterTrackingStatisticProvider(
             appDatabase = appDatabase,
-            drinkTypeProvider = drinkTypeProvider
+            drinkTypeProvider = drinkTypeProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -221,7 +229,7 @@ class LogicModule(private val context: Context) {
         DrinkTypeCreator(
             idGenerator = idGenerator,
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
+            ioDispatcher = Dispatchers.IO,
             predefinedDrinkTypeProvider = drinkTypePredefinedProvider
         )
     }
@@ -229,7 +237,7 @@ class LogicModule(private val context: Context) {
     val drinkTypeUpdater by lazy {
         DrinkTypeUpdater(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -237,14 +245,15 @@ class LogicModule(private val context: Context) {
         DrinkTypeDeleter(
             appDatabase = appDatabase,
             waterTrackDeleter = waterTrackDeleter,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val drinkTypeProvider by lazy {
         DrinkTypeProvider(
             appDatabase = appDatabase,
-            iconResourceProvider = drinkTypeIconProvider
+            iconResourceProvider = drinkTypeIconProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -294,7 +303,7 @@ class LogicModule(private val context: Context) {
     private val pedometerTrackCreator by lazy {
         PedometerTrackCreator(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -307,13 +316,15 @@ class LogicModule(private val context: Context) {
 
     val pedometerStepProvider by lazy {
         PedometerStepProvider(
-            pedometerTrackProvider = pedometerTrackProvider
+            pedometerTrackProvider = pedometerTrackProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val pedometerTrackProvider by lazy {
         PedometerTrackProvider(
-            appDatabase = appDatabase
+            appDatabase = appDatabase,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -321,7 +332,8 @@ class LogicModule(private val context: Context) {
         PedometerStatisticProvider(
             kilometersResolver = kilometersResolver,
             caloriesResolver = caloriesResolver,
-            pedometerTrackProvider = pedometerTrackProvider
+            pedometerTrackProvider = pedometerTrackProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -334,14 +346,16 @@ class LogicModule(private val context: Context) {
             appDatabase = appDatabase,
             fastingPlanIdMapper = fastingPlanIdMapper,
             fastingTrackProvider = fastingTrackProvider,
-            dateTimeProvider = dateTimeProvider
+            dateTimeProvider = dateTimeProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val fastingTrackProvider by lazy {
         FastingTrackProvider(
             appDatabase = appDatabase,
-            fastingPlanIdMapper = fastingPlanIdMapper
+            fastingPlanIdMapper = fastingPlanIdMapper,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -350,7 +364,7 @@ class LogicModule(private val context: Context) {
             context = context,
             appDatabase = appDatabase,
             fastingPlanIdMapper = fastingPlanIdMapper,
-            dispatcher = Dispatchers.IO,
+            ioDispatcher = Dispatchers.IO,
             idGenerator = idGenerator,
             fastingTrackProvider = fastingTrackProvider,
             diaryTrackCreator = diaryTrackCreator
@@ -369,28 +383,29 @@ class LogicModule(private val context: Context) {
         ActivityCreator(
             idGenerator = idGenerator,
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val activityUpdater by lazy {
         ActivityUpdater(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val activityDeleter by lazy {
         ActivityDeleter(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val activityProvider by lazy {
         ActivityProvider(
             appDatabase = appDatabase,
-            iconResourceProvider = activityIconProvider
+            iconResourceProvider = activityIconProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -406,28 +421,29 @@ class LogicModule(private val context: Context) {
         MoodWithActivitiesProvider(
             appDatabase = appDatabase,
             moodTrackProvider = moodTrackProvider,
-            activityProvider = activityProvider
+            activityProvider = activityProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     private val moodWithActivityCreator by lazy {
         MoodWithActivityCreator(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     private val moodWithActivityDeleter by lazy {
         MoodWithActivityDeleter(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val moodTrackCreator by lazy {
         MoodTrackCreator(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
+            ioDispatcher = Dispatchers.IO,
             idGenerator = idGenerator,
             diaryTrackCreator = diaryTrackCreator,
             moodWithActivityCreator = moodWithActivityCreator,
@@ -438,7 +454,7 @@ class LogicModule(private val context: Context) {
     val moodTrackUpdater by lazy {
         MoodTrackUpdater(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
+            ioDispatcher = Dispatchers.IO,
             moodWithActivityCreator = moodWithActivityCreator,
             moodWithActivityDeleter = moodWithActivityDeleter,
             attachmentTypeIdMapper = attachmentTypeIdMapper,
@@ -449,14 +465,15 @@ class LogicModule(private val context: Context) {
     val moodTrackDeleter by lazy {
         MoodTrackDeleter(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val moodTrackProvider by lazy {
         MoodTrackProvider(
             appDatabase = appDatabase,
-            moodTypeProvider = moodTypeProvider
+            moodTypeProvider = moodTypeProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -468,7 +485,7 @@ class LogicModule(private val context: Context) {
         MoodTypeCreator(
             idGenerator = idGenerator,
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
+            ioDispatcher = Dispatchers.IO,
             predefinedMoodTypeProvider = predefinedMoodTypeProvider
         )
     }
@@ -476,14 +493,14 @@ class LogicModule(private val context: Context) {
     val moodTypeUpdater by lazy {
         MoodTypeUpdater(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val moodTypeDeleter by lazy {
         MoodTypeDeleter(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
+            ioDispatcher = Dispatchers.IO,
             moodTrackDeleter = moodTrackDeleter
         )
     }
@@ -491,7 +508,8 @@ class LogicModule(private val context: Context) {
     val moodTypeProvider by lazy {
         MoodTypeProvider(
             appDatabase = appDatabase,
-            iconResourceProvider = moodTypeIconProvider
+            iconResourceProvider = moodTypeIconProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -509,7 +527,8 @@ class LogicModule(private val context: Context) {
     val moodTrackingStatisticProvider by lazy {
         MoodTrackingStatisticProvider(
             appDatabase = appDatabase,
-            moodTypeProvider = moodTypeProvider
+            moodTypeProvider = moodTypeProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -517,7 +536,7 @@ class LogicModule(private val context: Context) {
         DiaryTrackCreator(
             idGenerator = idGenerator,
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
+            ioDispatcher = Dispatchers.IO,
             diaryAttachmentManager = diaryAttachmentManager
         )
     }
@@ -525,7 +544,7 @@ class LogicModule(private val context: Context) {
     val diaryTrackUpdater by lazy {
         DiaryTrackUpdater(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO,
+            ioDispatcher = Dispatchers.IO,
             diaryAttachmentManager = diaryAttachmentManager
         )
     }
@@ -533,14 +552,15 @@ class LogicModule(private val context: Context) {
     val diaryTrackDeleter by lazy {
         DiaryTrackDeleter(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val diaryTrackProvider by lazy {
         DiaryTrackProvider(
             appDatabase = appDatabase,
-            diaryAttachmentProvider = diaryAttachmentProvider
+            diaryAttachmentProvider = diaryAttachmentProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -565,7 +585,7 @@ class LogicModule(private val context: Context) {
             idGenerator = idGenerator,
             appDatabase = appDatabase,
             attachmentTypeIdMapper = attachmentTypeIdMapper,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -575,7 +595,8 @@ class LogicModule(private val context: Context) {
             attachmentTypeIdMapper = attachmentTypeIdMapper,
             fastingTrackProvider = fastingTrackProvider,
             moodTrackProvider = moodTrackProvider,
-            diaryTagProvider = diaryTagProvider
+            diaryTagProvider = diaryTagProvider,
+            ioDispatcher = Dispatchers.IO
         )
     }
 
@@ -591,28 +612,28 @@ class LogicModule(private val context: Context) {
         DiaryTagCreator(
             idGenerator = idGenerator,
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val diaryTagUpdater by lazy {
         DiaryTagUpdater(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val diaryTagDeleter by lazy {
         DiaryTagDeleter(
             appDatabase = appDatabase,
-            dispatcher = Dispatchers.IO
+            ioDispatcher = Dispatchers.IO
         )
     }
 
     val diaryTagProvider by lazy {
         DiaryTagProvider(
             appDatabase = appDatabase,
-            iconResourceProvider = diaryTagIconProvider
+            iconResourceProvider = diaryTagIconProvider, ioDispatcher = Dispatchers.IO
         )
     }
 

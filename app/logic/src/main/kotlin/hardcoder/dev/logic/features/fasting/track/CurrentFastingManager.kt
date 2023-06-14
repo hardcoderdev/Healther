@@ -26,7 +26,7 @@ import kotlinx.datetime.toLocalDateTime
 class CurrentFastingManager(
     private val idGenerator: IdGenerator,
     private val context: Context,
-    private val dispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
     private val appDatabase: AppDatabase,
     private val fastingPlanIdMapper: FastingPlanIdMapper,
     private val fastingTrackProvider: FastingTrackProvider,
@@ -46,7 +46,7 @@ class CurrentFastingManager(
         startTime: Instant,
         duration: Long,
         fastingPlan: FastingPlan
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         val id = idGenerator.nextId()
         setCurrentId(id)
 
@@ -59,14 +59,14 @@ class CurrentFastingManager(
         )
     }
 
-    suspend fun interruptFasting() = withContext(dispatcher) {
+    suspend fun interruptFasting() = withContext(ioDispatcher) {
         appDatabase.fastingTrackQueries.update(
             id = fastingCurrentTrackId.first(),
             interruptedTime = Clock.System.now()
         )
     }
 
-    suspend fun clearFasting(note: String) = withContext(dispatcher) {
+    suspend fun clearFasting(note: String) {
         if (note.isNotBlank()) {
             diaryTrackCreator.create(
                 content = note,
@@ -82,7 +82,7 @@ class CurrentFastingManager(
         setCurrentId(null)
     }
 
-    private suspend fun setCurrentId(id: Int?) {
+    private suspend fun setCurrentId(id: Int?) = withContext(ioDispatcher) {
         context.healtherDataStore.edit { fastingData ->
             id?.let {
                 fastingData[fastingCurrentTrackIdPreferenceKey] = it

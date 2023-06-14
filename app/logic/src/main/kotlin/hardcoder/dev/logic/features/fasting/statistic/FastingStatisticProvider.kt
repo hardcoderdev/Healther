@@ -5,8 +5,10 @@ import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.logic.DateTimeProvider
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -18,7 +20,8 @@ class FastingStatisticProvider(
     private val appDatabase: AppDatabase,
     private val fastingPlanIdMapper: FastingPlanIdMapper,
     private val fastingTrackProvider: FastingTrackProvider,
-    private val dateTimeProvider: DateTimeProvider
+    private val dateTimeProvider: DateTimeProvider,
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
     fun provideFastingStatistic(): Flow<FastingStatistic?> = combine(
@@ -34,7 +37,7 @@ class FastingStatisticProvider(
                 percentageCompleted = percentageCompleted
             )
         }
-    }
+    }.flowOn(ioDispatcher)
 
     private fun provideFastingDuration() = appDatabase.fastingTrackQueries
         .provideAllFastingTracks()
@@ -42,7 +45,6 @@ class FastingStatisticProvider(
         .map { selectFastingDurationQuery ->
             val fastingTracksDurationList = selectFastingDurationQuery.executeAsList()
                 .dropLastWhile {
-                    // MAYBE TODO
                     dateTimeProvider.getCurrentTime()
                         .toInstant(TimeZone.currentSystemDefault()) - it.startTime < it.duration.hours
                 }.map {
@@ -62,7 +64,7 @@ class FastingStatisticProvider(
             } else {
                 null
             }
-        }
+        }.flowOn(ioDispatcher)
 
     private fun provideFavouriteFastingPlan() = appDatabase.fastingTrackQueries
         .provideAllFastingTracks()
@@ -78,7 +80,7 @@ class FastingStatisticProvider(
             }?.eachCount()?.maxByOrNull { entry ->
                 entry.value
             }?.key
-        }
+        }.flowOn(ioDispatcher)
 
     private fun providePercentageCompleted() = combine(
         fastingTrackProvider.provideAllFastingTracks(),
@@ -98,5 +100,5 @@ class FastingStatisticProvider(
         } else {
             null
         }
-    }
+    }.flowOn(ioDispatcher)
 }

@@ -15,7 +15,7 @@ import kotlinx.datetime.toLocalDateTime
 
 class MoodTrackUpdater(
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
     private val moodWithActivityDeleter: MoodWithActivityDeleter,
     private val moodWithActivityCreator: MoodWithActivityCreator,
     private val attachmentTypeIdMapper: AttachmentTypeIdMapper,
@@ -26,7 +26,7 @@ class MoodTrackUpdater(
         note: String?,
         moodTrack: MoodTrack,
         selectedActivities: Set<Activity>
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         appDatabase.moodTrackQueries.update(
             id = moodTrack.id,
             moodTypeId = moodTrack.moodType.id,

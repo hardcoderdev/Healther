@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 class MoodTypeCreator(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
     private val predefinedMoodTypeProvider: PredefinedMoodTypeProvider
 ) {
 
@@ -17,7 +17,7 @@ class MoodTypeCreator(
         name: CorrectMoodTypeName,
         icon: LocalIcon,
         positiveIndex: Int
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         appDatabase.moodTypeQueries
             .insert(
                 id = idGenerator.nextId(),
@@ -27,7 +27,7 @@ class MoodTypeCreator(
             )
     }
 
-    suspend fun createPredefined() = withContext(dispatcher) {
+    suspend fun createPredefined() = withContext(ioDispatcher) {
         predefinedMoodTypeProvider.providePredefined().forEach { moodType ->
             appDatabase.moodTypeQueries.insert(
                 id = idGenerator.nextId(),

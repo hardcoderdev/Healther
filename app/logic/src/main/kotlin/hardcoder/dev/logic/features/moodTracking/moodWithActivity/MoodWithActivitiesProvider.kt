@@ -4,11 +4,13 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.logic.features.moodTracking.activity.ActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 
@@ -16,7 +18,8 @@ import kotlinx.datetime.Instant
 class MoodWithActivitiesProvider(
     private val appDatabase: AppDatabase,
     private val moodTrackProvider: MoodTrackProvider,
-    private val activityProvider: ActivityProvider
+    private val activityProvider: ActivityProvider,
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
     fun provideMoodWithActivityList(dayRange: ClosedRange<Instant>): Flow<List<MoodWithActivities>> {
@@ -55,7 +58,7 @@ class MoodWithActivitiesProvider(
                 ) {
                     it.toList()
                 }
-            }
+            }.flowOn(ioDispatcher)
     }
 
     fun provideActivityListByMoodTrackId(id: Int) = appDatabase.moodWithActivityQueries
@@ -74,5 +77,5 @@ class MoodWithActivitiesProvider(
                     activities.toList().filterNotNull()
                 }
             }
-        }
+        }.flowOn(ioDispatcher)
 }

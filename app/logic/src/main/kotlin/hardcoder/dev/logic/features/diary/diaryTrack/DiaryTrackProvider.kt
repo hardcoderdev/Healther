@@ -6,17 +6,20 @@ import kotlinx.coroutines.flow.map
 import hardcoder.dev.database.DiaryTrack
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentProvider
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.datetime.Instant
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack as DiaryTrackEntity
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DiaryTrackProvider(
     private val appDatabase: AppDatabase,
-    private val diaryAttachmentProvider: DiaryAttachmentProvider
+    private val diaryAttachmentProvider: DiaryAttachmentProvider,
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
     fun provideAllDiaryTracksByDateRange(
@@ -38,7 +41,7 @@ class DiaryTrackProvider(
                     it.toList()
                 }
             }
-        }
+        }.flowOn(ioDispatcher)
 
     fun provideDiaryTrackById(id: Int) = appDatabase.diaryTrackQueries
         .provideDiaryTrackById(id)
@@ -50,7 +53,7 @@ class DiaryTrackProvider(
                     diaryTrackDatabase.toDiaryTrackEntity(attachedEntity)
                 }
             } ?: flowOf(null)
-        }
+        }.flowOn(ioDispatcher)
 
     private fun DiaryTrack.toDiaryTrackEntity(diaryAttachmentGroup: DiaryAttachmentGroup?) = DiaryTrackEntity(
         id = id,

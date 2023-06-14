@@ -6,10 +6,10 @@ import kotlinx.coroutines.withContext
 
 class AppPreferenceUpdater(
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun update(appPreference: AppPreference) = withContext(dispatcher) {
+    suspend fun update(appPreference: AppPreference) = withContext(ioDispatcher) {
         appDatabase.appPreferenceQueries.upsert(
             id = PREFERENCES_ID,
             firstLaunchTime = appPreference.firstLaunchTime,

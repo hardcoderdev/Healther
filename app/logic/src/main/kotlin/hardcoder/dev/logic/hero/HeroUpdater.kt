@@ -7,11 +7,11 @@ import kotlinx.coroutines.withContext
 
 class HeroUpdater(
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
     private val genderIdMapper: GenderIdMapper
 ) {
 
-    suspend fun update(hero: Hero) = withContext(dispatcher) {
+    suspend fun update(hero: Hero) = withContext(ioDispatcher) {
         appDatabase.heroQueries.update(
             weight = hero.weight,
             exerciseStressTime = hero.exerciseStressTime,

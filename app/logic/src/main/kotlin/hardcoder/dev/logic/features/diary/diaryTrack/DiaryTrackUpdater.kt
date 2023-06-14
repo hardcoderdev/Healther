@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 
 class DiaryTrackUpdater(
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
     private val diaryAttachmentManager: DiaryAttachmentManager
 ) {
 
@@ -16,7 +16,7 @@ class DiaryTrackUpdater(
         id: Int,
         content: CorrectDiaryTrackContent,
         diaryAttachmentGroup: DiaryAttachmentGroup
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         appDatabase.diaryTrackQueries.update(
             id = id,
             content = content.data,

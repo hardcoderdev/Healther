@@ -73,7 +73,7 @@ class WaterTrackingUpdateViewModel(
                 id = waterTrackId,
                 date = dateInputController.state.value.input,
                 millilitersCount = millilitersDrunkInputController.validateAndRequire(),
-                drinkType = drinkSelectionController.requireSelectedItem()
+                drinkTypeId = drinkSelectionController.requireSelectedItem().id
             )
         },
         isAllowedFlow = kotlinx.coroutines.flow.combine(

@@ -18,7 +18,7 @@ import kotlinx.datetime.toInstant
 class MoodTrackCreator(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
     private val diaryTrackCreator: DiaryTrackCreator,
     private val moodTrackProvider: MoodTrackProvider,
     private val moodWithActivityCreator: MoodWithActivityCreator
@@ -29,7 +29,7 @@ class MoodTrackCreator(
         moodType: MoodType,
         date: LocalDateTime,
         selectedActivities: Set<Activity>
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         val moodTrackId = idGenerator.nextId()
 
         appDatabase.moodTrackQueries.insert(

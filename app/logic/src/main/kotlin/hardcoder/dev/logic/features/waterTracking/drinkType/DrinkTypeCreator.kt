@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 class DrinkTypeCreator(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
     private val predefinedDrinkTypeProvider: PredefinedDrinkTypeProvider
 ) {
 
@@ -17,7 +17,7 @@ class DrinkTypeCreator(
         name: CorrectDrinkTypeName,
         icon: LocalIcon,
         hydrationIndexPercentage: Int
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         appDatabase.drinkTypeQueries.insert(
             id = idGenerator.nextId(),
             name = name.data,
@@ -26,7 +26,7 @@ class DrinkTypeCreator(
         )
     }
 
-    suspend fun createPredefined() = withContext(dispatcher) {
+    suspend fun createPredefined() = withContext(ioDispatcher) {
         predefinedDrinkTypeProvider.providePredefined().forEach { drinkType ->
             appDatabase.drinkTypeQueries.insert(
                 id = idGenerator.nextId(),

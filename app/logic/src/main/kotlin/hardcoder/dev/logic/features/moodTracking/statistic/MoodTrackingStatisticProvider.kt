@@ -5,18 +5,21 @@ import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.MoodTrack
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack as MoodTrackEntity
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MoodTrackingStatisticProvider(
     private val appDatabase: AppDatabase,
-    private val moodTypeProvider: MoodTypeProvider
+    private val moodTypeProvider: MoodTypeProvider,
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
     fun provideMoodTrackingStatistic() = appDatabase.moodTrackQueries
@@ -54,12 +57,12 @@ class MoodTrackingStatisticProvider(
                     averageMoodType = averageMood
                 )
             }
-        }
+        }.flowOn(ioDispatcher)
 
     private fun provideDrinkTypeById(moodTrack: MoodTrack): Flow<MoodTrackEntity> {
         return moodTypeProvider.provideMoodTypeByTrackId(moodTrack.moodTypeId).map { moodType ->
             moodTrack.toEntity(moodType!!)
-        }
+        }.flowOn(ioDispatcher)
     }
 
     private fun MoodTrack.toEntity(moodType: MoodType) = MoodTrackEntity(

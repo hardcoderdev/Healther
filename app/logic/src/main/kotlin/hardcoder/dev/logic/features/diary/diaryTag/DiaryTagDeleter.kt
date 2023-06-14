@@ -6,10 +6,10 @@ import kotlinx.coroutines.withContext
 
 class DiaryTagDeleter(
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun deleteById(id: Int) = withContext(dispatcher) {
+    suspend fun deleteById(id: Int) = withContext(ioDispatcher) {
         appDatabase.diaryTagQueries.deleteById(id)
     }
 }

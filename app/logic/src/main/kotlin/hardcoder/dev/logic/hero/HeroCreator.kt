@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 
 class HeroCreator(
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
     private val genderIdMapper: GenderIdMapper
 ) {
 
@@ -16,7 +16,7 @@ class HeroCreator(
         weight: Int,
         exerciseStressTime: Int,
         gender: Gender
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         appDatabase.heroQueries.insert(
             id = HERO_ID,
             weight = weight,

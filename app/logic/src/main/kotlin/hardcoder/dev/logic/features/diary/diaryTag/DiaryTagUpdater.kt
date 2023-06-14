@@ -7,14 +7,14 @@ import kotlinx.coroutines.withContext
 
 class DiaryTagUpdater(
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend fun update(
         id: Int,
         name: CorrectDiaryTagName,
         icon: LocalIcon
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         appDatabase.diaryTagQueries.update(
             id = id,
             name = name.data,

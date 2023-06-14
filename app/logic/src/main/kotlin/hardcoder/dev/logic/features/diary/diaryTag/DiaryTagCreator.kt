@@ -9,13 +9,13 @@ import kotlinx.coroutines.withContext
 class DiaryTagCreator(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend fun create(
         name: CorrectDiaryTagName,
         icon: LocalIcon
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         appDatabase.diaryTagQueries.create(
             id = idGenerator.nextId(),
             name = name.data,

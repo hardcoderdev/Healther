@@ -13,7 +13,7 @@ import kotlinx.datetime.toInstant
 class DiaryTrackCreator(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
     private val diaryAttachmentManager: DiaryAttachmentManager
 ) {
 
@@ -21,7 +21,7 @@ class DiaryTrackCreator(
         diaryAttachmentGroup: DiaryAttachmentGroup,
         date: LocalDateTime,
         content: String
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         val diaryTrackId = idGenerator.nextId()
         appDatabase.diaryTrackQueries.insert(
             id = diaryTrackId,

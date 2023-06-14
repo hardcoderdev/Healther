@@ -9,14 +9,14 @@ import kotlinx.datetime.toInstant
 
 class PedometerTrackCreator(
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend fun upsertPedometerTrack(
         id: Int,
         range: ClosedRange<LocalDateTime>,
         stepsCount: Int
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         appDatabase.pedometerTrackQueries.upsert(
             id = id,
             stepsCount = stepsCount,

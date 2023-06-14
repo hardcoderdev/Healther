@@ -1,12 +1,15 @@
 package hardcoder.dev.logic.features.waterTracking
 
 import hardcoder.dev.logic.hero.HeroProvider
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class WaterTrackingDailyRateProvider(
     private val waterIntakeResolver: WaterIntakeResolver,
     private val heroProvider: HeroProvider,
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
     fun provideDailyRateInMilliliters(): Flow<Int> {
@@ -16,6 +19,6 @@ class WaterTrackingDailyRateProvider(
                 hero.exerciseStressTime,
                 hero.gender
             )
-        }
+        }.flowOn(ioDispatcher)
     }
 }

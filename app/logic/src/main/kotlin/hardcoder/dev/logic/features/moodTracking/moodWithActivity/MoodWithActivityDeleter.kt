@@ -6,10 +6,10 @@ import kotlinx.coroutines.withContext
 
 class MoodWithActivityDeleter(
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun deleteAllActivitiesByMoodTrackId(moodTrackId: Int) = withContext(dispatcher) {
+    suspend fun deleteAllActivitiesByMoodTrackId(moodTrackId: Int) = withContext(ioDispatcher) {
         appDatabase.moodWithActivityQueries.deleteAllActivitiesByMoodTrackId(moodTrackId)
     }
 }

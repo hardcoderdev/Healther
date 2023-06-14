@@ -60,7 +60,7 @@ class WaterTrackingCreateViewModel(
             waterTrackCreator.createWaterTrack(
                 date = dateInputController.state.value.input,
                 millilitersCount = millilitersDrunkInputController.validateAndRequire(),
-                drinkType = drinkSelectionController.requireSelectedItem()
+                drinkTypeId = drinkSelectionController.requireSelectedItem().id
             )
         },
         isAllowedFlow = combine(

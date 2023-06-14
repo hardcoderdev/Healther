@@ -7,14 +7,14 @@ import kotlinx.coroutines.withContext
 
 class ActivityUpdater(
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend fun update(
         id: Int,
         name: CorrectActivityName,
         icon: LocalIcon
-    ) = withContext(dispatcher) {
+    ) = withContext(ioDispatcher) {
         appDatabase.activityQueries.update(
             id = id,
             name = name.data,
