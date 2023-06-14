@@ -20,7 +20,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.waterTracking.MillilitersDrunkToDailyRate
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatistic
 import hardcoder.dev.math.safeDiv
@@ -39,6 +38,7 @@ import hardcoder.dev.uikit.sections.EmptySection
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Headline
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 import kotlin.math.roundToInt
 
 @Composable

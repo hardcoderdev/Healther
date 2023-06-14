@@ -1,25 +1,6 @@
-@file:Suppress("UnstableApiUsage")
-
 plugins {
-    alias(libs.plugins.com.android.library)
-    alias(libs.plugins.kotlin.android)
-}
-
-android {
-    namespace = Modules.Namespaces.Foundation.uikit
-    compileSdk = Android.compileSdk
-
-    defaultConfig {
-        minSdk = Android.DefaultConfig.minSdk
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = Android.ComposeOptions.kotlinCompilerExtensionVersion
-    }
+    id("android-library-convention")
+    id("android-compose-convention")
 }
 
 dependencies {

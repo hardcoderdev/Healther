@@ -12,11 +12,11 @@ import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.controller.InputController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.uikit.NumberInput
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Headline
+import hardcoderdev.healther.app.android.app.R
 import kotlin.time.Duration.Companion.hours
 
 @Composable

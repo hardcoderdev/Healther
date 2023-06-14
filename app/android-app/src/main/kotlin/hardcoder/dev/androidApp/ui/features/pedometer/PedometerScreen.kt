@@ -24,7 +24,6 @@ import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.math.safeDiv
 import hardcoder.dev.presentation.features.pedometer.Available
@@ -49,6 +48,7 @@ import hardcoder.dev.uikit.sections.PermissionsSection
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Headline
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 import kotlin.math.roundToInt
 
 @Composable

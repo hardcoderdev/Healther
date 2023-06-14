@@ -13,9 +13,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import hardcoder.dev.uikit.text.Description
+import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun DiaryMoodItem(

@@ -11,13 +11,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.sections.EmptySection
+import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun DrinkTypeManageScreen(

@@ -9,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.healther.R
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun WelcomeScreen(onStart: () -> Unit) {

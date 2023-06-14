@@ -1,8 +1,8 @@
 package hardcoder.dev.androidApp.ui.features.pedometer
 
-import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.pedometer.RejectReason
 import hardcoder.dev.uikit.sections.Rejected
+import hardcoderdev.healther.app.android.app.R
 
 class PedometerRejectedMapper {
 

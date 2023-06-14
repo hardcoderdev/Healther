@@ -34,7 +34,6 @@ import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
-import hardcoder.dev.healther.R
 import hardcoder.dev.math.safeDiv
 import hardcoder.dev.presentation.dashboard.DashboardItem
 import hardcoder.dev.uikit.Action
@@ -50,6 +49,7 @@ import hardcoder.dev.uikit.icons.IconButton
 import hardcoder.dev.uikit.progressBar.LinearProgressBar
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun DashboardScreen(

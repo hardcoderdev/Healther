@@ -15,11 +15,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
-import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
 import hardcoder.dev.uikit.card.ActionCard
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun WaterTrackItem(

@@ -1,16 +1,6 @@
 plugins {
-    alias(libs.plugins.com.android.library)
-    alias(libs.plugins.kotlin.android)
+    id("android-library-convention")
     alias(libs.plugins.sql.delight)
-}
-
-android {
-    namespace = Modules.Namespaces.database
-    compileSdk = Android.compileSdk
-
-    defaultConfig {
-        minSdk = Android.DefaultConfig.minSdk
-    }
 }
 
 sqldelight {

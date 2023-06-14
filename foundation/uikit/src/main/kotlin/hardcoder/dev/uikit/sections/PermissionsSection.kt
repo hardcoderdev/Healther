@@ -20,11 +20,11 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import hardcoder.dev.uikit.R
 import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.card.StaticCard
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.foundation.uikit.R
 
 data class Rejected(
     @RawRes val animationResId: Int,

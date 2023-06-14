@@ -16,7 +16,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.controller.SingleSelectionController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.hero.gender.Gender
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.SingleCardSelectionRow
@@ -26,6 +25,7 @@ import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.icons.Image
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun SelectGenderScreen(

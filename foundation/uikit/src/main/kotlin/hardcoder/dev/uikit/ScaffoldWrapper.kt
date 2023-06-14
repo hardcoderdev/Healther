@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.icons.IconButton
+import hardcoderdev.healther.foundation.uikit.R
 
 @Composable
 fun ScaffoldWrapper(

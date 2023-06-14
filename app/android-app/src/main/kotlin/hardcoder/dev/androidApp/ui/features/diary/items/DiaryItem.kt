@@ -15,11 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack
 import hardcoder.dev.uikit.card.ActionCard
 import hardcoder.dev.uikit.chip.StaticChip
 import hardcoder.dev.uikit.text.Description
+import hardcoderdev.healther.app.android.app.R
 
 private const val MAX_TAGS_VISIBLE_IN_ITEM = 4
 

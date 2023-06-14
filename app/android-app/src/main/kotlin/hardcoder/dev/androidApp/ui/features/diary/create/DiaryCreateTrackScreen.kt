@@ -24,7 +24,6 @@ import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.MultiSelectionController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.ValidatedInputController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.IncorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.ValidatedDiaryTrackContent
@@ -39,6 +38,7 @@ import hardcoder.dev.uikit.chip.content.ChipIconDefaultContent
 import hardcoder.dev.uikit.text.Title
 import hardcoder.dev.uikit.text.ValidatedTextField
 import hardcoder.dev.uikit.text.rememberValidationResourcesAdapter
+import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun DiaryCreateTrackScreen(

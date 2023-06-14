@@ -3,9 +3,9 @@ package hardcoder.dev.androidApp.ui.features.pedometer.statistic
 import android.content.Context
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.uikit.StatisticData
+import hardcoderdev.healther.app.android.app.R
 
 class PedometerStatisticResolver(
     private val context: Context,
@@ -17,7 +17,7 @@ class PedometerStatisticResolver(
         return listOf(
             StatisticData(
                 name = context.getString(R.string.pedometer_statistic_total_steps),
-                value = statistic.totalSteps?.toString()
+                value = statistic.totalSteps.toString()
                     ?: context.getString(R.string.pedometer_statistic_not_enough_data_text)
             ),
             StatisticData(

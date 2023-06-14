@@ -2,7 +2,7 @@ package hardcoder.dev.androidApp.ui.formatters
 
 import android.content.Context
 import android.text.format.DateFormat
-import hardcoder.dev.healther.R
+import hardcoderdev.healther.app.android.app.R
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime

@@ -36,7 +36,6 @@ import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.MultiSelectionController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.uikit.Action
@@ -59,6 +58,7 @@ import hardcoder.dev.uikit.text.ErrorText
 import hardcoder.dev.uikit.text.Label
 import hardcoder.dev.uikit.text.TextField
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant

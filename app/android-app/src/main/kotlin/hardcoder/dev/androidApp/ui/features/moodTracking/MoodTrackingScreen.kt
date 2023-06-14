@@ -20,7 +20,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
 import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatistic
@@ -37,6 +36,7 @@ import hardcoder.dev.uikit.sections.EmptyBlock
 import hardcoder.dev.uikit.sections.EmptySection
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 import kotlin.math.roundToInt
 
 @Composable

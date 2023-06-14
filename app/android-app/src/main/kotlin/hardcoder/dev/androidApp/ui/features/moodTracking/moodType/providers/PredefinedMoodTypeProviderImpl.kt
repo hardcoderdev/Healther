@@ -2,9 +2,9 @@ package hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers
 
 import android.content.Context
 import androidx.annotation.StringRes
-import hardcoder.dev.logic.R
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypePredefined
 import hardcoder.dev.logic.features.moodTracking.moodType.PredefinedMoodTypeProvider
+import hardcoderdev.healther.app.logic.R
 
 class PredefinedMoodTypeProviderImpl(
     private val context: Context,

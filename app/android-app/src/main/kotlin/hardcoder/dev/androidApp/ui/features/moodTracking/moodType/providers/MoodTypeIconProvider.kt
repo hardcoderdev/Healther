@@ -1,9 +1,9 @@
 package hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers
 
 import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.icons.IconResourceProvider
 import hardcoder.dev.logic.icons.LocalIcon
+import hardcoderdev.healther.app.android.app.R
 
 class MoodTypeIconProvider : IconResourceProvider {
 

@@ -2,9 +2,9 @@ package hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.statistic
 
 import android.content.Context
 import hardcoder.dev.androidApp.ui.formatters.LiquidFormatter
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatistic
 import hardcoder.dev.uikit.StatisticData
+import hardcoderdev.healther.app.android.app.R
 
 class WaterTrackingStatisticResolver(
     private val context: Context,

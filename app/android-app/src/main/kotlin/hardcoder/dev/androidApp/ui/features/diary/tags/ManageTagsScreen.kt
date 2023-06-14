@@ -14,7 +14,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -22,6 +21,7 @@ import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.chip.ActionChip
 import hardcoder.dev.uikit.sections.EmptySection
+import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun ManageTagsScreen(

@@ -34,7 +34,6 @@ import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
 import hardcoder.dev.controller.ValidatedInputController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.waterTracking.IncorrectMillilitersCount
 import hardcoder.dev.logic.features.waterTracking.ValidatedMillilitersCount
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
@@ -55,10 +54,10 @@ import hardcoder.dev.uikit.text.Title
 import hardcoder.dev.uikit.text.ValidatedInputField
 import hardcoder.dev.uikit.text.rememberInputAdapter
 import hardcoder.dev.uikit.text.rememberValidationResourcesAdapter
+import hardcoderdev.healther.app.android.app.R
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
-import java.text.DateFormat
 
 @Composable
 fun UpdateWaterTrackScreen(

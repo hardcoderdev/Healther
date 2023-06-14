@@ -21,7 +21,6 @@ import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
-import hardcoder.dev.healther.R
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
 import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -29,6 +28,7 @@ import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.calendar.CustomMonthHeader
 import hardcoder.dev.uikit.text.Description
+import hardcoderdev.healther.app.android.app.R
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState

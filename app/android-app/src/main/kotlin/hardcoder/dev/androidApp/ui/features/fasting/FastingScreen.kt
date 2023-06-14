@@ -30,9 +30,7 @@ import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.MultiRequestController
-import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.math.safeDiv
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
@@ -54,6 +52,7 @@ import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Headline
 import hardcoder.dev.uikit.text.TextField
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 import kotlin.math.roundToInt
 
 @Composable

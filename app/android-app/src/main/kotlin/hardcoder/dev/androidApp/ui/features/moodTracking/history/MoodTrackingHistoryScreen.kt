@@ -20,7 +20,6 @@ import hardcoder.dev.androidApp.ui.features.moodTracking.MoodTrackItem
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.datetime.createRangeForThisDay
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
 import hardcoder.dev.uikit.LoadingContainer
@@ -29,6 +28,7 @@ import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.calendar.CustomMonthHeader
 import hardcoder.dev.uikit.text.Description
+import hardcoderdev.healther.app.android.app.R
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState

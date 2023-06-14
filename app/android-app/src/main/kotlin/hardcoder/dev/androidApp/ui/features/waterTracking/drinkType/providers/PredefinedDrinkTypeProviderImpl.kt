@@ -2,7 +2,7 @@ package hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.providers
 
 import android.content.Context
 import androidx.annotation.StringRes
-import hardcoder.dev.logic.R
+import hardcoderdev.healther.app.logic.R
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypePredefined
 import hardcoder.dev.logic.features.waterTracking.drinkType.PredefinedDrinkTypeProvider
 

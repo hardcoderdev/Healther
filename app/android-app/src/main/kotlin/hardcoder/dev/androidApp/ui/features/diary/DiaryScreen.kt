@@ -31,8 +31,6 @@ import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.MultiSelectionController
 import hardcoder.dev.controller.SingleSelectionController
-import hardcoder.dev.controller.requireSelectedItems
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.diary.DateRangeFilterType
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack
@@ -53,6 +51,7 @@ import hardcoder.dev.uikit.sections.EmptySection
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Label
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 import kotlinx.coroutines.launch
 
 @Composable

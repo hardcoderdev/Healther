@@ -16,7 +16,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.SingleRequestController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.appPreferences.AppPreference
 import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -25,6 +24,7 @@ import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 
 private const val DEVELOPER_PAGE_LINK =
     "https://play.google.com/store/apps/dev?id=7383576086355039907"

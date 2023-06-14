@@ -18,7 +18,6 @@ import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.datetime.createRangeForThisDay
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -31,6 +30,7 @@ import hardcoder.dev.uikit.charts.ActivityLineChart
 import hardcoder.dev.uikit.charts.MINIMUM_ENTRIES_FOR_SHOWING_CHART
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState

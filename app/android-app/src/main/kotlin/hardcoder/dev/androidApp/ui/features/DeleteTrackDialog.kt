@@ -22,12 +22,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import hardcoder.dev.healther.R
 import hardcoder.dev.uikit.buttons.ButtonStyles
 import hardcoder.dev.uikit.buttons.SimpleButton
 import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.text.Label
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun DeleteTrackDialog(

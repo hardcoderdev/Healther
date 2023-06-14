@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.controller.InputController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.hero.gender.Gender
 import hardcoder.dev.uikit.NumberInput
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -28,6 +27,7 @@ import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 
 private const val MINIMUM_WEIGHT = 30
 private const val MAXIMUM_WEIGHT = 400

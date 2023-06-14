@@ -24,7 +24,6 @@ import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
 import hardcoder.dev.controller.ValidatedInputController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.moodTracking.activity.IncorrectActivityName
 import hardcoder.dev.logic.features.moodTracking.activity.ValidatedActivityName
 import hardcoder.dev.logic.icons.LocalIcon
@@ -40,6 +39,7 @@ import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.text.Title
 import hardcoder.dev.uikit.text.ValidatedTextField
 import hardcoder.dev.uikit.text.rememberValidationAdapter
+import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun UpdateActivityScreen(

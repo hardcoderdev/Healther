@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -30,7 +29,6 @@ import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.MultiSelectionController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.ValidatedInputController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.IncorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.ValidatedDiaryTrackContent
@@ -45,12 +43,11 @@ import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.chip.ActionChip
 import hardcoder.dev.uikit.chip.content.ChipIconDefaultContent
-import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.lists.flowRow.MultiSelectionChipFlowRow
-import hardcoder.dev.uikit.text.Label
 import hardcoder.dev.uikit.text.Title
 import hardcoder.dev.uikit.text.ValidatedTextField
 import hardcoder.dev.uikit.text.rememberValidationAdapter
+import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun DiaryUpdateTrackScreen(

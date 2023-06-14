@@ -13,9 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.uikit.R
 import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.foundation.uikit.R
 import io.github.boguszpawlowski.composecalendar.header.MonthState
 import java.time.format.TextStyle
 import java.util.Locale

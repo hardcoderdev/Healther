@@ -11,7 +11,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
-import hardcoder.dev.healther.R
+import hardcoderdev.healther.app.android.app.R
 
 class PedometerNotificationManager(private val context: Context) {
 

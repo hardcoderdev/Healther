@@ -16,7 +16,6 @@ import hardcoder.dev.androidApp.ui.features.fasting.plans.FastingPlanItem
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -26,6 +25,7 @@ import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
+import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun FastingCreationTrackScreen(onGoBack: () -> Unit) {

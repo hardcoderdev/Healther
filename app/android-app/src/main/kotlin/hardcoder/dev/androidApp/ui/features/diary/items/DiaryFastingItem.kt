@@ -15,11 +15,11 @@ import androidx.compose.ui.unit.sp
 import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.math.safeDiv
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.uikit.progressBar.CircularProgressBar
 import hardcoder.dev.uikit.text.Label
+import hardcoderdev.healther.app.android.app.R
 import kotlinx.datetime.Clock
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration

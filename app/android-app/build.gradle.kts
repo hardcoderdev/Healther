@@ -5,71 +5,17 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.navigation.safe.args)
+    id("android-compose-convention")
+    id("android-app-convention")
 }
 
 android {
-    compileSdk = Android.compileSdk
-    namespace = Android.DefaultConfig.applicationId
-
-    defaultConfig {
-        applicationId = Android.DefaultConfig.applicationId
-        minSdk = Android.DefaultConfig.minSdk
-        targetSdk = Android.DefaultConfig.targetSdk
-        versionCode = Android.DefaultConfig.versionCode
-        versionName = Android.DefaultConfig.versionName
-        multiDexEnabled = true
-        testInstrumentationRunner = Android.DefaultConfig.instrumentationRunner
-
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-    }
-
     buildTypes {
-        all {
-            proguardFiles(
-                getDefaultProguardFile(Android.Proguard.androidOptimizedRules),
-                Android.Proguard.projectRules
-            )
-        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
         }
-        debug {
-            isMinifyEnabled = false
-            isShrinkResources = false
-        }
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = Android.KotlinOptions.jvmTargetVersion
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = Android.ComposeOptions.kotlinCompilerExtensionVersion
-    }
-
-    packaging {
-        resources {
-            excludes += Android.PackagingOptions.license
-            excludes += Android.PackagingOptions.native
-            excludes += Android.PackagingOptions.dependencies
-            excludes += Android.PackagingOptions.indexList
-        }
-    }
-
-    kapt {
-        correctErrorTypes = true
     }
 }
 

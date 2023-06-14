@@ -1,7 +1,7 @@
 package hardcoder.dev.androidApp.ui.features.fasting.plans
 
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
+import hardcoderdev.healther.app.android.app.R
 
 class FastingPlanResourcesProvider {
 

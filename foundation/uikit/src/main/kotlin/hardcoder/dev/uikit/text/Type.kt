@@ -7,7 +7,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import hardcoder.dev.uikit.R
+import hardcoderdev.healther.foundation.uikit.R
 
 val rubikFontFamily = FontFamily(
     Font(

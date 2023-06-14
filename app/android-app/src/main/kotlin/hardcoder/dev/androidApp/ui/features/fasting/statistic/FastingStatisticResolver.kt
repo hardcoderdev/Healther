@@ -1,9 +1,9 @@
 package hardcoder.dev.androidApp.ui.features.fasting.statistic
 
 import android.content.Context
-import hardcoder.dev.healther.R
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.uikit.StatisticData
+import hardcoderdev.healther.app.android.app.R
 
 class FastingStatisticResolver(private val context: Context) {
 
