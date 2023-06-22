@@ -37,8 +37,6 @@ class DiaryCreationViewModel(
     val creationController = SingleRequestController(
         coroutineScope = viewModelScope,
         request = {
-            val tagMultiSelectionControllerState = tagMultiSelectionController.state.value
-
             diaryTrackCreator.create(
                 content = contentController.validateAndRequire<CorrectDiaryTrackContent>().data,
                 date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),

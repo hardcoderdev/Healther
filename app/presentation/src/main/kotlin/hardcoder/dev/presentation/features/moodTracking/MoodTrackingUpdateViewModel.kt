@@ -40,8 +40,6 @@ class MoodTrackingUpdateViewModel(
     moodTypeProvider: MoodTypeProvider,
 ) : ViewModel() {
 
-    private val selectedActivities = MutableStateFlow<List<Activity>>(emptyList())
-
     val dateController = InputController(
         coroutineScope = viewModelScope,
         initialInput = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())

@@ -22,7 +22,6 @@ import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivi
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityCreator
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityDeleter
 import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatisticProvider
-import hardcoder.dev.logic.icons.IconResourceProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module

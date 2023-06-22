@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.viewmodel.compose.viewModel
 import hardcoder.dev.androidApp.ui.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.features.fasting.statistic.FastingStatisticResolver
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
