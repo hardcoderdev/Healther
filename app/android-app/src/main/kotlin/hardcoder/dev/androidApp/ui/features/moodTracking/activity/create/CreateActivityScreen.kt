@@ -18,8 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
@@ -27,6 +25,7 @@ import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.logic.features.moodTracking.activity.IncorrectActivityName
 import hardcoder.dev.logic.features.moodTracking.activity.ValidatedActivityName
 import hardcoder.dev.logic.icons.LocalIcon
+import hardcoder.dev.presentation.features.moodTracking.activity.ActivityCreationViewModel
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.SingleCardSelectionVerticalGrid
@@ -38,12 +37,12 @@ import hardcoder.dev.uikit.text.Title
 import hardcoder.dev.uikit.text.ValidatedTextField
 import hardcoder.dev.uikit.text.rememberValidationAdapter
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CreateActivityScreen(onGoBack: () -> Unit) {
     val context = LocalContext.current
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getCreateActivityViewModel() }
+    val viewModel = koinViewModel<ActivityCreationViewModel>()
 
     LaunchedEffectWhenExecuted(controller = viewModel.creationController, action = onGoBack)
 

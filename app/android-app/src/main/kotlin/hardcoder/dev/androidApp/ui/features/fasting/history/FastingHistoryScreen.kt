@@ -14,13 +14,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.fasting.FastingItem
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.logic.features.fasting.track.FastingTrack
+import hardcoder.dev.presentation.features.fasting.FastingHistoryViewModel
 import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
@@ -35,11 +34,11 @@ import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun FastingHistoryScreen(onGoBack: () -> Unit) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getFastingHistoryViewModel() }
+    val viewModel = koinViewModel<FastingHistoryViewModel>()
 
     ScaffoldWrapper(
         content = {

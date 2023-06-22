@@ -1,23 +1,23 @@
 package hardcoder.dev.logic.features.diary.diaryAttachment
 
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.logic.features.diary.AttachmentType
 import hardcoder.dev.logic.features.diary.AttachmentTypeIdMapper
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 class DiaryAttachmentManager(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val ioDispatcher: CoroutineDispatcher,
+    private val dispatchers: BackgroundCoroutineDispatchers,
     private val attachmentTypeIdMapper: AttachmentTypeIdMapper
 ) {
 
     suspend fun attach(
         diaryTrackId: Int,
         attachmentGroup: DiaryAttachmentGroup
-    ) = withContext(ioDispatcher) {
+    ) = withContext(dispatchers.io) {
         appDatabase.diaryAttachmentQueries.deleteByDiaryTrackId(diaryTrackId)
 
         attachmentGroup.moodTracks.forEach { moodTrack ->

@@ -27,15 +27,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.math.safeDiv
 import hardcoder.dev.presentation.dashboard.DashboardItem
+import hardcoder.dev.presentation.dashboard.DashboardViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.LoadingContainer
@@ -50,6 +48,8 @@ import hardcoder.dev.uikit.progressBar.LinearProgressBar
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun DashboardScreen(
@@ -60,8 +60,7 @@ fun DashboardScreen(
     onGoToMoodTrackingFeature: () -> Unit,
     onGoToSettings: () -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getDashboardViewModel() }
+    val viewModel = koinViewModel<DashboardViewModel>()
 
     ScaffoldWrapper(
         content = {
@@ -122,7 +121,6 @@ private fun DashboardContent(
         }
     }
 }
-
 
 private fun LazyListScope.featureSection(
     items: List<DashboardItem>,
@@ -280,8 +278,7 @@ private fun FastingFeatureItem(
     onGoToFeature: () -> Unit,
     onStartFasting: () -> Unit
 ) {
-    val uiModule = LocalUIModule.current
-    val dateTimeFormatter = uiModule.dateTimeFormatter
+    val dateTimeFormatter = koinInject<DateTimeFormatter>()
 
     ActionCard(
         modifier = Modifier.wrapContentHeight(),

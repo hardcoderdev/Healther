@@ -16,13 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
+import hardcoder.dev.androidApp.ui.features.moodTracking.statistic.MoodTrackingStatisticResolver
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
 import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatistic
+import hardcoder.dev.presentation.features.moodTracking.MoodTrackingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.LoadingContainer
@@ -37,6 +36,8 @@ import hardcoder.dev.uikit.sections.EmptySection
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import kotlin.math.roundToInt
 
 @Composable
@@ -46,8 +47,7 @@ fun MoodTrackingScreen(
     onUpdate: (MoodTrack) -> Unit,
     onGoToHistory: () -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getMoodTrackingViewModel() }
+    val viewModel = koinViewModel<MoodTrackingViewModel>()
 
     ScaffoldWrapper(
         onFabClick = onCreateMoodTrack,
@@ -117,8 +117,7 @@ private fun MoodTrackingContent(
 
 @Composable
 private fun MoodTrackingStatisticSection(statistic: MoodTrackingStatistic) {
-    val uiModule = LocalUIModule.current
-    val moodTrackingStatisticResolver = uiModule.moodTrackingStatisticResolver
+    val moodTrackingStatisticResolver = koinInject<MoodTrackingStatisticResolver>()
 
     Title(text = stringResource(id = R.string.moodTracking_statistic_text))
     Spacer(modifier = Modifier.height(16.dp))

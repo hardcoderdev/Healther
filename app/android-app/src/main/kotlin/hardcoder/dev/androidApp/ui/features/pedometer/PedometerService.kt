@@ -7,8 +7,9 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import hardcoder.dev.androidApp.ui.App
 import hardcoder.dev.androidApp.ui.features.pedometer.PedometerNotificationManager.Companion.NOTIFICATION_ID
+import hardcoder.dev.logic.features.pedometer.PedometerStepHandler
+import hardcoder.dev.logic.features.pedometer.PedometerStepProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -16,13 +17,13 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class PedometerService : Service(), SensorEventListener {
 
     private val serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
-    private val pedometerStepProvider by lazy { logicModule.pedometerStepProvider }
-    private val pedometerServiceTracker by lazy { logicModule.pedometerStepHandler }
-    private val logicModule by lazy { App.instance.presentationModule.logicModule }
+    private val pedometerStepProvider by inject<PedometerStepProvider>()
+    private val pedometerServiceTracker by inject<PedometerStepHandler>()
     private val pedometerNotificationManager by lazy { PedometerNotificationManager(this) }
     private val sensorManager by lazy { getSystemService(SENSOR_SERVICE) as SensorManager }
 

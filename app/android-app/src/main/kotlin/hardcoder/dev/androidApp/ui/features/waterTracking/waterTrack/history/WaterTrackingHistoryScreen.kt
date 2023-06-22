@@ -14,13 +14,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
+import hardcoder.dev.presentation.features.waterTracking.WaterTrackingHistoryViewModel
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
 import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -36,6 +35,7 @@ import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
+import org.koin.androidx.compose.koinViewModel
 import hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.WaterTrackItem as WaterTrackItemRow
 
 @Composable
@@ -43,10 +43,7 @@ fun WaterTrackingHistoryScreen(
     onGoBack: () -> Unit,
     onTrackUpdate: (WaterTrackingItem) -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getWaterTrackingHistoryViewModel()
-    }
+    val viewModel = koinViewModel<WaterTrackingHistoryViewModel>()
 
     ScaffoldWrapper(
         content = {

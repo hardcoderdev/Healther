@@ -18,8 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.MultiSelectionController
 import hardcoder.dev.controller.SingleRequestController
@@ -27,6 +25,7 @@ import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.IncorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.ValidatedDiaryTrackContent
+import hardcoder.dev.presentation.features.diary.DiaryCreationViewModel
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
 import hardcoder.dev.uikit.lists.flowRow.MultiSelectionChipFlowRow
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -39,14 +38,14 @@ import hardcoder.dev.uikit.text.Title
 import hardcoder.dev.uikit.text.ValidatedTextField
 import hardcoder.dev.uikit.text.rememberValidationResourcesAdapter
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun DiaryCreateTrackScreen(
     onGoBack: () -> Unit,
     onManageTags: () -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getDiaryCreateTrackViewModel() }
+    val viewModel = koinViewModel<DiaryCreationViewModel>()
 
     LaunchedEffectWhenExecuted(controller = viewModel.creationController, action = onGoBack)
 

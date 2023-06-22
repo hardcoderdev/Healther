@@ -12,11 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.controller.SingleSelectionController
+import hardcoder.dev.controller.requireSelectedItem
 import hardcoder.dev.logic.hero.gender.Gender
+import hardcoder.dev.presentation.setUpFlow.SelectGenderViewModel
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.SingleCardSelectionRow
 import hardcoder.dev.uikit.TopBarConfig
@@ -26,25 +25,23 @@ import hardcoder.dev.uikit.icons.Image
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun SelectGenderScreen(
     onGoBack: () -> Unit,
     onGoForward: (Gender) -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val selectedGenderViewModel = viewModel { presentationModule.getSelectGenderViewModel() }
+    val viewModel = koinViewModel<SelectGenderViewModel>()
 
     ScaffoldWrapper(
         content = {
             SelectGenderContent(
+                genderSelectionController = viewModel.genderSelectionController,
                 onGoForward = {
-                    onGoForward(
-                        (selectedGenderViewModel.genderSelectionController.state.value
-                                as SingleSelectionController.State.Loaded).selectedItem
-                    )
-                },
-                selectedGenderViewModel.genderSelectionController
+                    onGoForward(viewModel.genderSelectionController.requireSelectedItem())
+                }
             )
         },
         topBarConfig = TopBarConfig(
@@ -61,8 +58,7 @@ private fun SelectGenderContent(
     onGoForward: () -> Unit,
     genderSelectionController: SingleSelectionController<Gender>
 ) {
-    val uiModule = LocalUIModule.current
-    val genderResourcesProvider = uiModule.genderResourcesProvider
+    val genderResourcesProvider = koinInject<GenderResourcesProvider>()
 
     Column(
         modifier = Modifier

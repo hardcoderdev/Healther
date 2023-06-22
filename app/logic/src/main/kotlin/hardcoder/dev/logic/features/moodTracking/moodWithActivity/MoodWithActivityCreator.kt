@@ -1,19 +1,19 @@
 package hardcoder.dev.logic.features.moodTracking.moodWithActivity
 
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 class MoodWithActivityCreator(
     private val appDatabase: AppDatabase,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     suspend fun create(
         id: Int? = null,
         moodTrackId: Int,
         activityId: Int
-    ) = withContext(ioDispatcher) {
+    ) = withContext(dispatchers.io) {
         appDatabase.moodWithActivityQueries.upsert(
             id = id,
             activityId = activityId,

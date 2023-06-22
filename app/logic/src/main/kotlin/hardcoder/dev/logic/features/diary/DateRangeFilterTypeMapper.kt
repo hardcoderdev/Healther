@@ -22,6 +22,7 @@ class DateRangeFilterTypeMapper(appPreferenceProvider: AppPreferenceProvider) {
         initialValue = null
     ).value
 
+    // TODO FIRST LINE
     private val map = mapOf(
         DateRangeFilterType.BY_ALL_PERIOD to Clock.System.now()
                 ..LocalDate.now().getEndOfDay(),

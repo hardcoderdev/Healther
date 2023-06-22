@@ -8,16 +8,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
+import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeViewModel
 import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
 import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.sections.EmptySection
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun DrinkTypeManageScreen(
@@ -25,8 +25,7 @@ fun DrinkTypeManageScreen(
     onCreateDrinkType: () -> Unit,
     onUpdateDrinkType: (DrinkType) -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getDrinkTypeManageTracksViewModel() }
+    val viewModel = koinViewModel<DrinkTypeViewModel>()
 
     ScaffoldWrapper(
         content = {

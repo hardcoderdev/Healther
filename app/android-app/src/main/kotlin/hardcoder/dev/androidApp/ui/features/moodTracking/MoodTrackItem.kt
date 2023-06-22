@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.di.LocalUIModule
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
@@ -27,6 +27,7 @@ import hardcoder.dev.uikit.card.ActionCard
 import hardcoder.dev.uikit.chip.StaticChip
 import hardcoder.dev.uikit.text.Description
 import hardcoderdev.healther.app.android.app.R
+import org.koin.compose.koinInject
 
 private const val MAX_ACTIVITIES_VISIBLE_IN_ITEM = 4
 
@@ -37,10 +38,9 @@ fun MoodTrackItem(
     moodTrack: MoodTrack,
     onUpdate: (MoodTrack) -> Unit
 ) {
-    val uiModule = LocalUIModule.current
-    val dateTimeFormatter = uiModule.dateTimeFormatter
+    val dateTimeFormatter = koinInject<DateTimeFormatter>()
 
-    ActionCard(onClick = { onUpdate(moodTrack) },) {
+    ActionCard(onClick = { onUpdate(moodTrack) }) {
         Column(
             Modifier
                 .fillMaxWidth()

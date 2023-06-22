@@ -18,10 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
+import hardcoder.dev.androidApp.ui.features.pedometer.statistic.PedometerStatisticResolver
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
+import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
@@ -29,6 +28,7 @@ import hardcoder.dev.math.safeDiv
 import hardcoder.dev.presentation.features.pedometer.Available
 import hardcoder.dev.presentation.features.pedometer.NotAvailable
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
+import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.LoadingContainer
@@ -49,6 +49,8 @@ import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Headline
 import hardcoder.dev.uikit.text.Title
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import kotlin.math.roundToInt
 
 @Composable
@@ -56,8 +58,7 @@ fun PedometerScreen(
     onGoBack: () -> Unit,
     onGoToPedometerHistory: () -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getPedometerViewModel() }
+    val viewModel = koinViewModel<PedometerViewModel>()
 
     ScaffoldWrapper(
         content = {
@@ -96,8 +97,7 @@ private fun PedometerContent(
     statisticLoadingController: LoadingController<PedometerStatistic>,
     pedometerToggleController: ToggleController
 ) {
-    val uiModule = LocalUIModule.current
-    val pedometerRejectedMapper = uiModule.pedometerRejectedMapper
+    val pedometerRejectedMapper = koinInject<PedometerRejectedMapper>()
 
     LoadingContainer(pedometerAvailabilityLoadingController) { availability ->
         Column(
@@ -209,9 +209,8 @@ private fun DailyRateSection(
 
 @Composable
 private fun PedometerInfoSection(statistic: PedometerStatistic) {
-    val uiModule = LocalUIModule.current
-    val dateTimeFormatter = uiModule.dateTimeFormatter
-    val decimalFormatter = uiModule.decimalFormatter
+    val dateTimeFormatter = koinInject<DateTimeFormatter>()
+    val decimalFormatter = koinInject<DecimalFormatter>()
 
     Title(text = stringResource(id = R.string.pedometer_yourIndicatorsForThisDay_text))
     Spacer(modifier = Modifier.height(16.dp))
@@ -246,8 +245,7 @@ private fun PedometerInfoSection(statistic: PedometerStatistic) {
 
 @Composable
 private fun PedometerStatisticSection(statistic: PedometerStatistic) {
-    val uiModule = LocalUIModule.current
-    val pedometerStatisticResolver = uiModule.pedometerStatisticResolver
+    val pedometerStatisticResolver = koinInject<PedometerStatisticResolver>()
 
     Title(text = stringResource(id = R.string.pedometer_statistic_text))
     Spacer(modifier = Modifier.height(16.dp))

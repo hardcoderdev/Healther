@@ -26,10 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodItem
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.MultiSelectionController
@@ -37,6 +35,7 @@ import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
+import hardcoder.dev.presentation.features.moodTracking.MoodTrackingCreationViewModel
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.lists.flowRow.MultiSelectionChipFlowRow
@@ -59,6 +58,8 @@ import hardcoderdev.healther.app.android.app.R
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun CreateMoodTrackScreen(
@@ -66,8 +67,7 @@ fun CreateMoodTrackScreen(
     onManageActivities: () -> Unit,
     onManageMoodTypes: () -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getMoodTrackingCreateViewModel() }
+    val viewModel = koinViewModel<MoodTrackingCreationViewModel>()
 
     LaunchedEffectWhenExecuted(controller = viewModel.creationController, action = onGoBack)
 
@@ -275,8 +275,7 @@ private fun SelectDateSection(
 ) {
     val state by dateController.state.collectAsState()
 
-    val uiModule = LocalUIModule.current
-    val dateTimeFormatter = uiModule.dateTimeFormatter
+    val dateTimeFormatter = koinInject<DateTimeFormatter>()
     val selectedDate = state.input.toInstant(TimeZone.currentSystemDefault())
     val formattedDate = dateTimeFormatter.formatDateTime(selectedDate)
 

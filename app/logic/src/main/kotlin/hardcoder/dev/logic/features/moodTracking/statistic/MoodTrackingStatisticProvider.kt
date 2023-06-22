@@ -1,11 +1,11 @@
 package hardcoder.dev.logic.features.moodTracking.statistic
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.MoodTrack
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -19,7 +19,7 @@ import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack as MoodTrac
 class MoodTrackingStatisticProvider(
     private val appDatabase: AppDatabase,
     private val moodTypeProvider: MoodTypeProvider,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     fun provideMoodTrackingStatistic() = appDatabase.moodTrackQueries
@@ -57,12 +57,12 @@ class MoodTrackingStatisticProvider(
                     averageMoodType = averageMood
                 )
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
 
     private fun provideDrinkTypeById(moodTrack: MoodTrack): Flow<MoodTrackEntity> {
         return moodTypeProvider.provideMoodTypeByTrackId(moodTrack.moodTypeId).map { moodType ->
             moodTrack.toEntity(moodType!!)
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
     }
 
     private fun MoodTrack.toEntity(moodType: MoodType) = MoodTrackEntity(

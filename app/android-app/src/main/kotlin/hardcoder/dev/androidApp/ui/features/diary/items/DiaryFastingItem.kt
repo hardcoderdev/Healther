@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import hardcoder.dev.androidApp.di.LocalUIModule
+import hardcoder.dev.androidApp.ui.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.math.safeDiv
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
@@ -21,6 +21,7 @@ import hardcoder.dev.uikit.progressBar.CircularProgressBar
 import hardcoder.dev.uikit.text.Label
 import hardcoderdev.healther.app.android.app.R
 import kotlinx.datetime.Clock
+import org.koin.compose.koinInject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -28,9 +29,8 @@ import kotlin.time.toDuration
 fun DiaryFastingItem(
     fastingTrack: FastingTrack
 ) {
-    val uiModule = LocalUIModule.current
-    val dateTimeFormatter = uiModule.dateTimeFormatter
-    val fastingPlanResourcesProvider = uiModule.fastingPlanResourcesProvider
+    val dateTimeFormatter = koinInject<DateTimeFormatter>()
+    val fastingPlanResourcesProvider = koinInject<FastingPlanResourcesProvider>()
 
     val fastingEndDateAndTimeMillis = fastingTrack.interruptedTime ?: run {
         fastingTrack.startTime + fastingTrack.duration

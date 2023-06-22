@@ -1,9 +1,8 @@
 package hardcoder.dev.logic.features.waterTracking
 
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.datetime.createRangeForThisDay
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
@@ -14,7 +13,7 @@ class WaterTrackingMillilitersDrunkProvider(
     private val waterTrackProvider: WaterTrackProvider,
     private val waterPercentageResolver: WaterPercentageResolver,
     private val waterTrackingDailyRateProvider: WaterTrackingDailyRateProvider,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     private fun provideMillilitersDrunkToday(): Flow<Int> {
@@ -27,12 +26,12 @@ class WaterTrackingMillilitersDrunkProvider(
                     millilitersDrunk = waterTrack.millilitersCount
                 )
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
     }
 
     fun provideMillilitersDrunkToDailyRateToday() = combine(
         provideMillilitersDrunkToday(),
         waterTrackingDailyRateProvider.provideDailyRateInMilliliters(),
         ::MillilitersDrunkToDailyRate
-    ).flowOn(Dispatchers.Default)
+    ).flowOn(dispatchers.default)
 }

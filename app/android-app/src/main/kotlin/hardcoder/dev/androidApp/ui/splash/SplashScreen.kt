@@ -2,19 +2,19 @@ package hardcoder.dev.androidApp.ui.splash
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
+import hardcoder.dev.presentation.setUpFlow.SplashViewModel
 import hardcoder.dev.uikit.LoadingContainer
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SplashScreen(onStartSetUp: () -> Unit, onNavigateToDashboard: () -> Unit) {
-    val presentationModule = LocalPresentationModule.current
-    val splashViewModel = viewModel {
-        presentationModule.getSplashViewModel()
-    }
+fun SplashScreen(
+    onStartSetUp: () -> Unit,
+    onNavigateToDashboard: () -> Unit
+) {
+    val viewModel = koinViewModel<SplashViewModel>()
 
     LoadingContainer(
-        controller = splashViewModel.isFirstLaunchLoadingController,
+        controller = viewModel.isFirstLaunchLoadingController,
         loadedContent = { isFirstLaunch ->
             LaunchedEffect(isFirstLaunch) {
                 if (isFirstLaunch) {

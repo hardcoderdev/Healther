@@ -19,8 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.SingleRequestController
@@ -29,6 +27,7 @@ import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.logic.features.waterTracking.drinkType.IncorrectDrinkTypeName
 import hardcoder.dev.logic.features.waterTracking.drinkType.ValidatedDrinkTypeName
 import hardcoder.dev.logic.icons.LocalIcon
+import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeCreationViewModel
 import hardcoder.dev.uikit.IntSlider
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -42,12 +41,12 @@ import hardcoder.dev.uikit.text.Title
 import hardcoder.dev.uikit.text.ValidatedTextField
 import hardcoder.dev.uikit.text.rememberValidationAdapter
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CreateDrinkTypeScreen(onGoBack: () -> Unit) {
     val context = LocalContext.current
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getDrinkTypeCreateViewModel() }
+    val viewModel = koinViewModel<DrinkTypeCreationViewModel>()
 
     LaunchedEffectWhenExecuted(viewModel.creationController, onGoBack)
 

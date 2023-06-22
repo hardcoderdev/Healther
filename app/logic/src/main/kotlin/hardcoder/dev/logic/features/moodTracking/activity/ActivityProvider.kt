@@ -1,11 +1,11 @@
 package hardcoder.dev.logic.features.moodTracking.activity
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.Activity
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.logic.icons.IconResourceProvider
 import hardcoder.dev.sqldelight.asFlowOfList
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import hardcoder.dev.logic.features.moodTracking.activity.Activity as ActivityEntity
@@ -13,12 +13,12 @@ import hardcoder.dev.logic.features.moodTracking.activity.Activity as ActivityEn
 class ActivityProvider(
     private val appDatabase: AppDatabase,
     private val iconResourceProvider: IconResourceProvider,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     fun provideAllActivities() = appDatabase.activityQueries
         .provideAllActivities()
-        .asFlowOfList(ioDispatcher) { activityDatabase ->
+        .asFlowOfList(dispatchers.io) { activityDatabase ->
             activityDatabase.toEntity()
         }
 
@@ -26,7 +26,7 @@ class ActivityProvider(
         .provideActivityById(id)
         .asFlow()
         .map { it.executeAsOneOrNull()?.toEntity() }
-        .flowOn(ioDispatcher)
+        .flowOn(dispatchers.io)
 
     private fun Activity.toEntity() = ActivityEntity(
         id = id,

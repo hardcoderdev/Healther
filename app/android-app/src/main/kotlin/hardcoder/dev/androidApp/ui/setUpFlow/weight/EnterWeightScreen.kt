@@ -17,10 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.logic.hero.gender.Gender
+import hardcoder.dev.presentation.setUpFlow.EnterWeightViewModel
 import hardcoder.dev.uikit.NumberInput
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
@@ -28,6 +27,7 @@ import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.ButtonWithIcon
 import hardcoder.dev.uikit.text.Title
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
 
 private const val MINIMUM_WEIGHT = 30
 private const val MAXIMUM_WEIGHT = 400
@@ -38,17 +38,16 @@ fun EnterWeightScreen(
     onGoBack: () -> Unit,
     onGoForward: (Gender, Int) -> Unit,
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val enterWeightViewModel = viewModel { presentationModule.getEnterWeightViewModel() }
+    val viewModel = koinViewModel<EnterWeightViewModel>()
 
     ScaffoldWrapper(
         content = {
             EnterWeightContent(
-                weightInputController = enterWeightViewModel.weightInputController,
+                weightInputController = viewModel.weightInputController,
                 onGoForward = {
                     onGoForward(
                         gender,
-                        enterWeightViewModel.weightInputController.state.value.input
+                        viewModel.weightInputController.state.value.input
                     )
                 }
             )

@@ -23,11 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.features.DeleteTrackDialog
 import hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.DrinkTypeItem
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.formatters.RegexHolder
 import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
 import hardcoder.dev.controller.InputController
@@ -37,6 +35,7 @@ import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.logic.features.waterTracking.IncorrectMillilitersCount
 import hardcoder.dev.logic.features.waterTracking.ValidatedMillilitersCount
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
+import hardcoder.dev.presentation.features.waterTracking.WaterTrackingUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
@@ -58,6 +57,9 @@ import hardcoderdev.healther.app.android.app.R
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun UpdateWaterTrackScreen(
@@ -65,10 +67,10 @@ fun UpdateWaterTrackScreen(
     onGoBack: () -> Unit,
     onManageDrinkType: () -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel {
-        presentationModule.getWaterTrackUpdateViewModel(waterTrackId)
+    val viewModel = koinViewModel<WaterTrackingUpdateViewModel> {
+        parametersOf(waterTrackId)
     }
+
     LaunchedEffectWhenExecuted(viewModel.deletionController, onGoBack)
     LaunchedEffectWhenExecuted(viewModel.updatingController, onGoBack)
 
@@ -250,8 +252,7 @@ private fun SelectDateSection(
     onShowDatePicker: () -> Unit
 ) {
     val state by dateInputController.state.collectAsState()
-    val uiModule = LocalUIModule.current
-    val dateTimeFormatter = uiModule.dateTimeFormatter
+    val dateTimeFormatter = koinInject<DateTimeFormatter>()
     val selectedDate = state.input.toInstant(TimeZone.currentSystemDefault())
     val formattedDate = dateTimeFormatter.formatDateTime(selectedDate)
 

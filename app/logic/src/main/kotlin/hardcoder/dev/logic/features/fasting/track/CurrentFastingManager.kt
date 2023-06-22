@@ -3,6 +3,7 @@ package hardcoder.dev.logic.features.fasting.track
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
@@ -10,7 +11,6 @@ import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackCreator
 import hardcoder.dev.logic.dataStore.healtherDataStore
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -26,11 +26,11 @@ import kotlinx.datetime.toLocalDateTime
 class CurrentFastingManager(
     private val idGenerator: IdGenerator,
     private val context: Context,
-    private val ioDispatcher: CoroutineDispatcher,
     private val appDatabase: AppDatabase,
     private val fastingPlanIdMapper: FastingPlanIdMapper,
     private val fastingTrackProvider: FastingTrackProvider,
-    private val diaryTrackCreator: DiaryTrackCreator
+    private val diaryTrackCreator: DiaryTrackCreator,
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     private val fastingCurrentTrackIdPreferenceKey = intPreferencesKey(FASTING_CURRENT_TRACK_ID)
@@ -46,7 +46,7 @@ class CurrentFastingManager(
         startTime: Instant,
         duration: Long,
         fastingPlan: FastingPlan
-    ) = withContext(ioDispatcher) {
+    ) = withContext(dispatchers.io) {
         val id = idGenerator.nextId()
         setCurrentId(id)
 
@@ -59,7 +59,7 @@ class CurrentFastingManager(
         )
     }
 
-    suspend fun interruptFasting() = withContext(ioDispatcher) {
+    suspend fun interruptFasting() = withContext(dispatchers.io) {
         appDatabase.fastingTrackQueries.update(
             id = fastingCurrentTrackId.first(),
             interruptedTime = Clock.System.now()
@@ -82,7 +82,7 @@ class CurrentFastingManager(
         setCurrentId(null)
     }
 
-    private suspend fun setCurrentId(id: Int?) = withContext(ioDispatcher) {
+    private suspend fun setCurrentId(id: Int?) = withContext(dispatchers.io) {
         context.healtherDataStore.edit { fastingData ->
             id?.let {
                 fastingData[fastingCurrentTrackIdPreferenceKey] = it

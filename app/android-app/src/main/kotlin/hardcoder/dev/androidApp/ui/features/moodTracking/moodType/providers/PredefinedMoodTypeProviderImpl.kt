@@ -36,7 +36,7 @@ class PredefinedMoodTypeProviderImpl(
 
     private fun create(
         @StringRes nameResId: Int,
-        iconId: Long,
+        iconId: Int,
         positivePercentage: Int
     ) = MoodTypePredefined(
         name = context.getString(nameResId),

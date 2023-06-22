@@ -22,8 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.DeleteTrackDialog
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.InputController
@@ -33,6 +31,7 @@ import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.logic.features.waterTracking.drinkType.IncorrectDrinkTypeName
 import hardcoder.dev.logic.features.waterTracking.drinkType.ValidatedDrinkTypeName
 import hardcoder.dev.logic.icons.LocalIcon
+import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.IntSlider
@@ -48,6 +47,8 @@ import hardcoder.dev.uikit.text.Title
 import hardcoder.dev.uikit.text.ValidatedTextField
 import hardcoder.dev.uikit.text.rememberValidationAdapter
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun UpdateDrinkTypeScreen(
@@ -55,8 +56,9 @@ fun UpdateDrinkTypeScreen(
     onGoBack: () -> Unit
 ) {
     val context = LocalContext.current
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getDrinkTypeUpdateViewModel(drinkTypeId) }
+    val viewModel = koinViewModel<DrinkTypeUpdateViewModel> {
+        parametersOf(drinkTypeId)
+    }
 
     var dialogOpen by remember {
         mutableStateOf(false)

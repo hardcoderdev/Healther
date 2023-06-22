@@ -20,6 +20,8 @@ compose-calendar = "1.0.2"
 compose-number-picker = "1.0.3"
 compose-accompanist = "0.29.1-alpha"
 preferences-ktx = "1.2.0"
+koin-compose="3.4.5"
+koin-di = "3.4.2"
 
 [libraries]
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
@@ -58,7 +60,8 @@ compose-accompanist-flowrow = { module = "com.google.accompanist:accompanist-flo
 compose-coil = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 compose-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
-
+koin-di = { module = "io.insert-koin:koin-android", version.ref = "koin-di" }
+koin-di-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }

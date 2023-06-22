@@ -16,14 +16,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
+import hardcoder.dev.androidApp.ui.features.waterTracking.waterTrack.statistic.WaterTrackingStatisticResolver
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.logic.features.waterTracking.MillilitersDrunkToDailyRate
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatistic
 import hardcoder.dev.math.safeDiv
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
+import hardcoder.dev.presentation.features.waterTracking.WaterTrackingViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.LoadingContainer
@@ -39,6 +38,8 @@ import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Headline
 import hardcoder.dev.uikit.text.Title
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import kotlin.math.roundToInt
 
 @Composable
@@ -48,8 +49,7 @@ fun WaterTrackingScreen(
     onSaveWaterTrack: () -> Unit,
     onUpdateWaterTrack: (WaterTrackingItem) -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getWaterTrackingViewModel() }
+    val viewModel = koinViewModel<WaterTrackingViewModel>()
     val millilitersDrunkState by viewModel.millilitersDrunkLoadingController.state.collectAsState()
 
     val showFab = (millilitersDrunkState as? LoadingController.State.Loaded)?.data?.let {
@@ -162,8 +162,7 @@ private fun WaterTrackingChartSection(chartEntries: List<Pair<Int, Int>>) {
 
 @Composable
 private fun WaterTrackingStatisticSection(waterTrackingStatistic: WaterTrackingStatistic) {
-    val uiModule = LocalUIModule.current
-    val waterTrackingStatisticResolver = uiModule.waterTrackingStatisticResolver
+    val waterTrackingStatisticResolver = koinInject<WaterTrackingStatisticResolver>()
 
     Title(text = stringResource(id = R.string.waterTracking_statistic_text))
     Spacer(modifier = Modifier.height(16.dp))

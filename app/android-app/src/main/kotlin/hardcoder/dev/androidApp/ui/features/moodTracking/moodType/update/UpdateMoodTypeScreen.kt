@@ -25,8 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.DeleteTrackDialog
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.InputController
@@ -36,6 +34,7 @@ import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.logic.features.moodTracking.moodType.IncorrectMoodTypeName
 import hardcoder.dev.logic.features.moodTracking.moodType.ValidatedMoodTypeName
 import hardcoder.dev.logic.icons.LocalIcon
+import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.IntSlider
@@ -51,6 +50,8 @@ import hardcoder.dev.uikit.text.Title
 import hardcoder.dev.uikit.text.ValidatedTextField
 import hardcoder.dev.uikit.text.rememberValidationAdapter
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun UpdateMoodTypeScreen(
@@ -58,8 +59,9 @@ fun UpdateMoodTypeScreen(
     onGoBack: () -> Unit
 ) {
     val context = LocalContext.current
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getMoodTypeTrackUpdateViewModel(moodTypeId) }
+    val viewModel = koinViewModel<MoodTypeUpdateViewModel> {
+        parametersOf(moodTypeId)
+    }
 
     var dialogOpen by remember {
         mutableStateOf(false)

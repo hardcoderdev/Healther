@@ -18,8 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
@@ -27,6 +25,7 @@ import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.logic.features.moodTracking.activity.IncorrectActivityName
 import hardcoder.dev.logic.features.moodTracking.activity.ValidatedActivityName
 import hardcoder.dev.logic.icons.LocalIcon
+import hardcoder.dev.presentation.features.moodTracking.activity.ActivityUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
@@ -40,6 +39,8 @@ import hardcoder.dev.uikit.text.Title
 import hardcoder.dev.uikit.text.ValidatedTextField
 import hardcoder.dev.uikit.text.rememberValidationAdapter
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun UpdateActivityScreen(
@@ -47,8 +48,9 @@ fun UpdateActivityScreen(
     onGoBack: () -> Unit
 ) {
     val context = LocalContext.current
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getUpdateActivityViewModel(activityId) }
+    val viewModel = koinViewModel<ActivityUpdateViewModel> {
+        parametersOf(activityId)
+    }
 
     LaunchedEffectWhenExecuted(controller = viewModel.updateController, action = onGoBack)
     LaunchedEffectWhenExecuted(controller = viewModel.deleteController, action = onGoBack)

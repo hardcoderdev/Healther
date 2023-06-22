@@ -1,6 +1,7 @@
 package hardcoder.dev.logic.features.diary.diaryAttachment
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.DiaryAttachment
 import hardcoder.dev.logic.features.diary.AttachmentType
@@ -11,7 +12,6 @@ import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -29,7 +29,7 @@ class DiaryAttachmentProvider(
     private val fastingTrackProvider: FastingTrackProvider,
     private val moodTrackProvider: MoodTrackProvider,
     private val diaryTagProvider: DiaryTagProvider,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     fun provideAttachmentByEntityId(attachmentType: AttachmentType, entityId: Int) =
@@ -48,7 +48,7 @@ class DiaryAttachmentProvider(
                         targetId = attachment.targetId
                     )
                 }
-            }.flowOn(ioDispatcher)
+            }.flowOn(dispatchers.io)
 
     fun provideAttachmentOfDiaryTrackById(id: Int) = appDatabase.diaryAttachmentQueries
         .selectByDiaryTrackId(id)
@@ -69,7 +69,7 @@ class DiaryAttachmentProvider(
                     )
                 }
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
 
     private fun provideTargetEntity(attachment: DiaryAttachment): Flow<Any?> {
         return when (attachmentTypeIdMapper.mapToType(attachment.targetTypeId)) {
@@ -84,6 +84,6 @@ class DiaryAttachmentProvider(
             AttachmentType.TAG -> {
                 diaryTagProvider.provideDiaryTagById(attachment.targetId)
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
     }
 }

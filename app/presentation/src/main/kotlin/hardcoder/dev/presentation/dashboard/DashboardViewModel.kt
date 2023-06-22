@@ -10,7 +10,6 @@ import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logic.features.pedometer.DailyRateStepsResolver
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
-import hardcoder.dev.logic.features.waterTracking.WaterTrackingDailyRateProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackingMillilitersDrunkProvider
 import hardcoder.dev.presentation.features.pedometer.Available
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
@@ -26,7 +25,6 @@ class DashboardViewModel(
     private val dailyRateStepsResolver: DailyRateStepsResolver,
     private val pedometerManager: PedometerManager,
     private val dateTimeProvider: DateTimeProvider,
-    private val waterTrackingDailyRateProvider: WaterTrackingDailyRateProvider,
     private val waterTrackingMillilitersDrunkProvider: WaterTrackingMillilitersDrunkProvider,
     private val pedometerTrackProvider: PedometerTrackProvider,
     private val currentFastingManager: CurrentFastingManager,

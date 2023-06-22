@@ -20,8 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.fasting.FastingItem
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodTrackItem
 import hardcoder.dev.androidApp.ui.icons.resourceId
@@ -32,7 +30,7 @@ import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.IncorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.ValidatedDiaryTrackContent
-import hardcoder.dev.presentation.features.diary.DiaryUpdateTrackViewModel
+import hardcoder.dev.presentation.features.diary.DiaryUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
@@ -48,6 +46,8 @@ import hardcoder.dev.uikit.text.Title
 import hardcoder.dev.uikit.text.ValidatedTextField
 import hardcoder.dev.uikit.text.rememberValidationAdapter
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun DiaryUpdateTrackScreen(
@@ -56,8 +56,9 @@ fun DiaryUpdateTrackScreen(
     onManageTags: () -> Unit
 ) {
     val context = LocalContext.current
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getDiaryUpdateTrackViewModel(diaryTrackId) }
+    val viewModel = koinViewModel<DiaryUpdateViewModel> {
+        parametersOf(diaryTrackId)
+    }
 
     LaunchedEffectWhenExecuted(controller = viewModel.updateController, action = onGoBack)
     LaunchedEffectWhenExecuted(controller = viewModel.deleteController, action = onGoBack)
@@ -93,7 +94,7 @@ fun DiaryUpdateTrackScreen(
 @Composable
 private fun DiaryUpdateTrackContent(
     context: Context,
-    diaryAttachmentsLoadingController: LoadingController<DiaryUpdateTrackViewModel.ReadOnlyDiaryAttachments>,
+    diaryAttachmentsLoadingController: LoadingController<DiaryUpdateViewModel.ReadOnlyDiaryAttachments>,
     contentInputController: ValidatedInputController<String, ValidatedDiaryTrackContent>,
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     updateController: SingleRequestController,
@@ -167,7 +168,7 @@ private fun EnterBasicInfoSection(
 }
 
 @Composable
-private fun AttachedEntitySection(readOnlyDiaryAttachments: DiaryUpdateTrackViewModel.ReadOnlyDiaryAttachments) {
+private fun AttachedEntitySection(readOnlyDiaryAttachments: DiaryUpdateViewModel.ReadOnlyDiaryAttachments) {
     Title(text = stringResource(id = R.string.diary_updateTrack_attachedEntity_text))
     Spacer(modifier = Modifier.height(16.dp))
     readOnlyDiaryAttachments.fastingTracks.forEach { fastingTrack ->

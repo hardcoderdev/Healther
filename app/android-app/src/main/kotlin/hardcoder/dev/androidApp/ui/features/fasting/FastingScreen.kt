@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
+import hardcoder.dev.androidApp.ui.features.fasting.plans.FastingPlanResourcesProvider
+import hardcoder.dev.androidApp.ui.features.fasting.statistic.FastingStatisticResolver
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.MultiRequestController
@@ -53,6 +53,8 @@ import hardcoder.dev.uikit.text.Headline
 import hardcoder.dev.uikit.text.TextField
 import hardcoder.dev.uikit.text.Title
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import kotlin.math.roundToInt
 
 @Composable
@@ -61,8 +63,7 @@ fun FastingScreen(
     onHistoryDetails: () -> Unit,
     onCreateTrack: () -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getFastingViewModel() }
+    val viewModel = koinViewModel<FastingViewModel>()
 
     LoadingContainer(
         controller1 = viewModel.fastingStateLoadingController,
@@ -210,9 +211,8 @@ private fun FinishFastingContent(
     noteInputController: InputController<String>,
     onClose: () -> Unit
 ) {
-    val uiModule = LocalUIModule.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val dateTimeFormatter = uiModule.dateTimeFormatter
+    val dateTimeFormatter = koinInject<DateTimeFormatter>()
 
     val formattedFastingTime = dateTimeFormatter.formatMillisDistance(
         distanceInMillis = state.timeLeftInMillis.inWholeMilliseconds,
@@ -279,8 +279,7 @@ private fun FinishFastingContent(
 
 @Composable
 private fun ColumnScope.FastingProgressSection(state: FastingViewModel.FastingState.Fasting) {
-    val uiModule = LocalUIModule.current
-    val dateTimeFormatter = uiModule.dateTimeFormatter
+    val dateTimeFormatter = koinInject<DateTimeFormatter>()
 
     Headline(
         text = stringResource(id = R.string.fasting_in_progress_text),
@@ -302,9 +301,8 @@ private fun ColumnScope.FastingProgressSection(state: FastingViewModel.FastingSt
 
 @Composable
 private fun FastingInfoSection(state: FastingViewModel.FastingState.Fasting) {
-    val uiModule = LocalUIModule.current
-    val fastingPlanResourcesProvider = uiModule.fastingPlanResourcesProvider
-    val dateTimeFormatter = uiModule.dateTimeFormatter
+    val fastingPlanResourcesProvider = koinInject<FastingPlanResourcesProvider>()
+    val dateTimeFormatter = koinInject<DateTimeFormatter>()
     val formattedDate = dateTimeFormatter.formatTime(state.startTimeInMillis)
     val fastingPlanResources = fastingPlanResourcesProvider.provide(state.selectedPlan)
 
@@ -340,9 +338,8 @@ private fun FastingLastTracksSection(lastFastingTrackList: List<FastingTrack>) {
 
 @Composable
 private fun FastingStatisticSection(statistic: FastingStatistic) {
-    val uiModule = LocalUIModule.current
-    val fastingStatisticResolver = uiModule.fastingStatisticResolver
-    val fastingPlanResourcesProvider = uiModule.fastingPlanResourcesProvider
+    val fastingStatisticResolver = koinInject<FastingStatisticResolver>()
+    val fastingPlanResourcesProvider = koinInject<FastingPlanResourcesProvider>()
 
     Title(text = stringResource(id = R.string.fasting_statistic_text))
     Spacer(modifier = Modifier.height(24.dp))

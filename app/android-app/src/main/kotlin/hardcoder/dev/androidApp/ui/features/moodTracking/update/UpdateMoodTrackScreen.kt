@@ -26,11 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.features.DeleteTrackDialog
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodItem
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.MultiSelectionController
@@ -38,6 +36,7 @@ import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
+import hardcoder.dev.presentation.features.moodTracking.MoodTrackingUpdateViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
@@ -62,6 +61,9 @@ import hardcoderdev.healther.app.android.app.R
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun UpdateMoodTrackScreen(
@@ -70,8 +72,9 @@ fun UpdateMoodTrackScreen(
     onManageActivities: () -> Unit,
     onManageMoodTypes: () -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getMoodTrackingUpdateViewModel(moodTrackId) }
+    val viewModel = koinViewModel<MoodTrackingUpdateViewModel> {
+        parametersOf(moodTrackId)
+    }
 
     LaunchedEffectWhenExecuted(controller = viewModel.updateController, action = onGoBack)
     LaunchedEffectWhenExecuted(controller = viewModel.deleteController, action = onGoBack)
@@ -303,8 +306,7 @@ private fun SelectDateSection(
     dateInputController: InputController<LocalDateTime>,
     onShowDatePicker: () -> Unit
 ) {
-    val uiModule = LocalUIModule.current
-    val dateTimeFormatter = uiModule.dateTimeFormatter
+    val dateTimeFormatter = koinInject<DateTimeFormatter>()
     val dateInputControllerState = dateInputController.state.collectAsState()
 
     val selectedDate =

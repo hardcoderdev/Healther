@@ -1,11 +1,11 @@
 package hardcoder.dev.logic.features.fasting.track
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.FastingTrack
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import hardcoder.dev.sqldelight.asFlowOfList
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
@@ -16,24 +16,24 @@ import hardcoder.dev.logic.features.fasting.track.FastingTrack as FastingTrackEn
 class FastingTrackProvider(
     private val appDatabase: AppDatabase,
     private val fastingPlanIdMapper: FastingPlanIdMapper,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     fun provideAllFastingTracks() = appDatabase.fastingTrackQueries
         .provideAllFastingTracks()
-        .asFlowOfList(ioDispatcher) { fastingTrackDatabase ->
+        .asFlowOfList(dispatchers.io) { fastingTrackDatabase ->
             fastingTrackDatabase.toEntity()
         }
 
     fun provideLastFastingTracks(limitCount: Long) = appDatabase.fastingTrackQueries
         .provideLastFastingTracks(limitCount)
-        .asFlowOfList(ioDispatcher) { fastingTrackDatabase ->
+        .asFlowOfList(dispatchers.io) { fastingTrackDatabase ->
             fastingTrackDatabase.toEntity()
         }
 
     fun provideFastingTracksByStartTime(dayRange: ClosedRange<Instant>) = appDatabase.fastingTrackQueries
         .provideFastingTrackByStartTime(dayRange.start, dayRange.endInclusive)
-        .asFlowOfList(ioDispatcher) { fastingTrackDatabase ->
+        .asFlowOfList(dispatchers.io) { fastingTrackDatabase ->
             fastingTrackDatabase.toEntity()
         }
 
@@ -41,7 +41,7 @@ class FastingTrackProvider(
         .provideFastingTrackById(id)
         .asFlow()
         .map { it.executeAsOneOrNull()?.toEntity() }
-        .flowOn(ioDispatcher)
+        .flowOn(dispatchers.io)
 
     fun provideAllCompletedFastingTracks() = appDatabase.fastingTrackQueries
         .provideAllFastingTracks()
@@ -52,7 +52,7 @@ class FastingTrackProvider(
             }.map { fastingTrackDatabase ->
                 fastingTrackDatabase.toEntity()
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
 
     private fun FastingTrack.toEntity() = FastingTrackEntity(
         id = id,

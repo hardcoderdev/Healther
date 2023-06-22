@@ -10,11 +10,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
+import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeViewModel
 import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
@@ -22,6 +21,7 @@ import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.chip.ActionChip
 import hardcoder.dev.uikit.sections.EmptySection
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ManageMoodTypeScreen(
@@ -29,8 +29,7 @@ fun ManageMoodTypeScreen(
     onCreateMoodType: () -> Unit,
     onUpdateMoodType: (MoodType) -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getMoodTypeManageTracksViewModel() }
+    val viewModel = koinViewModel<MoodTypeViewModel>()
 
     ScaffoldWrapper(
         content = {

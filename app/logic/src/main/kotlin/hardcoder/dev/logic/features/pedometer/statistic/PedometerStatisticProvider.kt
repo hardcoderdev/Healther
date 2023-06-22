@@ -1,10 +1,10 @@
 package hardcoder.dev.logic.features.pedometer.statistic
 
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.logic.features.pedometer.CaloriesResolver
 import hardcoder.dev.logic.features.pedometer.KilometersResolver
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
 import hardcoder.dev.math.safeAverage
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
@@ -15,7 +15,7 @@ class PedometerStatisticProvider(
     private val kilometersResolver: KilometersResolver,
     private val caloriesResolver: CaloriesResolver,
     private val pedometerTrackProvider: PedometerTrackProvider,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     fun providePedometerStatistic(
@@ -55,5 +55,5 @@ class PedometerStatisticProvider(
             averageDuration = averageDuration,
             averageCalories = averageCalories
         )
-    }.flowOn(ioDispatcher)
+    }.flowOn(dispatchers.io)
 }

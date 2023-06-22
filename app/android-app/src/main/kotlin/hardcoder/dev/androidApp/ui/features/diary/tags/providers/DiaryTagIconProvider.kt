@@ -28,7 +28,7 @@ class DiaryTagIconProvider : IconResourceProvider {
 
     override fun getIcons(): List<LocalIcon> = icons
 
-    override fun getIcon(id: Long): LocalIcon = icons.first { it.id == id }
+    override fun getIcon(id: Int): LocalIcon = icons.first { it.id == id }
 
-    private fun create(id: Long, resourceId: Int) = LocalIconImpl(id, resourceId)
+    private fun create(id: Int, resourceId: Int) = LocalIconImpl(id, resourceId)
 }

@@ -1,5 +1,6 @@
 package hardcoder.dev.logic.features.moodTracking.moodTrack
 
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
@@ -7,7 +8,6 @@ import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackCreator
 import hardcoder.dev.logic.features.moodTracking.activity.Activity
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityCreator
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -18,10 +18,10 @@ import kotlinx.datetime.toInstant
 class MoodTrackCreator(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val ioDispatcher: CoroutineDispatcher,
     private val diaryTrackCreator: DiaryTrackCreator,
     private val moodTrackProvider: MoodTrackProvider,
-    private val moodWithActivityCreator: MoodWithActivityCreator
+    private val moodWithActivityCreator: MoodWithActivityCreator,
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     suspend fun create(
@@ -29,7 +29,7 @@ class MoodTrackCreator(
         moodType: MoodType,
         date: LocalDateTime,
         selectedActivities: Set<Activity>
-    ) = withContext(ioDispatcher) {
+    ) = withContext(dispatchers.io) {
         val moodTrackId = idGenerator.nextId()
 
         appDatabase.moodTrackQueries.insert(

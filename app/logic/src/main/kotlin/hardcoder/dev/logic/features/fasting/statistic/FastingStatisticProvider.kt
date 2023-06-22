@@ -1,11 +1,11 @@
 package hardcoder.dev.logic.features.fasting.statistic
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.logic.DateTimeProvider
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
@@ -21,7 +21,7 @@ class FastingStatisticProvider(
     private val fastingPlanIdMapper: FastingPlanIdMapper,
     private val fastingTrackProvider: FastingTrackProvider,
     private val dateTimeProvider: DateTimeProvider,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     fun provideFastingStatistic(): Flow<FastingStatistic?> = combine(
@@ -37,7 +37,7 @@ class FastingStatisticProvider(
                 percentageCompleted = percentageCompleted
             )
         }
-    }.flowOn(ioDispatcher)
+    }.flowOn(dispatchers.io)
 
     private fun provideFastingDuration() = appDatabase.fastingTrackQueries
         .provideAllFastingTracks()
@@ -64,7 +64,7 @@ class FastingStatisticProvider(
             } else {
                 null
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
 
     private fun provideFavouriteFastingPlan() = appDatabase.fastingTrackQueries
         .provideAllFastingTracks()
@@ -80,7 +80,7 @@ class FastingStatisticProvider(
             }?.eachCount()?.maxByOrNull { entry ->
                 entry.value
             }?.key
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
 
     private fun providePercentageCompleted() = combine(
         fastingTrackProvider.provideAllFastingTracks(),
@@ -100,5 +100,5 @@ class FastingStatisticProvider(
         } else {
             null
         }
-    }.flowOn(ioDispatcher)
+    }.flowOn(dispatchers.io)
 }

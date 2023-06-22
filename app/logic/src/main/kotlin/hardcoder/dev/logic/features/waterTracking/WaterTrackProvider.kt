@@ -1,11 +1,11 @@
 package hardcoder.dev.logic.features.waterTracking
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.WaterTrack
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -19,7 +19,7 @@ import hardcoder.dev.logic.features.waterTracking.WaterTrack as WaterTrackEntity
 class WaterTrackProvider(
     private val appDatabase: AppDatabase,
     private val drinkTypeProvider: DrinkTypeProvider,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     fun provideWaterTracksByDayRange(dayRange: ClosedRange<Instant>) = appDatabase.waterTrackQueries
@@ -38,7 +38,7 @@ class WaterTrackProvider(
             ) {
                 it.toList()
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
 
     fun provideWaterTrackById(id: Int) = appDatabase.waterTrackQueries
         .provideWaterTrackById(id)
@@ -53,7 +53,7 @@ class WaterTrackProvider(
                     waterTrack.toEntity(drinkType!!)
                 }
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
 
     private fun WaterTrack.toEntity(drinkType: DrinkType) = WaterTrackEntity(
         id = id,

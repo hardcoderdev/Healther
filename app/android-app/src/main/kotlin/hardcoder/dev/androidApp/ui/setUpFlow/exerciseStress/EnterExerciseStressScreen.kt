@@ -16,13 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.logic.hero.gender.Gender
+import hardcoder.dev.presentation.setUpFlow.EnterExerciseStressTimeViewModel
+import hardcoder.dev.presentation.setUpFlow.HeroCreateViewModel
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
 import hardcoder.dev.uikit.NumberInput
 import hardcoder.dev.uikit.ScaffoldWrapper
@@ -31,6 +30,11 @@ import hardcoder.dev.uikit.TopBarType
 import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.text.Title
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
+
+private const val MINIMUM_HOURS = 0
+private const val MAXIMUM_HOURS = 24
 
 @Composable
 fun EnterExerciseStressScreen(
@@ -40,14 +44,9 @@ fun EnterExerciseStressScreen(
     onGoBack: () -> Unit,
     onGoForward: () -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val enterExerciseStressTimeViewModel = viewModel { presentationModule.getEnterExerciseStressTimeViewModel() }
-    val heroCreateViewModel = viewModel {
-        presentationModule.getHeroCreateViewModel(
-            gender = gender,
-            weight = weight,
-            exerciseStressTime = exerciseStressTime
-        )
+    val enterExerciseStressTimeViewModel = koinViewModel<EnterExerciseStressTimeViewModel>()
+    val heroCreateViewModel = koinViewModel<HeroCreateViewModel> {
+        parametersOf(gender, weight, exerciseStressTime)
     }
 
     LaunchedEffectWhenExecuted(heroCreateViewModel.creationController, onGoForward)
@@ -108,19 +107,3 @@ private fun EnterExerciseStressContent(
         )
     }
 }
-
-
-@Preview
-@Composable
-fun EnterExerciseStressScreenPreview() {
-    EnterExerciseStressScreen(
-        onGoBack = {},
-        onGoForward = {},
-        gender = Gender.MALE,
-        weight = 60,
-        exerciseStressTime = 2
-    )
-}
-
-private const val MINIMUM_HOURS = 0
-private const val MAXIMUM_HOURS = 24

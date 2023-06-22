@@ -1,11 +1,11 @@
 package hardcoder.dev.logic.features.waterTracking.statistic
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.WaterTrack
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -22,7 +22,7 @@ import hardcoder.dev.logic.features.waterTracking.WaterTrack as WaterTrackEntity
 class WaterTrackingStatisticProvider(
     private val appDatabase: AppDatabase,
     private val drinkTypeProvider: DrinkTypeProvider,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     fun provideWaterTrackingStatistic() = appDatabase.waterTrackQueries
@@ -65,12 +65,12 @@ class WaterTrackingStatisticProvider(
                     averageWaterIntakes = averageWaterIntakes
                 )
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
 
     private fun provideDrinkTypeById(waterTrack: WaterTrack): Flow<WaterTrackEntity> {
         return drinkTypeProvider.provideDrinkTypeById(waterTrack.drinkTypeId).map { drinkType ->
             waterTrack.toEntity(drinkType!!)
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
     }
 
     private fun WaterTrack.toEntity(drinkType: DrinkType) = WaterTrackEntity(

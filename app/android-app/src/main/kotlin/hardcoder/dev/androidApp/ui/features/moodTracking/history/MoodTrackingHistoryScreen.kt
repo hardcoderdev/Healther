@@ -14,14 +14,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.moodTracking.MoodTrackItem
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
+import hardcoder.dev.presentation.features.moodTracking.MoodTrackingHistoryViewModel
 import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
@@ -36,14 +35,14 @@ import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MoodTrackingHistoryScreen(
     onGoBack: () -> Unit,
     onTrackUpdate: (MoodTrack) -> Unit
 ) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getMoodTrackingHistoryViewModel() }
+    val viewModel = koinViewModel<MoodTrackingHistoryViewModel>()
 
     ScaffoldWrapper(
         content = {

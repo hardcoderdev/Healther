@@ -10,13 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
 import hardcoder.dev.androidApp.ui.features.fasting.plans.FastingPlanItem
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
+import hardcoder.dev.presentation.features.fasting.FastingCreationViewModel
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.SingleCardSelectionLazyColumn
@@ -26,11 +25,11 @@ import hardcoder.dev.uikit.buttons.RequestButtonWithIcon
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
 import hardcoderdev.healther.app.android.app.R
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun FastingCreationTrackScreen(onGoBack: () -> Unit) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getFastingTrackCreateViewModel() }
+    val viewModel = koinViewModel<FastingCreationViewModel>()
 
     LaunchedEffectWhenExecuted(controller = viewModel.creationController, action = onGoBack)
 

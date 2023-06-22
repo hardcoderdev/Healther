@@ -1,12 +1,12 @@
 package hardcoder.dev.logic.features.diary.diaryTrack
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import kotlinx.coroutines.flow.map
 import hardcoder.dev.database.DiaryTrack
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentProvider
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -19,7 +19,7 @@ import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack as DiaryTrackEnt
 class DiaryTrackProvider(
     private val appDatabase: AppDatabase,
     private val diaryAttachmentProvider: DiaryAttachmentProvider,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: BackgroundCoroutineDispatchers
 ) {
 
     fun provideAllDiaryTracksByDateRange(
@@ -41,7 +41,7 @@ class DiaryTrackProvider(
                     it.toList()
                 }
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
 
     fun provideDiaryTrackById(id: Int) = appDatabase.diaryTrackQueries
         .provideDiaryTrackById(id)
@@ -53,7 +53,7 @@ class DiaryTrackProvider(
                     diaryTrackDatabase.toDiaryTrackEntity(attachedEntity)
                 }
             } ?: flowOf(null)
-        }.flowOn(ioDispatcher)
+        }.flowOn(dispatchers.io)
 
     private fun DiaryTrack.toDiaryTrackEntity(diaryAttachmentGroup: DiaryAttachmentGroup?) = DiaryTrackEntity(
         id = id,

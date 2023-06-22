@@ -12,13 +12,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
+import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.datetime.createRangeForThisDay
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
+import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
 import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper
 import hardcoder.dev.uikit.TopBarConfig
@@ -38,12 +37,13 @@ import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import kotlin.math.roundToInt
 
 @Composable
 fun PedometerHistoryScreen(onGoBack: () -> Unit) {
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getPedometerHistoryViewModel() }
+    val viewModel = koinViewModel<PedometerHistoryViewModel>()
 
     ScaffoldWrapper(
         content = {
@@ -114,8 +114,7 @@ private fun PedometerHistoryContent(
 private fun PedometerTracksHistory(
     state: PedometerStatistic
 ) {
-    val uiModule = LocalUIModule.current
-    val decimalFormatter = uiModule.decimalFormatter
+    val decimalFormatter = koinInject<DecimalFormatter>()
 
     Spacer(modifier = Modifier.height(16.dp))
     if (state.totalSteps != 0) {

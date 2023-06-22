@@ -23,6 +23,8 @@ dependencies {
     implementation(projects.app.presentation)
     implementation(projects.foundation.uikit)
     implementation(platform(libs.compose.bom))
+    implementation(libs.koin.di)
+    implementation(libs.koin.di.compose)
     implementation(libs.compose.graphics)
     implementation(libs.compose.navigation)
     implementation(libs.compose.tooling)

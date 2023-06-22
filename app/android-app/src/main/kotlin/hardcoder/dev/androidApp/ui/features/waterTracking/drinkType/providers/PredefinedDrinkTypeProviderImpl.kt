@@ -5,10 +5,11 @@ import androidx.annotation.StringRes
 import hardcoderdev.healther.app.logic.R
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypePredefined
 import hardcoder.dev.logic.features.waterTracking.drinkType.PredefinedDrinkTypeProvider
+import hardcoder.dev.logic.icons.IconResourceProvider
 
 class PredefinedDrinkTypeProviderImpl(
     private val context: Context,
-    private val drinkTypeIconProvider: DrinkTypeIconProvider
+    private val iconResourceProvider: IconResourceProvider
 ) : PredefinedDrinkTypeProvider {
 
     override fun providePredefined(): List<DrinkTypePredefined> {
@@ -58,11 +59,11 @@ class PredefinedDrinkTypeProviderImpl(
 
     private fun create(
         @StringRes nameResId: Int,
-        iconId: Long,
+        iconId: Int,
         hydrationIndexPercentage: Int
     ) = DrinkTypePredefined(
         name = context.getString(nameResId),
-        icon = drinkTypeIconProvider.getIcon(iconId),
+        icon = iconResourceProvider.getIcon(iconId),
         hydrationIndexPercentage = hydrationIndexPercentage
     )
 }

@@ -23,9 +23,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import hardcoder.dev.androidApp.di.LocalPresentationModule
-import hardcoder.dev.androidApp.di.LocalUIModule
 import hardcoder.dev.androidApp.ui.features.diary.items.DiaryItem
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.LoadingController
@@ -34,6 +31,7 @@ import hardcoder.dev.controller.SingleSelectionController
 import hardcoder.dev.logic.features.diary.DateRangeFilterType
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack
+import hardcoder.dev.presentation.features.diary.DiaryViewModel
 import hardcoder.dev.uikit.Action
 import hardcoder.dev.uikit.ActionConfig
 import hardcoder.dev.uikit.BottomSheet
@@ -53,6 +51,8 @@ import hardcoder.dev.uikit.text.Label
 import hardcoder.dev.uikit.text.Title
 import hardcoderdev.healther.app.android.app.R
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun DiaryScreen(
@@ -61,8 +61,7 @@ fun DiaryScreen(
     onUpdateTrack: (Int) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val presentationModule = LocalPresentationModule.current
-    val viewModel = viewModel { presentationModule.getDiaryViewModel() }
+    val viewModel = koinViewModel<DiaryViewModel>()
     val filterBottomSheetState = rememberBottomSheetState(showed = false)
 
     BottomSheet(
@@ -219,8 +218,7 @@ private fun FilterBottomSheetContent(
 
 @Composable
 private fun DateRangeSection(dateRangeFilterTypeSelectionController: SingleSelectionController<DateRangeFilterType>) {
-    val uiModule = LocalUIModule.current
-    val dateRangeFilterTypeResourcesProvider = uiModule.dateRangeFilterTypeResourcesProvider
+    val dateRangeFilterTypeResourcesProvider = koinInject<DateRangeFilterTypeResourcesProvider>()
 
     Description(text = stringResource(R.string.diary_selectDateRange_subtitle_bottomSheet_text))
     SingleSelectionChipFlowRow(

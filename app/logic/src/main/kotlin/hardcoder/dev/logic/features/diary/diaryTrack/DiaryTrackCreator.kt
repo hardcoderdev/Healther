@@ -1,10 +1,10 @@
 package hardcoder.dev.logic.features.diary.diaryTrack
 
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentManager
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -13,7 +13,7 @@ import kotlinx.datetime.toInstant
 class DiaryTrackCreator(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val ioDispatcher: CoroutineDispatcher,
+    private val dispatchers: BackgroundCoroutineDispatchers,
     private val diaryAttachmentManager: DiaryAttachmentManager
 ) {
 
@@ -21,7 +21,7 @@ class DiaryTrackCreator(
         diaryAttachmentGroup: DiaryAttachmentGroup,
         date: LocalDateTime,
         content: String
-    ) = withContext(ioDispatcher) {
+    ) = withContext(dispatchers.io) {
         val diaryTrackId = idGenerator.nextId()
         appDatabase.diaryTrackQueries.insert(
             id = diaryTrackId,
