@@ -32,15 +32,15 @@ fun RootScreen() {
             )
         }
         navigation(
-            startDestination = Flow.SetUpFlow.startDestination,
-            route = Flow.SetUpFlow.route
+            startDestination = NavGraph.SetUpNavGraph.startDestination,
+            route = NavGraph.SetUpNavGraph.route
         ) {
             setUpDestinations(navController)
         }
 
         navigation(
-            startDestination = Flow.DiaryFlow.startDestination,
-            route = Flow.DiaryFlow.route
+            startDestination = NavGraph.DiaryNavGraph.startDestination,
+            route = NavGraph.DiaryNavGraph.route
         ) {
             diaryDestinations(navController)
         }
@@ -73,29 +73,29 @@ fun RootScreen() {
         }
 
         navigation(
-            startDestination = Flow.WaterTrackingFlow.startDestination,
-            route = Flow.WaterTrackingFlow.route
+            startDestination = NavGraph.WaterTrackingNavGraph.startDestination,
+            route = NavGraph.WaterTrackingNavGraph.route
         ) {
             waterTrackingDestinations(navController)
         }
 
         navigation(
-            startDestination = Flow.PedometerFlow.startDestination,
-            route = Flow.PedometerFlow.route
+            startDestination = NavGraph.PedometerNavGraph.startDestination,
+            route = NavGraph.PedometerNavGraph.route
         ) {
             pedometerDestinations(navController)
         }
 
         navigation(
-            startDestination = Flow.FastingFlow.startDestination,
-            route = Flow.FastingFlow.route
+            startDestination = NavGraph.FastingNavGraph.startDestination,
+            route = NavGraph.FastingNavGraph.route
         ) {
             fastingDestinations(navController)
         }
 
         navigation(
-            startDestination = Flow.MoodTrackingFlow.startDestination,
-            route = Flow.MoodTrackingFlow.route
+            startDestination = NavGraph.MoodTrackingNavGraph.startDestination,
+            route = NavGraph.MoodTrackingNavGraph.route
         ) {
             moodTrackingDestinations(navController)
         }
