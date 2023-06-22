@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pedometer_title_topBar">Шагомер</string>
-    <string name="pedometer_stepCountFormat_text">%d / %d шагов</string>
+    <string name="pedometer_stepCountFormat_text">%1$d / %2$d шагов</string>
     <string name="pedometer_playIcon_contentDescription">Начать запись шагов</string>
     <string name="pedometer_kilometersLabel_text">км</string>
     <string name="pedometer_yourIndicatorsForThisDay_text">Ваши показатели за день:</string>

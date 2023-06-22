@@ -33,7 +33,7 @@
     <string name="moodTracking_history_title_topBar">Detailed history</string>
     <string name="moodTracking_history_emptyDay_text">You haven\'t added any entries on this day.</string>
 
-    <string name="moodTracking_item_feel_formatText">You felt like %s in %s today.</string>
+    <string name="moodTracking_item_feel_formatText">You felt like %1$s in %2$s today.</string>
     <string name="moodTracking_item_activity_left_count_format">%d more activities…</string>
 
     <string name="moodTracking_createActivity_title_topBar">Create an activity</string>
@@ -87,4 +87,10 @@
     <string name="moodTracking_updateMoodTrack_selectDateRange_buttonText">Select date</string>
     <string name="moodTracking_updateMoodType_nameEmpty_error">The name can\'t be empty!</string>
     <string name="moodTracking_updateMoodType_nameMoreThanMaxChars_error">Max characters: %d</string>
+
+    <string name="predefined_moodType_name_happy">Great</string>
+    <string name="predefined_moodType_name_neutral">Neutral</string>
+    <string name="predefined_moodType_name_not_well">Not good</string>
+    <string name="predefined_moodType_name_bad">Badly</string>
+
 </resources>

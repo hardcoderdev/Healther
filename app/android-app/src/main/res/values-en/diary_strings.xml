@@ -61,4 +61,11 @@
     <string name="diary_updateTag_saveTrack_buttonText">Update tag</string>
     <string name="diary_updateTrack_youMaySelectTags_text">You can choose tags for this note:</string>
     <string name="diary_updateTrack_manageTags_buttonText">Tag management</string>
+
+    <string name="predefined_diary_filterFeatureType_noFeature">Without feature</string>
+    <string name="predefined_diary_filterFeatureType_waterTrackingFilter">Water balance</string>
+    <string name="predefined_diary_filterFeatureType_pedometerFilter">Pedometer</string>
+    <string name="predefined_diary_filterFeatureType_fastingFilter">Fasting</string>
+    <string name="predefined_diary_filterFeatureType_moodTrackingFilter">Mood tracking</string>
+    
 </resources>

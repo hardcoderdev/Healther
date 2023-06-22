@@ -27,6 +27,4 @@
     <string name="dateRangeFilterType_byMonth">Месяц</string>
     <string name="dateRangeFilterType_byYear">Год</string>
     <string name="dateRangeFilterType_byAllPeriod">Весь период</string>
-    <string name="dashboard_fasting_completed">Голодание завершено.</string>
-    <string name="dashboard_finish_fasting">Сохранить голодание</string>
 </resources>

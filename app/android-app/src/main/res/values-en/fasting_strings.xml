@@ -36,7 +36,7 @@
     <string name="fasting_history_title_topBar">Detailed history</string>
     <string name="fasting_history_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
 
-    <string name="fasting_itemPlan_description_formatText">You will fast for %s and after that you will have %s to eat.</string>
+    <string name="fasting_itemPlan_description_formatText">You will fast for %1$s and after that you will have %2$s to eat.</string>
     <string name="fasting_itemPlan_selectFastingHours_text">Select the number of hours after which the fast will end:</string>
     <string name="fasting_itemPlan_customPlan">Your plan</string>
     <string name="fasting_item_fasting_startTime_formatText">Start of fasting: %s</string>

@@ -22,6 +22,7 @@ compose-accompanist = "0.29.1-alpha"
 preferences-ktx = "1.2.0"
 koin-compose="3.4.5"
 koin-di = "3.4.2"
+moko-resources = "0.23.0"
 
 [libraries]
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
@@ -67,6 +68,7 @@ compose-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 koin-di = { module = "io.insert-koin:koin-android", version.ref = "koin-di" }
 koin-di-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
+moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
@@ -74,6 +76,7 @@ com-android-library = { id = "com.android.library", version.ref = "android-gradl
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 sql-delight = { id = "app.cash.sqldelight", version.ref = "sql-delight" }
+moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
 
 [bundles]
 voyager-navigation = [ "voyager-navigator", "voyager-bottomSheetNavigator", "voyager-androidx", "voyager-koin" ]

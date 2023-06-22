@@ -61,4 +61,10 @@
     <string name="diary_updateTag_selectIcon_text">Выберите иконку для тега:</string>
     <string name="diary_updateTag_tagIconContentDescription">Иконка тега</string>
     <string name="diary_updateTag_saveTrack_buttonText">Обновить тег</string>
+
+    <string name="predefined_diary_filterFeatureType_noFeature">Без фичей</string>
+    <string name="predefined_diary_filterFeatureType_waterTrackingFilter">Водный баланс</string>
+    <string name="predefined_diary_filterFeatureType_pedometerFilter">Шагомер</string>
+    <string name="predefined_diary_filterFeatureType_fastingFilter">Голодание</string>
+    <string name="predefined_diary_filterFeatureType_moodTrackingFilter">Настроение</string>
 </resources>

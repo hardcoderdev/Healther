@@ -35,7 +35,7 @@
     <string name="fasting_history_title_topBar">Подробная история</string>
     <string name="fasting_history_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
 
-    <string name="fasting_itemPlan_description_formatText">Вы будете голодать на протяжении %s и после этого у вас будет %s на приём пищи.</string>
+    <string name="fasting_itemPlan_description_formatText">Вы будете голодать на протяжении %1$s и после этого у вас будет %2$s на приём пищи.</string>
     <string name="fasting_itemPlan_selectFastingHours_text">Выберите количество часов, по истечению которых закончится голодание:</string>
     <string name="fasting_itemPlan_14_10" translatable="false">14–10</string>
     <string name="fasting_itemPlan_16_8" translatable="false">16–8</string>

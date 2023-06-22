@@ -33,7 +33,7 @@
     <string name="moodTracking_history_title_topBar">Подробная история</string>
     <string name="moodTracking_history_emptyDay_text">В этот день вы не добавляли записей.</string>
 
-    <string name="moodTracking_item_feel_formatText">Вы чувствовали себя %s в %s сегодня.</string>
+    <string name="moodTracking_item_feel_formatText">Вы чувствовали себя %1$s в %2$s сегодня.</string>
     <string name="moodTracking_item_activity_left_count_format">Ещё %d занятий…</string>
 
     <string name="moodTracking_createActivity_title_topBar">Создание занятия</string>
@@ -87,4 +87,9 @@
     <string name="moodTracking_updateMoodTrack_selectDateRange_buttonText">Выбрать дату</string>
     <string name="moodTracking_updateMoodType_nameEmpty_error">Название не может быть пустым!</string>
     <string name="moodTracking_updateMoodType_nameMoreThanMaxChars_error">Максимальное кол-во символов: %d</string>
+
+    <string name="predefined_moodType_name_happy">Отлично</string>
+    <string name="predefined_moodType_name_neutral">Нейтрально</string>
+    <string name="predefined_moodType_name_not_well">Не очень</string>
+    <string name="predefined_moodType_name_bad">Плохо</string>
 </resources>

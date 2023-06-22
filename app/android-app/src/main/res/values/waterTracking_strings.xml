@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="waterTracking_Item_milliliters_formatText">%d (%d) мл</string>
+    <string name="waterTracking_Item_milliliters_formatText">%1$d (%2$d) мл</string>
 
-    <string name="waterTracking_millilitersCount_formatText">%d / %d мл</string>
+    <string name="waterTracking_millilitersCount_formatText">%1$d / %2$d мл</string>
     <string name="waterTracking_title_topBar">Водный баланс</string>
     <string name="waterTracking_nowEmpty_text">Сейчас здесь пусто. Для того, чтобы добавить запись воспользуйтесь кнопкой в правом нижнем углу!</string>
     <string name="waterTracking_statistic_not_enough_data_text">Мало инфы</string>
@@ -68,4 +68,13 @@
     <string name="waterTracking_updateDrinkType_createTrack_buttonText">Обновить напиток</string>
     <string name="waterTracking_updateDrinkType_nameEmpty">Это поле не может быть пустым!</string>
     <string name="waterTracking_updateDrinkType_nameMoreThanMaxCharsError">Максимальное кол-во символов: %d</string>
+
+    <string name="predefined_drinkType_name_water">Вода</string>
+    <string name="predefined_drinkType_name_coffee">Кофе</string>
+    <string name="predefined_drinkType_name_beer">Пиво</string>
+    <string name="predefined_drinkType_name_milk">Молоко</string>
+    <string name="predefined_drinkType_name_tea">Чай</string>
+    <string name="predefined_drinkType_name_juice">Сок</string>
+    <string name="predefined_drinkType_name_soda">Газировка</string>
+    <string name="predefined_drinkType_name_soup">Суп</string>
 </resources>

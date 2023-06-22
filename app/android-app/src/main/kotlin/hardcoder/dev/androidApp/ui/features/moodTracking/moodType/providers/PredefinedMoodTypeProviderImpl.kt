@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.annotation.StringRes
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypePredefined
 import hardcoder.dev.logic.features.moodTracking.moodType.PredefinedMoodTypeProvider
-import hardcoderdev.healther.app.logic.R
+import hardcoderdev.healther.app.android.app.R
 
 class PredefinedMoodTypeProviderImpl(
     private val context: Context,

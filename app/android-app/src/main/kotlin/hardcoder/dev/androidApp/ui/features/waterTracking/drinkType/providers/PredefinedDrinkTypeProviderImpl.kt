@@ -2,10 +2,10 @@ package hardcoder.dev.androidApp.ui.features.waterTracking.drinkType.providers
 
 import android.content.Context
 import androidx.annotation.StringRes
-import hardcoderdev.healther.app.logic.R
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypePredefined
 import hardcoder.dev.logic.features.waterTracking.drinkType.PredefinedDrinkTypeProvider
 import hardcoder.dev.logic.icons.IconResourceProvider
+import hardcoderdev.healther.app.android.app.R
 
 class PredefinedDrinkTypeProviderImpl(
     private val context: Context,

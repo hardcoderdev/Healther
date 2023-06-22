@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="waterTracking_Item_milliliters_formatText">%d (%d) ml</string>
-    <string name="waterTracking_millilitersCount_formatText">%d / %d ml</string>
+    <string name="waterTracking_Item_milliliters_formatText">%1$d (%2$d) ml</string>
+    <string name="waterTracking_millilitersCount_formatText">%1$d / %2$d ml</string>
     <string name="waterTracking_title_topBar">Water balance</string>
     <string name="waterTracking_nowEmpty_text">Now it\'s empty. In order to add an entry, use the button in the lower right corner!</string>
     <string name="waterTracking_statistic_text">General statistic:</string>
@@ -67,5 +67,14 @@
     <string name="waterTracking_updateDrinkType_createTrack_buttonText">Update drink type</string>
     <string name="waterTracking_updateDrinkType_nameEmpty">This field can\'t be empty!</string>
     <string name="waterTracking_updateDrinkType_nameMoreThanMaxCharsError">Max characters: %d</string>
+
+    <string name="predefined_drinkType_name_water">Water</string>
+    <string name="predefined_drinkType_name_coffee">Coffee</string>
+    <string name="predefined_drinkType_name_beer">Beer</string>
+    <string name="predefined_drinkType_name_milk">Milk</string>
+    <string name="predefined_drinkType_name_tea">Tea</string>
+    <string name="predefined_drinkType_name_juice">Juice</string>
+    <string name="predefined_drinkType_name_soda">Soda</string>
+    <string name="predefined_drinkType_name_soup">Soup</string>
 
 </resources>

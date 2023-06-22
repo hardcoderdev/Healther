@@ -5,11 +5,13 @@
     <string name="dashboard_mood_tracking_feature">Настроение</string>
     <string name="dashboard_pedometer_feature">Шагомер</string>
     <string name="dashboard_water_tracking_feature">Водный баланс</string>
-    <string name="dashboard_water_tracking_progress_format">%d мл из %d</string>
+    <string name="dashboard_water_tracking_progress_format">%1$d мл из %2$d</string>
     <string name="dashboard_pedometer_progress_format">%d шагов из %d</string>
     <string name="dashboard_mood_tracking_progress_format">Среднее настроение:</string>
     <string name="dashboard_start_fasting">Начать голодание</string>
     <string name="dashboard_fasting_is_not_active">Сейчас вы не голодаете.</string>
     <string name="dashboard_pedometer_permissions_not_granted">Разрешения не выданы.</string>
     <string name="dashboard_mood_tracking_not_specified">Вы не указали настроение сегодня.</string>
+    <string name="dashboard_fasting_completed">Голодание завершено.</string>
+    <string name="dashboard_finish_fasting">Сохранить голодание</string>
 </resources>

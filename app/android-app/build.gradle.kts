@@ -1,9 +1,12 @@
 @file:Suppress("UnstableApiUsage")
 
+import dev.icerock.gradle.MRVisibility
+
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.moko.resources)
     id("android-compose-convention")
     id("android-app-convention")
 }
@@ -18,10 +21,19 @@ android {
     }
 }
 
+multiplatformResources {
+    multiplatformResourcesPackage = "hardcoder.dev.healther" // required
+    multiplatformResourcesClassName = "SharedRes" // optional, default MR
+    multiplatformResourcesVisibility = MRVisibility.Internal // optional, default Public
+    iosBaseLocalizationRegion = "ru" // optional, default "en"
+    multiplatformResourcesSourceSet = "commonClientMain"  // optional, default "commonMain"
+}
+
 dependencies {
     implementation(projects.app.presentation)
     implementation(projects.foundation.uikit)
     implementation(platform(libs.compose.bom))
+    implementation(libs.moko.resources.compose)
     implementation(libs.koin.di)
     implementation(libs.koin.di.compose)
     implementation(libs.compose.activity)
