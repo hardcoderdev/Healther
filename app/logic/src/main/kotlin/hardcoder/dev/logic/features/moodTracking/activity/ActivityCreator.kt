@@ -16,7 +16,7 @@ class ActivityCreator(
         name: CorrectActivityName,
         icon: LocalIcon,
     ) = withContext(dispatchers.io) {
-        appDatabase.activityQueries.insert(
+        appDatabase.moodActivityQueries.insert(
             id = idGenerator.nextId(),
             name = name.data,
             iconId = icon.id

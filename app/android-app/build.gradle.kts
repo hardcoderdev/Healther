@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.navigation.safe.args)
     id("android-compose-convention")
     id("android-app-convention")
 }
@@ -25,8 +24,9 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.koin.di)
     implementation(libs.koin.di.compose)
+    implementation(libs.compose.activity)
+    implementation(libs.bundles.voyager.navigation)
     implementation(libs.compose.graphics)
-    implementation(libs.compose.navigation)
     implementation(libs.compose.tooling)
     implementation(libs.compose.accompanist.flowrow)
     implementation(libs.compose.calendar)

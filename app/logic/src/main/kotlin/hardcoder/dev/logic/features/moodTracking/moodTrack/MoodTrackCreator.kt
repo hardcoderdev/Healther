@@ -5,7 +5,7 @@ import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackCreator
-import hardcoder.dev.logic.features.moodTracking.activity.Activity
+import hardcoder.dev.logic.features.moodTracking.activity.MoodActivity
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityCreator
 import kotlinx.coroutines.flow.filterNotNull
@@ -28,7 +28,7 @@ class MoodTrackCreator(
         note: String?,
         moodType: MoodType,
         date: LocalDateTime,
-        selectedActivities: Set<Activity>
+        selectedActivities: Set<MoodActivity>
     ) = withContext(dispatchers.io) {
         val moodTrackId = idGenerator.nextId()
 

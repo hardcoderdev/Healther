@@ -10,6 +10,6 @@ class ActivityDeleter(
 ) {
 
     suspend fun deleteById(id: Int) = withContext(dispatchers.io) {
-        appDatabase.activityQueries.deleteById(id)
+        appDatabase.moodActivityQueries.deleteById(id)
     }
 }

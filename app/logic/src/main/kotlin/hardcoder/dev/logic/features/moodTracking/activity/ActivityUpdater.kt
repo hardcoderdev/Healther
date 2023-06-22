@@ -15,7 +15,7 @@ class ActivityUpdater(
         name: CorrectActivityName,
         icon: LocalIcon
     ) = withContext(dispatchers.io) {
-        appDatabase.activityQueries.update(
+        appDatabase.moodActivityQueries.update(
             id = id,
             name = name.data,
             iconId = icon.id

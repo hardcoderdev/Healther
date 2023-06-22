@@ -38,7 +38,7 @@ class MoodWithActivitiesProvider(
                                     flowOf(
                                         MoodWithActivities(
                                             moodTrack = moodTrack,
-                                            activityList = emptyList()
+                                            moodActivityList = emptyList()
                                         )
                                     )
                                 } else {
@@ -49,7 +49,7 @@ class MoodWithActivitiesProvider(
                                     ) { activities ->
                                         MoodWithActivities(
                                             moodTrack = moodTrack,
-                                            activityList = activities.toList().filterNotNull()
+                                            moodActivityList = activities.toList().filterNotNull()
                                         )
                                     }
                                 }

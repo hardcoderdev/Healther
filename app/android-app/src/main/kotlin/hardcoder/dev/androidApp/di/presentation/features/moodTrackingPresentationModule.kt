@@ -8,7 +8,7 @@ import hardcoder.dev.presentation.features.moodTracking.activity.ActivityCreatio
 import hardcoder.dev.presentation.features.moodTracking.activity.ActivityViewModel
 import hardcoder.dev.presentation.features.moodTracking.activity.ActivityUpdateViewModel
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeCreationViewModel
-import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeViewModel
+import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypesViewModel
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeUpdateViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -52,7 +52,7 @@ val moodTrackingPresentationModule = module {
     }
 
     viewModel {
-        MoodTypeViewModel(
+        MoodTypesViewModel(
             moodTypeProvider = get(),
         )
     }

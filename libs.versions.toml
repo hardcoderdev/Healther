@@ -14,7 +14,7 @@ sql-delight = "1.5.4"
 ktor-client = "2.3.0"
 coil-compose = "2.2.2"
 lottie-compose = "6.0.0"
-navigation-component = "2.6.0"
+voyager = "1.0.0-rc06"
 compose-charts = "1.6.4"
 compose-calendar = "1.0.2"
 compose-number-picker = "1.0.3"
@@ -49,7 +49,10 @@ compose-tooling = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-debug-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-material = { module = "androidx.compose.material3:material3" }
 compose-extended-icons = { module = "androidx.compose.material:material-icons-extended" }
-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-component" }
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+voyager-bottomSheetNavigator = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
+voyager-androidx = { module = "cafe.adriel.voyager:voyager-androidx", version.ref = "voyager" }
+voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 compose-charts = { module = "com.patrykandpatrick.vico:compose-m3", version.ref = "compose-charts" }
 compose-calendar = { module = "io.github.boguszpawlowski.composecalendar:composecalendar", version.ref = "compose-calendar" }
 compose-calendar-datetime = { module = "io.github.boguszpawlowski.composecalendar:kotlinx-datetime", version.ref = "compose-calendar" }
@@ -68,5 +71,7 @@ com-android-application = { id = "com.android.application", version.ref = "andro
 com-android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-navigation-safe-args = { id = "androidx.navigation.safeargs", version.ref = "navigation-component" }
 sql-delight = { id = "com.squareup.sqldelight", version.ref = "sql-delight" }
+
+[bundles]
+voyager-navigation = [ "voyager-navigator", "voyager-bottomSheetNavigator", "voyager-androidx", "voyager-koin" ]

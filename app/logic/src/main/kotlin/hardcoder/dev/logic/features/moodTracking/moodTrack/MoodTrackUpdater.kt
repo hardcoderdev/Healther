@@ -6,7 +6,7 @@ import hardcoder.dev.logic.features.diary.AttachmentType
 import hardcoder.dev.logic.features.diary.AttachmentTypeIdMapper
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackCreator
-import hardcoder.dev.logic.features.moodTracking.activity.Activity
+import hardcoder.dev.logic.features.moodTracking.activity.MoodActivity
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityCreator
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityDeleter
 import kotlinx.coroutines.withContext
@@ -25,7 +25,7 @@ class MoodTrackUpdater(
     suspend fun update(
         note: String?,
         moodTrack: MoodTrack,
-        selectedActivities: Set<Activity>
+        selectedActivities: Set<MoodActivity>
     ) = withContext(dispatchers.io) {
         appDatabase.moodTrackQueries.update(
             id = moodTrack.id,
