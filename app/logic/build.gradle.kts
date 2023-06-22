@@ -12,6 +12,6 @@ dependencies {
     implementation(libs.kotlin.coroutines.core)
     implementation(libs.kotlin.coroutines.android)
     implementation(libs.preferences.ktx)
-    implementation(libs.sql.delight.driver)
+    implementation(libs.sql.delight.android.driver)
     implementation(libs.sql.delight.coroutines.ext)
 }

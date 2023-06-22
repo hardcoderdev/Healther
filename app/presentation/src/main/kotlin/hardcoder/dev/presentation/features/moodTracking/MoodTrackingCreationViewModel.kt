@@ -8,7 +8,7 @@ import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
 import hardcoder.dev.controller.requireSelectedItem
 import hardcoder.dev.controller.requireSelectedItems
-import hardcoder.dev.logic.features.moodTracking.activity.ActivityProvider
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackCreator
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
 import kotlinx.datetime.Clock
@@ -18,7 +18,7 @@ import kotlinx.datetime.toLocalDateTime
 class MoodTrackingCreationViewModel(
     private val moodTrackCreator: MoodTrackCreator,
     moodTypeProvider: MoodTypeProvider,
-    activityProvider: ActivityProvider
+    moodActivityProvider: MoodActivityProvider
 ) : ViewModel() {
 
     val dateController = InputController(
@@ -38,7 +38,7 @@ class MoodTrackingCreationViewModel(
 
     val activitiesMultiSelectionController = MultiSelectionController(
         coroutineScope = viewModelScope,
-        itemsFlow = activityProvider.provideAllActivities()
+        itemsFlow = moodActivityProvider.provideAllActivities()
     )
 
     val creationController = SingleRequestController(

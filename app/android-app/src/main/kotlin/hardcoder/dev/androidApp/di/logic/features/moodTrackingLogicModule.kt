@@ -3,11 +3,11 @@ package hardcoder.dev.androidApp.di.logic.features
 import hardcoder.dev.androidApp.ui.features.moodTracking.activity.providers.ActivityIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers.MoodTypeIconProvider
 import hardcoder.dev.androidApp.ui.features.moodTracking.moodType.providers.PredefinedMoodTypeProviderImpl
-import hardcoder.dev.logic.features.moodTracking.activity.ActivityCreator
-import hardcoder.dev.logic.features.moodTracking.activity.ActivityDeleter
-import hardcoder.dev.logic.features.moodTracking.activity.ActivityNameValidator
-import hardcoder.dev.logic.features.moodTracking.activity.ActivityProvider
-import hardcoder.dev.logic.features.moodTracking.activity.ActivityUpdater
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityCreator
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityDeleter
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityNameValidator
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityProvider
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityUpdater
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackCreator
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDeleter
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
@@ -28,12 +28,12 @@ import org.koin.dsl.module
 
 val moodTrackingLogicModule = module {
     singleOf(::MoodTypeIconProvider)
-    singleOf(::ActivityNameValidator)
+    singleOf(::MoodActivityNameValidator)
     singleOf(::ActivityIconProvider)
     singleOf(::MoodTypeNameValidator)
 
     single {
-        ActivityCreator(
+        MoodActivityCreator(
             idGenerator = get(),
             appDatabase = get(),
             dispatchers = get(),
@@ -41,21 +41,21 @@ val moodTrackingLogicModule = module {
     }
 
     single {
-        ActivityUpdater(
+        MoodActivityUpdater(
             appDatabase = get(),
             dispatchers = get(),
         )
     }
 
     single {
-        ActivityDeleter(
+        MoodActivityDeleter(
             appDatabase = get(),
             dispatchers = get(),
         )
     }
 
     single {
-        ActivityProvider(
+        MoodActivityProvider(
             appDatabase = get(),
             iconResourceProvider = get(),
             dispatchers = get(),
@@ -66,7 +66,7 @@ val moodTrackingLogicModule = module {
         MoodWithActivitiesProvider(
             appDatabase = get(),
             moodTrackProvider = get(),
-            activityProvider = get(),
+            moodActivityProvider = get(),
             dispatchers = get(),
         )
     }

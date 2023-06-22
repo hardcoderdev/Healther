@@ -1,10 +1,10 @@
-package hardcoder.dev.logic.features.moodTracking.activity
+package hardcoder.dev.logic.features.moodTracking.moodActivity
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import kotlinx.coroutines.withContext
 
-class ActivityDeleter(
+class MoodActivityDeleter(
     private val appDatabase: AppDatabase,
     private val dispatchers: BackgroundCoroutineDispatchers
 ) {

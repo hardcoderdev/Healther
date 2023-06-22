@@ -5,6 +5,6 @@ plugins {
 dependencies {
     api(projects.foundation.coroutines)
     implementation(libs.preferences.ktx)
-    implementation(libs.sql.delight.driver)
+    implementation(libs.sql.delight.android.driver)
     implementation(libs.sql.delight.coroutines.ext)
 }

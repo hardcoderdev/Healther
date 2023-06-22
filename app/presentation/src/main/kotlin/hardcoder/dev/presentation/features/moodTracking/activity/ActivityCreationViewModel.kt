@@ -7,22 +7,22 @@ import hardcoder.dev.controller.SingleSelectionController
 import hardcoder.dev.controller.ValidatedInputController
 import hardcoder.dev.controller.requireSelectedItem
 import hardcoder.dev.controller.validateAndRequire
-import hardcoder.dev.logic.features.moodTracking.activity.ActivityCreator
-import hardcoder.dev.logic.features.moodTracking.activity.ActivityNameValidator
-import hardcoder.dev.logic.features.moodTracking.activity.CorrectActivityName
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityCreator
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityNameValidator
+import hardcoder.dev.logic.features.moodTracking.moodActivity.CorrectActivityName
 import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.map
 
 class ActivityCreationViewModel(
-    private val activityCreator: ActivityCreator,
-    activityNameValidator: ActivityNameValidator,
+    private val moodActivityCreator: MoodActivityCreator,
+    moodActivityNameValidator: MoodActivityNameValidator,
     iconResourceProvider: IconResourceProvider
 ) : ViewModel() {
 
     val activityNameController = ValidatedInputController(
         coroutineScope = viewModelScope,
         initialInput = "",
-        validation = activityNameValidator::validate
+        validation = moodActivityNameValidator::validate
     )
 
     val iconSelectionController = SingleSelectionController(
@@ -33,7 +33,7 @@ class ActivityCreationViewModel(
     val creationController = SingleRequestController(
         coroutineScope = viewModelScope,
         request = {
-            activityCreator.create(
+            moodActivityCreator.create(
                 name = activityNameController.validateAndRequire(),
                 icon = iconSelectionController.requireSelectedItem()
             )

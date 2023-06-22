@@ -4,15 +4,17 @@ plugins {
 }
 
 sqldelight {
-    database("AppDatabase") {
-        packageName = "hardcoder.dev.database"
-        dialect = "sqlite:3.24"
+    databases {
+        create("AppDatabase") {
+            packageName.set("hardcoder.dev.database")
+        }
     }
 }
 
 dependencies {
     implementation(libs.preferences.ktx)
-    implementation(libs.sql.delight.driver)
+    implementation(libs.sql.delight.android.driver)
     implementation(libs.sql.delight.coroutines.ext)
+    implementation(libs.sql.delight.primitive.adapters)
     implementation(libs.kotlin.datetime)
 }

@@ -10,7 +10,7 @@ activity-compose = "1.7.2"
 kotlin-coroutines = "1.7.1"
 kotlin-datetime = "0.4.0"
 data-store = "1.0.0"
-sql-delight = "1.5.4"
+sql-delight = "2.0.0-rc01"
 ktor-client = "2.3.0"
 coil-compose = "2.2.2"
 lottie-compose = "6.0.0"
@@ -34,8 +34,10 @@ kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-co
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
 data-store = { module = "androidx.datastore:datastore-preferences", version.ref = "data-store" }
-sql-delight-coroutines-ext = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sql-delight" }
-sql-delight-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "sql-delight" }
+sql-delight-primitive-adapters = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sql-delight" }
+sql-delight-coroutines-ext = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sql-delight" }
+sql-delight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sql-delight" }
+sql-delight-native-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sql-delight" }
 preferences-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferences-ktx" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor-client" }
@@ -71,7 +73,7 @@ com-android-application = { id = "com.android.application", version.ref = "andro
 com-android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-sql-delight = { id = "com.squareup.sqldelight", version.ref = "sql-delight" }
+sql-delight = { id = "app.cash.sqldelight", version.ref = "sql-delight" }
 
 [bundles]
 voyager-navigation = [ "voyager-navigator", "voyager-bottomSheetNavigator", "voyager-androidx", "voyager-koin" ]

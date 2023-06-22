@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.logic.features.moodTracking.activity.MoodActivity
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity
 import hardcoder.dev.presentation.features.moodTracking.activity.ActivityViewModel
 import hardcoder.dev.uikit.LoadingContainer
 import hardcoder.dev.uikit.ScaffoldWrapper

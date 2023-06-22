@@ -6,7 +6,7 @@ import hardcoder.dev.logic.features.diary.AttachmentType
 import hardcoder.dev.logic.features.diary.AttachmentTypeIdMapper
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackCreator
-import hardcoder.dev.logic.features.moodTracking.activity.MoodActivity
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityCreator
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityDeleter
 import kotlinx.coroutines.withContext

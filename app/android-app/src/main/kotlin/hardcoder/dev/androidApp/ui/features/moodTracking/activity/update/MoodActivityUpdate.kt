@@ -22,8 +22,8 @@ import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
 import hardcoder.dev.controller.ValidatedInputController
-import hardcoder.dev.logic.features.moodTracking.activity.IncorrectActivityName
-import hardcoder.dev.logic.features.moodTracking.activity.ValidatedActivityName
+import hardcoder.dev.logic.features.moodTracking.moodActivity.IncorrectActivityName
+import hardcoder.dev.logic.features.moodTracking.moodActivity.ValidatedActivityName
 import hardcoder.dev.logic.icons.LocalIcon
 import hardcoder.dev.presentation.features.moodTracking.activity.ActivityUpdateViewModel
 import hardcoder.dev.uikit.Action

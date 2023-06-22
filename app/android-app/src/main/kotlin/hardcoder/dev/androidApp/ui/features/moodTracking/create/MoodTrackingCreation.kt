@@ -33,7 +33,7 @@ import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.MultiSelectionController
 import hardcoder.dev.controller.SingleRequestController
 import hardcoder.dev.controller.SingleSelectionController
-import hardcoder.dev.logic.features.moodTracking.activity.MoodActivity
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingCreationViewModel
 import hardcoder.dev.uikit.LaunchedEffectWhenExecuted

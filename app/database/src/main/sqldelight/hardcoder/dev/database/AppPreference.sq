@@ -1,4 +1,5 @@
 import kotlinx.datetime.Instant;
+import kotlin.Int;
 
 CREATE TABLE IF NOT EXISTS AppPreference (
     id INTEGER AS Int NOT NULL PRIMARY KEY,

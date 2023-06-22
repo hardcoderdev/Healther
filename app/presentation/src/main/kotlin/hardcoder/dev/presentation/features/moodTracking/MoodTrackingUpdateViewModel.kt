@@ -12,7 +12,7 @@ import hardcoder.dev.coroutines.firstNotNull
 import hardcoder.dev.logic.features.diary.AttachmentType
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
-import hardcoder.dev.logic.features.moodTracking.activity.ActivityProvider
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDeleter
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackUpdater
@@ -34,7 +34,7 @@ class MoodTrackingUpdateViewModel(
     private val moodTrackProvider: MoodTrackProvider,
     private val diaryAttachmentProvider: DiaryAttachmentProvider,
     moodWithActivityProvider: MoodWithActivitiesProvider,
-    activityProvider: ActivityProvider,
+    moodActivityProvider: MoodActivityProvider,
     moodTypeProvider: MoodTypeProvider,
 ) : ViewModel() {
 
@@ -55,7 +55,7 @@ class MoodTrackingUpdateViewModel(
 
     val activitiesMultiSelectionController = MultiSelectionController(
         coroutineScope = viewModelScope,
-        itemsFlow = activityProvider.provideAllActivities()
+        itemsFlow = moodActivityProvider.provideAllActivities()
     )
 
     val updateController = SingleRequestController(

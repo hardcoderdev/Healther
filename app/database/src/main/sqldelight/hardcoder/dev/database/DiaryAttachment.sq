@@ -1,3 +1,5 @@
+import kotlin.Int;
+
 CREATE TABLE DiaryAttachment (
     id INTEGER AS Int NOT NULL PRIMARY KEY,
     diaryTrackId INTEGER AS Int NOT NULL,

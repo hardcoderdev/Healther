@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.moodTracking.activity
+package hardcoder.dev.logic.features.moodTracking.moodActivity
 
 import hardcoder.dev.logic.icons.LocalIcon
 

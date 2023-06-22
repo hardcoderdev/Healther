@@ -1,6 +1,6 @@
-package hardcoder.dev.logic.features.moodTracking.activity
+package hardcoder.dev.logic.features.moodTracking.moodActivity
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
+import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.MoodActivity
@@ -8,9 +8,9 @@ import hardcoder.dev.logic.icons.IconResourceProvider
 import hardcoder.dev.sqldelight.asFlowOfList
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import hardcoder.dev.logic.features.moodTracking.activity.MoodActivity as MoodActivityEntity
+import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity as MoodActivityEntity
 
-class ActivityProvider(
+class MoodActivityProvider(
     private val appDatabase: AppDatabase,
     private val iconResourceProvider: IconResourceProvider,
     private val dispatchers: BackgroundCoroutineDispatchers

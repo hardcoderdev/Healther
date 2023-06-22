@@ -1,6 +1,6 @@
-package hardcoder.dev.logic.features.moodTracking.activity
+package hardcoder.dev.logic.features.moodTracking.moodActivity
 
-class ActivityNameValidator {
+class MoodActivityNameValidator {
 
     fun validate(activityName: String): ValidatedActivityName {
         return activityName.incorrectReason()?.let { reason ->

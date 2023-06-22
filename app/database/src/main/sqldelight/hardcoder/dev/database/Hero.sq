@@ -1,3 +1,5 @@
+import kotlin.Int;
+
 CREATE TABLE IF NOT EXISTS Hero (
     id INTEGER AS Int NOT NULL PRIMARY KEY,
     weight INTEGER AS Int NOT NULL,

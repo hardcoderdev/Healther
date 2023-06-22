@@ -27,7 +27,7 @@ val moodTrackingPresentationModule = module {
         MoodTrackingCreationViewModel(
             moodTrackCreator = get(),
             moodTypeProvider = get(),
-            activityProvider = get(),
+            moodActivityProvider = get(),
         )
     }
 
@@ -40,7 +40,7 @@ val moodTrackingPresentationModule = module {
             moodTrackProvider = get(),
             diaryAttachmentProvider = get(),
             moodWithActivityProvider = get(),
-            activityProvider = get(),
+            moodActivityProvider = get(),
             moodTypeProvider = get(),
         )
     }
@@ -78,14 +78,14 @@ val moodTrackingPresentationModule = module {
 
     viewModel {
         ActivityViewModel(
-            activityProvider = get(),
+            moodActivityProvider = get(),
         )
     }
 
     viewModel {
         ActivityCreationViewModel(
-            activityCreator = get(),
-            activityNameValidator = get(),
+            moodActivityCreator = get(),
+            moodActivityNameValidator = get(),
             iconResourceProvider = get(),
         )
     }
@@ -93,10 +93,10 @@ val moodTrackingPresentationModule = module {
     viewModel { parameters ->
         ActivityUpdateViewModel(
             activityId = parameters.get(),
-            activityNameValidator = get(),
-            activityDeleter = get(),
-            activityUpdater = get(),
-            activityProvider = get(),
+            moodActivityNameValidator = get(),
+            moodActivityDeleter = get(),
+            moodActivityUpdater = get(),
+            moodActivityProvider = get(),
             iconResourceProvider = get(),
         )
     }
