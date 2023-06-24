@@ -42,7 +42,6 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.accompanist.flowrow)
     implementation(libs.compose.calendar)
-    implementation(libs.compose.calendar.datetime)
     implementation(libs.compose.coil)
     implementation(libs.kotlin.coroutines.core)
     implementation(libs.kotlin.coroutines.android)

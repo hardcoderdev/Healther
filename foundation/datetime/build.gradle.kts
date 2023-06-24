@@ -4,5 +4,4 @@ plugins {
 
 dependencies {
     api(libs.kotlin.datetime)
-    api(libs.compose.calendar.datetime)
 }

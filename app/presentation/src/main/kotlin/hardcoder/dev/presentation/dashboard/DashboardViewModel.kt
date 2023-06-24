@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
-import hardcoder.dev.datetime.createRangeForThisDay
+import hardcoder.dev.datetime.createRangeForCurrentDay
 import hardcoder.dev.logic.DateTimeProvider
 import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
@@ -14,7 +14,6 @@ import hardcoder.dev.logic.features.waterTracking.WaterTrackingMillilitersDrunkP
 import hardcoder.dev.presentation.features.pedometer.Available
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
 import hardcoder.dev.presentation.features.pedometer.toggleTracking
-import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDate
@@ -59,9 +58,7 @@ class DashboardViewModel(
         .map(DashboardItem::WaterTrackingFeature)
 
     private fun pedometerItem() = combine(
-        pedometerTrackProvider.providePedometerTracksByRange(
-            LocalDate.now().createRangeForThisDay()
-        ),
+        pedometerTrackProvider.providePedometerTracksByRange(LocalDate.createRangeForCurrentDay()),
         pedometerManager.isTracking,
         pedometerManager.availability
     ) { pedometerTrackList, isPedometerRunning, availability ->
@@ -93,7 +90,7 @@ class DashboardViewModel(
     }
 
     private fun moodTrackingItemFlow() = moodTrackProvider.provideAllMoodTracksByDayRange(
-        LocalDate.now().createRangeForThisDay()
+        LocalDate.createRangeForCurrentDay()
     ).map { moodTrackList ->
         DashboardItem.MoodTrackingFeature(
             averageMoodToday = moodTrackList.groupingBy {

@@ -16,7 +16,7 @@ coil-compose = "2.2.2"
 lottie-compose = "6.0.0"
 voyager = "1.0.0-rc06"
 compose-charts = "1.6.4"
-compose-calendar = "1.0.2"
+compose-calendar = "1.0.4"
 compose-number-picker = "1.0.3"
 compose-accompanist = "0.29.1-alpha"
 preferences-ktx = "1.2.0"
@@ -57,8 +57,7 @@ voyager-bottomSheetNavigator = { module = "cafe.adriel.voyager:voyager-bottom-sh
 voyager-androidx = { module = "cafe.adriel.voyager:voyager-androidx", version.ref = "voyager" }
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 compose-charts = { module = "com.patrykandpatrick.vico:compose-m3", version.ref = "compose-charts" }
-compose-calendar = { module = "io.github.boguszpawlowski.composecalendar:composecalendar", version.ref = "compose-calendar" }
-compose-calendar-datetime = { module = "io.github.boguszpawlowski.composecalendar:kotlinx-datetime", version.ref = "compose-calendar" }
+compose-calendar = { module = "io.github.epicarchitect:calendar-compose-datepicker", version.ref = "compose-calendar" }
 compose-number-picker = { module = "com.chargemap.compose:numberpicker", version.ref = "compose-number-picker" }
 compose-accompanist-viewpager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose-accompanist" }
 compose-accompanist-viewpager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose-accompanist" }

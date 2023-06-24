@@ -3,14 +3,13 @@ package hardcoder.dev.presentation.features.moodTracking
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.datetime.createRangeForThisDay
+import hardcoder.dev.datetime.createRangeForCurrentDay
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
 import hardcoder.dev.logic.DateTimeProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
 import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatisticProvider
-import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
@@ -46,7 +45,7 @@ class MoodTrackingViewModel(
     val moodWithActivityLoadingController = LoadingController(
         coroutineScope = viewModelScope,
         flow = moodWithActivitiesProvider.provideMoodWithActivityList(
-            LocalDate.now().createRangeForThisDay()
+            LocalDate.createRangeForCurrentDay()
         )
     )
 

@@ -9,5 +9,4 @@ dependencies {
     api(projects.foundation.inappreview)
     api(projects.foundation.controllers)
     implementation(libs.lifecycle.viewmodel.compose)
-    implementation(libs.compose.calendar.datetime)
 }

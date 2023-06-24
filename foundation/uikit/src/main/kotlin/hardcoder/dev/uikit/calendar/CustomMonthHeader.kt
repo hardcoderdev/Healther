@@ -9,19 +9,30 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
+import epicarchitect.calendar.compose.basis.EpicMonth
+import epicarchitect.calendar.compose.basis.addMonths
+import epicarchitect.calendar.compose.basis.next
+import epicarchitect.calendar.compose.basis.previous
+import epicarchitect.calendar.compose.datepicker.state.EpicDatePickerState
 import hardcoder.dev.uikit.icons.Icon
 import hardcoder.dev.uikit.text.Title
 import hardcoderdev.healther.foundation.uikit.R
-import io.github.boguszpawlowski.composecalendar.header.MonthState
+import kotlinx.coroutines.launch
 import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
-fun CustomMonthHeader(monthState: MonthState) {
+fun CustomMonthHeader(
+    state: EpicDatePickerState,
+    month: EpicMonth
+) {
+    val coroutineScope = rememberCoroutineScope()
+
     Spacer(modifier = Modifier.height(8.dp))
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -33,24 +44,28 @@ fun CustomMonthHeader(monthState: MonthState) {
             modifier = Modifier
                 .padding(end = 32.dp)
                 .clickable {
-                    monthState.currentMonth = monthState.currentMonth.minusMonths(1)
+                    coroutineScope.launch {
+                        state.pagerState.scrollToMonth(month.previous())
+                    }
                 }
         )
         Title(
-            text = monthState.currentMonth.month
+            text = month.month
                 .getDisplayName(TextStyle.FULL, Locale.getDefault())
                 .lowercase()
                 .replaceFirstChar { it.titlecase() }
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Title(text = monthState.currentMonth.year.toString())
+        Title(text = month.year.toString())
         Icon(
             iconResId = R.drawable.ic_top_bar_back,
             modifier = Modifier
                 .padding(start = 32.dp)
                 .rotate(-180f)
                 .clickable {
-                    monthState.currentMonth = monthState.currentMonth.plusMonths(1)
+                    coroutineScope.launch {
+                        state.pagerState.scrollToMonth(month.next())
+                    }
                 }
         )
     }

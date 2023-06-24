@@ -7,15 +7,25 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import epicarchitect.calendar.compose.basis.config.rememberBasisEpicCalendarConfig
+import epicarchitect.calendar.compose.datepicker.EpicDatePicker
+import epicarchitect.calendar.compose.datepicker.config.rememberEpicDatePickerConfig
+import epicarchitect.calendar.compose.datepicker.state.EpicDatePickerState
+import epicarchitect.calendar.compose.datepicker.state.rememberEpicDatePickerState
+import epicarchitect.calendar.compose.pager.config.rememberEpicCalendarPagerConfig
 import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
 import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.datetime.createRangeForThisDay
+import hardcoder.dev.datetime.createRangeForCurrentDay
+import hardcoder.dev.datetime.getEndOfDay
+import hardcoder.dev.datetime.getStartOfDay
+import hardcoder.dev.datetime.currentDate
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
 import hardcoder.dev.uikit.LoadingContainer
@@ -30,13 +40,8 @@ import hardcoder.dev.uikit.charts.MINIMUM_ENTRIES_FOR_SHOWING_CHART
 import hardcoder.dev.uikit.text.Description
 import hardcoder.dev.uikit.text.Title
 import hardcoderdev.healther.app.android.app.R
-import io.github.boguszpawlowski.composecalendar.SelectableCalendar
-import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
-import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
-import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.toKotlinLocalDate
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import kotlin.math.roundToInt
@@ -68,12 +73,23 @@ private fun PedometerHistoryContent(
     statisticLoadingController: LoadingController<PedometerStatistic>,
     chartEntriesLoadingController: LoadingController<List<Pair<Int, Int>>>
 ) {
-    val calendarState = rememberSelectableCalendarState(initialSelectionMode = SelectionMode.Single)
+    val calendarState = rememberEpicDatePickerState(
+        config = rememberEpicDatePickerConfig(
+            pagerConfig = rememberEpicCalendarPagerConfig(basisConfig = rememberBasisEpicCalendarConfig(),),
+            selectionContentColor = MaterialTheme.colorScheme.onPrimary,
+            selectionContainerColor = MaterialTheme.colorScheme.primary,
+        ),
+        selectionMode = EpicDatePickerState.SelectionMode.Single(),
+        selectedDates = listOf(LocalDate.currentDate())
+    )
 
-    LaunchedEffect(key1 = calendarState.selectionState.selection) {
-        val date = calendarState.selectionState.selection
-            .firstOrNull()?.toKotlinLocalDate() ?: LocalDate.now()
-        dateRangeInputController.changeInput(date.createRangeForThisDay())
+    LaunchedEffect(key1 = calendarState.selectedDates) {
+        if (calendarState.selectedDates.isNotEmpty()) {
+            val date = calendarState.selectedDates.first()
+            dateRangeInputController.changeInput(date.getStartOfDay()..date.getEndOfDay())
+        } else {
+            dateRangeInputController.changeInput(LocalDate.createRangeForCurrentDay())
+        }
     }
 
     LoadingContainer(
@@ -81,13 +97,12 @@ private fun PedometerHistoryContent(
         controller2 = chartEntriesLoadingController
     ) { statistic, chartEntries ->
         Column(Modifier.padding(16.dp)) {
-            SelectableCalendar(
-                calendarState = calendarState,
-                monthHeader = { monthState ->
-                    CustomMonthHeader(monthState = monthState)
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
+            CustomMonthHeader(
+                state = calendarState,
+                month = calendarState.pagerState.currentMonth
             )
+            Spacer(modifier = Modifier.height(16.dp))
+            EpicDatePicker(state = calendarState)
             Spacer(modifier = Modifier.height(16.dp))
             PedometerTracksHistory(statistic)
             Spacer(modifier = Modifier.height(16.dp))
