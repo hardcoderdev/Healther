@@ -23,6 +23,7 @@ preferences-ktx = "1.2.0"
 koin-compose="3.4.5"
 koin-di = "3.4.2"
 moko-resources = "0.23.0"
+russhwolf-settings = "1.0.0"
 
 [libraries]
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
@@ -68,6 +69,7 @@ compose-activity = { module = "androidx.activity:activity-compose", version.ref 
 koin-di = { module = "io.insert-koin:koin-android", version.ref = "koin-di" }
 koin-di-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
 moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
+russhwolf-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "russhwolf-settings" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }

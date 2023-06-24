@@ -3,14 +3,11 @@ package hardcoder.dev.datetime
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
-import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toLocalDateTime
-import java.util.Date
 
 fun LocalDate.Companion.currentDate(
     timeZone: TimeZone = TimeZone.currentSystemDefault()

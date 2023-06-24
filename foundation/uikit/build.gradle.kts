@@ -14,7 +14,7 @@ dependencies {
     implementation(libs.compose.charts)
     implementation(libs.compose.tooling)
     implementation(libs.compose.number.picker)
-    implementation(libs.compose.calendar) // TODO REMOVR MAYBE
+    implementation(libs.compose.calendar)
     implementation(libs.compose.accompanist.viewpager)
     implementation(libs.compose.accompanist.viewpager.indicators)
     implementation(libs.compose.lottie)

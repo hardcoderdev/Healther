@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import epicarchitect.calendar.compose.basis.EpicMonth
-import epicarchitect.calendar.compose.basis.addMonths
 import epicarchitect.calendar.compose.basis.next
 import epicarchitect.calendar.compose.basis.previous
 import epicarchitect.calendar.compose.datepicker.state.EpicDatePickerState

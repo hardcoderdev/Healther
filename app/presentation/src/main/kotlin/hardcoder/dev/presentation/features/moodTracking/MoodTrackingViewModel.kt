@@ -12,6 +12,7 @@ import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivi
 import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatisticProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -30,17 +31,17 @@ class MoodTrackingViewModel(
 ) : ViewModel() {
 
     private val moodTracksForTheLastMonth =
-        dateTimeProvider.currentTimeFlow().flatMapLatest { currentDateTime ->
-            moodTrackProvider.provideAllMoodTracksByDayRange(
-                currentDateTime.date.minus(
-                    1, DateTimeUnit.MONTH
-                ).getStartOfDay()..currentDateTime.date.getEndOfDay()
-            ).stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.Eagerly,
-                initialValue = emptyList()
-            )
-        }
+        dateTimeProvider.currentTimeFlow().map { currentDateTime ->
+            currentDateTime.date.minus(
+                1, DateTimeUnit.MONTH
+            ).getStartOfDay()..currentDateTime.date.getEndOfDay()
+        }.distinctUntilChanged().flatMapLatest { range ->
+            moodTrackProvider.provideAllMoodTracksByDayRange(range)
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = emptyList()
+        )
 
     val moodWithActivityLoadingController = LoadingController(
         coroutineScope = viewModelScope,
@@ -62,6 +63,6 @@ class MoodTrackingViewModel(
             }.map { entry ->
                 entry.key to entry.value.maxBy { it.moodType.positivePercentage }.moodType.positivePercentage
             }
-        }
+        }.distinctUntilChanged()
     )
 }
