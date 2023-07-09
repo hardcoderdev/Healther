@@ -7,5 +7,5 @@ data class WaterTrack(
     val id: Int,
     val date: Instant,
     val millilitersCount: Int,
-    val drinkType: DrinkType
+    val drinkType: DrinkType,
 )

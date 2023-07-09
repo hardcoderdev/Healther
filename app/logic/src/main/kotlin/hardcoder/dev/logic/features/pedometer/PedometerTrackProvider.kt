@@ -9,7 +9,7 @@ import hardcoder.dev.logic.features.pedometer.PedometerTrack as PedometerTrackEn
 
 class PedometerTrackProvider(
     private val appDatabase: AppDatabase,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun providePedometerTracksByRange(range: ClosedRange<Instant>) = appDatabase.pedometerTrackQueries
@@ -17,13 +17,15 @@ class PedometerTrackProvider(
             range.start,
             range.endInclusive,
             range.start,
-            range.endInclusive
+            range.endInclusive,
         )
         .asFlowOfList(dispatchers.io) { pedometerDatabase ->
             pedometerDatabase.toEntity()
         }
 
     private fun PedometerTrack.toEntity() = PedometerTrackEntity(
-        id, stepsCount, startTime..endTime
+        id,
+        stepsCount,
+        startTime..endTime,
     )
 }

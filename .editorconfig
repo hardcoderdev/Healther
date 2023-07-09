@@ -1,0 +1,19 @@
+root = true
+
+# General
+[*.{kt,java,xml,gradle,md,kts}]
+charset = utf-8
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+end_of_line = lf
+insert_final_newline = false
+
+# Imports
+ij_groovy_imports_layout = *,java.**,javax.**,kotlin.**,^
+ij_kotlin_imports_layout=android.**,|,^org.junit.**,kotlin.io.Closeable.*,|,*,^
+
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+
+max_line_length = 140

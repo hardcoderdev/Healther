@@ -2,43 +2,45 @@ package hardcoder.dev.presentation.features.fasting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.controller.InputController
-import hardcoder.dev.controller.SingleRequestController
-import hardcoder.dev.controller.SingleSelectionController
-import hardcoder.dev.controller.requireSelectedItem
+import hardcoder.dev.controller.input.InputController
+import hardcoder.dev.controller.input.getInput
+import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.controller.selection.requireSelectedItem
+import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanDurationResolver
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanProvider
 import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
-import kotlinx.datetime.Clock
 
 class FastingCreationViewModel(
     private val currentFastingManager: CurrentFastingManager,
     private val fastingPlanDurationMapper: FastingPlanDurationResolver,
-    fastingPlanProvider: FastingPlanProvider
+    fastingPlanProvider: FastingPlanProvider,
+    dateTimeProvider: DateTimeProvider,
 ) : ViewModel() {
 
     val customFastingHoursInputController = InputController(
         coroutineScope = viewModelScope,
-        initialInput = DEFAULT_CUSTOM_FASTING_HOURS
+        initialInput = DEFAULT_CUSTOM_FASTING_HOURS,
     )
 
     val fastingPlanSelectionController = SingleSelectionController(
         coroutineScope = viewModelScope,
-        itemsFlow = fastingPlanProvider.provideAllPlans()
+        itemsFlow = fastingPlanProvider.provideAllPlans(),
     )
 
     val creationController = SingleRequestController(
         coroutineScope = viewModelScope,
         request = {
             currentFastingManager.startFasting(
-                startTime = Clock.System.now(),
+                startTime = dateTimeProvider.currentInstant(),
                 fastingPlan = fastingPlanSelectionController.requireSelectedItem(),
                 duration = fastingPlanDurationMapper.resolve(
                     fastingPlanSelectionController.requireSelectedItem(),
-                    customFastingHoursInputController.state.value.input
-                )
+                    customFastingHoursInputController.getInput(),
+                ),
             )
-        }
+        },
     )
 
     private companion object {

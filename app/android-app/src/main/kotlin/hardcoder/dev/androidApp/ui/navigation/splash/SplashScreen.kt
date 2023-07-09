@@ -5,7 +5,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.androidApp.ui.navigation.dashboard.DashboardScreen
-import hardcoder.dev.androidApp.ui.splash.Splash
+import hardcoder.dev.androidApp.ui.screens.splash.Splash
 
 class SplashScreen : Screen {
 
@@ -15,11 +15,11 @@ class SplashScreen : Screen {
 
         Splash(
             onStartSetUp = {
-                navigator += WelcomeScreen()
+                navigator replaceAll WelcomeScreen()
             },
             onNavigateToDashboard = {
-                navigator += DashboardScreen()
-            }
+                navigator replaceAll DashboardScreen()
+            },
         )
     }
 }

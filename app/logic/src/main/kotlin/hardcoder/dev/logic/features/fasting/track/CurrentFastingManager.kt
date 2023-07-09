@@ -1,14 +1,16 @@
 package hardcoder.dev.logic.features.fasting.track
 
 import android.content.Context
+
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
+import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.logic.dataStore.healtherDataStore
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackCreator
-import hardcoder.dev.logic.dataStore.healtherDataStore
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,10 +19,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CurrentFastingManager(
@@ -30,7 +29,8 @@ class CurrentFastingManager(
     private val fastingPlanIdMapper: FastingPlanIdMapper,
     private val fastingTrackProvider: FastingTrackProvider,
     private val diaryTrackCreator: DiaryTrackCreator,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
+    private val dateTimeProvider: DateTimeProvider,
 ) {
 
     private val fastingCurrentTrackIdPreferenceKey = intPreferencesKey(FASTING_CURRENT_TRACK_ID)
@@ -45,7 +45,7 @@ class CurrentFastingManager(
     suspend fun startFasting(
         startTime: Instant,
         duration: Long,
-        fastingPlan: FastingPlan
+        fastingPlan: FastingPlan,
     ) = withContext(dispatchers.io) {
         val id = idGenerator.nextId()
         setCurrentId(id)
@@ -55,14 +55,14 @@ class CurrentFastingManager(
             startTime = startTime,
             duration = duration,
             fastingPlanId = fastingPlanIdMapper.mapToId(fastingPlan),
-            interruptedTime = null
+            interruptedTime = null,
         )
     }
 
     suspend fun interruptFasting() = withContext(dispatchers.io) {
         appDatabase.fastingTrackQueries.update(
             id = fastingCurrentTrackId.first(),
-            interruptedTime = Clock.System.now()
+            interruptedTime = dateTimeProvider.currentInstant(),
         )
     }
 
@@ -70,13 +70,13 @@ class CurrentFastingManager(
         if (note.isNotBlank()) {
             diaryTrackCreator.create(
                 content = note,
-                date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+                date = dateTimeProvider.currentInstant(),
                 diaryAttachmentGroup = DiaryAttachmentGroup(
                     fastingTracks = listOf(
                         fastingTrackProvider.provideFastingTrackById(fastingCurrentTrackId.first())
-                            .filterNotNull().first()
-                    )
-                )
+                            .filterNotNull().first(),
+                    ),
+                ),
             )
         }
         setCurrentId(null)

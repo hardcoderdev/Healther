@@ -1,6 +1,7 @@
 package hardcoder.dev.androidApp.ui
 
 import android.app.Application
+
 import hardcoder.dev.androidApp.di.dataModule
 import hardcoder.dev.androidApp.di.logic.foundationLogicModule
 import hardcoder.dev.androidApp.di.logicModule
@@ -36,7 +37,7 @@ class App : Application() {
                 dataModule,
                 logicModule,
                 presentationModule,
-                uiModule
+                uiModule,
             )
         }
     }

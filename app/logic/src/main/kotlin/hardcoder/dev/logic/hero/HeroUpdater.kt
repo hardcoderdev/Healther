@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 class HeroUpdater(
     private val appDatabase: AppDatabase,
     private val genderIdMapper: GenderIdMapper,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun update(hero: Hero) = withContext(dispatchers.io) {
@@ -16,7 +16,7 @@ class HeroUpdater(
             weight = hero.weight,
             exerciseStressTime = hero.exerciseStressTime,
             genderId = genderIdMapper.mapToId(hero.gender),
-            id = HERO_ID
+            id = HERO_ID,
         )
     }
 }

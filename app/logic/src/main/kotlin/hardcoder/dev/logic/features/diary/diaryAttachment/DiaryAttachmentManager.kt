@@ -11,12 +11,12 @@ class DiaryAttachmentManager(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
     private val dispatchers: BackgroundCoroutineDispatchers,
-    private val attachmentTypeIdMapper: AttachmentTypeIdMapper
+    private val attachmentTypeIdMapper: AttachmentTypeIdMapper,
 ) {
 
     suspend fun attach(
         diaryTrackId: Int,
-        attachmentGroup: DiaryAttachmentGroup
+        attachmentGroup: DiaryAttachmentGroup,
     ) = withContext(dispatchers.io) {
         appDatabase.diaryAttachmentQueries.deleteByDiaryTrackId(diaryTrackId)
 
@@ -25,7 +25,7 @@ class DiaryAttachmentManager(
                 id = idGenerator.nextId(),
                 diaryTrackId = diaryTrackId,
                 targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.MOOD_TRACKING_ENTITY),
-                targetId = moodTrack.id
+                targetId = moodTrack.id,
             )
         }
 
@@ -34,7 +34,7 @@ class DiaryAttachmentManager(
                 id = idGenerator.nextId(),
                 diaryTrackId = diaryTrackId,
                 targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.FASTING_ENTITY),
-                targetId = fastingTrack.id
+                targetId = fastingTrack.id,
             )
         }
 
@@ -43,7 +43,7 @@ class DiaryAttachmentManager(
                 id = idGenerator.nextId(),
                 diaryTrackId = diaryTrackId,
                 targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.TAG),
-                targetId = tag.id
+                targetId = tag.id,
             )
         }
     }

@@ -29,14 +29,14 @@ class DiaryAttachmentProvider(
     private val fastingTrackProvider: FastingTrackProvider,
     private val moodTrackProvider: MoodTrackProvider,
     private val diaryTagProvider: DiaryTagProvider,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideAttachmentByEntityId(attachmentType: AttachmentType, entityId: Int) =
         appDatabase.diaryAttachmentQueries
             .selectByTarget(
                 targetTypeId = attachmentTypeIdMapper.mapToId(attachmentType),
-                targetId = entityId
+                targetId = entityId,
             )
             .asFlow()
             .map {
@@ -45,7 +45,7 @@ class DiaryAttachmentProvider(
                         id = attachment.id,
                         diaryTrackId = attachment.diaryTrackId,
                         targetType = attachmentType,
-                        targetId = attachment.targetId
+                        targetId = attachment.targetId,
                     )
                 }
             }.flowOn(dispatchers.io)
@@ -55,17 +55,18 @@ class DiaryAttachmentProvider(
         .asFlow()
         .map { it.executeAsList() }
         .flatMapLatest { attachments ->
-            if (attachments.isEmpty()) flowOf(null)
-            else {
+            if (attachments.isEmpty()) {
+                flowOf(null)
+            } else {
                 combine(
                     attachments.map {
                         provideTargetEntity(attachment = it)
-                    }
+                    },
                 ) { targetEntityArray ->
                     AttachmentEntity(
                         fastingTracks = targetEntityArray.filterIsInstance<FastingTrack>(),
                         moodTracks = targetEntityArray.filterIsInstance<MoodTrack>(),
-                        tags = targetEntityArray.filterIsInstance<DiaryTag>().toSet()
+                        tags = targetEntityArray.filterIsInstance<DiaryTag>().toSet(),
                     )
                 }
             }

@@ -12,7 +12,7 @@ class MoodTypeNameValidator {
         return when {
             isEmpty() -> IncorrectMoodTypeName.Reason.Empty
             length > MOOD_TYPE_NAME_MAX_CHARS -> IncorrectMoodTypeName.Reason.MoreThanMaxChars(
-                MOOD_TYPE_NAME_MAX_CHARS
+                MOOD_TYPE_NAME_MAX_CHARS,
             )
             else -> null
         }
@@ -28,12 +28,12 @@ sealed class ValidatedMoodTypeName {
 }
 
 data class CorrectMoodTypeName(
-    override val data: String
+    override val data: String,
 ) : ValidatedMoodTypeName()
 
 data class IncorrectMoodTypeName(
     override val data: String,
-    val reason: Reason
+    val reason: Reason,
 ) : ValidatedMoodTypeName() {
     sealed class Reason {
         object Empty : Reason()

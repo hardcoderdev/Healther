@@ -10,19 +10,19 @@ class MoodTypeCreator(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
     private val predefinedMoodTypeProvider: PredefinedMoodTypeProvider,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun create(
         name: CorrectMoodTypeName,
         icon: LocalIcon,
-        positiveIndex: Int
+        positiveIndex: Int,
     ) = withContext(dispatchers.io) {
         appDatabase.moodTypeQueries.insert(
             id = idGenerator.nextId(),
             name = name.data,
             iconId = icon.id,
-            positivePercentage = positiveIndex
+            positivePercentage = positiveIndex,
         )
     }
 
@@ -32,7 +32,7 @@ class MoodTypeCreator(
                 id = idGenerator.nextId(),
                 name = moodType.name,
                 iconId = moodType.icon.id,
-                positivePercentage = moodType.positivePercentage
+                positivePercentage = moodType.positivePercentage,
             )
         }
     }

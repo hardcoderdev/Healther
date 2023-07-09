@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="placeholder_label">Some text</string>
+    <string name="default_nowEmpty_text">>Now it\'s empty.</string>
+    <string name="default_grantPermission_buttonText">Give permissions</string>
+    <string name="icon_search_clear_content_description">Clear search</string>
 </resources>

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flowOn
 
 fun <T : Any, R : Any> Query<T>.asFlowOfList(
     coroutineDispatcher: CoroutineDispatcher,
-    transform: suspend (T) -> R
+    transform: suspend (T) -> R,
 ) = asFlow()
     .mapToList(coroutineDispatcher)
     .mapItems(transform)

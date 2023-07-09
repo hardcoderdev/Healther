@@ -4,7 +4,9 @@ plugins {
 
 dependencies {
     api(projects.foundation.coroutines)
-    implementation(libs.preferences.ktx)
-    implementation(libs.sql.delight.android.driver)
-    implementation(libs.sql.delight.coroutines.ext)
+    api(libs.preferences.ktx)
+    api(libs.data.store)
+    api(libs.sqlDelight.primitiveAdapters)
+    api(libs.sqlDelight.androidDriver)
+    api(libs.sqlDelight.coroutinesExt)
 }

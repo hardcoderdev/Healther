@@ -9,19 +9,19 @@ import kotlinx.coroutines.withContext
 class HeroCreator(
     private val appDatabase: AppDatabase,
     private val genderIdMapper: GenderIdMapper,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun createHero(
         weight: Int,
         exerciseStressTime: Int,
-        gender: Gender
+        gender: Gender,
     ) = withContext(dispatchers.io) {
         appDatabase.heroQueries.insert(
             id = HERO_ID,
             weight = weight,
             exerciseStressTime = exerciseStressTime,
-            genderId = genderIdMapper.mapToId(gender)
+            genderId = genderIdMapper.mapToId(gender),
         )
     }
 }

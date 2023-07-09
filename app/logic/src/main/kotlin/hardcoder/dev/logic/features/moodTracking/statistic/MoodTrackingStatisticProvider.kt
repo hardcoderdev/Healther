@@ -19,7 +19,7 @@ import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack as MoodTrac
 class MoodTrackingStatisticProvider(
     private val appDatabase: AppDatabase,
     private val moodTypeProvider: MoodTypeProvider,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideMoodTrackingStatistic() = appDatabase.moodTrackQueries
@@ -27,35 +27,38 @@ class MoodTrackingStatisticProvider(
         .asFlow()
         .map { it.executeAsList() }
         .flatMapLatest { moodTracksListDatabase ->
-            if (moodTracksListDatabase.isEmpty()) flowOf(null)
-            else combine(
-                moodTracksListDatabase.map { moodTrack ->
-                    provideDrinkTypeById(moodTrack)
+            if (moodTracksListDatabase.isEmpty()) {
+                flowOf(null)
+            } else {
+                combine(
+                    moodTracksListDatabase.map { moodTrack ->
+                        provideDrinkTypeById(moodTrack)
+                    },
+                ) { moodTrackArray ->
+                    val moodTrackList = moodTrackArray.toList()
+
+                    val happyMoodCount = moodTrackList.count { it.moodType.positivePercentage >= 80 }
+
+                    val neutralMoodCount = moodTrackList.count { it.moodType.positivePercentage >= 60 }
+
+                    val notWellMoodCount = moodTrackList.count { it.moodType.positivePercentage >= 40 }
+
+                    val badMoodCount = moodTrackList.count { it.moodType.positivePercentage >= 10 }
+
+                    val averageMood = moodTrackList.groupingBy {
+                        it.moodType
+                    }.eachCount().maxBy {
+                        it.value
+                    }.key
+
+                    MoodTrackingStatistic(
+                        happyMoodCount = happyMoodCount,
+                        neutralMoodCount = neutralMoodCount,
+                        notWellMoodCount = notWellMoodCount,
+                        badMoodCount = badMoodCount,
+                        averageMoodType = averageMood,
+                    )
                 }
-            ) { moodTrackArray ->
-                val moodTrackList = moodTrackArray.toList()
-
-                val happyMoodCount = moodTrackList.count { it.moodType.positivePercentage >= 80 }
-
-                val neutralMoodCount = moodTrackList.count { it.moodType.positivePercentage >= 60 }
-
-                val notWellMoodCount = moodTrackList.count { it.moodType.positivePercentage >= 40 }
-
-                val badMoodCount = moodTrackList.count { it.moodType.positivePercentage >= 10 }
-
-                val averageMood = moodTrackList.groupingBy {
-                    it.moodType
-                }.eachCount().maxBy {
-                    it.value
-                }.key
-
-                MoodTrackingStatistic(
-                    happyMoodCount = happyMoodCount,
-                    neutralMoodCount = neutralMoodCount,
-                    notWellMoodCount = notWellMoodCount,
-                    badMoodCount = badMoodCount,
-                    averageMoodType = averageMood
-                )
             }
         }.flowOn(dispatchers.io)
 
@@ -68,6 +71,6 @@ class MoodTrackingStatisticProvider(
     private fun MoodTrack.toEntity(moodType: MoodType) = MoodTrackEntity(
         id = id,
         moodType = moodType,
-        date = date
+        date = date,
     )
 }

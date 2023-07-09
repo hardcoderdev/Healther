@@ -3,19 +3,19 @@ package hardcoder.dev.presentation.features.diary
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.controller.MultiSelectionController
-import hardcoder.dev.controller.SingleRequestController
-import hardcoder.dev.controller.ValidatedInputController
-import hardcoder.dev.controller.requireSelectedItems
-import hardcoder.dev.controller.validateAndRequire
+import hardcoder.dev.controller.input.ValidatedInputController
+import hardcoder.dev.controller.input.validateAndRequire
+import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.selection.MultiSelectionController
+import hardcoder.dev.controller.selection.requireSelectedItems
 import hardcoder.dev.coroutines.firstNotNull
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.CorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack
-import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackDeleter
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackContentValidator
+import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackDeleter
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackUpdater
 import hardcoder.dev.logic.features.fasting.track.FastingTrack
@@ -32,7 +32,7 @@ class DiaryUpdateViewModel(
     private val diaryTrackProvider: DiaryTrackProvider,
     private val diaryTrackDeleter: DiaryTrackDeleter,
     diaryTagProvider: DiaryTagProvider,
-    diaryTrackContentValidator: DiaryTrackContentValidator
+    diaryTrackContentValidator: DiaryTrackContentValidator,
 ) : ViewModel() {
 
     private val initialDiaryTrack = MutableStateFlow<DiaryTrack?>(null)
@@ -44,28 +44,28 @@ class DiaryUpdateViewModel(
                 ReadOnlyDiaryAttachments(
                     moodTracks = diaryAttachmentGroup.moodTracks,
                     fastingTracks = diaryAttachmentGroup.fastingTracks,
-                    tags = diaryAttachmentGroup.tags
+                    tags = diaryAttachmentGroup.tags,
                 )
             } ?: ReadOnlyDiaryAttachments()
-        }
+        },
     )
 
     val contentInputController = ValidatedInputController(
         coroutineScope = viewModelScope,
         initialInput = "",
-        validation = diaryTrackContentValidator::validate
+        validation = diaryTrackContentValidator::validate,
     )
 
     val tagMultiSelectionController = MultiSelectionController(
         coroutineScope = viewModelScope,
-        itemsFlow = diaryTagProvider.provideAllDiaryTags()
+        itemsFlow = diaryTagProvider.provideAllDiaryTags(),
     )
 
     val deleteController = SingleRequestController(
         coroutineScope = viewModelScope,
         request = {
             diaryTrackDeleter.deleteById(diaryTrackId)
-        }
+        },
     )
 
     val updateController = SingleRequestController(
@@ -75,13 +75,13 @@ class DiaryUpdateViewModel(
                 id = diaryTrackId,
                 content = contentInputController.validateAndRequire(),
                 diaryAttachmentGroup = initialDiaryTrack.firstNotNull().diaryAttachmentGroup?.copy(
-                    tags = tagMultiSelectionController.requireSelectedItems()
-                ) ?: DiaryAttachmentGroup()
+                    tags = tagMultiSelectionController.requireSelectedItems(),
+                ) ?: DiaryAttachmentGroup(),
             )
         },
         isAllowedFlow = contentInputController.state.map {
             it.validationResult == null || it.validationResult is CorrectDiaryTrackContent
-        }
+        },
     )
 
     init {
@@ -96,7 +96,7 @@ class DiaryUpdateViewModel(
     data class ReadOnlyDiaryAttachments(
         val moodTracks: List<MoodTrack> = emptyList(),
         val fastingTracks: List<FastingTrack> = emptyList(),
-        val tags: Set<DiaryTag> = emptySet()
+        val tags: Set<DiaryTag> = emptySet(),
     ) {
         val isEmpty = fastingTracks.isEmpty() && moodTracks.isEmpty()
     }

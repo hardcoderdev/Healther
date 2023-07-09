@@ -7,18 +7,18 @@ import kotlinx.coroutines.withContext
 
 class MoodActivityUpdater(
     private val appDatabase: AppDatabase,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun update(
         id: Int,
         name: CorrectActivityName,
-        icon: LocalIcon
+        icon: LocalIcon,
     ) = withContext(dispatchers.io) {
         appDatabase.moodActivityQueries.update(
             id = id,
             name = name.data,
-            iconId = icon.id
+            iconId = icon.id,
         )
     }
 }

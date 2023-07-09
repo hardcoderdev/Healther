@@ -5,5 +5,5 @@ enum class DateRangeFilterType {
     BY_WEEK,
     BY_MONTH,
     BY_YEAR,
-    BY_ALL_PERIOD
+    BY_ALL_PERIOD,
 }

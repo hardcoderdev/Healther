@@ -7,13 +7,13 @@ import hardcoder.dev.database.DiaryTag
 import hardcoder.dev.logic.icons.IconResourceProvider
 import hardcoder.dev.sqldelight.asFlowOfList
 import kotlinx.coroutines.flow.flowOn
-import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag as DiaryTagEntity
 import kotlinx.coroutines.flow.map
+import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag as DiaryTagEntity
 
 class DiaryTagProvider(
     private val appDatabase: AppDatabase,
     private val iconResourceProvider: IconResourceProvider,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideAllDiaryTags() = appDatabase.diaryTagQueries
@@ -31,6 +31,6 @@ class DiaryTagProvider(
     private fun DiaryTag.toEntity() = DiaryTagEntity(
         id = id,
         name = name,
-        icon = iconResourceProvider.getIcon(iconId)
+        icon = iconResourceProvider.getIcon(iconId),
     )
 }

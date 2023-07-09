@@ -9,6 +9,6 @@ class MoodTypesViewModel(moodTypeProvider: MoodTypeProvider) : ViewModel() {
 
     val moodTypesLoadingController = LoadingController(
         coroutineScope = viewModelScope,
-        flow = moodTypeProvider.provideAllMoodTypes()
+        flow = moodTypeProvider.provideAllMoodTypes(),
     )
 }

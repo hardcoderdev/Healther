@@ -19,14 +19,14 @@ class PermissionsController {
 
     fun bind(activity: ComponentActivity) {
         launcher = activity.registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
+            ActivityResultContracts.RequestMultiplePermissions(),
         ) {
             lastResult.value = it
         }
     }
 
     suspend fun requestPermissions(
-        permissions: Array<String>
+        permissions: Array<String>,
     ): Map<String, Boolean> {
         mutex.withLock {
             if (permissions.isEmpty()) throw EmptyPermissionsException()

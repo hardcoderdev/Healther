@@ -7,20 +7,20 @@ import kotlinx.coroutines.withContext
 
 class DrinkTypeUpdater(
     private val appDatabase: AppDatabase,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun update(
-         id: Int,
-         name: CorrectDrinkTypeName,
-         icon: LocalIcon,
-         hydrationIndexPercentage: Int
+        id: Int,
+        name: CorrectDrinkTypeName,
+        icon: LocalIcon,
+        hydrationIndexPercentage: Int,
     ) = withContext(dispatchers.io) {
         appDatabase.drinkTypeQueries.update(
             id = id,
             name = name.data,
             iconId = icon.id,
-            hydrationIndexPercentage = hydrationIndexPercentage
+            hydrationIndexPercentage = hydrationIndexPercentage,
         )
     }
 }

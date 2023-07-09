@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hero_welcome_title_topBar">Welcome</string>
+    <string name="hero_welcome_beforeWeStart_text">Before we start, you can fill in information about yourself that will help the application work correctly, for example, to calculate your daily water intake based on your indicators.</string>
+    <string name="hero_welcome_letsStart_buttonText">Let\'s fill it up!</string>
+
+    <string name="hero_creation_title_topBar">Your gender</string>
+    <string name="hero_creation_enterYourWeightInKg_text">Select your weight in kilograms.</string>
+    <string name="hero_creation_enterExerciseStressTime_text">How many hours a day do you play sports or other physical activities?</string>
+    <string name="hero_creation_forWhatWeNeedGender_text">• Your gender is needed for various calculations in the application, such as calculating the amount of water consumed.</string>
+    <string name="hero_creation_selectYourGender_text">Select your gender for more accurate calculations.</string>
+    <string name="hero_creation_create_buttonText">Create hero</string>
+</resources>

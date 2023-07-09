@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.map
 class WaterTrackingDailyRateProvider(
     private val waterIntakeResolver: WaterIntakeResolver,
     private val heroProvider: HeroProvider,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideDailyRateInMilliliters(): Flow<Int> {
@@ -17,7 +17,7 @@ class WaterTrackingDailyRateProvider(
             waterIntakeResolver.resolve(
                 hero.weight,
                 hero.exerciseStressTime,
-                hero.gender
+                hero.gender,
             )
         }.flowOn(dispatchers.io)
     }

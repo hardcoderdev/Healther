@@ -19,44 +19,47 @@ class MoodWithActivitiesProvider(
     private val appDatabase: AppDatabase,
     private val moodTrackProvider: MoodTrackProvider,
     private val moodActivityProvider: MoodActivityProvider,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideMoodWithActivityList(dayRange: ClosedRange<Instant>): Flow<List<MoodWithActivities>> {
         return moodTrackProvider.provideAllMoodTracksByDayRange(dayRange = dayRange)
             .flatMapLatest { tracks ->
-                if (tracks.isEmpty()) flowOf(emptyList())
-                else combine(
-                    tracks.map { moodTrack ->
-                        appDatabase.moodWithActivityQueries.provideAllMoodWithActivitiesByMoodTrackId(
-                            moodTrack.id
-                        )
-                            .asFlow()
-                            .map { it.executeAsList() }
-                            .flatMapLatest { moodWithActivities ->
-                                if (moodWithActivities.isEmpty()) {
-                                    flowOf(
-                                        MoodWithActivities(
-                                            moodTrack = moodTrack,
-                                            moodActivityList = emptyList()
+                if (tracks.isEmpty()) {
+                    flowOf(emptyList())
+                } else {
+                    combine(
+                        tracks.map { moodTrack ->
+                            appDatabase.moodWithActivityQueries.provideAllMoodWithActivitiesByMoodTrackId(
+                                moodTrack.id,
+                            )
+                                .asFlow()
+                                .map { it.executeAsList() }
+                                .flatMapLatest { moodWithActivities ->
+                                    if (moodWithActivities.isEmpty()) {
+                                        flowOf(
+                                            MoodWithActivities(
+                                                moodTrack = moodTrack,
+                                                moodActivityList = emptyList(),
+                                            ),
                                         )
-                                    )
-                                } else {
-                                    combine(
-                                        moodWithActivities.map {
-                                            moodActivityProvider.provideActivityById(it.activityId)
+                                    } else {
+                                        combine(
+                                            moodWithActivities.map {
+                                                moodActivityProvider.provideActivityById(it.activityId)
+                                            },
+                                        ) { activities ->
+                                            MoodWithActivities(
+                                                moodTrack = moodTrack,
+                                                moodActivityList = activities.toList().filterNotNull(),
+                                            )
                                         }
-                                    ) { activities ->
-                                        MoodWithActivities(
-                                            moodTrack = moodTrack,
-                                            moodActivityList = activities.toList().filterNotNull()
-                                        )
                                     }
                                 }
-                            }
+                        },
+                    ) {
+                        it.toList()
                     }
-                ) {
-                    it.toList()
                 }
             }.flowOn(dispatchers.io)
     }
@@ -72,7 +75,7 @@ class MoodWithActivitiesProvider(
                 combine(
                     moodWithActivities.map {
                         moodActivityProvider.provideActivityById(it.activityId)
-                    }
+                    },
                 ) { activities ->
                     activities.toList().filterNotNull()
                 }

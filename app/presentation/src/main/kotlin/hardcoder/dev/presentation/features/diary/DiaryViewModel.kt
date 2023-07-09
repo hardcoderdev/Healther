@@ -2,11 +2,11 @@ package hardcoder.dev.presentation.features.diary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.controller.MultiSelectionController
-import hardcoder.dev.controller.SingleSelectionController
-import hardcoder.dev.controller.selectedItemsOrEmptySet
+import hardcoder.dev.controller.input.InputController
+import hardcoder.dev.controller.selection.MultiSelectionController
+import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.controller.selection.selectedItemsOrEmptySet
 import hardcoder.dev.logic.features.diary.DateRangeFilterType
 import hardcoder.dev.logic.features.diary.DateRangeFilterTypeMapper
 import hardcoder.dev.logic.features.diary.DateRangeFilterTypeProvider
@@ -25,12 +25,12 @@ class DiaryViewModel(
     private val dateRangeFilterTypeMapper: DateRangeFilterTypeMapper,
     private val diaryTrackProvider: DiaryTrackProvider,
     dateRangeFilterTypeProvider: DateRangeFilterTypeProvider,
-    diaryTagProvider: DiaryTagProvider
+    diaryTagProvider: DiaryTagProvider,
 ) : ViewModel() {
 
     val dateRangeFilterTypeSelectionController = SingleSelectionController(
         coroutineScope = viewModelScope,
-        itemsFlow = dateRangeFilterTypeProvider.provideAllDateRangeFilters()
+        itemsFlow = dateRangeFilterTypeProvider.provideAllDateRangeFilters(),
     )
 
     private val diaryTrackList = dateRangeFilterTypeSelectionController
@@ -38,28 +38,28 @@ class DiaryViewModel(
         .flatMapLatest { range ->
             diaryTrackProvider.provideAllDiaryTracksByDateRange(
                 dateRangeFilterTypeMapper.map(
-                    range ?: DateRangeFilterType.BY_DAY
-                )
+                    range ?: DateRangeFilterType.BY_DAY,
+                ),
             )
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
-            initialValue = emptyList()
+            initialValue = emptyList(),
         )
 
     val tagMultiSelectionController = MultiSelectionController(
         coroutineScope = viewModelScope,
-        itemsFlow = diaryTagProvider.provideAllDiaryTags()
+        itemsFlow = diaryTagProvider.provideAllDiaryTags(),
     )
 
     val searchTextInputController = InputController(
         coroutineScope = viewModelScope,
-        initialInput = ""
+        initialInput = "",
     )
 
     val diaryTrackLoadingController = LoadingController(
         coroutineScope = viewModelScope,
-        flow = diaryTrackList
+        flow = diaryTrackList,
     )
 
     val filteredTrackLoadingController = LoadingController(
@@ -67,20 +67,26 @@ class DiaryViewModel(
         flow = combine(
             diaryTrackList,
             searchTextInputController.state,
-            tagMultiSelectionController.selectedItemsOrEmptySet()
+            tagMultiSelectionController.selectedItemsOrEmptySet(),
         ) { diaryTrackList, searchText, tags ->
             diaryTrackList.let {
-                if (searchText.input.isEmpty()) it
-                else it.filterBySearchText(searchText.input)
+                if (searchText.input.isEmpty()) {
+                    it
+                } else {
+                    it.filterBySearchText(searchText.input)
+                }
             }.let {
-                if (tags.isEmpty()) it
-                else it.filterByTags(tags)
+                if (tags.isEmpty()) {
+                    it
+                } else {
+                    it.filterByTags(tags)
+                }
             }
-        }
+        },
     )
 
     private fun List<DiaryTrack>.filterByTags(
-        selectedTagList: Set<DiaryTag>
+        selectedTagList: Set<DiaryTag>,
     ): List<DiaryTrack> {
         val filteredTrackList = mutableListOf<DiaryTrack>()
 
@@ -102,7 +108,7 @@ class DiaryViewModel(
             filteredTrackList.addAll(
                 filter { diaryTrack ->
                     searchWord.all { diaryTrack.content.contains(it, ignoreCase = true) }
-                }
+                },
             )
         }
 

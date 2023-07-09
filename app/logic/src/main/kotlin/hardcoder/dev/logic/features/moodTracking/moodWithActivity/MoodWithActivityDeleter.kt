@@ -6,7 +6,7 @@ import kotlinx.coroutines.withContext
 
 class MoodWithActivityDeleter(
     private val appDatabase: AppDatabase,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun deleteAllActivitiesByMoodTrackId(moodTrackId: Int) = withContext(dispatchers.io) {

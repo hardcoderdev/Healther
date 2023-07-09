@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import hardcoder.dev.androidApp.ui.navigation.hero.SelectGenderScreen
-import hardcoder.dev.androidApp.ui.setUpFlow.welcome.Welcome
+import hardcoder.dev.androidApp.ui.navigation.hero.HeroCreationScreen
+import hardcoder.dev.androidApp.ui.screens.welcome.Welcome
 
 class WelcomeScreen : Screen {
 
@@ -15,8 +15,8 @@ class WelcomeScreen : Screen {
 
         Welcome(
             onStart = {
-                navigator replaceAll SelectGenderScreen()
-            }
+                navigator replaceAll HeroCreationScreen()
+            },
         )
     }
 }

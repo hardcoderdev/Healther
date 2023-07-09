@@ -1,6 +1,7 @@
 package hardcoder.dev.logic.appPreferences
 
 import android.content.Context
+
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import hardcoder.dev.logic.dataStore.healtherDataStore
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.map
 class PredefinedTracksManager(
     private val context: Context,
     private val drinkTypeCreator: DrinkTypeCreator,
-    private val moodTypeCreator: MoodTypeCreator
+    private val moodTypeCreator: MoodTypeCreator,
 ) {
 
     private val isDrinkTypeSavedPreferenceKey = booleanPreferencesKey(IS_DRINK_TYPES_SAVED)

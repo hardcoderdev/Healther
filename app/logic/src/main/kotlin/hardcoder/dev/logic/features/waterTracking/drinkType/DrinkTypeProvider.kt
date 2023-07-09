@@ -13,7 +13,7 @@ import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType as DrinkTy
 class DrinkTypeProvider(
     private val appDatabase: AppDatabase,
     private val iconResourceProvider: IconResourceProvider,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideAllDrinkTypes() = appDatabase.drinkTypeQueries
@@ -32,6 +32,6 @@ class DrinkTypeProvider(
         id = id,
         name = name,
         icon = iconResourceProvider.getIcon(iconId),
-        hydrationIndexPercentage = hydrationIndexPercentage
+        hydrationIndexPercentage = hydrationIndexPercentage,
     )
 }

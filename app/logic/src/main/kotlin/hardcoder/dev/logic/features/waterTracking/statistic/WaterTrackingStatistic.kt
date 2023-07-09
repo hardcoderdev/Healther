@@ -6,5 +6,5 @@ data class WaterTrackingStatistic(
     val totalMilliliters: Int,
     val favouriteDrinkTypeId: DrinkType,
     val averageHydrationIndex: Int,
-    val averageWaterIntakes: Int
+    val averageWaterIntakes: Int,
 )

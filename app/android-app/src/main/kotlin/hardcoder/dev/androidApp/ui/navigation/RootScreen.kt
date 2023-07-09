@@ -7,6 +7,6 @@ import hardcoder.dev.androidApp.ui.navigation.splash.SplashScreen
 @Composable
 fun RootScreen() {
     Navigator(
-        screen = SplashScreen()
+        screen = SplashScreen(),
     )
 }

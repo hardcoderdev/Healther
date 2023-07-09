@@ -4,26 +4,24 @@ import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
+import kotlinx.datetime.Instant
 
 class WaterTrackCreator(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun createWaterTrack(
-        date: LocalDateTime,
+        dateTime: Instant,
         millilitersCount: CorrectMillilitersCount,
-        drinkTypeId: Int
+        drinkTypeId: Int,
     ) = withContext(dispatchers.io) {
         appDatabase.waterTrackQueries.insert(
             id = idGenerator.nextId(),
-            date = date.toInstant(TimeZone.currentSystemDefault()),
+            date = dateTime,
             millilitersCount = millilitersCount.data,
-            drinkTypeId = drinkTypeId
+            drinkTypeId = drinkTypeId,
         )
     }
 }

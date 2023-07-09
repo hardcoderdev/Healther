@@ -20,7 +20,7 @@
 
     <plurals name="minutes">
         <item quantity="zero">минут</item>
-        <item quantity="one">минуту</item>
+        <item quantity="one">минута</item>
         <item quantity="two">минуты</item>
         <item quantity="few">минуты</item>
         <item quantity="many">минут</item>
@@ -29,7 +29,7 @@
 
     <plurals name="seconds">
         <item quantity="zero">секунд</item>
-        <item quantity="one">секунду</item>
+        <item quantity="one">секунда</item>
         <item quantity="two">секунды</item>
         <item quantity="few">секунды</item>
         <item quantity="many">секунд</item>

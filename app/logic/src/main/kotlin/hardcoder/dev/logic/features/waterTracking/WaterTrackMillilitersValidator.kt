@@ -4,7 +4,7 @@ class WaterTrackMillilitersValidator {
 
     fun validate(
         millilitersCount: Int,
-        dailyWaterIntakeInMillisCount: Int
+        dailyWaterIntakeInMillisCount: Int,
     ): ValidatedMillilitersCount {
         return millilitersCount.incorrectReason(dailyWaterIntakeInMillisCount)?.let {
             IncorrectMillilitersCount(millilitersCount, it)
@@ -27,12 +27,12 @@ sealed class ValidatedMillilitersCount {
 }
 
 data class CorrectMillilitersCount(
-    override val data: Int
+    override val data: Int,
 ) : ValidatedMillilitersCount()
 
 data class IncorrectMillilitersCount(
     override val data: Int,
-    val reason: Reason
+    val reason: Reason,
 ) : ValidatedMillilitersCount() {
     sealed class Reason {
         class Empty : Reason()

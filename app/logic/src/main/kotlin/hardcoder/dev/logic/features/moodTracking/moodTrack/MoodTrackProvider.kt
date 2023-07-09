@@ -19,7 +19,7 @@ import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack as MoodTrac
 class MoodTrackProvider(
     private val appDatabase: AppDatabase,
     private val moodTypeProvider: MoodTypeProvider,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideAllMoodTracksByDayRange(dayRange: ClosedRange<Instant>) =
@@ -29,16 +29,19 @@ class MoodTrackProvider(
             .map {
                 it.executeAsList()
             }.flatMapLatest { moodTracksList ->
-                if (moodTracksList.isEmpty()) flowOf(emptyList())
-                else combine(
-                    moodTracksList.map { moodTrack ->
-                        moodTypeProvider.provideMoodTypeByTrackId(moodTrack.moodTypeId)
-                            .map { moodType ->
-                                moodTrack.toEntity(moodType!!)
-                            }
+                if (moodTracksList.isEmpty()) {
+                    flowOf(emptyList())
+                } else {
+                    combine(
+                        moodTracksList.map { moodTrack ->
+                            moodTypeProvider.provideMoodTypeByTrackId(moodTrack.moodTypeId)
+                                .map { moodType ->
+                                    moodTrack.toEntity(moodType!!)
+                                }
+                        },
+                    ) {
+                        it.toList()
                     }
-                ) {
-                    it.toList()
                 }
             }.flowOn(dispatchers.io)
 
@@ -60,6 +63,6 @@ class MoodTrackProvider(
     private fun MoodTrack.toEntity(moodType: MoodType) = MoodTrackEntity(
         id = id,
         moodType = moodType,
-        date = date
+        date = date,
     )
 }

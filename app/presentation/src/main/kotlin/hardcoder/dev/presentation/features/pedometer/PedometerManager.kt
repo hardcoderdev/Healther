@@ -25,7 +25,7 @@ suspend inline fun PedometerManager.toggleTracking() {
 object Available : PedometerManager.Availability()
 
 data class NotAvailable(
-    val rejectReason: RejectReason
+    val rejectReason: RejectReason,
 ) : PedometerManager.Availability()
 
 sealed class RejectReason {

@@ -10,19 +10,19 @@ class DrinkTypeCreator(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
     private val predefinedDrinkTypeProvider: PredefinedDrinkTypeProvider,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun create(
         name: CorrectDrinkTypeName,
         icon: LocalIcon,
-        hydrationIndexPercentage: Int
+        hydrationIndexPercentage: Int,
     ) = withContext(dispatchers.io) {
         appDatabase.drinkTypeQueries.insert(
             id = idGenerator.nextId(),
             name = name.data,
             iconId = icon.id,
-            hydrationIndexPercentage = hydrationIndexPercentage
+            hydrationIndexPercentage = hydrationIndexPercentage,
         )
     }
 
@@ -32,7 +32,7 @@ class DrinkTypeCreator(
                 id = idGenerator.nextId(),
                 name = drinkType.name,
                 iconId = drinkType.icon.id,
-                hydrationIndexPercentage = drinkType.hydrationIndexPercentage
+                hydrationIndexPercentage = drinkType.hydrationIndexPercentage,
             )
         }
     }

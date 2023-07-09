@@ -6,18 +6,18 @@ import kotlinx.coroutines.withContext
 
 class MoodWithActivityCreator(
     private val appDatabase: AppDatabase,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun create(
         id: Int? = null,
         moodTrackId: Int,
-        activityId: Int
+        activityId: Int,
     ) = withContext(dispatchers.io) {
         appDatabase.moodWithActivityQueries.upsert(
             id = id,
             activityId = activityId,
-            moodTrackId = moodTrackId
+            moodTrackId = moodTrackId,
         )
     }
 }

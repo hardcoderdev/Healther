@@ -9,5 +9,5 @@ interface PredefinedMoodTypeProvider {
 data class MoodTypePredefined(
     val name: String,
     val icon: LocalIcon,
-    val positivePercentage: Int
+    val positivePercentage: Int,
 )

@@ -2,17 +2,17 @@ package hardcoder.dev.presentation.features.fasting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.controller.MultiRequestController
-import hardcoder.dev.controller.SingleRequestController
-import hardcoder.dev.datetime.getEndOfDay
-import hardcoder.dev.datetime.getStartOfDay
-import hardcoder.dev.logic.DateTimeProvider
+import hardcoder.dev.controller.input.InputController
+import hardcoder.dev.controller.request.MultiRequestController
+import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.datetime.toLocalDateTime
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatisticProvider
 import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
 import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
+import hardcoder.dev.math.safeDiv
+import kotlin.time.Duration
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -24,52 +24,51 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Duration
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FastingViewModel(
     private val currentFastingManager: CurrentFastingManager,
     fastingTrackProvider: FastingTrackProvider,
     statisticProvider: FastingStatisticProvider,
-    dateTimeProvider: DateTimeProvider
+    dateTimeProvider: DateTimeProvider,
 ) : ViewModel() {
 
     private val fastingTracksForTheLastMonth =
-        dateTimeProvider.currentTimeFlow().flatMapLatest { currentDateTime ->
+        dateTimeProvider.currentDateFlow().flatMapLatest { currentDate ->
             fastingTrackProvider.provideFastingTracksByStartTime(
-                currentDateTime.date.minus(
-                    1, DateTimeUnit.MONTH
-                ).getStartOfDay()..currentDateTime.date.getEndOfDay()
+                dayRange = dateTimeProvider.dateRange(
+                    startDate = currentDate.minus(1, DateTimeUnit.MONTH),
+                    endDate = currentDate,
+                ),
             ).stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.Eagerly,
-                initialValue = emptyList()
+                initialValue = emptyList(),
             )
         }
 
     val noteInputController = InputController(
         coroutineScope = viewModelScope,
-        initialInput = ""
+        initialInput = "",
     )
 
     val lastThreeFastingTrackLoadingController = LoadingController(
         coroutineScope = viewModelScope,
         flow = fastingTrackProvider.provideLastFastingTracks(
-            limitCount = 3
-        )
+            limitCount = 3,
+        ),
     )
 
     val statisticLoadingController = LoadingController(
         coroutineScope = viewModelScope,
-        flow = statisticProvider.provideFastingStatistic()
+        flow = statisticProvider.provideFastingStatistic(),
     )
 
     val chartEntriesLoadingController = LoadingController(
         coroutineScope = viewModelScope,
         flow = fastingTracksForTheLastMonth.map { fastingTrackList ->
             fastingTrackList.groupBy {
-                it.startTime.toLocalDateTime(TimeZone.currentSystemDefault()).date.dayOfMonth
+                it.startTime.toLocalDateTime().dayOfMonth
             }.map { entry ->
                 entry.key to entry.value.maxBy { it.duration }
             }.map { (fastingDayOfMonth, fastingTrack) ->
@@ -79,7 +78,7 @@ class FastingViewModel(
 
                 fastingDayOfMonth to fastingDuration.inWholeHours
             }
-        }
+        },
     )
 
     val fastingStateLoadingController = LoadingController(
@@ -102,7 +101,7 @@ class FastingViewModel(
                             it - currentTrack.startTime
                         } ?: run {
                             currentTime.toInstant(TimeZone.currentSystemDefault()) - currentTrack.startTime
-                        }
+                        },
                     )
                 } else {
                     FastingState.Fasting(
@@ -110,19 +109,20 @@ class FastingViewModel(
                         durationInMillis = currentTrack.duration,
                         startTimeInMillis = currentTrack.startTime,
                         timeLeftInMillis = timeSinceStartOfFasting,
+                        fastingProgress = timeSinceStartOfFasting.inWholeMilliseconds safeDiv currentTrack.duration.inWholeMilliseconds,
                     )
                 }
             } ?: run {
                 FastingState.NotFasting
             }
-        }
+        },
     )
 
     val interruptFastingController = MultiRequestController(
         coroutineScope = viewModelScope,
         request = {
             currentFastingManager.interruptFasting()
-        }
+        },
     )
 
     val finishFastingController = MultiRequestController(
@@ -130,7 +130,7 @@ class FastingViewModel(
         request = {
             currentFastingManager.clearFasting(note = noteInputController.state.value.input)
             noteInputController.changeInput("")
-        }
+        },
     )
 
     sealed class FastingState {
@@ -138,7 +138,8 @@ class FastingViewModel(
             val selectedPlan: FastingPlan,
             val startTimeInMillis: Instant,
             val durationInMillis: Duration,
-            val timeLeftInMillis: Duration
+            val timeLeftInMillis: Duration,
+            val fastingProgress: Float,
         ) : FastingState()
 
         object NotFasting : FastingState()

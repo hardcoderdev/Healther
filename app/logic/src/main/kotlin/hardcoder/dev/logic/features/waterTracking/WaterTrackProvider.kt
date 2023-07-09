@@ -19,7 +19,7 @@ import hardcoder.dev.logic.features.waterTracking.WaterTrack as WaterTrackEntity
 class WaterTrackProvider(
     private val appDatabase: AppDatabase,
     private val drinkTypeProvider: DrinkTypeProvider,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideWaterTracksByDayRange(dayRange: ClosedRange<Instant>) = appDatabase.waterTrackQueries
@@ -28,15 +28,18 @@ class WaterTrackProvider(
         .map {
             it.executeAsList()
         }.flatMapLatest { waterTracksList ->
-            if (waterTracksList.isEmpty()) flowOf(emptyList())
-            else combine(
-                waterTracksList.map { waterTrack ->
-                    drinkTypeProvider.provideDrinkTypeById(waterTrack.drinkTypeId).map { drinkType ->
-                        waterTrack.toEntity(drinkType!!)
-                    }
+            if (waterTracksList.isEmpty()) {
+                flowOf(emptyList())
+            } else {
+                combine(
+                    waterTracksList.map { waterTrack ->
+                        drinkTypeProvider.provideDrinkTypeById(waterTrack.drinkTypeId).map { drinkType ->
+                            waterTrack.toEntity(drinkType!!)
+                        }
+                    },
+                ) {
+                    it.toList()
                 }
-            ) {
-                it.toList()
             }
         }.flowOn(dispatchers.io)
 
@@ -59,6 +62,6 @@ class WaterTrackProvider(
         id = id,
         date = date,
         millilitersCount = millilitersCount,
-        drinkType = drinkType
+        drinkType = drinkType,
     )
 }

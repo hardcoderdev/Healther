@@ -12,9 +12,6 @@ sqldelight {
 }
 
 dependencies {
-    implementation(libs.preferences.ktx)
-    implementation(libs.sql.delight.android.driver)
-    implementation(libs.sql.delight.coroutines.ext)
-    implementation(libs.sql.delight.primitive.adapters)
-    implementation(libs.kotlin.datetime)
+    api(projects.foundation.sqldelight)
+    api(projects.foundation.datetime)
 }

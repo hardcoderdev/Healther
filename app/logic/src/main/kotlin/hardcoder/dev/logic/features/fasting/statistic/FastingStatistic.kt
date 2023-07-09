@@ -4,7 +4,5 @@ import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 
 data class FastingStatistic(
     val duration: FastingDurationStatistic?,
-    val percentageCompleted: Int?,
-    val favouritePlan: FastingPlan?
+    val favouritePlan: FastingPlan?,
 )
-

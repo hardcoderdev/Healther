@@ -12,7 +12,7 @@ import hardcoder.dev.logic.hero.Hero as HeroEntity
 class HeroProvider(
     private val appDatabase: AppDatabase,
     private val genderIdMapper: GenderIdMapper,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun requireHero() = appDatabase.heroQueries
@@ -24,6 +24,6 @@ class HeroProvider(
     private fun Hero.toEntity() = HeroEntity(
         weight = weight,
         exerciseStressTime = exerciseStressTime,
-        gender = genderIdMapper.mapToGender(genderId)
+        gender = genderIdMapper.mapToGender(genderId),
     )
 }

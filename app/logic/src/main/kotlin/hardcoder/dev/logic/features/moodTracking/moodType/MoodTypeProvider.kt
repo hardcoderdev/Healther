@@ -13,7 +13,7 @@ import hardcoder.dev.logic.features.moodTracking.moodType.MoodType as MoodTypeEn
 class MoodTypeProvider(
     private val appDatabase: AppDatabase,
     private val iconResourceProvider: IconResourceProvider,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideAllMoodTypes() = appDatabase.moodTypeQueries.provideAllMoodTypes()
@@ -30,6 +30,6 @@ class MoodTypeProvider(
         id = id,
         name = name,
         icon = iconResourceProvider.getIcon(iconId),
-        positivePercentage = positivePercentage
+        positivePercentage = positivePercentage,
     )
 }

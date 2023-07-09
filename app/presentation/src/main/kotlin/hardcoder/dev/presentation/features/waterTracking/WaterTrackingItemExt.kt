@@ -7,5 +7,5 @@ fun WaterTrack.toItem(resolvedMillilitersCount: Int) = WaterTrackingItem(
     timeInMillis = date.toEpochMilliseconds(),
     drinkType = drinkType,
     millilitersCount = millilitersCount,
-    resolvedMillilitersCount = resolvedMillilitersCount
+    resolvedMillilitersCount = resolvedMillilitersCount,
 )

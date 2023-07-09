@@ -9,13 +9,13 @@ import kotlinx.coroutines.withContext
 class DiaryTrackUpdater(
     private val appDatabase: AppDatabase,
     private val diaryAttachmentManager: DiaryAttachmentManager,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun update(
         id: Int,
         content: CorrectDiaryTrackContent,
-        diaryAttachmentGroup: DiaryAttachmentGroup
+        diaryAttachmentGroup: DiaryAttachmentGroup,
     ) = withContext(dispatchers.io) {
         appDatabase.diaryTrackQueries.update(
             id = id,
@@ -24,7 +24,7 @@ class DiaryTrackUpdater(
 
         diaryAttachmentManager.attach(
             diaryTrackId = id,
-            attachmentGroup = diaryAttachmentGroup
+            attachmentGroup = diaryAttachmentGroup,
         )
     }
 }

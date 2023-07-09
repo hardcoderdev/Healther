@@ -10,8 +10,6 @@ import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityCreator
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityDeleter
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 class MoodTrackUpdater(
     private val appDatabase: AppDatabase,
@@ -25,33 +23,33 @@ class MoodTrackUpdater(
     suspend fun update(
         note: String?,
         moodTrack: MoodTrack,
-        selectedActivities: Set<MoodActivity>
+        selectedActivities: Set<MoodActivity>,
     ) = withContext(dispatchers.io) {
         appDatabase.moodTrackQueries.update(
             id = moodTrack.id,
             moodTypeId = moodTrack.moodType.id,
-            date = moodTrack.date
+            date = moodTrack.date,
         )
 
         appDatabase.diaryAttachmentQueries.selectByTarget(
             targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.MOOD_TRACKING_ENTITY),
-            targetId = moodTrack.id
+            targetId = moodTrack.id,
         ).executeAsList().forEach {
             appDatabase.diaryTrackQueries.delete(it.diaryTrackId)
         }
 
         appDatabase.diaryAttachmentQueries.deleteByTarget(
             targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.MOOD_TRACKING_ENTITY),
-            targetId = moodTrack.id
+            targetId = moodTrack.id,
         )
 
         if (note != null) {
             diaryTrackCreator.create(
-                diaryAttachmentGroup = DiaryAttachmentGroup(
-                    moodTracks = listOf(moodTrack)
-                ),
                 content = note,
-                date = moodTrack.date.toLocalDateTime(TimeZone.currentSystemDefault())
+                date = moodTrack.date,
+                diaryAttachmentGroup = DiaryAttachmentGroup(
+                    moodTracks = listOf(moodTrack),
+                ),
             )
         }
 
@@ -60,7 +58,7 @@ class MoodTrackUpdater(
         selectedActivities.forEach { activity ->
             moodWithActivityCreator.create(
                 moodTrackId = moodTrack.id,
-                activityId = activity.id
+                activityId = activity.id,
             )
         }
     }

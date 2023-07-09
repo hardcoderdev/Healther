@@ -3,26 +3,24 @@ package hardcoder.dev.logic.features.waterTracking
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
+import kotlinx.datetime.Instant
 
 class WaterTrackUpdater(
     private val appDatabase: AppDatabase,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun update(
         id: Int,
-        date: LocalDateTime,
+        date: Instant,
         millilitersCount: CorrectMillilitersCount,
-        drinkTypeId: Int
+        drinkTypeId: Int,
     ) = withContext(dispatchers.io) {
         appDatabase.waterTrackQueries.update(
             id = id,
-            date = date.toInstant(TimeZone.currentSystemDefault()),
+            date = date,
             millilitersCount = millilitersCount.data,
-            drinkTypeId = drinkTypeId
+            drinkTypeId = drinkTypeId,
         )
     }
 }

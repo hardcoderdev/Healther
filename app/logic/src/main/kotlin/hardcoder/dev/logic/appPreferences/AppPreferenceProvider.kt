@@ -10,7 +10,7 @@ import hardcoder.dev.logic.appPreferences.AppPreference as AppPreferenceEntity
 
 class AppPreferenceProvider(
     private val appDatabase: AppDatabase,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideAppPreference() = appDatabase.appPreferenceQueries
@@ -21,6 +21,6 @@ class AppPreferenceProvider(
 
     private fun AppPreference.toEntity() = AppPreferenceEntity(
         firstLaunchTime = firstLaunchTime,
-        lastAppReviewRequestTime = lastAppReviewRequestTime
+        lastAppReviewRequestTime = lastAppReviewRequestTime,
     )
 }

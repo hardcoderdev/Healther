@@ -13,7 +13,7 @@ import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity as Mo
 class MoodActivityProvider(
     private val appDatabase: AppDatabase,
     private val iconResourceProvider: IconResourceProvider,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideAllActivities() = appDatabase.moodActivityQueries
@@ -31,6 +31,6 @@ class MoodActivityProvider(
     private fun MoodActivity.toEntity() = MoodActivityEntity(
         id = id,
         name = name,
-        icon = iconResourceProvider.getIcon(iconId)
+        icon = iconResourceProvider.getIcon(iconId),
     )
 }

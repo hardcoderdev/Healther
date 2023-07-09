@@ -14,7 +14,7 @@ class MoodActivityNameValidator {
         return when {
             isEmpty() -> IncorrectActivityName.Reason.Empty
             length > ACTIVITY_NAME_MAX_CHARS -> IncorrectActivityName.Reason.MoreThanMaxChars(
-                ACTIVITY_NAME_MAX_CHARS
+                ACTIVITY_NAME_MAX_CHARS,
             )
             else -> null
         }
@@ -30,12 +30,12 @@ sealed class ValidatedActivityName {
 }
 
 data class CorrectActivityName(
-    override val data: String
+    override val data: String,
 ) : ValidatedActivityName()
 
 data class IncorrectActivityName(
     override val data: String,
-    val reason: Reason
+    val reason: Reason,
 ) : ValidatedActivityName() {
     sealed class Reason {
         object Empty : Reason()

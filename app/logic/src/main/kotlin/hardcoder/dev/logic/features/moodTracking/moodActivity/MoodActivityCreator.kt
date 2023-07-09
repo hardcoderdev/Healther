@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 class MoodActivityCreator(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val dispatchers: BackgroundCoroutineDispatchers
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun create(
@@ -19,7 +19,7 @@ class MoodActivityCreator(
         appDatabase.moodActivityQueries.insert(
             id = idGenerator.nextId(),
             name = name.data,
-            iconId = icon.id
+            iconId = icon.id,
         )
     }
 }

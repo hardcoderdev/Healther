@@ -6,5 +6,5 @@ import kotlinx.datetime.Instant
 data class MoodTrack(
     val id: Int,
     val moodType: MoodType,
-    val date: Instant
+    val date: Instant,
 )

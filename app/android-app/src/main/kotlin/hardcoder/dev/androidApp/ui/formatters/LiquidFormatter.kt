@@ -1,17 +1,19 @@
 package hardcoder.dev.androidApp.ui.formatters
 
 import android.content.Context
+
 import hardcoderdev.healther.app.android.app.R
 
 class LiquidFormatter(
     private val context: Context,
-    private val defaultAccuracy: Accuracy
+    private val defaultAccuracy: Accuracy,
 ) {
 
+    @Suppress("CyclomaticComplexMethod")
     fun formatMillisDistance(
         defaultMilliliters: Int,
         accuracy: Accuracy = defaultAccuracy,
-        usePlurals: Boolean = false
+        usePlurals: Boolean = false,
     ) = buildString {
         val hectoliters = defaultMilliliters / 100000
         val decaliters = defaultMilliliters % 100000 / 10000
@@ -80,6 +82,6 @@ class LiquidFormatter(
         HECTOLITERS(1),
         DECALITERS(2),
         LITERS(3),
-        MILLILITERS(4)
+        MILLILITERS(4),
     }
 }

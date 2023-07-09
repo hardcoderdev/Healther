@@ -7,12 +7,12 @@ class FastingPlanIdMapper {
         FastingPlan.PLAN_16_8 to 1,
         FastingPlan.PLAN_18_6 to 2,
         FastingPlan.PLAN_20_4 to 3,
-        FastingPlan.CUSTOM_PLAN to 4
+        FastingPlan.CUSTOM_PLAN to 4,
     )
 
     fun mapToId(fastingPlan: FastingPlan) = checkNotNull(map[fastingPlan])
 
     fun mapToFastingPlan(planId: Int) = checkNotNull(
-        map.entries.find { it.value == planId }
+        map.entries.find { it.value == planId },
     ).key
 }

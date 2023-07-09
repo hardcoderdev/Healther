@@ -3,6 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.kotlin.coroutines.core)
-    implementation(libs.kotlin.coroutines.android)
+    api(projects.foundation.coroutines)
 }

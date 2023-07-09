@@ -9,5 +9,5 @@ interface PredefinedDrinkTypeProvider {
 data class DrinkTypePredefined(
     val name: String,
     val icon: LocalIcon,
-    val hydrationIndexPercentage: Int
+    val hydrationIndexPercentage: Int,
 )
