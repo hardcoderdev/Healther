@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Healther</string>
-
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
 
@@ -14,14 +12,6 @@
     <string name="liquid_decaliters">%ddkl</string>
     <string name="liquid_liters">%dl</string>
     <string name="liquid_milliliters">%dml</string>
-
-    <string name="iconItem_icon_contentDescription">Icon for the element</string>
-
-    <string name="deleteDialog_iconContentDescription">Delete icon</string>
-    <string name="deleteDialog_no_option">Cancel</string>
-    <string name="deleteDialog_yes_option">Delete</string>
-    <string name="deleteDialog_trackDeletionTitle_text">Deleting an entry</string>
-    <string name="deleteDialog_trackDeletionDescription_text">Are you sure you want to delete this entry?</string>
 
     <string name="dateRangeFilterType_byDay">Day</string>
     <string name="dateRangeFilterType_byWeek">Week</string>

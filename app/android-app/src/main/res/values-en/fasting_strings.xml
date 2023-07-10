@@ -14,8 +14,17 @@
     <string name="fasting_statistic_max_hours_text">Maximum hours</string>
     <string name="fasting_statistic_average_hours_text">Hours on average</string>
     <string name="fasting_statistic_min_hours_text">Minimum hours</string>
-    <string name="fasting_statistic_completion_percentage_text">Percent complete</string>
     <string name="fasting_statistic_favorite_plan_text">Favorite plan</string>
+    <string name="fasting_activity_chart">Fasting chart (per month):</string>
+    <string name="fasting_nowEmpty_text">Now it\'s empty. End (or interrupt) the fast and you will see the graph and statistics.</string>
+    <string name="fasting_chartNotEnoughData_text">We don\'t have enough data yet to display a graph. Use this feature for a couple of hours and the graph will appear!</string>>
+
+    <string name="fasting_creation_title_topBar">Start fasting</string>
+    <string name="fasting_creation_start_buttonText">Start fasting</string>
+    <string name="fasting_creation_planDifficulty_text">All plans below are arranged in ascending order of difficulty.</string>
+    <string name="fasting_creation_selectPlan_text">Plan selection:</string>
+    <string name="fasting_creation_enterNote_textField">Enter the note here…</string>
+
     <string name="fasting_finish_text">Fasting is over!</string>
     <string name="fasting_finish_title_topBar">End of fasting</string>
     <string name="fasting_finish_image_contentDescription">Image of victory</string>
@@ -23,23 +32,14 @@
     <string name="fasting_finish_fail_results_text">Excellent results! You tried your best and managed to survive %s! Do not give up and try even harder, and you will definitely be able to complete the plan completely!</string>
     <string name="fasting_finish_goNext_buttonText">Great, thanks!</string>
     <string name="fasting_finish_addNoteOptional_text">You can add a note if you want:</string>
-    <string name="fasting_createMoodTrack_enterNote_textField">Enter the note here…</string>
-    <string name="fasting_activity_chart">Fasting chart (per month):</string>
-    <string name="fasting_nowEmpty_text">Now it\'s empty. End (or interrupt) the fast and you will see the graph and statistics.</string>
-    <string name="fasting_chartNotEnoughData_text">We don\'t have enough data yet to display a graph. Use this feature for a couple of hours and the graph will appear!</string>>
-
-    <string name="fasting_createFastingTrack_title_topBar">Start fasting</string>
-    <string name="fasting_createFastingTrack_start_buttonText">Start fasting</string>
-    <string name="fasting_createFastingTrack_planDifficulty_text">All plans below are arranged in ascending order of difficulty.</string>
-    <string name="fasting_createFastingTrack_selectPlan_text">Plan selection:</string>
 
     <string name="fasting_history_title_topBar">Detailed history</string>
     <string name="fasting_history_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
 
-    <string name="fasting_itemPlan_description_formatText">You will fast for %s and after that you will have %s to eat.</string>
+    <string name="fasting_itemPlan_description_formatText">You will fast for %1$s and after that you will have %2$s to eat.</string>
     <string name="fasting_itemPlan_selectFastingHours_text">Select the number of hours after which the fast will end:</string>
     <string name="fasting_itemPlan_customPlan">Your plan</string>
-    <string name="fasting_item_fasting_startTime_formatText">Start of fasting: %s</string>
-    <string name="fasting_item_fasting_endTime_formatText">End of fasting: %s</string>
-    <string name="fasting_item_fastingPlan_formatText">Fasting plan: %s</string>
+    <string name="fasting_itemFasting_startTime_formatText">Start of fasting: %s</string>
+    <string name="fasting_itemFasting_endTime_formatText">End of fasting: %s</string>
+    <string name="fasting_itemFastingPlan_formatText">Fasting plan: %s</string>
 </resources>

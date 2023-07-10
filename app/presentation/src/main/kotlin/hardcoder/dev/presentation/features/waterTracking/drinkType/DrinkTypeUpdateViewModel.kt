@@ -2,12 +2,13 @@ package hardcoder.dev.presentation.features.waterTracking.drinkType
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.controller.InputController
-import hardcoder.dev.controller.SingleRequestController
-import hardcoder.dev.controller.SingleSelectionController
-import hardcoder.dev.controller.ValidatedInputController
-import hardcoder.dev.controller.requireSelectedItem
-import hardcoder.dev.controller.validateAndRequire
+import hardcoder.dev.controller.input.InputController
+import hardcoder.dev.controller.input.ValidatedInputController
+import hardcoder.dev.controller.input.getInput
+import hardcoder.dev.controller.input.validateAndRequire
+import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.logic.features.waterTracking.drinkType.CorrectDrinkTypeName
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeDeleter
@@ -34,12 +35,12 @@ class DrinkTypeUpdateViewModel(
     val nameInputController = ValidatedInputController(
         coroutineScope = viewModelScope,
         initialInput = "",
-        validation = drinkTypeNameValidator::validate
+        validation = drinkTypeNameValidator::validate,
     )
 
     val iconSelectionController = SingleSelectionController(
         coroutineScope = viewModelScope,
-        items = iconResourceProvider.getIcons()
+        items = iconResourceProvider.getIcons(),
     )
 
     val waterPercentageInputController = InputController(
@@ -54,19 +55,19 @@ class DrinkTypeUpdateViewModel(
                 id = drinkTypeId,
                 name = nameInputController.validateAndRequire(),
                 icon = iconSelectionController.requireSelectedItem(),
-                hydrationIndexPercentage = waterPercentageInputController.state.value.input
+                hydrationIndexPercentage = waterPercentageInputController.getInput(),
             )
         },
         isAllowedFlow = nameInputController.state.map {
             it.validationResult == null || it.validationResult is CorrectDrinkTypeName
-        }
+        },
     )
 
     val deletionController = SingleRequestController(
         coroutineScope = viewModelScope,
         request = {
             drinkTypeDeleter.deleteById(drinkTypeId)
-        }
+        },
     )
 
     init {

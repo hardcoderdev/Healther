@@ -12,7 +12,7 @@ class DiaryTagNameValidator {
         return when {
             isEmpty() -> IncorrectDiaryTagName.Reason.Empty
             length > DIARY_TAG_NAME_MAX_CHARS -> IncorrectDiaryTagName.Reason.MoreThanMaxChars(
-                DIARY_TAG_NAME_MAX_CHARS
+                DIARY_TAG_NAME_MAX_CHARS,
             )
             else -> null
         }
@@ -28,12 +28,12 @@ sealed class ValidatedDiaryTagName {
 }
 
 data class CorrectDiaryTagName(
-    override val data: String
+    override val data: String,
 ) : ValidatedDiaryTagName()
 
 data class IncorrectDiaryTagName(
     override val data: String,
-    val reason: Reason
+    val reason: Reason,
 ) : ValidatedDiaryTagName() {
     sealed class Reason {
         object Empty : Reason()

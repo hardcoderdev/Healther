@@ -1,0 +1,47 @@
+config:
+  validation: true
+  warningsAsErrors: true
+  checkExhaustiveness: false
+
+comments:
+  CommentOverPrivateFunction:
+    active: true
+  CommentOverPrivateProperty:
+    active: true
+  DeprecatedBlockTag:
+    active: true
+
+naming:
+  FunctionNaming:
+    functionPattern: '([A-Za-z][a-zA-Z0-9]*)|(`.*`)'
+    ignoreAnnotated:
+      ['Composable']
+
+complexity:
+  active: true
+  CyclomaticComplexMethod:
+    active: true
+    ignoreSimpleWhenEntries: true
+  LargeClass:
+    threshold: 200
+  LongParameterList:
+    active: true
+    ignoreDefaultParameters: true
+    functionThreshold: 20
+    constructorThreshold: 20
+    ignoreAnnotated:
+      ['Composable']
+
+performance:
+  SpreadOperator:
+    active: false
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: false
+
+# Ktlint deal with it
+style:
+  active: false
+
+

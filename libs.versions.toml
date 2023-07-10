@@ -1,0 +1,92 @@
+[versions]
+android-gradle-plugin = "8.2.0-alpha08"
+kotlin = "1.8.21"
+core-ktx = "1.10.1"
+play-core = "1.10.3"
+activity-ktx = "1.8.0-alpha06"
+compose-bom = "2023.06.01"
+lifecycle-viewmodelCompose = "2.6.1"
+activity-compose = "1.7.2"
+kotlin-coroutines = "1.7.1"
+kotlin-datetime = "0.4.0"
+kotlin-serialization = "1.5.1"
+data-store = "1.0.0"
+sqlDelight = "2.0.0-rc01"
+ktor-client = "2.3.0"
+coil-compose = "2.2.2"
+lottie-compose = "6.0.0"
+voyager = "1.0.0-rc06"
+compose-charts = "1.6.4"
+compose-calendar = "1.0.4"
+compose-numberPicker = "1.0.3"
+composeAccompanist = "0.29.1-alpha"
+preferences-ktx = "1.2.0"
+koin-compose="3.4.5"
+koin-di = "3.4.2"
+moko-resources = "0.23.0"
+russhwolf-settings = "1.0.0"
+detect-codeSmells = "1.23.0"
+ktlint = "11.5.0"
+
+[libraries]
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity-ktx" }
+play-core = { module = "com.google.android.play:core", version.ref = "play-core" }
+lifecycle-viewmodelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-viewmodelCompose"}
+kotlin-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+kotlin-coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
+kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
+kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+data-store = { module = "androidx.datastore:datastore-preferences", version.ref = "data-store" }
+sqlDelight-primitiveAdapters = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqlDelight" }
+sqlDelight-coroutinesExt = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
+sqlDelight-androidDriver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
+sqlDelight-nativeDriver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
+preferences-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferences-ktx" }
+ktorClient-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
+ktorClient-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor-client" }
+ktorClient-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-client" }
+ktorClient-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor-client" }
+ktorClient-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor-client" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-graphics = { module = "androidx.compose.ui:ui-graphics" }
+compose-tooling = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-debugTooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-material = { module = "androidx.compose.material3:material3" }
+compose-extendedIcons = { module = "androidx.compose.material:material-icons-extended" }
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+voyager-bottomSheetNavigator = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
+voyager-androidx = { module = "cafe.adriel.voyager:voyager-androidx", version.ref = "voyager" }
+voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
+compose-charts = { module = "com.patrykandpatrick.vico:compose-m3", version.ref = "compose-charts" }
+compose-calendar = { module = "io.github.epicarchitect:calendar-compose-datepicker", version.ref = "compose-calendar" }
+compose-numberPicker = { module = "com.chargemap.compose:numberpicker", version.ref = "compose-numberPicker" }
+compose-accompanistViewpager = { module = "com.google.accompanist:accompanist-pager", version.ref = "composeAccompanist" }
+compose-accompanistViewpagerIndicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "composeAccompanist" }
+compose-accompanistFlowrow = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "composeAccompanist" }
+compose-coil = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
+compose-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
+compose-activity = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+koinDi = { module = "io.insert-koin:koin-android", version.ref = "koin-di" }
+koinDi-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
+moko-resourcesCompose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
+russhwolf-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "russhwolf-settings" }
+detektGradlePlugin = { module = "io.gitlab.arturbosch.detekt:io.gitlab.arturbosch.detekt.gradle.plugin", version.ref = "detect-codeSmells" }
+ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint" }
+
+[plugins]
+com-android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+com-android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+sql-delight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
+moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+
+[bundles]
+voyager-navigation = [ "voyager-navigator", "voyager-bottomSheetNavigator", "voyager-androidx", "voyager-koin" ]
+koinDi = [ "koinDi", "koinDi-compose" ]

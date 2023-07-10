@@ -1,15 +1,15 @@
 package hardcoder.dev.logic.features.moodTracking.moodWithActivity
 
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 class MoodWithActivityDeleter(
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
-    suspend fun deleteAllActivitiesByMoodTrackId(moodTrackId: Int) = withContext(dispatcher) {
+    suspend fun deleteAllActivitiesByMoodTrackId(moodTrackId: Int) = withContext(dispatchers.io) {
         appDatabase.moodWithActivityQueries.deleteAllActivitiesByMoodTrackId(moodTrackId)
     }
 }

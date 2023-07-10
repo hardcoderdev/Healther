@@ -1,6 +1,7 @@
 package hardcoder.dev.logic.features.moodTracking.moodTrack
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
+import app.cash.sqldelight.coroutines.asFlow
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.MoodTrack
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
@@ -9,6 +10,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack as MoodTrackEntity
@@ -16,7 +18,8 @@ import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack as MoodTrac
 @OptIn(ExperimentalCoroutinesApi::class)
 class MoodTrackProvider(
     private val appDatabase: AppDatabase,
-    private val moodTypeProvider: MoodTypeProvider
+    private val moodTypeProvider: MoodTypeProvider,
+    private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideAllMoodTracksByDayRange(dayRange: ClosedRange<Instant>) =
@@ -26,18 +29,21 @@ class MoodTrackProvider(
             .map {
                 it.executeAsList()
             }.flatMapLatest { moodTracksList ->
-                if (moodTracksList.isEmpty()) flowOf(emptyList())
-                else combine(
-                    moodTracksList.map { moodTrack ->
-                        moodTypeProvider.provideMoodTypeByTrackId(moodTrack.moodTypeId)
-                            .map { moodType ->
-                                moodTrack.toEntity(moodType!!)
-                            }
+                if (moodTracksList.isEmpty()) {
+                    flowOf(emptyList())
+                } else {
+                    combine(
+                        moodTracksList.map { moodTrack ->
+                            moodTypeProvider.provideMoodTypeByTrackId(moodTrack.moodTypeId)
+                                .map { moodType ->
+                                    moodTrack.toEntity(moodType!!)
+                                }
+                        },
+                    ) {
+                        it.toList()
                     }
-                ) {
-                    it.toList()
                 }
-            }
+            }.flowOn(dispatchers.io)
 
     fun provideById(id: Int) = appDatabase.moodTrackQueries
         .provideMoodTrackById(id)
@@ -52,11 +58,11 @@ class MoodTrackProvider(
                     moodTrack.toEntity(moodType!!)
                 }
             }
-        }
+        }.flowOn(dispatchers.io)
 
     private fun MoodTrack.toEntity(moodType: MoodType) = MoodTrackEntity(
         id = id,
         moodType = moodType,
-        date = date
+        date = date,
     )
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hero_welcome_title_topBar">Добро пожаловать</string>
+    <string name="hero_welcome_beforeWeStart_text">Перед тем, как мы начнём, ты можешь заполнить информацию о себе, которая поможет приложению работать корректно, например, чтобы по твоим показателям рассчитать ежедневную норму воды.</string>
+    <string name="hero_welcome_letsStart_buttonText">Давай заполним!</string>
+
+    <string name="hero_creation_enterYourWeightInKg_text">Выберите ваш вес в килограммах.</string>
+    <string name="hero_creation_enterExerciseStressTime_text">Сколько часов в день вы занимаетесь спортом или другими физическими нагрузками?</string>
+    <string name="hero_creation_title_topBar">Ваш пол</string>
+    <string name="hero_creation_forWhatWeNeedGender_text">• Ваш гендер нужен для различных рассчётов в приложении, например рассчёта нормы потребляемой воды.</string>
+    <string name="hero_creation_selectYourGender_text">Выбери свой гендер для более точных расчётов.</string>
+    <string name="hero_creation_create_buttonText">Создать героя</string>
+</resources>

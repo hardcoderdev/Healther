@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.stateIn
 
 class LoadingController<DATA>(
     coroutineScope: CoroutineScope,
-    flow: Flow<DATA>
+    flow: Flow<DATA>,
 ) : StateController<LoadingController.State<out DATA>> {
 
     override val state = flow.map {
@@ -16,7 +16,7 @@ class LoadingController<DATA>(
     }.stateIn(
         scope = coroutineScope,
         started = SharingStarted.Eagerly,
-        initialValue = State.Loading
+        initialValue = State.Loading,
     )
 
     sealed class State<DATA> {

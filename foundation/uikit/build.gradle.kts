@@ -1,34 +1,21 @@
-@file:Suppress("UnstableApiUsage")
-
 plugins {
-    id(Plugins.Android.library)
-    id(Plugins.Kotlin.kotlinLibrary)
-}
-
-android {
-    namespace = Modules.Namespaces.Foundation.uikit
-    compileSdk = Android.compileSdk
-
-    defaultConfig {
-        minSdk = Android.DefaultConfig.minSdk
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = Android.ComposeOptions.kotlinCompilerExtensionVersion
-    }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
+    id("android-library-convention")
+    id("android-compose-convention")
 }
 
 dependencies {
-    api(project(Modules.Paths.Foundation.controllers))
-    addComposeMaterial()
-    implementation(Dependencies.dateTime)
-    implementation(Dependencies.composeCalendarDateTime)
+    api(projects.foundation.controllers)
+    implementation(platform(libs.compose.bom))
+    api(projects.foundation.datetime)
+    implementation(libs.compose.activity)
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.extendedIcons)
+    implementation(libs.compose.charts)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.numberPicker)
+    implementation(libs.compose.calendar)
+    implementation(libs.compose.accompanistViewpager)
+    implementation(libs.compose.accompanistViewpagerIndicators)
+    implementation(libs.compose.lottie)
 }

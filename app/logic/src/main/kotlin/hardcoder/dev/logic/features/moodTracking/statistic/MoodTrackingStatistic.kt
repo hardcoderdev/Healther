@@ -7,5 +7,5 @@ data class MoodTrackingStatistic(
     val neutralMoodCount: Int,
     val notWellMoodCount: Int,
     val badMoodCount: Int,
-    val averageMoodType: MoodType
+    val averageMoodType: MoodType,
 )

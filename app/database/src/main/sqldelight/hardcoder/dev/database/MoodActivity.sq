@@ -1,0 +1,23 @@
+import kotlin.Int;
+
+CREATE TABLE MoodActivity (
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    iconId INTEGER AS Int NOT NULL
+);
+
+insert:
+INSERT INTO MoodActivity (id, name, iconId)
+VALUES (?, ?, ?);
+
+update:
+UPDATE MoodActivity SET name = ?, iconId = ? WHERE id = ?;
+
+deleteById:
+DELETE FROM MoodActivity WHERE id = ?;
+
+provideAllMoodActivities:
+SELECT * FROM MoodActivity;
+
+provideMoodActivityById:
+SELECT * FROM MoodActivity WHERE id = ?;

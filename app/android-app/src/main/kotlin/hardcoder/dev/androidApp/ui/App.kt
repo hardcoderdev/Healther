@@ -1,37 +1,50 @@
 package hardcoder.dev.androidApp.ui
 
 import android.app.Application
-import hardcoder.dev.androidApp.di.LogicModule
-import hardcoder.dev.androidApp.di.PresentationModule
-import hardcoder.dev.androidApp.di.UIModule
+
+import hardcoder.dev.androidApp.di.dataModule
+import hardcoder.dev.androidApp.di.logic.foundationLogicModule
+import hardcoder.dev.androidApp.di.logicModule
+import hardcoder.dev.androidApp.di.presentationModule
+import hardcoder.dev.androidApp.di.uiModule
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
+import hardcoder.dev.logic.appPreferences.PredefinedTracksManager
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
 class App : Application() {
 
-    val presentationModule by lazy {
-        PresentationModule(
-            context = this,
-            logicModule = logicModule
-        )
-    }
-    val logicModule by lazy {
-        LogicModule(context = this)
-    }
-    val uiModule by lazy {
-        UIModule(context = this)
-    }
+    private val dispatchers by inject<BackgroundCoroutineDispatchers>()
 
     override fun onCreate() {
         super.onCreate()
-        instance = this
-        CoroutineScope(Dispatchers.IO).launch {
-            logicModule.predefinedTracksManager.createPredefinedTracksIfNeeded()
+        setUpKoin()
+        setUpPredefined()
+    }
+
+    private fun setUpKoin() {
+        startKoin {
+            androidLogger(level = Level.DEBUG)
+            androidContext(this@App)
+            modules(
+                foundationLogicModule,
+                dataModule,
+                logicModule,
+                presentationModule,
+                uiModule,
+            )
         }
     }
 
-    companion object {
-        lateinit var instance: App
+    private fun setUpPredefined() {
+        CoroutineScope(dispatchers.io).launch {
+            get<PredefinedTracksManager>().createPredefinedTracksIfNeeded()
+        }
     }
 }

@@ -10,6 +10,6 @@ class GenderIdMapper {
     fun mapToGender(id: Int) = when (id) {
         0 -> Gender.MALE
         1 -> Gender.FEMALE
-        else -> throw IllegalStateException("This enum member not found")
+        else -> error("This enum member not found")
     }
 }

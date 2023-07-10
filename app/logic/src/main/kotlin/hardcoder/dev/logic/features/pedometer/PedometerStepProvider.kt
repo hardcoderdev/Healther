@@ -1,16 +1,20 @@
 package hardcoder.dev.logic.features.pedometer
 
-import hardcoder.dev.datetime.createRangeForThisDay
-import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
+import hardcoder.dev.datetime.DateTimeProvider
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.LocalDate
 
-class PedometerStepProvider(private val pedometerTrackProvider: PedometerTrackProvider) {
+class PedometerStepProvider(
+    private val pedometerTrackProvider: PedometerTrackProvider,
+    private val dateTimeProvider: DateTimeProvider,
+    private val dispatchers: BackgroundCoroutineDispatchers,
+) {
 
     fun provideLastSteps(): Flow<Int> = pedometerTrackProvider.providePedometerTracksByRange(
-        LocalDate.now().createRangeForThisDay()
+        dateTimeProvider.currentDateRange(),
     ).map { pedometerTracks ->
         pedometerTracks.sumOf { it.stepsCount }
-    }
+    }.flowOn(dispatchers.io)
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="diary_title_topBar">Дневник</string>
+    <string name="diary_searchTrack_textField">Поиск по заметкам…</string>
+    <string name="diary_clearSearchText_textField">Очистка текста в поиске</string>
+    <string name="diary_dropDownItem_filterByAllTime">За всё время</string>
+    <string name="diary_dropDownItem_filterByDay">За день</string>
+    <string name="diary_dropDownItem_filterByWeek">За неделю</string>
+    <string name="diary_dropDownItem_filterByMonth">За месяц</string>
+    <string name="diary_dropDownItem_filterByYear">За год</string>
+    <string name="diary_searchIcon_contentDescription">Поиск по заметкам…</string>
+    <string name="diary_nowEmpty_text">Сейчас здесь пусто. Чтобы добавить сюда новые записи, нажмите на кнопку справа внизу.</string>
+    <string name="diary_nothingFound_text">По вашему запросу или фильтру ничего не найдено :(</string>
+    <string name="diary_filterBottomSheetTitle_text">Фильтрация заметок</string>
+    <string name="diary_selectDateRange_subtitle_bottomSheet_text">Временной период:</string>
+    <string name="diary_selectTags_subtitle_bottomSheet_text">Ваши теги:</string>
+    <string name="diary_item_tags_left_count_format">Ещё %d занятий…</string>
+
+    <string name="diary_creation_title_topBar">Добавление заметки</string>
+    <string name="diary_creation_enterNote_textField">Заметку вводите здесь…</string>
+    <string name="diary_creation_selectLinkedFeatureType_text">Привязать заметку к:</string>
+    <string name="diary_creation_enterTitle_textField">Введите заголовок…</string>
+    <string name="diary_creation_buttonText">Сохранить запись</string>
+    <string name="diary_creation_descriptionEmpty_text">Это поле не может быть пустым!</string>
+    <string name="diary_creation_enterInfo_text">Основная информация:</string>
+    <string name="diary_creation_titleMoreThanMaxChars_text">Макс. длина заголовка: %d символов!</string>
+    <string name="diary_creation_youMaySelectTags_text">Вы можете выбрать теги для этой заметки:</string>
+    <string name="diary_creation_manageTags_buttonText">Управление тегами</string>
+
+    <string name="diary_update_selectLinkedFeatureType_text">Привязать заметку к:</string>
+    <string name="diary_update_title_topBar">Обновление заметки</string>
+    <string name="diary_update_enterTitle_textField">Введите заголовок…</string>
+    <string name="diary_update_titleMoreThanMaxChars_text">Макс. длина заголовка: %d символов!</string>
+    <string name="diary_update_enterNote_textField">Заметку вводите здесь…</string>
+    <string name="diary_update_enterInfo_text">Основная информация:</string>
+    <string name="diary_update_descriptionEmpty_text">Это поле не может быть пустым!</string>
+    <string name="diary_update_attachedEntity_text">Прикрепленная запись:</string>
+    <string name="diary_update_youMaySelectTags_text">Вы можете выбрать теги для этой заметки:</string>
+    <string name="diary_update_manageTags_buttonText">Управление тегами</string>
+
+    <string name="diary_itemFasting_yourNote_text">Ваше примечание:</string>
+    <string name="diary_itemMood_yourNote_text">Ваше примечание:</string>
+
+    <string name="diary_tags_title_topBar">Управление тегами</string>
+    <string name="diary_tags_nowEmpty_text">Сейчас здесь пусто. Чтобы создать новый тег и затем прикрепить его к заметке, нажмите на кнопку справа внизу.</string>
+
+    <string name="diary_tag_creation_title_topBar">Создание тега</string>
+    <string name="diary_tag_creation_enter_name_text">Введите название тега:</string>
+    <string name="diary_tag_creation_enterName_textField">Например: здоровье…</string>
+    <string name="diary_tag_creation_nameEmpty_error">Название не может быть пустым!</string>
+    <string name="diary_tag_creation_nameMoreThanMaxChars_error">Максимальное кол-во символов: %d</string>
+    <string name="diary_tag_creation_selectIcon_text">Выберите иконку для тега:</string>
+    <string name="diary_tag_creation_tagIconContentDescription">Иконка тега</string>
+    <string name="diary_tag_creation_saveTrack_buttonText">Сохранить тег</string>
+
+    <string name="diary_tag_update_title_topBar">Обновление тега</string>
+    <string name="diary_tag_update_enter_name_text">Введите название тега:</string>
+    <string name="diary_tag_update_enterName_textField">Например: здоровье…</string>
+    <string name="diary_tag_update_nameEmpty_error">Название не может быть пустым!</string>
+    <string name="diary_tag_update_nameMoreThanMaxChars_error">Максимальное кол-во символов: %d</string>
+    <string name="diary_tag_update_selectIcon_text">Выберите иконку для тега:</string>
+    <string name="diary_tag_update_tagIconContentDescription">Иконка тега</string>
+    <string name="diary_tag_update_saveTrack_buttonText">Обновить тег</string>
+
+    <string name="predefined_diary_filterFeatureType_noFeature">Без фичей</string>
+    <string name="predefined_diary_filterFeatureType_waterTrackingFilter">Водный баланс</string>
+    <string name="predefined_diary_filterFeatureType_pedometerFilter">Шагомер</string>
+    <string name="predefined_diary_filterFeatureType_fastingFilter">Голодание</string>
+    <string name="predefined_diary_filterFeatureType_moodTrackingFilter">Настроение</string>
+</resources>

@@ -1,17 +1,8 @@
 plugins {
-    id(Plugins.Android.library)
-    id(Plugins.Kotlin.kotlinLibrary)
-}
-
-android {
-    namespace = Modules.Namespaces.Foundation.coroutines
-    compileSdk = Android.compileSdk
-
-    defaultConfig {
-        minSdk = Android.DefaultConfig.minSdk
-    }
+    id("android-library-convention")
 }
 
 dependencies {
-    addCoroutines()
+    api(libs.kotlin.coroutinesCore)
+    api(libs.kotlin.coroutinesAndroid)
 }

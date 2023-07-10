@@ -1,13 +1,14 @@
 package hardcoder.dev.database
 
 import android.content.Context
+
 import androidx.core.content.edit
 
 class IdGenerator(context: Context) {
 
     private val sharedPreferences = context.getSharedPreferences(
         SHARED_PREFERENCES_NAME,
-        Context.MODE_PRIVATE
+        Context.MODE_PRIVATE,
     )
 
     fun nextId(): Int {

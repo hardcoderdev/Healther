@@ -14,7 +14,7 @@ class DrinkTypeNameValidator {
         return when {
             isEmpty() -> IncorrectDrinkTypeName.Reason.Empty
             length > DRINK_TYPE_NAME_MAX_CHARS -> IncorrectDrinkTypeName.Reason.MoreThanMaxChars(
-                DRINK_TYPE_NAME_MAX_CHARS
+                DRINK_TYPE_NAME_MAX_CHARS,
             )
             else -> null
         }
@@ -30,12 +30,12 @@ sealed class ValidatedDrinkTypeName {
 }
 
 data class CorrectDrinkTypeName(
-    override val data: String
+    override val data: String,
 ) : ValidatedDrinkTypeName()
 
 data class IncorrectDrinkTypeName(
     override val data: String,
-    val reason: Reason
+    val reason: Reason,
 ) : ValidatedDrinkTypeName() {
     sealed class Reason {
         object Empty : Reason()

@@ -1,28 +1,10 @@
 plugins {
-    id(Plugins.Android.library)
-    id(Plugins.Kotlin.kotlinLibrary)
-}
-
-android {
-    namespace = Modules.Namespaces.logic
-    compileSdk = Android.compileSdk
-
-    defaultConfig {
-        minSdk = Android.DefaultConfig.minSdk
-    }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
+    id("android-library-convention")
 }
 
 dependencies {
-    api(project(Modules.Paths.database))
-    api(project(Modules.Paths.Foundation.datetime))
-    api(project(Modules.Paths.Foundation.math))
-    api(project(Modules.Paths.Foundation.sqldelight))
-    api(project(Modules.Paths.Foundation.inAppReview))
-    implementation(Dependencies.dataStore)
-    addData()
-    addCoroutines()
+    api(projects.app.database)
+    api(projects.foundation.datetime)
+    api(projects.foundation.math)
+    api(projects.foundation.inappreview)
 }

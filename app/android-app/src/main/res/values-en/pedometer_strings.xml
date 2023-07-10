@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pedometer_title_topBar">Pedometer</string>
-    <string name="pedometer_stepCountFormat_text">%d / %d steps</string>
+    <string name="pedometer_stepCountFormat_text">%1$d / %2$d steps</string>
     <string name="pedometer_playIcon_contentDescription">Start step recording</string>
     <string name="pedometer_kilometersLabel_text">km</string>
     <string name="pedometer_yourIndicatorsForThisDay_text">Your scores for the day:</string>
     <string name="pedometer_stopIcon_contentDescription">Stop step recording</string>
     <string name="pedometer_caloriesLabel_text">Calories</string>
     <string name="pedometer_timeLabel_text">Walking time</string>
-    <string name="pedometer_noHardwareSensorOnDevice_text">Your device is missing a sensor. Unfortunately, you won\'t be able to use this feature.</string>
     <string name="pedometer_stepsLabel_text">Steps</string>
     <string name="pedometer_emptyDayHistory_text">On this day, you didn\'t turn on the pedometer.</string>
     <string name="pedometer_chartNotEnoughData_text">We don\'t have enough data yet to display a graph. Use this feature for a couple of hours and the graph will appear!</string>
     <string name="pedometer_notification_notificationContentTitle_text">Pedometer</string>
     <string name="pedometer_notification_contentStepFormat_text">Steps passed: %d</string>
     <string name="pedometer_statistic_text">General statistic:</string>
-    <string name="pedometer_statistic_not_enough_data_text">Not enough info</string>
     <string name="pedometer_statistic_total_steps">Total steps</string>
     <string name="pedometer_statistic_total_kilometers">Total kilometers</string>
     <string name="pedometer_statistic_total_time">Total time</string>
     <string name="pedometer_statistic_total_calories">Total calories</string>
-    <string name="pedometer_statistic_average_steps">Average steps</string>
-    <string name="pedometer_statistic_average_kilometers">Average kilometers</string>
-    <string name="pedometer_statistic_average_time">Average time</string>
-    <string name="pedometer_statistic_average_calories">Average calories</string>
     <string name="pedometer_permissions_not_granted_title_text">To use the pedometer feature, you need permission to track your activity.\n\nClick the button below to grant permissions</string>
     <string name="pedometer_reject_battery_title">You have not unchecked battery optimization</string>
     <string name="pedometer_reject_permissions_title">You haven\'t granted the necessary permissions</string>
@@ -36,5 +30,4 @@
     <string name="pedometer_history_yourIndicatorsForThisDay_text">Your scores for the day:</string>
     <string name="pedometer_history_weDontHaveEnoughDataToShowChart_text">There is not enough data for this day to display a graph.</string>
     <string name="pedometer_history_title_topBar">Detailed history</string>
-    <string name="pedometer_history_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
 </resources>

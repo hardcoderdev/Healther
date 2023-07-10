@@ -1,39 +1,57 @@
 package hardcoder.dev.logic.features.diary
 
+import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
 import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
-import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Instant
 import kotlinx.datetime.minus
 
-class DateRangeFilterTypeMapper(appPreferenceProvider: AppPreferenceProvider) {
+class DateRangeFilterTypeMapper(
+    appPreferenceProvider: AppPreferenceProvider,
+    private val dateTimeProvider: DateTimeProvider,
+) {
+
     private val mapperScope = CoroutineScope(Dispatchers.IO + Job())
-    private val appPreferences = appPreferenceProvider.provideAppPreference().stateIn(
+    private val firstLaunchTime = appPreferenceProvider.provideAppPreference().map {
+        requireNotNull(it).firstLaunchTime
+    }.stateIn(
         scope = mapperScope,
         started = SharingStarted.Eagerly,
-        initialValue = null
-    ).value
-
-    private val map = mapOf(
-        DateRangeFilterType.BY_ALL_PERIOD to Clock.System.now()
-                ..LocalDate.now().getEndOfDay(),
-        DateRangeFilterType.BY_DAY to LocalDate.now().getStartOfDay()
-                ..LocalDate.now().getEndOfDay(),
-        DateRangeFilterType.BY_WEEK to LocalDate.now().minus(7, DateTimeUnit.DAY).getStartOfDay()
-                ..LocalDate.now().getEndOfDay(),
-        DateRangeFilterType.BY_MONTH to LocalDate.now().minus(1, DateTimeUnit.MONTH).getStartOfDay()
-                ..LocalDate.now().getEndOfDay(),
-        DateRangeFilterType.BY_YEAR to LocalDate.now().minus(1, DateTimeUnit.YEAR).getStartOfDay()
-                ..LocalDate.now().getEndOfDay()
+        initialValue = dateTimeProvider.currentInstant(),
     )
 
-    fun map(dateRangeFilterType: DateRangeFilterType) = checkNotNull(map[dateRangeFilterType])
+    suspend fun map(dateRangeFilterType: DateRangeFilterType): ClosedRange<Instant> {
+        val currentDate = dateTimeProvider.currentDate()
+
+        return when (dateRangeFilterType) {
+            DateRangeFilterType.BY_DAY -> {
+                dateTimeProvider.currentDateRange()
+            }
+
+            DateRangeFilterType.BY_WEEK -> {
+                currentDate.minus(1, DateTimeUnit.WEEK).getStartOfDay()..currentDate.getEndOfDay()
+            }
+
+            DateRangeFilterType.BY_MONTH -> {
+                currentDate.minus(1, DateTimeUnit.MONTH).getStartOfDay()..currentDate.getEndOfDay()
+            }
+
+            DateRangeFilterType.BY_YEAR -> {
+                currentDate.minus(1, DateTimeUnit.YEAR).getStartOfDay()..currentDate.getEndOfDay()
+            }
+
+            DateRangeFilterType.BY_ALL_PERIOD -> {
+                firstLaunchTime.first()..dateTimeProvider.currentInstant()
+            }
+        }
+    }
 }

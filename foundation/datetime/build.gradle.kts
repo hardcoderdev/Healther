@@ -1,23 +1,10 @@
 plugins {
-    id(Plugins.Android.library)
-    id(Plugins.Kotlin.kotlinLibrary)
-}
-
-android {
-    namespace = Modules.Namespaces.Foundation.datetime
-    compileSdk = Android.compileSdk
-
-    defaultConfig {
-        multiDexEnabled = true
-        minSdk = Android.DefaultConfig.minSdk
-    }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
+    id("android-library-convention")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 dependencies {
-    api(Dependencies.dateTime)
-    api(Dependencies.composeCalendarDateTime)
+    api(projects.foundation.coroutines)
+    api(libs.kotlin.datetime)
+    api(libs.kotlin.serialization)
 }

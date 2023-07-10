@@ -1,17 +1,7 @@
 plugins {
-    id(Plugins.Android.library)
-    id(Plugins.Kotlin.kotlinLibrary)
-}
-
-android {
-    namespace = Modules.Namespaces.Foundation.inAppReview
-    compileSdk = Android.compileSdk
-
-    defaultConfig {
-        minSdk = Android.DefaultConfig.minSdk
-    }
+    id("android-library-convention")
 }
 
 dependencies {
-    api(Dependencies.playCore)
+    api(libs.play.core)
 }

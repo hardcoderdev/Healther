@@ -12,8 +12,18 @@
     <string name="fasting_statistic_max_hours_text">Максимум часов</string>
     <string name="fasting_statistic_average_hours_text">Часов в среднем</string>
     <string name="fasting_statistic_min_hours_text">Минимум часов</string>
-    <string name="fasting_statistic_completion_percentage_text">Процент выполнения</string>
     <string name="fasting_statistic_favorite_plan_text">Любимый план</string>
+    <string name="fasting_activity_chart">График голодания (за месяц):</string>
+    <string name="fasting_nowEmpty_text">Сейчас здесь пусто. Завершите (или прервите) голодание и вы увидите график и статистику.</string>
+    <string name="fasting_chartNotEnoughData_text">У нас пока недостаточно данных для отображения графика. Используйте эту фичу на протяжении пары часов и график появится!</string>
+    <string name="fasting_start_buttonText">Начать голодание</string>
+
+    <string name="fasting_creation_title_topBar">Старт голодания</string>
+    <string name="fasting_creation_enterNote_textField">Заметку вводите здесь…</string>
+    <string name="fasting_creation_start_buttonText">Начать голодание</string>
+    <string name="fasting_creation_planDifficulty_text">Все планы ниже расположены в порядке возрастания сложности.</string>
+    <string name="fasting_creation_selectPlan_text">Выбор плана:</string>
+
     <string name="fasting_finish_text">Голодание завершено!</string>
     <string name="fasting_finish_title_topBar">Конец голодания</string>
     <string name="fasting_finish_image_contentDescription">Изображение победы</string>
@@ -21,28 +31,18 @@
     <string name="fasting_finish_fail_results_text">Отличные результаты! Вы старались изо всех сил и смогли продержаться %s! Не сдавайтесь и старайтесь ещё больше, и у вас обязательно получится завершить план полностью!</string>
     <string name="fasting_finish_goNext_buttonText">Хорошо, спасибо!</string>
     <string name="fasting_finish_addNoteOptional_text">Можете добавить заметку, если хотите:</string>
-    <string name="fasting_createMoodTrack_enterNote_textField">Заметку вводите здесь…</string>
-    <string name="fasting_activity_chart">График голодания (за месяц):</string>
-    <string name="fasting_nowEmpty_text">Сейчас здесь пусто. Завершите (или прервите) голодание и вы увидите график и статистику.</string>
-    <string name="fasting_chartNotEnoughData_text">У нас пока недостаточно данных для отображения графика. Используйте эту фичу на протяжении пары часов и график появится!</string>
-    <string name="fasting_start_buttonText">Начать голодание</string>
-
-    <string name="fasting_createFastingTrack_title_topBar">Старт голодания</string>
-    <string name="fasting_createFastingTrack_start_buttonText">Начать голодание</string>
-    <string name="fasting_createFastingTrack_planDifficulty_text">Все планы ниже расположены в порядке возрастания сложности.</string>
-    <string name="fasting_createFastingTrack_selectPlan_text">Выбор плана:</string>
 
     <string name="fasting_history_title_topBar">Подробная история</string>
     <string name="fasting_history_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
 
-    <string name="fasting_itemPlan_description_formatText">Вы будете голодать на протяжении %s и после этого у вас будет %s на приём пищи.</string>
+    <string name="fasting_itemPlan_description_formatText">Вы будете голодать на протяжении %1$s и после этого у вас будет %2$s на приём пищи.</string>
     <string name="fasting_itemPlan_selectFastingHours_text">Выберите количество часов, по истечению которых закончится голодание:</string>
     <string name="fasting_itemPlan_14_10" translatable="false">14–10</string>
     <string name="fasting_itemPlan_16_8" translatable="false">16–8</string>
     <string name="fasting_itemPlan_18_6" translatable="false">18–6</string>
     <string name="fasting_itemPlan_20_4" translatable="false">20–4</string>
     <string name="fasting_itemPlan_customPlan">Свой план</string>
-    <string name="fasting_item_fasting_startTime_formatText">Начало голодания: %s</string>
-    <string name="fasting_item_fasting_endTime_formatText">Конец голодания: %s</string>
-    <string name="fasting_item_fastingPlan_formatText">План голодания: %s</string>
+    <string name="fasting_itemFasting_startTime_formatText">Начало голодания: %s</string>
+    <string name="fasting_itemFasting_endTime_formatText">Конец голодания: %s</string>
+    <string name="fasting_itemFastingPlan_formatText">План голодания: %s</string>
 </resources>

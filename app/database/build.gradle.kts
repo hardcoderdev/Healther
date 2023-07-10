@@ -1,27 +1,17 @@
 plugins {
-    id(Plugins.Android.library)
-    id(Plugins.Kotlin.kotlinLibrary)
-    id(Plugins.sqlDelight) version (Plugins.Versions.sqlDelight)
-}
-
-android {
-    namespace = Modules.Namespaces.database
-    compileSdk = Android.compileSdk
-
-    defaultConfig {
-        minSdk = Android.DefaultConfig.minSdk
-    }
+    id("android-library-convention")
+    alias(libs.plugins.sql.delight)
 }
 
 sqldelight {
-    database("AppDatabase") {
-        packageName = "hardcoder.dev.database"
-        dialect = "sqlite:3.24"
+    databases {
+        create("AppDatabase") {
+            packageName.set("hardcoder.dev.database")
+        }
     }
 }
 
 dependencies {
-    addData()
-    implementation(Dependencies.dateTime)
-    implementation(Dependencies.sqlDelightCoroutinesExt)
+    api(projects.foundation.sqldelight)
+    api(projects.foundation.datetime)
 }

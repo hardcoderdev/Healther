@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pedometer_title_topBar">Шагомер</string>
-    <string name="pedometer_stepCountFormat_text">%d / %d шагов</string>
+    <string name="pedometer_stepCountFormat_text">%1$d / %2$d шагов</string>
     <string name="pedometer_playIcon_contentDescription">Начать запись шагов</string>
     <string name="pedometer_kilometersLabel_text">км</string>
     <string name="pedometer_yourIndicatorsForThisDay_text">Ваши показатели за день:</string>
     <string name="pedometer_stopIcon_contentDescription">Закончить запись шагов</string>
     <string name="pedometer_caloriesLabel_text">Калории</string>
     <string name="pedometer_timeLabel_text">Время ходьбы</string>
-    <string name="pedometer_noHardwareSensorOnDevice_text">На вашем девайсе отсутствует сенсор.\nК сожалению вы не сможете воспользоваться этой фичей</string>
     <string name="pedometer_stepsLabel_text">Шаги</string>
     <string name="pedometer_emptyDayHistory_text">В этот день вы не включали шагомер.</string>
     <string name="pedometer_chartNotEnoughData_text">У нас пока недостаточно данных для отображения графика. Используйте эту фичу на протяжении пары часов и график появится!</string>
@@ -18,15 +17,10 @@
     <string name="pedometer_notificationManager_channelName" translatable="false">pedometer</string>
     <string name="pedometer_notificationManager_contentIntent_deeplinkPattern" translatable="false">healther://pedometer_feature</string>
     <string name="pedometer_statistic_text">Общая статистика:</string>
-    <string name="pedometer_statistic_not_enough_data_text">Мало инфы</string>
     <string name="pedometer_statistic_total_steps">Всего шагов</string>
     <string name="pedometer_statistic_total_kilometers">Всего километров</string>
     <string name="pedometer_statistic_total_time">Всего времени</string>
     <string name="pedometer_statistic_total_calories">Всего калорий</string>
-    <string name="pedometer_statistic_average_calories">Калорий в среднем</string>
-    <string name="pedometer_statistic_average_time">Времени в среднем</string>
-    <string name="pedometer_statistic_average_kilometers">Километров в среднем</string>
-    <string name="pedometer_statistic_average_steps">Шагов в среднем</string>
     <string name="pedometer_permissions_not_granted_title_text">Для использования фичи шагомера нужно разрешение отслеживания физической активности.\n\nНажмите кнопку внизу, чтобы выдать разрешения</string>
     <string name="pedometer_reject_battery_title">Вы не сняли оптимизацию батареи</string>
     <string name="pedometer_reject_permissions_title">Вы не выдали необходимые разрешения</string>
@@ -39,5 +33,4 @@
     <string name="pedometer_history_yourIndicatorsForThisDay_text">Ваши показатели за день:</string>
     <string name="pedometer_history_weDontHaveEnoughDataToShowChart_text">За этот день недостаточно данных для отображения графика.</string>
     <string name="pedometer_history_title_topBar">Подробная история</string>
-    <string name="pedometer_history_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
 </resources>

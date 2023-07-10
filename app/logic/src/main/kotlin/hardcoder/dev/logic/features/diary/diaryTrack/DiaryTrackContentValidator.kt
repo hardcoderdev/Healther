@@ -21,12 +21,12 @@ sealed class ValidatedDiaryTrackContent {
 }
 
 data class CorrectDiaryTrackContent(
-    override val data: String
+    override val data: String,
 ) : ValidatedDiaryTrackContent()
 
 data class IncorrectDiaryTrackContent(
     override val data: String,
-    val reason: Reason
+    val reason: Reason,
 ) : ValidatedDiaryTrackContent() {
     sealed class Reason {
         object Empty : Reason()

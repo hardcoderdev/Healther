@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="deleteDialog_iconContentDescription">Иконка удаления</string>
+    <string name="deleteDialog_negative_option">Отмена</string>
+    <string name="deleteDialog_positive_option">Удалить</string>
+    <string name="deleteDialog_title_text">Удаление записи</string>
+    <string name="deleteDialog_trackDeletionDescription_text">Вы действительно хотите удалить эту запись?</string>
+
+    <string name="datePickerDialog_iconContentDescription">Иконка даты</string>
+    <string name="datePickerDialog_title_text">Выбор даты</string>
+    <string name="datePickerDialog_positive_option">Выбрать</string>
+    <string name="datePickerDialog_negative_option">Отмена</string>
+
+    <string name="timePickerDialog_iconContentDescription">Иконка времени</string>
+    <string name="timePickerDialog_title_text">Выбор времени</string>
+    <string name="timePickerDialog_negative_option">Отмена</string>
+    <string name="timePickerDialog_positive_option">Выбрать</string>
+</resources>

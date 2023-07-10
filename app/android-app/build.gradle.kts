@@ -1,84 +1,58 @@
 @file:Suppress("UnstableApiUsage")
 
+import java.util.Properties
+
 plugins {
-    id(Plugins.Android.application)
-    kotlin(Plugins.Kotlin.android)
-    kotlin(Plugins.Kotlin.kapt)
-    id(Plugins.serialization)
-    id(Plugins.navigationSafeArgs)
+    alias(libs.plugins.com.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    id("android-compose-convention")
+    id("android-app-convention")
 }
 
+project.rootProject.file("local.properties").reader().use {
+    Properties().apply {
+        load(it)
+    }
+}.onEach { (name, value) ->
+    ext[name.toString()] = value
+}
+
+fun extString(name: String) = ext[name].toString()
+
 android {
-    compileSdk = Android.compileSdk
-    namespace = Android.DefaultConfig.applicationId
-
-    defaultConfig {
-        applicationId = Android.DefaultConfig.applicationId
-        minSdk = Android.DefaultConfig.minSdk
-        targetSdk = Android.DefaultConfig.targetSdk
-        versionCode = Android.DefaultConfig.versionCode
-        versionName = Android.DefaultConfig.versionName
-        multiDexEnabled = true
-        testInstrumentationRunner = Android.DefaultConfig.instrumentationRunner
-
-        vectorDrawables {
-            useSupportLibrary = true
+    signingConfigs {
+        register("release") {
+            storeFile = file(extString("storeFile"))
+            storePassword = extString("storePassword")
+            keyAlias = extString("keyAlias")
+            keyPassword = extString("keyPassword")
         }
     }
 
     buildTypes {
-        all {
-            proguardFiles(
-                getDefaultProguardFile(Android.Proguard.androidOptimizedRules),
-                Android.Proguard.projectRules
-            )
-        }
         release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
         }
-        debug {
-            isMinifyEnabled = false
-            isShrinkResources = false
-        }
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = Android.KotlinOptions.jvmTargetVersion
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = Android.ComposeOptions.kotlinCompilerExtensionVersion
-    }
-
-    packagingOptions {
-        resources {
-            excludes += Android.PackagingOptions.license
-            excludes += Android.PackagingOptions.native
-            excludes += Android.PackagingOptions.dependencies
-            excludes += Android.PackagingOptions.indexList
-        }
-    }
-
-    kapt {
-        correctErrorTypes = true
     }
 }
 
 dependencies {
-    api(project(Modules.Paths.presentation))
-    implementation(project(Modules.Paths.Foundation.uikit))
-    addCompose()
-    addCoroutines()
-    addCommonAndroid()
+    implementation(projects.app.presentation)
+    implementation(projects.foundation.uikit)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.activity.ktx)
+    implementation(libs.bundles.koinDi)
+    implementation(libs.bundles.voyager.navigation)
+    implementation(libs.moko.resourcesCompose)
+    implementation(libs.compose.activity)
+    implementation(libs.compose.graphics)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.accompanistFlowrow)
+    implementation(libs.compose.coil)
+    implementation(libs.compose.lottie)
+    implementation(libs.core.ktx)
+    debugImplementation(libs.compose.debugTooling)
 }

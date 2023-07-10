@@ -1,12 +1,12 @@
 package hardcoder.dev.logic.features.pedometer
 
 import hardcoder.dev.database.IdGenerator
-import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.LocalDateTime
+import kotlinx.datetime.toKotlinLocalDateTime
 
 class PedometerStepHandler(
     private val idGenerator: IdGenerator,
-    private val pedometerTrackCreator: PedometerTrackCreator
+    private val pedometerTrackCreator: PedometerTrackCreator,
 ) {
     private var currentTrackId = idGenerator.nextId()
     private var currentTrackStepCount = 0
@@ -25,7 +25,7 @@ class PedometerStepHandler(
         pedometerTrackCreator.upsertPedometerTrack(
             id = currentTrackId,
             stepsCount = currentTrackStepCount,
-            range = currentTrackStartTime.toKotlinLocalDateTime()..currentTrackEndTime.toKotlinLocalDateTime()
+            range = currentTrackStartTime.toKotlinLocalDateTime()..currentTrackEndTime.toKotlinLocalDateTime(),
         )
     }
 }

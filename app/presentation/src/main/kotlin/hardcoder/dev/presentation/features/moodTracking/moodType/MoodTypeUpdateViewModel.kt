@@ -2,12 +2,13 @@ package hardcoder.dev.presentation.features.moodTracking.moodType
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.controller.InputController
-import hardcoder.dev.controller.SingleRequestController
-import hardcoder.dev.controller.SingleSelectionController
-import hardcoder.dev.controller.ValidatedInputController
-import hardcoder.dev.controller.requireSelectedItem
-import hardcoder.dev.controller.validateAndRequire
+import hardcoder.dev.controller.input.InputController
+import hardcoder.dev.controller.input.ValidatedInputController
+import hardcoder.dev.controller.input.getInput
+import hardcoder.dev.controller.input.validateAndRequire
+import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeDeleter
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
@@ -24,23 +25,23 @@ class MoodTypeUpdateViewModel(
     private val moodTypeProvider: MoodTypeProvider,
     private val moodTypeUpdater: MoodTypeUpdater,
     private val moodTypeDeleter: MoodTypeDeleter,
-    iconResourceProvider: IconResourceProvider
+    iconResourceProvider: IconResourceProvider,
 ) : ViewModel() {
 
     val moodTypeNameController = ValidatedInputController(
         coroutineScope = viewModelScope,
         initialInput = "",
-        validation = moodTypeNameValidator::validate
+        validation = moodTypeNameValidator::validate,
     )
 
     val iconSelectionController = SingleSelectionController(
         coroutineScope = viewModelScope,
-        items = iconResourceProvider.getIcons()
+        items = iconResourceProvider.getIcons(),
     )
 
     val positiveIndexController = InputController(
         coroutineScope = viewModelScope,
-        initialInput = 0
+        initialInput = 0,
     )
 
     val updateController = SingleRequestController(
@@ -50,19 +51,19 @@ class MoodTypeUpdateViewModel(
                 id = moodTypeId,
                 name = moodTypeNameController.validateAndRequire(),
                 icon = iconSelectionController.requireSelectedItem(),
-                positivePercentage = positiveIndexController.state.value.input
+                positivePercentage = positiveIndexController.getInput(),
             )
         },
         isAllowedFlow = moodTypeNameController.state.map {
             it.validationResult == null || it.validationResult is CorrectMoodTypeName
-        }
+        },
     )
 
     val deleteController = SingleRequestController(
         coroutineScope = viewModelScope,
         request = {
             moodTypeDeleter.deleteById(moodTypeId)
-        }
+        },
     )
 
     init {

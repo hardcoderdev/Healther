@@ -14,19 +14,9 @@
     <string name="liquid_liters">%dл</string>
     <string name="liquid_milliliters">%dмл</string>
 
-    <string name="iconItem_icon_contentDescription">Иконка для элемента</string>
-
-    <string name="deleteDialog_iconContentDescription">Иконка удаления</string>
-    <string name="deleteDialog_no_option">Отмена</string>
-    <string name="deleteDialog_yes_option">Удалить</string>
-    <string name="deleteDialog_trackDeletionTitle_text">Удаление записи</string>
-    <string name="deleteDialog_trackDeletionDescription_text">Вы действительно хотите удалить эту запись?</string>
-
     <string name="dateRangeFilterType_byDay">День</string>
     <string name="dateRangeFilterType_byWeek">Неделя</string>
     <string name="dateRangeFilterType_byMonth">Месяц</string>
     <string name="dateRangeFilterType_byYear">Год</string>
     <string name="dateRangeFilterType_byAllPeriod">Весь период</string>
-    <string name="dashboard_fasting_completed">Голодание завершено.</string>
-    <string name="dashboard_finish_fasting">Сохранить голодание</string>
 </resources>

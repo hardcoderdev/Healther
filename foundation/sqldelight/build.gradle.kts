@@ -1,22 +1,12 @@
 plugins {
-    id(Plugins.Android.library)
-    id(Plugins.Kotlin.kotlinLibrary)
-}
-
-android {
-    namespace = Modules.Namespaces.Foundation.sqldelight
-    compileSdk = Android.compileSdk
-
-    defaultConfig {
-        minSdk = Android.DefaultConfig.minSdk
-    }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
+    id("android-library-convention")
 }
 
 dependencies {
-    api(project(Modules.Paths.Foundation.coroutines))
-    addData()
+    api(projects.foundation.coroutines)
+    api(libs.preferences.ktx)
+    api(libs.data.store)
+    api(libs.sqlDelight.primitiveAdapters)
+    api(libs.sqlDelight.androidDriver)
+    api(libs.sqlDelight.coroutinesExt)
 }

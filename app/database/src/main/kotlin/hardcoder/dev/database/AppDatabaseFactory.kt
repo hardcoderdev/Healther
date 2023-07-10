@@ -1,31 +1,32 @@
 package hardcoder.dev.database
 
 import android.content.Context
-import com.squareup.sqldelight.android.AndroidSqliteDriver
-import hardcoder.dev.database.columnAdapters.InstantAdapter
+
+import app.cash.sqldelight.driver.android.AndroidSqliteDriver
+import hardcoder.dev.database.appAdapters.AppPreferenceAdapters
+import hardcoder.dev.database.appAdapters.DiaryAdapters
+import hardcoder.dev.database.appAdapters.FastingAdapters
+import hardcoder.dev.database.appAdapters.HeroAdapters
+import hardcoder.dev.database.appAdapters.MoodTrackingAdapters
+import hardcoder.dev.database.appAdapters.PedometerAdapters
+import hardcoder.dev.database.appAdapters.WaterTrackingAdapters
 
 object AppDatabaseFactory {
 
     fun create(context: Context, name: String) = AppDatabase(
-        driver = AndroidSqliteDriver(
-            schema = AppDatabase.Schema,
-            context = context,
-            name = name
-        ),
-        AppPreferenceAdapter = AppPreference.Adapter(
-            firstLaunchTimeAdapter = InstantAdapter,
-            lastAppReviewRequestTimeAdapter = InstantAdapter
-        ),
-        WaterTrackAdapter = WaterTrack.Adapter(dateAdapter = InstantAdapter),
-        PedometerTrackAdapter = PedometerTrack.Adapter(
-            startTimeAdapter = InstantAdapter,
-            endTimeAdapter = InstantAdapter
-        ),
-        FastingTrackAdapter = FastingTrack.Adapter(
-            startTimeAdapter = InstantAdapter,
-            interruptedTimeAdapter = InstantAdapter
-        ),
-        MoodTrackAdapter = MoodTrack.Adapter(dateAdapter = InstantAdapter),
-        DiaryTrackAdapter = DiaryTrack.Adapter(dateAdapter = InstantAdapter)
+        driver = AndroidSqliteDriver(schema = AppDatabase.Schema, context = context, name = name),
+        HeroAdapter = HeroAdapters.createHeroAdapter(),
+        AppPreferenceAdapter = AppPreferenceAdapters.createAppPreferenceAdapter(),
+        WaterTrackAdapter = WaterTrackingAdapters.createWaterTrackAdapter(),
+        DrinkTypeAdapter = WaterTrackingAdapters.createDrinkTypeAdapter(),
+        PedometerTrackAdapter = PedometerAdapters.createPedometerTrackAdapter(),
+        FastingTrackAdapter = FastingAdapters.createFastingTrackAdapter(),
+        MoodWithActivityAdapter = MoodTrackingAdapters.createMoodWithActivityAdapter(),
+        MoodTypeAdapter = MoodTrackingAdapters.createMoodTypeAdapter(),
+        MoodActivityAdapter = MoodTrackingAdapters.createMoodActivityAdapter(),
+        MoodTrackAdapter = MoodTrackingAdapters.createMoodTrackAdapter(),
+        DiaryTagAdapter = DiaryAdapters.createDiaryTagAdapter(),
+        DiaryAttachmentAdapter = DiaryAdapters.createDiaryAttachmentAdapter(),
+        DiaryTrackAdapter = DiaryAdapters.createDiaryTrackAdapter(),
     )
 }

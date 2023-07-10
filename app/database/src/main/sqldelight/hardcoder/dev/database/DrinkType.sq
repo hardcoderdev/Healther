@@ -1,7 +1,9 @@
+import kotlin.Int;
+
 CREATE TABLE DrinkType (
     id INTEGER AS Int NOT NULL PRIMARY KEY,
     name TEXT NOT NULL,
-    iconId INTEGER NOT NULL,
+    iconId INTEGER AS Int NOT NULL,
     hydrationIndexPercentage INTEGER AS Int NOT NULL
 );
 

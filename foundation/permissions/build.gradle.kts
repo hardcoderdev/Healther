@@ -1,22 +1,8 @@
 plugins {
-    id(Plugins.Android.library)
-    id(Plugins.Kotlin.kotlinLibrary)
-}
-
-android {
-    namespace = Modules.Namespaces.Foundation.permissions
-    compileSdk = Android.compileSdk
-
-    defaultConfig {
-        minSdk = Android.DefaultConfig.minSdk
-    }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
+    id("android-library-convention")
 }
 
 dependencies {
-    addCoroutines()
-    implementation(Dependencies.activityKtx)
+    api(projects.foundation.coroutines)
+    implementation(libs.activity.ktx)
 }

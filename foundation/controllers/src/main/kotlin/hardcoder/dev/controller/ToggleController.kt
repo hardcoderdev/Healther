@@ -10,13 +10,13 @@ import kotlinx.coroutines.launch
 class ToggleController(
     private val coroutineScope: CoroutineScope,
     private val toggle: suspend () -> Unit,
-    isActiveFlow: Flow<Boolean>
+    isActiveFlow: Flow<Boolean>,
 ) : StateController<ToggleController.State> {
 
     override val state = isActiveFlow.map(::State).stateIn(
         scope = coroutineScope,
         started = SharingStarted.Eagerly,
-        initialValue = State(false)
+        initialValue = State(false),
     )
 
     fun toggle() {
@@ -26,6 +26,6 @@ class ToggleController(
     }
 
     data class State(
-        val isActive: Boolean
+        val isActive: Boolean,
     )
 }

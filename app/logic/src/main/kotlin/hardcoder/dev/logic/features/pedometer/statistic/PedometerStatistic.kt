@@ -7,8 +7,4 @@ data class PedometerStatistic(
     val totalKilometers: Float,
     val totalDuration: Duration,
     val totalCalories: Float,
-    val averageSteps: Int,
-    val averageKilometers: Float,
-    val averageDuration: Duration,
-    val averageCalories: Float
 )

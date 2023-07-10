@@ -3,22 +3,23 @@ package hardcoder.dev.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.controller.SingleRequestController
-import hardcoder.dev.in_app_review.ReviewManager
+import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.inAppReview.ReviewManager
 import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.datetime.Clock
 
 class SettingsViewModel(
     reviewManager: ReviewManager,
     appPreferenceUpdater: AppPreferenceUpdater,
-    appPreferenceProvider: AppPreferenceProvider
+    appPreferenceProvider: AppPreferenceProvider,
+    dateTimeProvider: DateTimeProvider,
 ) : ViewModel() {
 
     val preferencesLoadingController = LoadingController(
         coroutineScope = viewModelScope,
-        flow = appPreferenceProvider.provideAppPreference().filterNotNull()
+        flow = appPreferenceProvider.provideAppPreference().filterNotNull(),
     )
 
     val appReviewRequestController = SingleRequestController(
@@ -31,9 +32,9 @@ class SettingsViewModel(
 
             appPreferenceUpdater.update(
                 preferencesState.data.copy(
-                    lastAppReviewRequestTime = Clock.System.now()
-                )
+                    lastAppReviewRequestTime = dateTimeProvider.currentInstant(),
+                ),
             )
-        }
+        },
     )
 }

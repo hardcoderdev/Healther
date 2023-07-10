@@ -1,23 +1,23 @@
 package hardcoder.dev.logic.features.diary.diaryAttachment
 
+import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.logic.features.diary.AttachmentType
 import hardcoder.dev.logic.features.diary.AttachmentTypeIdMapper
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 class DiaryAttachmentManager(
     private val idGenerator: IdGenerator,
     private val appDatabase: AppDatabase,
-    private val dispatcher: CoroutineDispatcher,
-    private val attachmentTypeIdMapper: AttachmentTypeIdMapper
+    private val dispatchers: BackgroundCoroutineDispatchers,
+    private val attachmentTypeIdMapper: AttachmentTypeIdMapper,
 ) {
 
     suspend fun attach(
         diaryTrackId: Int,
-        attachmentGroup: DiaryAttachmentGroup
-    ) = withContext(dispatcher) {
+        attachmentGroup: DiaryAttachmentGroup,
+    ) = withContext(dispatchers.io) {
         appDatabase.diaryAttachmentQueries.deleteByDiaryTrackId(diaryTrackId)
 
         attachmentGroup.moodTracks.forEach { moodTrack ->
@@ -25,7 +25,7 @@ class DiaryAttachmentManager(
                 id = idGenerator.nextId(),
                 diaryTrackId = diaryTrackId,
                 targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.MOOD_TRACKING_ENTITY),
-                targetId = moodTrack.id
+                targetId = moodTrack.id,
             )
         }
 
@@ -34,7 +34,7 @@ class DiaryAttachmentManager(
                 id = idGenerator.nextId(),
                 diaryTrackId = diaryTrackId,
                 targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.FASTING_ENTITY),
-                targetId = fastingTrack.id
+                targetId = fastingTrack.id,
             )
         }
 
@@ -43,7 +43,7 @@ class DiaryAttachmentManager(
                 id = idGenerator.nextId(),
                 diaryTrackId = diaryTrackId,
                 targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.TAG),
-                targetId = tag.id
+                targetId = tag.id,
             )
         }
     }

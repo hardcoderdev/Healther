@@ -6,5 +6,5 @@ data class MoodType(
     val id: Int,
     val name: String,
     val icon: LocalIcon,
-    val positivePercentage: Int
+    val positivePercentage: Int,
 )

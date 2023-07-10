@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="deleteDialog_iconContentDescription">Delete icon</string>
+    <string name="deleteDialog_negative_option">Cancel</string>
+    <string name="deleteDialog_positive_option">Delete</string>
+    <string name="deleteDialog_title_text">Deleting an entry</string>
+    <string name="deleteDialog_trackDeletionDescription_text">Are you sure you want to delete this entry?</string>
+
+    <string name="datePickerDialog_iconContentDescription">Date icon</string>
+    <string name="datePickerDialog_title_text">Date selection</string>
+    <string name="datePickerDialog_positive_option">Select</string>
+    <string name="datePickerDialog_negative_option">Cancel</string>
+
+    <string name="timePickerDialog_iconContentDescription">Time icon</string>
+    <string name="timePickerDialog_title_text">Time selection</string>
+    <string name="timePickerDialog_positive_option">Select</string>
+    <string name="timePickerDialog_negative_option">Cancel</string>
+</resources>

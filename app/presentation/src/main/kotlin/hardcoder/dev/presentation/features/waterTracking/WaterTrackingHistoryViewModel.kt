@@ -2,26 +2,25 @@ package hardcoder.dev.presentation.features.waterTracking
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.controller.InputController
 import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.coroutines.mapItems
-import hardcoder.dev.datetime.createRangeForThisDay
+import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.logic.features.waterTracking.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
-import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class WaterTrackingHistoryViewModel(
     waterTrackProvider: WaterTrackProvider,
-    waterPercentageResolver: WaterPercentageResolver
+    waterPercentageResolver: WaterPercentageResolver,
+    dateTimeProvider: DateTimeProvider,
 ) : ViewModel() {
 
     val dateRangeInputController = InputController(
         coroutineScope = viewModelScope,
-        initialInput = LocalDate.now().createRangeForThisDay()
+        initialInput = dateTimeProvider.currentDateRange(),
     )
 
     val waterTracksLoadingController = LoadingController(
@@ -32,9 +31,9 @@ class WaterTrackingHistoryViewModel(
             it.toItem(
                 resolvedMillilitersCount = waterPercentageResolver.resolve(
                     drinkType = it.drinkType,
-                    millilitersDrunk = it.millilitersCount
-                )
+                    millilitersDrunk = it.millilitersCount,
+                ),
             )
-        }
+        },
     )
 }

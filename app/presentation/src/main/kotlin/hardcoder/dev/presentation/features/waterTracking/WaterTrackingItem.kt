@@ -7,5 +7,5 @@ data class WaterTrackingItem(
     val drinkType: DrinkType,
     val millilitersCount: Int,
     val resolvedMillilitersCount: Int,
-    val timeInMillis: Long
+    val timeInMillis: Long,
 )
