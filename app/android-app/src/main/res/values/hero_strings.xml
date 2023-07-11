@@ -10,4 +10,9 @@
     <string name="hero_creation_forWhatWeNeedGender_text">• Ваш гендер нужен для различных рассчётов в приложении, например рассчёта нормы потребляемой воды.</string>
     <string name="hero_creation_selectYourGender_text">Выбери свой гендер для более точных расчётов.</string>
     <string name="hero_creation_create_buttonText">Создать героя</string>
+    <string name="hero_creation_nameIcon_contentDescription">Иконка ввода имени (ника)</string>
+    <string name="hero_creation_enterName_text">Введите имя или ник:</string>
+    <string name="hero_creation_enterName_textField">Например: Илья или драконоборец1997_)</string>
+    <string name="hero_creation_nameEmpty">Это поле не может быть пустым!</string>
+    <string name="hero_creation_nameMoreThanMaxCharsError">Максимальное кол-во символов: %d</string>
 </resources>

@@ -10,5 +10,6 @@ object AppPreferenceAdapters {
         firstLaunchTimeAdapter = InstantAdapter,
         lastAppReviewRequestTimeAdapter = InstantAdapter,
         idAdapter = IntColumnAdapter,
+        lastEntranceDateTimeAdapter = InstantAdapter,
     )
 }

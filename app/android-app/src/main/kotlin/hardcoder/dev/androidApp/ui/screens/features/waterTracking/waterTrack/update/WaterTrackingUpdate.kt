@@ -231,7 +231,7 @@ private fun SelectDateSection(dateInputController: InputController<LocalDate>) {
     Spacer(modifier = Modifier.height(16.dp))
     TextIconButton(
         textIconButtonConfig = TextIconButtonConfig.Outlined(
-            iconResId = R.drawable.ic_date_range,
+            iconResId = R.drawable.ic_date,
             labelResId = R.string.waterTracking_update_selectedDate_formatText,
             formatArgs = listOf(formattedDate),
             onClick = {

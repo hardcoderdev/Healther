@@ -17,6 +17,9 @@ class HeroUpdater(
             exerciseStressTime = hero.exerciseStressTime,
             genderId = genderIdMapper.mapToId(hero.gender),
             id = HERO_ID,
+            name = hero.name,
+            healthPoints = hero.healthPoints,
+            experiencePoints = hero.experiencePoints,
         )
     }
 }

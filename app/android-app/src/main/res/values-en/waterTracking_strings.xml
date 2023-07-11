@@ -44,7 +44,7 @@
     <string name="waterTracking_drinkTypes_creation_title_topBar">Creating a drink</string>
     <string name="waterTracking_drinkTypes_creation_enterName_text">Enter the name of the drink:</string>
     <string name="waterTracking_drinkTypes_creation_nameIcon_contentDescription">Name input icon</string>
-    <string name="waterTracking_drinkTypes_creation_enterName_textField">Like a gin tonic…</string>
+    <string name="waterTracking_drinkTypes_creation_enterName_textField">E.g. a gin tonic…</string>
     <string name="waterTracking_drinkTypes_creation_selectIcon_text">Select a drink icon:</string>
     <string name="waterTracking_drinkTypes_creation_drinkTypeIconContentDescription">Drink type icon</string>
     <string name="waterTracking_drinkTypes_creation_selectHydrationIndex_text">Specify the drink hydration index:</string>
@@ -59,7 +59,7 @@
     <string name="waterTracking_drinkTypes_update_drinkTypeIconContentDescription">Drink type icon</string>
     <string name="waterTracking_drinkTypes_update_selectIcon_text">Select a drink icon:</string>
     <string name="waterTracking_drinkTypes_update_nameIcon_contentDescription">Name input icon</string>
-    <string name="waterTracking_drinkTypes_update_enterName_textField">Like a gin tonic…</string>
+    <string name="waterTracking_drinkTypes_update_enterName_textField">E.g. a gin tonic…</string>
     <string name="waterTracking_drinkTypes_update_enterName_text">Enter the name of the drink:</string>
     <string name="waterTracking_drinkTypes_update_createTrack_buttonText">Update drink type</string>
     <string name="waterTracking_drinkTypes_update_nameEmpty">This field can\'t be empty!</string>

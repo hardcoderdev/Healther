@@ -25,5 +25,8 @@ class HeroProvider(
         weight = weight,
         exerciseStressTime = exerciseStressTime,
         gender = genderIdMapper.mapToGender(genderId),
+        name = name,
+        healthPoints = healthPoints,
+        experiencePoints = experiencePoints,
     )
 }

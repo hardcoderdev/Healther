@@ -1,5 +1,6 @@
 package hardcoder.dev.androidApp.ui.screens.hero
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,21 +16,29 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.input.InputController
+import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.SingleRequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.logic.hero.IncorrectHeroName
+import hardcoder.dev.logic.hero.ValidatedHeroName
 import hardcoder.dev.logic.hero.gender.Gender
 import hardcoder.dev.presentation.hero.HeroCreationViewModel
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.container.SingleCardSelectionRow
+import hardcoder.dev.uikit.components.icon.Icon
 import hardcoder.dev.uikit.components.icon.Image
 import hardcoder.dev.uikit.components.picker.NumberInput
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Title
+import hardcoder.dev.uikit.components.text.textField.TextFieldValidationAdapter
+import hardcoder.dev.uikit.components.text.textField.TextInputAdapter
+import hardcoder.dev.uikit.components.text.textField.ValidatedTextField
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
 import hardcoderdev.healther.app.android.app.R
@@ -50,6 +59,7 @@ fun HeroCreation(
             HeroCreationContent(
                 heroCreationController = viewModel.heroCreationController,
                 genderSelectionController = viewModel.genderSelectionController,
+                nameInputController = viewModel.nameInputController,
                 weightInputController = viewModel.weightInputController,
                 exerciseStressTimeInputController = viewModel.exerciseStressTimeInputController,
             )
@@ -67,9 +77,12 @@ fun HeroCreation(
 private fun HeroCreationContent(
     heroCreationController: SingleRequestController,
     genderSelectionController: SingleSelectionController<Gender>,
+    nameInputController: ValidatedInputController<String, ValidatedHeroName>,
     weightInputController: InputController<Int>,
     exerciseStressTimeInputController: InputController<Int>,
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -81,6 +94,8 @@ private fun HeroCreationContent(
                 .verticalScroll(rememberScrollState()),
         ) {
             SelectGenderSection(genderSelectionController = genderSelectionController)
+            Spacer(modifier = Modifier.height(16.dp))
+            EnterNameSection(context = context, nameInputController = nameInputController)
             Spacer(modifier = Modifier.height(16.dp))
             EnterWeight(weightInputController = weightInputController)
             Spacer(modifier = Modifier.height(16.dp))
@@ -129,6 +144,47 @@ private fun SelectGenderSection(genderSelectionController: SingleSelectionContro
 
     Spacer(modifier = Modifier.height(32.dp))
     Description(text = stringResource(id = R.string.hero_creation_forWhatWeNeedGender_text))
+}
+
+@Composable
+private fun EnterNameSection(
+    context: Context,
+    nameInputController: ValidatedInputController<String, ValidatedHeroName>,
+) {
+    Title(text = stringResource(id = R.string.hero_creation_enterName_text))
+    Spacer(modifier = Modifier.height(16.dp))
+    ValidatedTextField(
+        modifier = Modifier.fillMaxWidth(),
+        label = R.string.hero_creation_enterName_textField,
+        controller = nameInputController,
+        inputAdapter = TextInputAdapter,
+        validationAdapter = TextFieldValidationAdapter {
+            if (it !is IncorrectHeroName) {
+                null
+            } else {
+                when (val reason = it.reason) {
+                    is IncorrectHeroName.Reason.Empty -> {
+                        context.getString(R.string.hero_creation_nameEmpty)
+                    }
+
+                    is IncorrectHeroName.Reason.MoreThanMaxChars -> {
+                        context.getString(
+                            R.string.hero_creation_nameMoreThanMaxCharsError,
+                            reason.maxChars,
+                        )
+                    }
+                }
+            }
+        },
+        leadingIcon = {
+            Icon(
+                iconResId = R.drawable.ic_description,
+                contentDescription = stringResource(
+                    id = R.string.hero_creation_nameIcon_contentDescription,
+                ),
+            )
+        },
+    )
 }
 
 @Composable

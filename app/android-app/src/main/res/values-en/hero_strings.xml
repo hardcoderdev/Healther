@@ -10,4 +10,9 @@
     <string name="hero_creation_forWhatWeNeedGender_text">• Your gender is needed for various calculations in the application, such as calculating the amount of water consumed.</string>
     <string name="hero_creation_selectYourGender_text">Select your gender for more accurate calculations.</string>
     <string name="hero_creation_create_buttonText">Create hero</string>
+    <string name="hero_creation_nameIcon_contentDescription">Name (nickname) input icon</string>
+    <string name="hero_creation_enterName_text">Enter name or nickname:</string>
+    <string name="hero_creation_enterName_textField">E.g. John or DragonSlayer1997)</string>
+    <string name="hero_creation_nameEmpty">This field can\'t be empty!</string>
+    <string name="hero_creation_nameMoreThanMaxCharsError">Max characters: %d</string>
 </resources>

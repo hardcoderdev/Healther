@@ -44,7 +44,7 @@
 
     <string name="diary_tag_creation_title_topBar">Tag creation</string>
     <string name="diary_tag_creation_enter_name_text">Enter the tag name:</string>
-    <string name="diary_tag_creation_enterName_textField">For example: health…</string>
+    <string name="diary_tag_creation_enterName_textField">E.g. health…</string>
     <string name="diary_tag_creation_nameEmpty_error">The name cannot be empty!</string>
     <string name="diary_tag_creation_nameMoreThanMaxChars_error">Maximum number of characters: %d</string>
     <string name="diary_tag_creation_selectIcon_text">Select an icon for the tag:</string>
@@ -53,7 +53,7 @@
 
     <string name="diary_tag_update_title_topBar">Tag update</string>
     <string name="diary_tag_update_enter_name_text">Enter the tag name:</string>
-    <string name="diary_tag_update_enterName_textField">For example: health…</string>
+    <string name="diary_tag_update_enterName_textField">E.g. health…</string>
     <string name="diary_tag_update_nameEmpty_error">The name cannot be empty!</string>
     <string name="diary_tag_update_nameMoreThanMaxChars_error">Maximum number of characters: %d</string>
     <string name="diary_tag_update_selectIcon_text">Select an icon for the tag:</string>
@@ -67,5 +67,5 @@
     <string name="predefined_diary_filterFeatureType_pedometerFilter">Pedometer</string>
     <string name="predefined_diary_filterFeatureType_fastingFilter">Fasting</string>
     <string name="predefined_diary_filterFeatureType_moodTrackingFilter">Mood tracking</string>
-    
+
 </resources>

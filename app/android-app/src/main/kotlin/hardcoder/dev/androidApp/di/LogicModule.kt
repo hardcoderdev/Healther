@@ -1,6 +1,7 @@
 package hardcoder.dev.androidApp.di
 
 import hardcoder.dev.androidApp.di.logic.appPreferencesLogicModule
+import hardcoder.dev.androidApp.di.logic.dailyStreakLogicModule
 import hardcoder.dev.androidApp.di.logic.dateTimeLogicModule
 import hardcoder.dev.androidApp.di.logic.features.diaryLogicModule
 import hardcoder.dev.androidApp.di.logic.features.fastingLogicModule
@@ -12,6 +13,7 @@ import hardcoder.dev.androidApp.di.logic.heroLogicModule
 import hardcoder.dev.androidApp.di.logic.permissions.permissionsLogicModule
 import hardcoder.dev.androidApp.di.logic.predefinedLogicModule
 import hardcoder.dev.androidApp.di.logic.resolversLogicModule
+import hardcoder.dev.androidApp.di.logic.walletLogicModule
 import org.koin.dsl.module
 
 val logicModule = module {
@@ -27,5 +29,7 @@ val logicModule = module {
         fastingLogicModule,
         moodTrackingLogicModule,
         diaryLogicModule,
+        walletLogicModule,
+        dailyStreakLogicModule,
     )
 }

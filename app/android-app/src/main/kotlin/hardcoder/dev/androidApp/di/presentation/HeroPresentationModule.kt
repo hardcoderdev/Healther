@@ -18,6 +18,8 @@ val heroPresentationModule = module {
             appPreferenceUpdater = get(),
             genderProvider = get(),
             dateTimeProvider = get(),
+            heroNameValidator = get(),
+            walletCreator = get(),
         )
     }
 }

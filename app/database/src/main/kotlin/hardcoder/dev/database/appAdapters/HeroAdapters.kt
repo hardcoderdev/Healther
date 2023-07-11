@@ -10,5 +10,7 @@ object HeroAdapters {
         weightAdapter = IntColumnAdapter,
         exerciseStressTimeAdapter = IntColumnAdapter,
         genderIdAdapter = IntColumnAdapter,
+        healthPointsAdapter = IntColumnAdapter,
+        experiencePointsAdapter = IntColumnAdapter,
     )
 }

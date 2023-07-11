@@ -4,11 +4,13 @@ import android.content.Context
 
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import hardcoder.dev.database.appAdapters.AppPreferenceAdapters
+import hardcoder.dev.database.appAdapters.DailyStreakAdapter
 import hardcoder.dev.database.appAdapters.DiaryAdapters
 import hardcoder.dev.database.appAdapters.FastingAdapters
 import hardcoder.dev.database.appAdapters.HeroAdapters
 import hardcoder.dev.database.appAdapters.MoodTrackingAdapters
 import hardcoder.dev.database.appAdapters.PedometerAdapters
+import hardcoder.dev.database.appAdapters.WalletAdapter
 import hardcoder.dev.database.appAdapters.WaterTrackingAdapters
 
 object AppDatabaseFactory {
@@ -28,5 +30,7 @@ object AppDatabaseFactory {
         DiaryTagAdapter = DiaryAdapters.createDiaryTagAdapter(),
         DiaryAttachmentAdapter = DiaryAdapters.createDiaryAttachmentAdapter(),
         DiaryTrackAdapter = DiaryAdapters.createDiaryTrackAdapter(),
+        WalletAdapter = WalletAdapter.createWalletAdapter(),
+        DailyStreakAdapter = DailyStreakAdapter.createDailyStreakAdapter(),
     )
 }

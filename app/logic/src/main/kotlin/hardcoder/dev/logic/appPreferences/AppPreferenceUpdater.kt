@@ -14,6 +14,7 @@ class AppPreferenceUpdater(
             id = PREFERENCES_ID,
             firstLaunchTime = appPreference.firstLaunchTime,
             lastAppReviewRequestTime = appPreference.lastAppReviewRequestTime,
+            lastEntranceDateTime = appPreference.lastEntranceDateTime,
         )
     }
 
