@@ -2,14 +2,19 @@ package hardcoder.dev.logic.hero.gender
 
 class GenderIdMapper {
 
-    fun mapToId(gender: Gender) = when (gender) {
-        Gender.MALE -> 0
-        Gender.FEMALE -> 1
-    }
+    private val map = mapOf(
+        Gender.MALE to GENDER_MALE_ID,
+        Gender.FEMALE to GENDER_FEMALE_ID,
+    )
 
-    fun mapToGender(id: Int) = when (id) {
-        0 -> Gender.MALE
-        1 -> Gender.FEMALE
-        else -> error("This enum member not found")
+    fun mapToId(gender: Gender) = checkNotNull(map[gender])
+
+    fun mapToGender(genderId: Int) = checkNotNull(
+        map.entries.find { it.value == genderId },
+    ).key
+
+    private companion object {
+        private const val GENDER_MALE_ID = 0
+        private const val GENDER_FEMALE_ID = 1
     }
 }

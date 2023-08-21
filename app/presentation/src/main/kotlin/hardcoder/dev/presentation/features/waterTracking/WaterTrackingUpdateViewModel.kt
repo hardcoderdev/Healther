@@ -6,16 +6,16 @@ import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.controller.input.validateAndRequire
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toInstant
 import hardcoder.dev.datetime.toLocalDateTime
-import hardcoder.dev.logic.features.waterTracking.CorrectMillilitersCount
+import hardcoder.dev.logic.features.waterTracking.validators.CorrectMillilitersCount
 import hardcoder.dev.logic.features.waterTracking.WaterTrack
 import hardcoder.dev.logic.features.waterTracking.WaterTrackDeleter
-import hardcoder.dev.logic.features.waterTracking.WaterTrackMillilitersValidator
+import hardcoder.dev.logic.features.waterTracking.validators.WaterTrackMillilitersValidator
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackUpdater
 import hardcoder.dev.logic.features.waterTracking.WaterTrackingDailyRateProvider
@@ -73,7 +73,7 @@ class WaterTrackingUpdateViewModel(
         itemsFlow = drinkTypeProvider.provideAllDrinkTypes(),
     )
 
-    val updatingController = SingleRequestController(
+    val updatingController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             waterTrackUpdater.update(
@@ -92,7 +92,7 @@ class WaterTrackingUpdateViewModel(
         },
     )
 
-    val deletionController = SingleRequestController(
+    val deletionController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             waterTrackDeleter.deleteById(waterTrackId)

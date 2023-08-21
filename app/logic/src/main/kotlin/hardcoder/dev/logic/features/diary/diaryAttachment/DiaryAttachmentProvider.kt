@@ -73,7 +73,7 @@ class DiaryAttachmentProvider(
         }.flowOn(dispatchers.io)
 
     private fun provideTargetEntity(attachment: DiaryAttachment): Flow<Any?> {
-        return when (attachmentTypeIdMapper.mapToType(attachment.targetTypeId)) {
+        return when (attachmentTypeIdMapper.mapToAttachmentType(attachment.targetTypeId)) {
             AttachmentType.FASTING_ENTITY -> {
                 fastingTrackProvider.provideFastingTrackById(attachment.targetId)
             }

@@ -19,7 +19,6 @@ import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
-import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingHistoryViewModel
 import hardcoder.dev.uikit.components.calendar.SingleSelectionCalendar
@@ -35,13 +34,11 @@ import org.koin.compose.koinInject
 @Composable
 fun MoodTrackingHistory(
     viewModel: MoodTrackingHistoryViewModel,
-    onMoodTrackUpdate: (Int) -> Unit,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             MoodTrackingHistoryContent(
-                onTrackUpdate = onMoodTrackUpdate,
                 dateRangeInputController = viewModel.dateRangeInputController,
                 moodWithActivitiesLoadingController = viewModel.moodWithActivityLoadingController,
             )
@@ -59,7 +56,6 @@ fun MoodTrackingHistory(
 private fun MoodTrackingHistoryContent(
     moodWithActivitiesLoadingController: LoadingController<List<MoodWithActivities>>,
     dateRangeInputController: InputController<ClosedRange<Instant>>,
-    onTrackUpdate: (Int) -> Unit,
 ) {
     val dateTimeProvider = koinInject<DateTimeProvider>()
 
@@ -75,9 +71,6 @@ private fun MoodTrackingHistoryContent(
         Spacer(modifier = Modifier.height(16.dp))
         MoodTracksHistory(
             moodWithActivitiesLoadingController = moodWithActivitiesLoadingController,
-            onTrackUpdate = { moodTrack ->
-                onTrackUpdate(moodTrack.id)
-            },
         )
     }
 }
@@ -85,7 +78,6 @@ private fun MoodTrackingHistoryContent(
 @Composable
 private fun MoodTracksHistory(
     moodWithActivitiesLoadingController: LoadingController<List<MoodWithActivities>>,
-    onTrackUpdate: (MoodTrack) -> Unit,
 ) {
     LoadingContainer(
         controller = moodWithActivitiesLoadingController,
@@ -99,8 +91,10 @@ private fun MoodTracksHistory(
                     items(moodWithActivitiesList) { moodWithActivityTrack ->
                         MoodTrackItem(
                             moodTrack = moodWithActivityTrack.moodTrack,
-                            onUpdate = onTrackUpdate,
                             activitiesList = moodWithActivityTrack.moodActivityList,
+                            onUpdate = {
+                                /* no-op because money for track has already been collected */
+                            }
                         )
                     }
                 }

@@ -2,42 +2,37 @@ package hardcoder.dev.presentation.hero
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
-import hardcoder.dev.controller.input.getInput
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.input.validateAndRequire
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.logic.appPreferences.AppPreference
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
-import hardcoder.dev.logic.currency.WalletCreator
+import hardcoder.dev.logic.hero.CorrectHeroHeroExerciseStress
+import hardcoder.dev.logic.hero.CorrectHeroName
+import hardcoder.dev.logic.hero.CorrectHeroWeight
 import hardcoder.dev.logic.hero.HeroCreator
+import hardcoder.dev.logic.hero.HeroExerciseStressValidator
 import hardcoder.dev.logic.hero.HeroNameValidator
+import hardcoder.dev.logic.hero.HeroWeightValidator
 import hardcoder.dev.logic.hero.gender.GenderProvider
+import kotlinx.coroutines.flow.combine
 
 class HeroCreationViewModel(
     appPreferenceUpdater: AppPreferenceUpdater,
     genderProvider: GenderProvider,
     heroNameValidator: HeroNameValidator,
+    heroWeightValidator: HeroWeightValidator,
+    heroExerciseStressValidator: HeroExerciseStressValidator,
     dateTimeProvider: DateTimeProvider,
     heroCreator: HeroCreator,
-    walletCreator: WalletCreator,
 ) : ViewModel() {
 
     val genderSelectionController = SingleSelectionController(
         coroutineScope = viewModelScope,
         itemsFlow = genderProvider.provideAllGenders(),
-    )
-
-    val weightInputController = InputController(
-        coroutineScope = viewModelScope,
-        initialInput = DEFAULT_WEIGHT,
-    )
-
-    val exerciseStressTimeInputController = InputController(
-        coroutineScope = viewModelScope,
-        initialInput = DEFAULT_EXERCISE_STRESS_TIME,
     )
 
     val nameInputController = ValidatedInputController(
@@ -46,18 +41,26 @@ class HeroCreationViewModel(
         validation = heroNameValidator::validate,
     )
 
-    val heroCreationController = SingleRequestController(
+    val weightInputController = ValidatedInputController(
+        coroutineScope = viewModelScope,
+        initialInput = "",
+        validation = heroWeightValidator::validate,
+    )
+
+    val exerciseStressTimeInputController = ValidatedInputController(
+        coroutineScope = viewModelScope,
+        initialInput = "",
+        validation = heroExerciseStressValidator::validate,
+    )
+
+    val heroCreationController = RequestController(
         coroutineScope = viewModelScope,
         request = {
-            val userId = heroCreator.create(
-                weight = weightInputController.getInput(),
-                exerciseStressTime = exerciseStressTimeInputController.getInput(),
-                name = nameInputController.getInput(),
+            heroCreator.create(
                 gender = genderSelectionController.requireSelectedItem(),
-            )
-
-            walletCreator.create(
-                ownerId = userId,
+                weight = weightInputController.validateAndRequire(),
+                exerciseStressTime = exerciseStressTimeInputController.validateAndRequire(),
+                name = nameInputController.validateAndRequire(),
             )
 
             appPreferenceUpdater.update(
@@ -68,10 +71,14 @@ class HeroCreationViewModel(
                 ),
             )
         },
+        isAllowedFlow = combine(
+            nameInputController.state,
+            weightInputController.state,
+            exerciseStressTimeInputController.state,
+        ) { name, weight, exerciseStressTime ->
+            name.validationResult is CorrectHeroName &&
+                weight.validationResult is CorrectHeroWeight &&
+                exerciseStressTime.validationResult is CorrectHeroHeroExerciseStress
+        },
     )
-
-    private companion object {
-        private const val DEFAULT_WEIGHT = 30
-        private const val DEFAULT_EXERCISE_STRESS_TIME = 0
-    }
 }

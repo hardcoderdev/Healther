@@ -6,7 +6,7 @@ import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.controller.input.validateAndRequire
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.logic.features.waterTracking.drinkType.CorrectDrinkTypeName
@@ -48,7 +48,7 @@ class DrinkTypeUpdateViewModel(
         initialInput = 0,
     )
 
-    val updateController = SingleRequestController(
+    val updateController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             drinkTypeUpdater.update(
@@ -63,7 +63,7 @@ class DrinkTypeUpdateViewModel(
         },
     )
 
-    val deletionController = SingleRequestController(
+    val deletionController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             drinkTypeDeleter.deleteById(drinkTypeId)

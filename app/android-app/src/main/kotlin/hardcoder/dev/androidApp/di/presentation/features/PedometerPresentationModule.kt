@@ -12,6 +12,10 @@ val pedometerPresentationModule = module {
             pedometerTrackProvider = get(),
             pedometerStatisticProvider = get(),
             dateTimeProvider = get(),
+            currencyProvider = get(),
+            currencyCollector = get(),
+            pedometerDailyRateStepsProvider = get(),
+            experienceCollector = get(),
         )
     }
 

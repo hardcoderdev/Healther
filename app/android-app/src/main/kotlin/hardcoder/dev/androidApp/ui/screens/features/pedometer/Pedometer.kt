@@ -25,6 +25,7 @@ import hardcoder.dev.androidApp.ui.permissions.PermissionsSection
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.statistic.PedometerStatisticResolver
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.presentation.features.pedometer.Available
 import hardcoder.dev.presentation.features.pedometer.NotAvailable
@@ -32,6 +33,8 @@ import hardcoder.dev.presentation.features.pedometer.PedometerManager
 import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButton
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButtonConfig
+import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
+import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.card.Card
 import hardcoder.dev.uikit.components.card.CardConfig
 import hardcoder.dev.uikit.components.chart.ActivityLineChart
@@ -68,6 +71,8 @@ fun Pedometer(
                 statisticLoadingController = viewModel.statisticLoadingController,
                 pedometerToggleController = viewModel.pedometerToggleController,
                 dailyRateProgressController = viewModel.dailyRateProgressController,
+                rewardLoadingController = viewModel.rewardLoadingController,
+                collectRewardController = viewModel.collectRewardController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -96,6 +101,8 @@ private fun PedometerContent(
     todayStatisticLoadingController: LoadingController<PedometerStatistic>,
     statisticLoadingController: LoadingController<PedometerStatistic>,
     pedometerToggleController: ToggleController,
+    rewardLoadingController: LoadingController<Double>,
+    collectRewardController: RequestController,
 ) {
     val pedometerRejectedMapper = koinInject<PedometerRejectedMapper>()
 
@@ -114,6 +121,8 @@ private fun PedometerContent(
                     statisticLoadingController = statisticLoadingController,
                     pedometerToggleController = pedometerToggleController,
                     dailyProgressLoadingController = dailyRateProgressController,
+                    rewardLoadingController = rewardLoadingController,
+                    collectRewardController = collectRewardController,
                 )
 
                 is NotAvailable -> {
@@ -140,6 +149,8 @@ private fun AvailablePedometerSection(
     todayStatisticLoadingController: LoadingController<PedometerStatistic>,
     statisticLoadingController: LoadingController<PedometerStatistic>,
     pedometerToggleController: ToggleController,
+    rewardLoadingController: LoadingController<Double>,
+    collectRewardController: RequestController,
 ) {
     DailyRateSection(
         todayStatisticLoadingController = todayStatisticLoadingController,
@@ -154,13 +165,23 @@ private fun AvailablePedometerSection(
         controller1 = chartEntriesLoadingController,
         controller2 = todayStatisticLoadingController,
         controller3 = statisticLoadingController,
-    ) { chartEntries, todayStatistic, statistic ->
+        controller4 = rewardLoadingController,
+    ) { chartEntries, todayStatistic, statistic, totalReward ->
         if (todayStatistic.totalSteps > 0) {
             PedometerInfoSection(todayStatistic)
             Spacer(modifier = Modifier.height(32.dp))
-            PedometerStatisticSection(statistic)
+            RequestButtonWithIcon(
+                requestButtonConfig = RequestButtonConfig.Filled(
+                    labelResId = R.string.waterTracking_collectReward,
+                    formatArgs = listOf(totalReward),
+                    controller = collectRewardController,
+                    iconResId = R.drawable.ic_money,
+                ),
+            )
             Spacer(modifier = Modifier.height(32.dp))
-            PedometerActivityChart(chartEntries)
+            StatisticsSection(statistic)
+            Spacer(modifier = Modifier.height(32.dp))
+            ActivityChartSection(chartEntries)
         } else {
             EmptySection(emptyTitleResId = R.string.pedometer_nowEmpty_text)
         }
@@ -194,7 +215,7 @@ private fun DailyRateSection(
                 ),
             )
             Spacer(modifier = Modifier.height(16.dp))
-            AnimatedVisibility(visible = todayStatistic.totalSteps <= dailyRateSteps) {
+            AnimatedVisibility(visible = todayStatistic.totalSteps < dailyRateSteps) {
                 CircleIconButton(
                     circleIconButtonConfig = CircleIconButtonConfig.Filled(
                         onClick = pedometerToggleController::toggle,
@@ -210,7 +231,7 @@ private fun DailyRateSection(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        LinearProgressBar(progress = progress)
+        LinearProgressBar(indicatorProgress = progress)
     }
 }
 
@@ -255,17 +276,17 @@ private fun PedometerInfoSection(statistic: PedometerStatistic) {
 }
 
 @Composable
-private fun PedometerStatisticSection(statistic: PedometerStatistic) {
+private fun StatisticsSection(statistics: PedometerStatistic) {
     val pedometerStatisticResolver = koinInject<PedometerStatisticResolver>()
 
     Title(text = stringResource(id = R.string.pedometer_statistic_text))
     Spacer(modifier = Modifier.height(16.dp))
-    Statistics(statistics = pedometerStatisticResolver.resolve(statistic))
+    Statistics(statistics = pedometerStatisticResolver.resolve(statistics))
 }
 
 @Composable
-private fun PedometerActivityChart(chartEntries: List<Pair<Int, Int>>) {
-    Title(text = stringResource(id = R.string.waterTracking_activity_chart))
+private fun ActivityChartSection(chartEntries: List<Pair<Int, Int>>) {
+    Title(text = stringResource(id = R.string.waterTracking_analytics_activity_chart))
     Spacer(modifier = Modifier.height(16.dp))
     if (chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
         ActivityLineChart(

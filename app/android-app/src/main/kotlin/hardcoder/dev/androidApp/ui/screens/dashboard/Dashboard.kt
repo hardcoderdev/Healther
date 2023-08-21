@@ -15,9 +15,11 @@ import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.FastingFeature
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.MoodTrackingFeatureItem
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.PedometerFeatureItem
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.WaterTrackingFeatureItem
+import hardcoder.dev.androidApp.ui.screens.dashboard.heroItems.HeroSectionItem
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
-import hardcoder.dev.presentation.dashboard.DashboardItem
+import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
+import hardcoder.dev.presentation.dashboard.DashboardHeroItem
 import hardcoder.dev.presentation.dashboard.DashboardViewModel
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
@@ -30,25 +32,39 @@ import hardcoderdev.healther.app.android.app.R
 @Composable
 fun Dashboard(
     viewModel: DashboardViewModel,
-    onGoToDiary: () -> Unit,
     onGoToWaterTrackingFeature: () -> Unit,
+    onCreateWaterTrack: () -> Unit,
     onGoToPedometerFeature: () -> Unit,
     onGoToFastingFeature: () -> Unit,
     onStartFasting: () -> Unit,
     onGoToMoodTrackingFeature: () -> Unit,
+    onCreateMoodTrack: () -> Unit,
+    onGoToDiary: () -> Unit,
+    onCreateDiaryTrack: () -> Unit,
     onGoToSettings: () -> Unit,
+    onGoToDeathScreen: () -> Unit,
+    onGoToInventory: () -> Unit,
+    onGoToShop: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             DashboardContent(
-                onGoToDiary = onGoToDiary,
                 onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
+                onCreateWaterTrack = onCreateWaterTrack,
                 onGoToPedometerFeature = onGoToPedometerFeature,
                 onGoToFastingFeature = onGoToFastingFeature,
                 onStartFasting = onStartFasting,
                 onGoToMoodTrackingFeature = onGoToMoodTrackingFeature,
-                itemsLoadingController = viewModel.itemsLoadingController,
+                onCreateMoodTrack = onCreateMoodTrack,
+                onGoToDiary = onGoToDiary,
+                onCreateDiaryTrack = onCreateDiaryTrack,
+                onGoToDeathScreen = onGoToDeathScreen,
+                onGoToInventory = onGoToInventory,
+                onGoToShop = onGoToShop,
+                featureItemsLoadingController = viewModel.featuresLoadingController,
+                heroItemsLoadingController = viewModel.heroLoadingController,
                 pedometerToggleController = viewModel.pedometerToggleController,
+                healthPointsLoadingController = viewModel.healthPointsLoadingController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -69,16 +85,33 @@ fun Dashboard(
 
 @Composable
 private fun DashboardContent(
-    onGoToDiary: () -> Unit,
     onGoToWaterTrackingFeature: () -> Unit,
+    onCreateWaterTrack: () -> Unit,
     onGoToPedometerFeature: () -> Unit,
     onGoToFastingFeature: () -> Unit,
     onStartFasting: () -> Unit,
     onGoToMoodTrackingFeature: () -> Unit,
-    itemsLoadingController: LoadingController<List<DashboardItem>>,
+    onCreateMoodTrack: () -> Unit,
+    onGoToDiary: () -> Unit,
+    onCreateDiaryTrack: () -> Unit,
+    onGoToDeathScreen: () -> Unit,
+    onGoToInventory: () -> Unit,
+    onGoToShop: () -> Unit,
+    featureItemsLoadingController: LoadingController<List<DashboardFeatureItem>>,
+    heroItemsLoadingController: LoadingController<DashboardHeroItem.HeroSection>,
     pedometerToggleController: ToggleController,
+    healthPointsLoadingController: LoadingController<Int>,
 ) {
-    LoadingContainer(controller = itemsLoadingController) { items ->
+    LoadingContainer(
+        controller1 = featureItemsLoadingController,
+        controller2 = heroItemsLoadingController,
+        controller3 = healthPointsLoadingController,
+    ) { featureItems, heroItems, healthPoints ->
+        // TODO А ЭТО ТОЧНО ЗДЕСЬ НУЖНО? ОНО ЖЕ ЕСТ НА СПЛЕШЕ
+        if (healthPoints <= 0) {
+            onGoToDeathScreen()
+        }
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -86,56 +119,69 @@ private fun DashboardContent(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
         ) {
-            // TODO USER CHARACTER SECTION WILL BE HERE
+            heroCharacterSection(
+                item = heroItems,
+                onGoToInventory = onGoToInventory,
+                onGoToShop = onGoToShop,
+            )
             featureSection(
-                items = items,
+                items = featureItems,
                 onGoToDiary = onGoToDiary,
                 onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
+                onCreateWaterTrack = onCreateWaterTrack,
                 onGoToPedometerFeature = onGoToPedometerFeature,
                 onTogglePedometerTrackingService = pedometerToggleController::toggle,
                 onGoToFastingFeature = onGoToFastingFeature,
                 onStartFasting = onStartFasting,
                 onGoToMoodTrackingFeature = onGoToMoodTrackingFeature,
+                onCreateMoodTrack = onCreateMoodTrack,
+                onCreateDiaryTrack = onCreateDiaryTrack,
             )
         }
     }
 }
 
+private fun LazyListScope.heroCharacterSection(
+    item: DashboardHeroItem.HeroSection,
+    onGoToInventory: () -> Unit,
+    onGoToShop: () -> Unit,
+) {
+    item {
+        HeroSectionItem(
+            hero = item.hero,
+            healthPointsProgress = item.healthPointsProgress,
+            experiencePointsProgress = item.experiencePointsProgress,
+            experiencePointsToNextLevel = item.experiencePointsToNextLevel,
+            onGoToInventory = onGoToInventory,
+            onGoToShop = onGoToShop,
+        )
+    }
+}
+
 private fun LazyListScope.featureSection(
-    items: List<DashboardItem>,
-    onGoToDiary: () -> Unit,
+    items: List<DashboardFeatureItem>,
     onGoToWaterTrackingFeature: () -> Unit,
+    onCreateWaterTrack: () -> Unit,
     onGoToPedometerFeature: () -> Unit,
     onTogglePedometerTrackingService: () -> Unit,
     onGoToFastingFeature: () -> Unit,
     onStartFasting: () -> Unit,
     onGoToMoodTrackingFeature: () -> Unit,
+    onCreateMoodTrack: () -> Unit,
+    onGoToDiary: () -> Unit,
+    onCreateDiaryTrack: () -> Unit,
 ) {
     items(items) { feature ->
         when (feature) {
-            is DashboardItem.DiaryFeature -> {
-                DiaryFeatureItem(
-                    diaryFeature = feature,
-                    onGoToFeature = onGoToDiary,
+            is DashboardFeatureItem.WaterTrackingFeature -> {
+                WaterTrackingFeatureItem(
+                    waterTrackingFeature = feature,
+                    onGoToFeature = onGoToWaterTrackingFeature,
+                    onCreateWaterTrack = onCreateWaterTrack,
                 )
             }
 
-            is DashboardItem.FastingFeature -> {
-                FastingFeatureItem(
-                    fastingFeature = feature,
-                    onGoToFeature = onGoToFastingFeature,
-                    onStartFasting = onStartFasting,
-                )
-            }
-
-            is DashboardItem.MoodTrackingFeature -> {
-                MoodTrackingFeatureItem(
-                    moodTrackingFeature = feature,
-                    onGoToFeature = onGoToMoodTrackingFeature,
-                )
-            }
-
-            is DashboardItem.PedometerFeature -> {
+            is DashboardFeatureItem.PedometerFeature -> {
                 PedometerFeatureItem(
                     pedometerFeature = feature,
                     onGoToFeature = onGoToPedometerFeature,
@@ -143,10 +189,27 @@ private fun LazyListScope.featureSection(
                 )
             }
 
-            is DashboardItem.WaterTrackingFeature -> {
-                WaterTrackingFeatureItem(
-                    waterTrackingFeature = feature,
-                    onGoToFeature = onGoToWaterTrackingFeature,
+            is DashboardFeatureItem.FastingFeature -> {
+                FastingFeatureItem(
+                    fastingFeature = feature,
+                    onGoToFeature = onGoToFastingFeature,
+                    onStartFasting = onStartFasting,
+                )
+            }
+
+            is DashboardFeatureItem.MoodTrackingFeature -> {
+                MoodTrackingFeatureItem(
+                    moodTrackingFeature = feature,
+                    onGoToFeature = onGoToMoodTrackingFeature,
+                    onCreateMoodTrack = onCreateMoodTrack,
+                )
+            }
+
+            is DashboardFeatureItem.DiaryFeature -> {
+                DiaryFeatureItem(
+                    diaryFeature = feature,
+                    onGoToFeature = onGoToDiary,
+                    onCreateDiaryTrack = onCreateDiaryTrack,
                 )
             }
         }

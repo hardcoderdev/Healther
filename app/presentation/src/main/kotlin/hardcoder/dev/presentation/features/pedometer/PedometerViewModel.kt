@@ -4,33 +4,46 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toLocalDateTime
+import hardcoder.dev.logic.reward.currency.CurrencyCollector
+import hardcoder.dev.logic.reward.currency.CurrencyProvider
+import hardcoder.dev.logic.features.FeatureType
+import hardcoder.dev.logic.features.pedometer.PedometerDailyRateStepsProvider
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatisticProvider
+import hardcoder.dev.logic.reward.experience.ExperienceCollector
 import hardcoder.dev.math.safeDiv
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
 class PedometerViewModel(
     pedometerManager: PedometerManager,
     pedometerTrackProvider: PedometerTrackProvider,
     pedometerStatisticProvider: PedometerStatisticProvider,
+    pedometerDailyRateStepsProvider: PedometerDailyRateStepsProvider,
     dateTimeProvider: DateTimeProvider,
+    currencyProvider: CurrencyProvider,
+    currencyCollector: CurrencyCollector,
+    experienceCollector: ExperienceCollector,
 ) : ViewModel() {
 
     val dailyRateProgressController = LoadingController<Float>(
         coroutineScope = viewModelScope,
-        flow = pedometerStatisticProvider.providePedometerStatistic(
-            range = dateTimeProvider.currentDateRange(),
-        ).map {
-            it.totalSteps safeDiv DAILY_RATE_PEDOMETER
+        flow = combine(
+            pedometerStatisticProvider.providePedometerStatistic(
+                range = dateTimeProvider.currentDateRange(),
+            ),
+            pedometerDailyRateStepsProvider.resolve(),
+        ) { pedometerStatistics, dailyRateInSteps ->
+            pedometerStatistics.totalSteps safeDiv dailyRateInSteps
         },
     )
 
     val dailyRateStepsLoadingController = LoadingController(
         coroutineScope = viewModelScope,
-        flow = flowOf(DAILY_RATE_PEDOMETER), // TODO nice ok da
+        flow = pedometerDailyRateStepsProvider.resolve(),
     )
 
     val statisticLoadingController = LoadingController(
@@ -73,7 +86,25 @@ class PedometerViewModel(
         },
     )
 
-    internal companion object {
-        private const val DAILY_RATE_PEDOMETER = 6000
-    }
+    val collectRewardController = RequestController(
+        coroutineScope = viewModelScope,
+        canBeReset = true,
+        request = {
+            currencyCollector.collect(featureType = FeatureType.PEDOMETER)
+            experienceCollector.collect(featureType = FeatureType.PEDOMETER)
+        },
+    )
+
+    val rewardLoadingController = LoadingController(
+        coroutineScope = viewModelScope,
+        flow = currencyProvider.provideRewardsByDate(
+            isCollected = false,
+            featureType = FeatureType.PEDOMETER,
+            dayRange = dateTimeProvider.currentDateRange(),
+        ).map { rewardList ->
+            rewardList.sumOf { reward ->
+                reward.amount.toDouble()
+            }
+        },
+    )
 }

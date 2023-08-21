@@ -8,4 +8,5 @@ data class WaterTrackingItem(
     val millilitersCount: Int,
     val resolvedMillilitersCount: Int,
     val timeInMillis: Long,
+    val isCollected: Boolean,
 )

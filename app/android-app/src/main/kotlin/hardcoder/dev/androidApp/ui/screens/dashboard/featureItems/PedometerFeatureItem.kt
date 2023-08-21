@@ -17,9 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.presentation.dashboard.DashboardItem
+import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButton
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButtonConfig
 import hardcoder.dev.uikit.components.card.Card
@@ -32,12 +33,12 @@ import hardcoderdev.healther.app.android.app.R
 
 @Composable
 fun PedometerFeatureItem(
-    pedometerFeature: DashboardItem.PedometerFeature,
+    pedometerFeature: DashboardFeatureItem.PedometerFeature,
     onGoToFeature: () -> Unit,
     onTogglePedometerTrackingService: () -> Unit,
 ) {
-    val isToggleButtonVisible = pedometerFeature.stepsWalked <=
-        pedometerFeature.dailyRateInSteps && pedometerFeature.permissionsGranted
+    val isPermissionsGranted = pedometerFeature.permissionsGranted
+    val isDailyRateClosed = pedometerFeature.stepsWalked == pedometerFeature.dailyRateInSteps
 
     Card(
         cardConfig = CardConfig.Action(
@@ -56,15 +57,13 @@ fun PedometerFeatureItem(
                             contentDescription = R.string.dashboard_pedometer_feature,
                         )
                         Spacer(modifier = Modifier.width(16.dp))
-                        ProgressSection(
-                            pedometerFeature = pedometerFeature,
-                            isToggleButtonVisible = isToggleButtonVisible,
-                        )
+                        ProgressSection(pedometerFeature = pedometerFeature)
                     }
                     QuickActions(
                         pedometerFeature = pedometerFeature,
                         onTogglePedometerTrackingService = onTogglePedometerTrackingService,
-                        isToggleButtonVisible = isToggleButtonVisible,
+                        isDailyRateClosed = isDailyRateClosed,
+                        isPermissionsGranted = isPermissionsGranted,
                     )
                 }
             },
@@ -73,10 +72,7 @@ fun PedometerFeatureItem(
 }
 
 @Composable
-private fun ProgressSection(
-    pedometerFeature: DashboardItem.PedometerFeature,
-    isToggleButtonVisible: Boolean,
-) {
+private fun ProgressSection(pedometerFeature: DashboardFeatureItem.PedometerFeature) {
     Column {
         Title(text = stringResource(id = R.string.dashboard_pedometer_feature))
         Spacer(modifier = Modifier.height(8.dp))
@@ -85,33 +81,31 @@ private fun ProgressSection(
                 id = R.string.dashboard_pedometer_progress_format,
                 formatArgs = arrayOf(
                     pedometerFeature.stepsWalked,
+                    pluralStringResource(id = R.plurals.steps, count = pedometerFeature.stepsWalked),
                     pedometerFeature.dailyRateInSteps,
                 ),
             ),
         )
         Spacer(modifier = Modifier.height(12.dp))
         LinearProgressBar(
-            progress = pedometerFeature.progress,
+            indicatorProgress = pedometerFeature.progress,
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(14.dp))
                 .height(10.dp),
         )
-        if (!isToggleButtonVisible) {
-            Spacer(modifier = Modifier.height(8.dp))
-            Description(text = stringResource(id = R.string.dashboard_pedometer_permissions_not_granted))
-        }
     }
 }
 
 @Composable
 private fun BoxScope.QuickActions(
-    isToggleButtonVisible: Boolean,
+    isDailyRateClosed: Boolean,
+    isPermissionsGranted: Boolean,
     onTogglePedometerTrackingService: () -> Unit,
-    pedometerFeature: DashboardItem.PedometerFeature,
+    pedometerFeature: DashboardFeatureItem.PedometerFeature,
 ) {
     AnimatedVisibility(
-        visible = isToggleButtonVisible,
+        visible = !isDailyRateClosed && isPermissionsGranted,
         modifier = Modifier.align(Alignment.TopEnd),
     ) {
         CircleIconButton(

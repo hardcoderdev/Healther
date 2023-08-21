@@ -3,6 +3,11 @@
     <string name="moodTracking_title_topBar">Mood tracking</string>
     <string name="moodTracking_diaryNowEmpty_text">Now it\'s empty. To add a new entry, click on the button at the bottom right.</string>
     <string name="moodTracking_nowEmpty_text">Now it\'s empty. To add a new entry, click on the button at the bottom right. Statistics and graph will appear after a couple of hours of using the feature.</string>
+    <string name="moodTracking_diary_text">Mood diary:</string>
+
+    <string name="moodTracking_analytics_title_topBar">Analytics &amp; statistics</string>
+    <string name="moodTracking_analyticsNowEmpty_text">Now it\'s empty. Analytics (chart and statistics) will appear after a certain time of using this feature.</string>
+
     <string name="moodTracking_statistic_happyMoodCount_text">You were happy</string>
     <string name="moodTracking_statistic_neutralMoodCount_text">You were neutral</string>
     <string name="moodTracking_statistic_notWellMoodCount_text">You were sad</string>
@@ -11,7 +16,6 @@
     <string name="moodTracking_statistic_text">General statistic:</string>
     <string name="moodTracking_chartNotEnoughData_text">We don\'t have enough data yet to display a graph. Use this feature and the chart will appear the next day!</string>
     <string name="moodTracking_activity_chart">Mood chart (per month):</string>
-    <string name="moodTracking_diary_text">Mood diary:</string>
 
     <string name="moodTracking_creation_moodTypeNotSelected_text">Create and choose the type of mood!</string>
     <string name="moodTracking_creation_title_topBar">Track creation</string>

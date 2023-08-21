@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.androidApp.ui.screens.features.diary.items.DiaryItem
 import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.input.getInput
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.logic.features.diary.DateRangeFilterType
@@ -34,6 +36,8 @@ import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack
 import hardcoder.dev.presentation.features.diary.DiaryViewModel
 import hardcoder.dev.uikit.components.bottomSheet.BottomSheet
 import hardcoder.dev.uikit.components.bottomSheet.rememberBottomSheetState
+import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
+import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.chip.content.ChipIconDefaultContent
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
@@ -77,8 +81,6 @@ fun Diary(
             )
         },
     ) {
-        val searchText = viewModel.searchTextInputController.state.collectAsState()
-
         ScaffoldWrapper(
             onFabClick = onCreateDiaryTrack,
             content = {
@@ -86,7 +88,9 @@ fun Diary(
                     diaryTrackLoadingController = viewModel.diaryTrackLoadingController,
                     filteredTrackLoadingController = viewModel.filteredTrackLoadingController,
                     tagMultiSelectionController = viewModel.tagMultiSelectionController,
-                    searchText = searchText.value.input,
+                    rewardLoadingController = viewModel.rewardLoadingController,
+                    collectRewardController = viewModel.collectRewardController,
+                    searchText = viewModel.searchTextInputController.getInput(),
                     onUpdateDiaryTrack = onUpdateDiaryTrack,
                 )
             },
@@ -119,6 +123,8 @@ private fun DiaryContent(
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     diaryTrackLoadingController: LoadingController<List<DiaryTrack>>,
     filteredTrackLoadingController: LoadingController<List<DiaryTrack>>,
+    rewardLoadingController: LoadingController<Double>,
+    collectRewardController: RequestController,
     searchText: String,
     onUpdateDiaryTrack: (Int) -> Unit,
 ) {
@@ -130,8 +136,19 @@ private fun DiaryContent(
         LoadingContainer(
             controller1 = diaryTrackLoadingController,
             controller2 = filteredTrackLoadingController,
-            loadedContent = { diaryItemsList, filteredDiaryTrackList ->
+            controller3 = rewardLoadingController,
+            loadedContent = { diaryItemsList, filteredDiaryTrackList, totalReward ->
                 val tagMultiSelectionControllerState = tagMultiSelectionController.state.collectAsState()
+
+                RequestButtonWithIcon(
+                    requestButtonConfig = RequestButtonConfig.Filled(
+                        labelResId = R.string.waterTracking_collectReward,
+                        formatArgs = listOf(totalReward),
+                        controller = collectRewardController,
+                        iconResId = R.drawable.ic_money,
+                    ),
+                )
+                Spacer(modifier = Modifier.height(32.dp))
 
                 when {
                     diaryItemsList.isEmpty() -> {
@@ -142,7 +159,13 @@ private fun DiaryContent(
                     searchText.isEmpty() && tagMultiSelectionControllerState.value is MultiSelectionController.State.Empty -> {
                         DiaryTrackListSection(
                             items = diaryItemsList,
-                            onUpdateTrack = onUpdateDiaryTrack,
+                            onUpdateTrack = { diaryTrack ->
+                                if (diaryTrack.isRewardCollected) {
+                                    // TODO HANDLE CLICK ON ITEM WHEN TRACK ALREADY COLLECTED
+                                } else {
+                                    onUpdateDiaryTrack(diaryTrack.id)
+                                }
+                            },
                         )
                     }
 
@@ -158,7 +181,13 @@ private fun DiaryContent(
                     else -> {
                         DiaryTrackListSection(
                             items = filteredDiaryTrackList,
-                            onUpdateTrack = onUpdateDiaryTrack,
+                            onUpdateTrack = { diaryTrack ->
+                                if (diaryTrack.isRewardCollected) {
+                                    // TODO HANDLE CLICK ON ITEM WHEN TRACK ALREADY COLLECTED
+                                } else {
+                                    onUpdateDiaryTrack(diaryTrack.id)
+                                }
+                            },
                         )
                     }
                 }
@@ -170,7 +199,7 @@ private fun DiaryContent(
 @Composable
 private fun ColumnScope.DiaryTrackListSection(
     items: List<DiaryTrack>,
-    onUpdateTrack: (Int) -> Unit,
+    onUpdateTrack: (DiaryTrack) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -182,7 +211,7 @@ private fun ColumnScope.DiaryTrackListSection(
         items(items) { diaryTrack ->
             DiaryItem(
                 diaryTrack = diaryTrack,
-                onUpdate = { onUpdateTrack(it.id) },
+                onUpdate = onUpdateTrack,
             )
         }
     }

@@ -2,6 +2,12 @@
 <resources>
     <string name="moodTracking_title_topBar">Трекер эмоций</string>
     <string name="moodTracking_diaryNowEmpty_text">Сейчас здесь пусто. Чтобы добавить новую  запись, нажмите на кнопку справа внизу.</string>
+    <string name="moodTracking_diary_text">Дневник эмоций:</string>
+    <string name="moodTracking_nowEmpty_text">\nСейчас здесь пусто. Чтобы добавить новую запись, нажмите на кнопку справа внизу. Статистика и график появятся спустя пару часов использования фичи.</string>
+
+    <string name="moodTracking_analytics_title_topBar">Аналитика и статистика</string>
+    <string name="moodTracking_analyticsNowEmpty_text">Сейчас здесь пусто. Аналитика (график и статистика) появится спустя определенное время пользования этой фичей.</string>
+
     <string name="moodTracking_statistic_happyMoodCount_text">Вы были счастливы</string>
     <string name="moodTracking_statistic_neutralMoodCount_text">Вы были нейтральны</string>
     <string name="moodTracking_statistic_notWellMoodCount_text">Вы были грустным</string>
@@ -9,8 +15,6 @@
     <string name="moodTracking_statistic_averageMood_text">Ваше настроение в среднем</string>
     <string name="moodTracking_statistic_text">Общая статистика:</string>
     <string name="moodTracking_activity_chart">График настроения (за месяц):</string>
-    <string name="moodTracking_diary_text">Дневник эмоций:</string>
-    <string name="moodTracking_nowEmpty_text">\nСейчас здесь пусто. Чтобы добавить новую запись, нажмите на кнопку справа внизу. Статистика и график появятся спустя пару часов использования фичи.</string>
     <string name="moodTracking_chartNotEnoughData_text">У нас пока недостаточно данных для отображения графика. Используйте эту фичу и график появится на следующий день!</string>
 
     <string name="moodTracking_creation_moodTypeNotSelected_text">Создайте и выберите тип настроения!</string>

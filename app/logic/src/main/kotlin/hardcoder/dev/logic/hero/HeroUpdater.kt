@@ -18,8 +18,12 @@ class HeroUpdater(
             genderId = genderIdMapper.mapToId(hero.gender),
             id = HERO_ID,
             name = hero.name,
-            healthPoints = hero.healthPoints,
+            currentHealthPoints = hero.currentHealthPoints,
+            maxHealthPoints = hero.maxHealthPoints,
             experiencePoints = hero.experiencePoints,
+            level = hero.level,
+            coins = hero.coins,
+            crystals = hero.crystals,
         )
     }
 }

@@ -8,8 +8,8 @@ import hardcoder.dev.database.columnAdapters.InstantAdapter
 object WaterTrackingAdapters {
 
     fun createWaterTrackAdapter() = WaterTrack.Adapter(
-        dateAdapter = InstantAdapter,
         idAdapter = IntColumnAdapter,
+        dateAdapter = InstantAdapter,
         drinkTypeIdAdapter = IntColumnAdapter,
         millilitersCountAdapter = IntColumnAdapter,
     )

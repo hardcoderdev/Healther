@@ -20,7 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.input.ValidatedInputController
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.logic.features.diary.diaryTag.IncorrectDiaryTagName
 import hardcoder.dev.logic.features.diary.diaryTag.ValidatedDiaryTagName
@@ -65,7 +65,7 @@ fun DiaryTagUpdate(
 private fun DiaryTagUpdateContent(
     tagNameInputController: ValidatedInputController<String, ValidatedDiaryTagName>,
     iconSelectionController: SingleSelectionController<LocalIcon>,
-    updateController: SingleRequestController,
+    updateController: RequestController,
 ) {
     val context = LocalContext.current
 

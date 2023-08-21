@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.getInput
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.datetime.DateTimeProvider
@@ -29,7 +29,7 @@ class FastingCreationViewModel(
         itemsFlow = fastingPlanProvider.provideAllPlans(),
     )
 
-    val creationController = SingleRequestController(
+    val creationController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             currentFastingManager.startFasting(

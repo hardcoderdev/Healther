@@ -7,10 +7,16 @@
     <string name="waterTracking_favourite_drink_type">Favourite drink type</string>
     <string name="waterTracking_average_hydration_index">Percentage of water in drinks</string>
     <string name="waterTracking_average_water_intakes">Average number of water drinks per day</string>
-    <string name="waterTracking_activity_chart">Activity chart (by hours):</string>
+    <string name="waterTracking_analytics_activity_chart">Activity chart (by hours):</string>
     <string name="waterTracking_diary_text">Drunk diary:</string>
-    <string name="waterTracking_statistic_text">General statistic:</string>
+    <string name="waterTracking_analytics_statistic_text">General statistic:</string>
     <string name="waterTracking_statistic_water_total_drunk">Total drunk</string>
+    <string name="waterTracking_collectReward">Collect %.2f coins</string>
+
+    <string name="waterTracking_analytics_title_topBar">Analytics &amp; statistics</string>
+    <string name="waterTracking_analytics_chartNotEnoughData_text">аWe don\'t have enough data yet to display a graph. Use this feature and the graph will appear later!</string>
+    <string name="waterTracking_analyticsNowEmpty_text">Now it\'s empty. Analytics (chart and statistics) will appear after a certain time of using this feature.</string>
+
 
     <string name="waterTracking_creation_drinkTypeNotSelected_text">Create and choose the type of drink!</string>
     <string name="waterTracking_creation_create_title_topBar">Create an entry</string>

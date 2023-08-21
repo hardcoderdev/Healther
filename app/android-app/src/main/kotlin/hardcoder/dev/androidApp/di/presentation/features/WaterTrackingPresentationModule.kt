@@ -1,5 +1,6 @@
 package hardcoder.dev.androidApp.di.presentation.features
 
+import hardcoder.dev.presentation.features.waterTracking.WaterTrackingAnalyticsViewModel
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingCreationViewModel
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingHistoryViewModel
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingUpdateViewModel
@@ -15,8 +16,54 @@ val waterTrackingPresentationModule = module {
         WaterTrackingViewModel(
             waterTrackProvider = get(),
             waterPercentageResolver = get(),
-            waterTrackingStatisticProvider = get(),
             millilitersDrunkProvider = get(),
+            dateTimeProvider = get(),
+            currencyProvider = get(),
+            currencyCollector = get(),
+            experienceCollector = get(),
+        )
+    }
+
+    viewModel {
+        WaterTrackingAnalyticsViewModel(
+            waterTrackingStatisticProvider = get(),
+            waterTrackProvider = get(),
+            waterPercentageResolver = get(),
+            dateTimeProvider = get(),
+        )
+    }
+
+    viewModel {
+        WaterTrackingCreationViewModel(
+            waterTrackCreator = get(),
+            drinkTypeProvider = get(),
+            waterTrackMillilitersValidator = get(),
+            dateTimeProvider = get(),
+            waterTrackingDailyRateProvider = get(),
+            currencyCreator = get(),
+            currencyCalculator = get(),
+            experienceCreator = get(),
+            experienceCalculator = get()
+        )
+    }
+
+    viewModel { parameters ->
+        WaterTrackingUpdateViewModel(
+            waterTrackId = parameters.get(),
+            waterTrackUpdater = get(),
+            waterTrackProvider = get(),
+            drinkTypeProvider = get(),
+            waterTrackMillilitersValidator = get(),
+            waterTrackDeleter = get(),
+            waterTrackingDailyRateProvider = get(),
+            dateTimeProvider = get(),
+        )
+    }
+
+    viewModel {
+        WaterTrackingHistoryViewModel(
+            waterTrackProvider = get(),
+            waterPercentageResolver = get(),
             dateTimeProvider = get(),
         )
     }
@@ -43,37 +90,6 @@ val waterTrackingPresentationModule = module {
             drinkTypeProvider = get(),
             drinkTypeNameValidator = get(),
             iconResourceProvider = get(),
-        )
-    }
-
-    viewModel {
-        WaterTrackingCreationViewModel(
-            waterTrackCreator = get(),
-            drinkTypeProvider = get(),
-            waterTrackMillilitersValidator = get(),
-            dateTimeProvider = get(),
-            waterTrackingDailyRateProvider = get(),
-        )
-    }
-
-    viewModel { parameters ->
-        WaterTrackingUpdateViewModel(
-            waterTrackId = parameters.get(),
-            waterTrackUpdater = get(),
-            waterTrackProvider = get(),
-            drinkTypeProvider = get(),
-            waterTrackMillilitersValidator = get(),
-            waterTrackDeleter = get(),
-            waterTrackingDailyRateProvider = get(),
-            dateTimeProvider = get(),
-        )
-    }
-
-    viewModel {
-        WaterTrackingHistoryViewModel(
-            waterTrackProvider = get(),
-            waterPercentageResolver = get(),
-            dateTimeProvider = get(),
         )
     }
 }

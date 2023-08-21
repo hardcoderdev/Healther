@@ -30,9 +30,9 @@ import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.androidApp.ui.screens.dialogs.DatePickerDialog
 import hardcoder.dev.androidApp.ui.screens.dialogs.TimePickerDialog
-import hardcoder.dev.androidApp.ui.screens.features.moodTracking.MoodItem
+import hardcoder.dev.androidApp.ui.screens.features.moodTracking.moodType.MoodItem
 import hardcoder.dev.controller.input.InputController
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity
@@ -110,7 +110,7 @@ private fun MoodTrackingUpdateContent(
     dateInputController: InputController<LocalDate>,
     timeInputController: InputController<LocalTime>,
     noteInputController: InputController<String>,
-    updateController: SingleRequestController,
+    updateController: RequestController,
     onManageMoodTypes: () -> Unit,
     onManageMoodActivities: () -> Unit,
 ) {

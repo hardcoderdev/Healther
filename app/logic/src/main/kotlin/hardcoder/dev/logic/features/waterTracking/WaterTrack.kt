@@ -8,4 +8,5 @@ data class WaterTrack(
     val date: Instant,
     val millilitersCount: Int,
     val drinkType: DrinkType,
+    val isRewardCollected: Boolean,
 )

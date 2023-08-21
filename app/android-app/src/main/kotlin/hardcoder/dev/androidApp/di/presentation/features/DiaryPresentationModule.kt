@@ -16,6 +16,10 @@ val diaryPresentationModule = module {
             dateRangeFilterTypeProvider = get(),
             diaryTrackProvider = get(),
             diaryTagProvider = get(),
+            dateTimeProvider = get(),
+            currencyProvider = get(),
+            currencyCollector = get(),
+            experienceCollector = get(),
         )
     }
 
@@ -25,6 +29,12 @@ val diaryPresentationModule = module {
             diaryTrackContentValidator = get(),
             diaryTagProvider = get(),
             dateTimeProvider = get(),
+            currencyCalculator = get(),
+            currencyCreator = get(),
+            diaryDailyRateProvider = get(),
+            diaryTrackProvider = get(),
+            experienceCreator = get(),
+            experienceCalculator = get(),
         )
     }
 

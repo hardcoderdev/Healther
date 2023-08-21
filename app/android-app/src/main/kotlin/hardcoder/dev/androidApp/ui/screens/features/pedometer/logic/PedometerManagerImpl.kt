@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-
 import androidx.core.app.ActivityCompat
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.PedometerService
 import hardcoder.dev.permissions.PermissionsController
@@ -23,15 +22,21 @@ class PedometerManagerImpl(
 ) : PedometerManager {
 
     private val permissions by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(
-                Manifest.permission.POST_NOTIFICATIONS,
-                Manifest.permission.ACTIVITY_RECOGNITION,
-            )
-        } else {
-            arrayOf(
-                Manifest.permission.ACTIVITY_RECOGNITION,
-            )
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+                arrayOf(
+                    Manifest.permission.POST_NOTIFICATIONS,
+                    Manifest.permission.ACTIVITY_RECOGNITION,
+                )
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+                arrayOf(
+                    Manifest.permission.ACTIVITY_RECOGNITION,
+                )
+            }
+            else -> {
+                emptyArray()
+            }
         }
     }
 
@@ -42,12 +47,7 @@ class PedometerManagerImpl(
     }
 
     override suspend fun startTracking() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(serviceIntent)
-        } else {
-            context.startService(serviceIntent)
-        }
-
+        context.startForegroundService(serviceIntent)
         isTracking.value = true
     }
 

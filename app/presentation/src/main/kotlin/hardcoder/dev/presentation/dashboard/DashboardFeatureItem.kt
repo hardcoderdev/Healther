@@ -1,0 +1,38 @@
+package hardcoder.dev.presentation.dashboard
+
+import hardcoder.dev.logic.features.waterTracking.MillilitersDrunkToDailyRate
+import hardcoder.dev.logic.hero.Hero
+import kotlin.time.Duration
+
+sealed class DashboardFeatureItem {
+    data class WaterTrackingFeature(
+        val millilitersDrunk: MillilitersDrunkToDailyRate,
+        val progress: Float,
+    ) : DashboardFeatureItem()
+
+    data class PedometerFeature(
+        val permissionsGranted: Boolean,
+        val isPedometerRunning: Boolean,
+        val stepsWalked: Int,
+        val dailyRateInSteps: Int,
+        val progress: Float,
+    ) : DashboardFeatureItem()
+
+    data class FastingFeature(
+        val timeLeftDuration: Duration?,
+        val planDuration: Duration?,
+        val progress: Float,
+    ) : DashboardFeatureItem()
+
+    data class MoodTrackingFeature(
+        val tracksCount: Int,
+        val tracksDailyRate: Int,
+        val progress: Float,
+    ) : DashboardFeatureItem()
+
+    data class DiaryFeature(
+        val tracksCount: Int,
+        val tracksDailyRate: Int,
+        val progress: Float,
+    ) : DashboardFeatureItem()
+}

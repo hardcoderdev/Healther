@@ -20,7 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.input.ValidatedInputController
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.IncorrectDiaryTrackContent
@@ -68,7 +68,7 @@ fun DiaryCreation(
 @Composable
 private fun DiaryCreationContent(
     contentController: ValidatedInputController<String, ValidatedDiaryTrackContent>,
-    creationController: SingleRequestController,
+    creationController: RequestController,
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     onManageTags: () -> Unit,
 ) {

@@ -6,7 +6,7 @@ import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.controller.input.validateAndRequire
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
@@ -37,7 +37,7 @@ class MoodTypeCreationViewModel(
         initialInput = DEFAULT_POSITIVE_PERCENTAGE,
     )
 
-    val creationController = SingleRequestController(
+    val creationController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             moodTypeCreator.create(

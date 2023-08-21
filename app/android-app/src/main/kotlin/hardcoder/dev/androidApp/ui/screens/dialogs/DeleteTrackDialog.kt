@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.uikit.components.dialog.TitleDialog
 import hardcoder.dev.uikit.components.text.Label
 import hardcoderdev.healther.app.android.app.R
@@ -12,7 +12,7 @@ import hardcoderdev.healther.app.android.app.R
 @Composable
 fun DeleteTrackDialog(
     dialogOpen: Boolean,
-    controller: SingleRequestController,
+    controller: RequestController,
     onUpdateDialogOpen: (Boolean) -> Unit,
 ) {
     TitleDialog(
@@ -44,7 +44,7 @@ fun Preview() {
     DeleteTrackDialog(
         onUpdateDialogOpen = {},
         dialogOpen = true,
-        controller = SingleRequestController(
+        controller = RequestController(
             coroutineScope = rememberCoroutineScope(),
             request = {},
         ),

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="health_points_color">#B92B2B</color>
+    <color name="experience_points_color">#3F51B5</color>
+</resources>

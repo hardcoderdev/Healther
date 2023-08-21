@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.logic.appPreferences.AppPreference
 import hardcoder.dev.presentation.settings.SettingsViewModel
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
@@ -55,7 +55,7 @@ fun Settings(
 @Composable
 private fun SettingsContent(
     preferencesLoadingController: LoadingController<AppPreference>,
-    appReviewRequestController: SingleRequestController,
+    appReviewRequestController: RequestController,
 ) {
     val context = LocalContext.current
 

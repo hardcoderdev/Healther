@@ -8,4 +8,5 @@ fun WaterTrack.toItem(resolvedMillilitersCount: Int) = WaterTrackingItem(
     drinkType = drinkType,
     millilitersCount = millilitersCount,
     resolvedMillilitersCount = resolvedMillilitersCount,
+    isCollected = isRewardCollected,
 )

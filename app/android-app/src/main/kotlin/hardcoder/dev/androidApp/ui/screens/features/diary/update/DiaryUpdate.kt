@@ -26,7 +26,7 @@ import hardcoder.dev.androidApp.ui.screens.features.fasting.FastingItem
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.MoodTrackItem
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.ValidatedInputController
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.IncorrectDiaryTrackContent
@@ -88,7 +88,7 @@ private fun DiaryUpdateContent(
     diaryAttachmentsLoadingController: LoadingController<DiaryUpdateViewModel.ReadOnlyDiaryAttachments>,
     contentInputController: ValidatedInputController<String, ValidatedDiaryTrackContent>,
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
-    updateController: SingleRequestController,
+    updateController: RequestController,
     onManageTags: () -> Unit,
 ) {
     val context = LocalContext.current

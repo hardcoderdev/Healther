@@ -46,8 +46,11 @@ fun FastingInitial(
                         is FastingViewModel.FastingState.Finished -> {
                             FinishFasting(
                                 state = fastingState,
-                                onClose = viewModel.finishFastingController::request,
                                 noteInputController = viewModel.noteInputController,
+                                rewardLoadingController = viewModel.rewardLoadingController,
+                                collectRewardController = viewModel.collectRewardController,
+                                createRewardController = viewModel.createRewardController,
+                                onClose = onGoBack,
                             )
                         }
                     }

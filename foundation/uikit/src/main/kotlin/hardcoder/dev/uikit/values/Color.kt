@@ -33,3 +33,7 @@ val md_theme_light_outlineVariant = Color(0xFFC6C8B8)
 val md_theme_light_scrim = Color(0xFF000000)
 
 val seed = Color(0xFF506601)
+
+
+val health_points = Color(0xFFB31515)
+val experiencePoints = Color(0xFF3F51B5)

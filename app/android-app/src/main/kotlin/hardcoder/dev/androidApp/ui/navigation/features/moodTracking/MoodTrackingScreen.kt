@@ -27,6 +27,9 @@ class MoodTrackingScreen : Screen {
             onGoToHistory = {
                 navigator += MoodTrackingHistoryScreen()
             },
+            onGoToAnalytics = {
+                navigator += MoodTrackingAnalyticsScreen()
+            },
         )
     }
 }

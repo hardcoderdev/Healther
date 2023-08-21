@@ -2,6 +2,8 @@ package hardcoder.dev.androidApp.di.logic.features
 
 import hardcoder.dev.androidApp.ui.screens.features.diary.tags.providers.DiaryTagIconProvider
 import hardcoder.dev.logic.features.diary.AttachmentTypeIdMapper
+import hardcoder.dev.logic.features.diary.DiaryDailyRateProvider
+import hardcoder.dev.logic.features.diary.DiaryPenaltyMaker
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentManager
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentProvider
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagCreator
@@ -22,6 +24,7 @@ val diaryLogicModule = module {
     singleOf(::DiaryTagIconProvider)
     singleOf(::DiaryTagNameValidator)
     singleOf(::DiaryTrackContentValidator)
+    singleOf(::DiaryDailyRateProvider)
 
     single {
         DiaryTrackCreator(
@@ -52,6 +55,7 @@ val diaryLogicModule = module {
             appDatabase = get(),
             diaryAttachmentProvider = get(),
             dispatchers = get(),
+            currencyProvider = get(),
         )
     }
 
@@ -102,6 +106,19 @@ val diaryLogicModule = module {
             appDatabase = get(),
             iconResourceProvider = get(),
             dispatchers = get(),
+        )
+    }
+
+    single {
+        DiaryPenaltyMaker(
+            diaryTrackProvider = get(),
+            diaryDailyRateProvider = get(),
+            penaltyCreator = get(),
+            penaltyCalculator = get(),
+            heroHealthPointsManager = get(),
+            dateTimeProvider = get(),
+            dispatchers = get(),
+            lastEntranceManager = get(),
         )
     }
 }

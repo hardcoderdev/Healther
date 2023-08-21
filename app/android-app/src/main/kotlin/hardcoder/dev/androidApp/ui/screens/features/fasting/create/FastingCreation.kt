@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanItem
 import hardcoder.dev.controller.input.InputController
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.presentation.features.fasting.FastingCreationViewModel
@@ -52,7 +52,7 @@ fun FastingCreation(
 private fun FastingCreationContent(
     fastingPlanSelectionController: SingleSelectionController<FastingPlan>,
     customFastingHoursInputController: InputController<Int>,
-    creationController: SingleRequestController,
+    creationController: RequestController,
 ) {
     Column(
         modifier = Modifier

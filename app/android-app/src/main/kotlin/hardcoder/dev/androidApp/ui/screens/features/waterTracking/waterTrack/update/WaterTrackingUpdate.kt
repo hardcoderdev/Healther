@@ -31,10 +31,10 @@ import hardcoder.dev.androidApp.ui.screens.dialogs.TimePickerDialog
 import hardcoder.dev.androidApp.ui.screens.features.waterTracking.drinkType.DrinkTypeItem
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
-import hardcoder.dev.logic.features.waterTracking.IncorrectMillilitersCount
-import hardcoder.dev.logic.features.waterTracking.ValidatedMillilitersCount
+import hardcoder.dev.logic.features.waterTracking.validators.IncorrectMillilitersCount
+import hardcoder.dev.logic.features.waterTracking.validators.ValidatedMillilitersCount
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingUpdateViewModel
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
@@ -102,7 +102,7 @@ private fun WaterTrackingUpdateContent(
     timeInputController: InputController<LocalTime>,
     drinkSelectionController: SingleSelectionController<DrinkType>,
     millilitersDrunkInputController: ValidatedInputController<Int, ValidatedMillilitersCount>,
-    updatingController: SingleRequestController,
+    updatingController: RequestController,
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Column(

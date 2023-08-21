@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.screens.features.fasting.statistic.FastingStatisticSection
+import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticSection
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton

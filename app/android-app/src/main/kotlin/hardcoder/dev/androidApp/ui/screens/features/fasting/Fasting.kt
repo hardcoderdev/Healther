@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.sp
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
-import hardcoder.dev.androidApp.ui.screens.features.fasting.statistic.FastingStatisticSection
-import hardcoder.dev.controller.request.MultiRequestController
+import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticSection
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
@@ -34,7 +34,7 @@ import org.koin.compose.koinInject
 fun Fasting(
     state: FastingViewModel.FastingState.Fasting,
     fastingStatistic: FastingStatistic?,
-    interruptFastingController: MultiRequestController,
+    interruptFastingController: RequestController,
 ) {
     Column(
         modifier = Modifier
@@ -59,15 +59,15 @@ fun Fasting(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(32.dp))
-        RequestButtonWithIcon(
-            requestButtonConfig = RequestButtonConfig.Filled(
-                controller = interruptFastingController,
-                iconResId = R.drawable.ic_close,
-                labelResId = R.string.fasting_interrupt_buttonText,
-            ),
-        )
-    }
+    Spacer(modifier = Modifier.height(32.dp))
+    RequestButtonWithIcon(
+        requestButtonConfig = RequestButtonConfig.Filled(
+            controller = interruptFastingController,
+            iconResId = R.drawable.ic_close,
+            labelResId = R.string.fasting_interrupt_buttonText,
+        ),
+    )
+}
 }
 
 @Composable

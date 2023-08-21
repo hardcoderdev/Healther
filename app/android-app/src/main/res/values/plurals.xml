@@ -71,4 +71,22 @@
         <item quantity="many">миллилитров</item>
         <item quantity="other">миллилитров</item>
     </plurals>
+
+    <plurals name="steps">
+        <item quantity="zero">шагов</item>
+        <item quantity="one">шаг</item>
+        <item quantity="two">шага</item>
+        <item quantity="few">шага</item>
+        <item quantity="many">шагов</item>
+        <item quantity="other">шагов</item>
+    </plurals>
+
+    <plurals name="entries">
+        <item quantity="zero">записей</item>
+        <item quantity="one">запись</item>
+        <item quantity="two">записи</item>
+        <item quantity="few">записи</item>
+        <item quantity="many">записей</item>
+        <item quantity="other">записей</item>
+    </plurals>
 </resources>

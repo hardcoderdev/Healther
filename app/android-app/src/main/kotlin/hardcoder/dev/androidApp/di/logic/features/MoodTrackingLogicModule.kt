@@ -3,12 +3,14 @@ package hardcoder.dev.androidApp.di.logic.features
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.activity.providers.MoodActivityIconProvider
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.moodType.providers.MoodTypeIconProvider
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.moodType.providers.PredefinedMoodTypeProviderImpl
+import hardcoder.dev.logic.features.moodTracking.MoodTrackingPenaltyMaker
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityCreator
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityDeleter
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityNameValidator
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityUpdater
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackCreator
+import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDailyRateProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDeleter
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackUpdater
@@ -31,6 +33,7 @@ val moodTrackingLogicModule = module {
     singleOf(::MoodActivityNameValidator)
     singleOf(::MoodActivityIconProvider)
     singleOf(::MoodTypeNameValidator)
+    singleOf(::MoodTrackDailyRateProvider)
 
     single {
         MoodActivityCreator(
@@ -68,6 +71,7 @@ val moodTrackingLogicModule = module {
             moodTrackProvider = get(),
             moodActivityProvider = get(),
             dispatchers = get(),
+            currencyProvider = get(),
         )
     }
 
@@ -166,6 +170,19 @@ val moodTrackingLogicModule = module {
             appDatabase = get(),
             moodTypeProvider = get(),
             dispatchers = get(),
+        )
+    }
+
+    single {
+        MoodTrackingPenaltyMaker(
+            moodTrackProvider = get(),
+            moodTrackDailyRateProvider = get(),
+            penaltyCreator = get(),
+            penaltyCalculator = get(),
+            heroHealthPointsManager = get(),
+            dateTimeProvider = get(),
+            dispatchers = get(),
+            lastEntranceManager = get(),
         )
     }
 }

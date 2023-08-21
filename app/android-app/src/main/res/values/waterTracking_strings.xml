@@ -9,9 +9,14 @@
     <string name="waterTracking_average_hydration_index">Процент воды в напитках</string>
     <string name="waterTracking_average_water_intakes">Среднее число приёмов воды в день</string>
     <string name="waterTracking_favourite_drink_type">Любимый напиток</string>
-    <string name="waterTracking_statistic_text">Общая статистика:</string>
-    <string name="waterTracking_activity_chart">График активности (по часам):</string>
+    <string name="waterTracking_analytics_statistic_text">Общая статистика:</string>
+    <string name="waterTracking_analytics_activity_chart">График активности (по часам):</string>
     <string name="waterTracking_diary_text">Дневник выпитого:</string>
+    <string name="waterTracking_collectReward">Собрать %.2f монет</string>
+
+    <string name="waterTracking_analytics_title_topBar">Аналитика и статистика</string>
+    <string name="waterTracking_analytics_chartNotEnoughData_text">У нас пока недостаточно данных для отображения графика. Используйте эту фичу и график появится позже!</string>
+    <string name="waterTracking_analyticsNowEmpty_text">Сейчас здесь пусто. Аналитика (график и статистика) появится спустя определенное время пользования этой фичей.</string>
 
     <string name="waterTracking_creation_drinkTypeNotSelected_text">Создайте и выберите тип напитка!</string>
     <string name="waterTracking_creation_create_title_topBar">Создание записи</string>

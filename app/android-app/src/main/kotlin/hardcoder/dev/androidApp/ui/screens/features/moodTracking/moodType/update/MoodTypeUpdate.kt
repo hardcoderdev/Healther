@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.logic.features.moodTracking.moodType.IncorrectMoodTypeName
 import hardcoder.dev.logic.features.moodTracking.moodType.ValidatedMoodTypeName
@@ -88,7 +88,7 @@ private fun MoodTypeUpdateContent(
     moodTypeNameController: ValidatedInputController<String, ValidatedMoodTypeName>,
     iconSelectionController: SingleSelectionController<LocalIcon>,
     positiveIndexController: InputController<Int>,
-    updateController: SingleRequestController,
+    updateController: RequestController,
 ) {
     val context = LocalContext.current
 

@@ -19,17 +19,22 @@ class DiaryTrackCreator(
         diaryAttachmentGroup: DiaryAttachmentGroup,
         date: Instant,
         content: String,
-    ) = withContext(dispatchers.io) {
+    ): Int {
         val diaryTrackId = idGenerator.nextId()
-        appDatabase.diaryTrackQueries.insert(
-            id = diaryTrackId,
-            content = content,
-            date = date,
-        )
 
-        diaryAttachmentManager.attach(
-            diaryTrackId = diaryTrackId,
-            attachmentGroup = diaryAttachmentGroup,
-        )
+        withContext(dispatchers.io) {
+            appDatabase.diaryTrackQueries.insert(
+                id = diaryTrackId,
+                content = content,
+                date = date,
+            )
+
+            diaryAttachmentManager.attach(
+                diaryTrackId = diaryTrackId,
+                attachmentGroup = diaryAttachmentGroup,
+            )
+        }
+
+        return diaryTrackId
     }
 }

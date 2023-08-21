@@ -2,15 +2,16 @@ package hardcoder.dev.androidApp.di.logic.features
 
 import hardcoder.dev.androidApp.ui.screens.features.waterTracking.drinkType.providers.DrinkTypeIconProvider
 import hardcoder.dev.androidApp.ui.screens.features.waterTracking.drinkType.providers.PredefinedDrinkTypeProviderImpl
-import hardcoder.dev.logic.features.waterTracking.WaterIntakeResolver
-import hardcoder.dev.logic.features.waterTracking.WaterPercentageResolver
+import hardcoder.dev.logic.features.waterTracking.resolvers.WaterIntakeResolver
+import hardcoder.dev.logic.features.waterTracking.resolvers.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterTracking.WaterTrackCreator
 import hardcoder.dev.logic.features.waterTracking.WaterTrackDeleter
-import hardcoder.dev.logic.features.waterTracking.WaterTrackMillilitersValidator
+import hardcoder.dev.logic.features.waterTracking.validators.WaterTrackMillilitersValidator
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackUpdater
 import hardcoder.dev.logic.features.waterTracking.WaterTrackingDailyRateProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackingMillilitersDrunkProvider
+import hardcoder.dev.logic.features.waterTracking.WaterTrackingPenaltyMaker
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeCreator
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeDeleter
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeNameValidator
@@ -36,6 +37,7 @@ val waterTrackingLogicModule = module {
             waterIntakeResolver = get(),
             heroProvider = get(),
             dispatchers = get(),
+            genderIdMapper = get(),
         )
     }
 
@@ -45,7 +47,6 @@ val waterTrackingLogicModule = module {
             waterPercentageResolver = get(),
             waterTrackingDailyRateProvider = get(),
             dispatchers = get(),
-            dateTimeProvider = get(),
         )
     }
 
@@ -76,6 +77,7 @@ val waterTrackingLogicModule = module {
             appDatabase = get(),
             drinkTypeProvider = get(),
             dispatchers = get(),
+            currencyProvider = get(),
         )
     }
 
@@ -84,6 +86,7 @@ val waterTrackingLogicModule = module {
             appDatabase = get(),
             drinkTypeProvider = get(),
             dispatchers = get(),
+            currencyProvider = get(),
         )
     }
 
@@ -123,6 +126,18 @@ val waterTrackingLogicModule = module {
         PredefinedDrinkTypeProviderImpl(
             context = androidContext(),
             iconResourceProvider = get(),
+        )
+    }
+
+    single {
+        WaterTrackingPenaltyMaker(
+            millilitersDrunkProvider = get(),
+            penaltyCreator = get(),
+            penaltyCalculator = get(),
+            heroHealthPointsManager = get(),
+            dateTimeProvider = get(),
+            dispatchers = get(),
+            lastEntranceManager = get(),
         )
     }
 }

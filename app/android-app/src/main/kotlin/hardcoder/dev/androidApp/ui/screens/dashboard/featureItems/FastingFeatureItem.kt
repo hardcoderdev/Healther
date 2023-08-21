@@ -17,7 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
-import hardcoder.dev.presentation.dashboard.DashboardItem
+import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButtonConfig
 import hardcoder.dev.uikit.components.card.Card
@@ -31,7 +31,7 @@ import org.koin.compose.koinInject
 
 @Composable
 fun FastingFeatureItem(
-    fastingFeature: DashboardItem.FastingFeature,
+    fastingFeature: DashboardFeatureItem.FastingFeature,
     onGoToFeature: () -> Unit,
     onStartFasting: () -> Unit,
 ) {
@@ -67,7 +67,7 @@ fun FastingFeatureItem(
 
 @Composable
 private fun InfoSection(
-    fastingFeature: DashboardItem.FastingFeature,
+    fastingFeature: DashboardFeatureItem.FastingFeature,
 ) {
     val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
 
@@ -88,7 +88,7 @@ private fun InfoSection(
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 LinearProgressBar(
-                    progress = fastingFeature.progress,
+                    indicatorProgress = fastingFeature.progress,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(14.dp))
@@ -104,7 +104,7 @@ private fun InfoSection(
 
 @Composable
 private fun QuickActionsSection(
-    fastingFeature: DashboardItem.FastingFeature,
+    fastingFeature: DashboardFeatureItem.FastingFeature,
     onGoToFeature: () -> Unit,
     onStartFasting: () -> Unit,
 ) {

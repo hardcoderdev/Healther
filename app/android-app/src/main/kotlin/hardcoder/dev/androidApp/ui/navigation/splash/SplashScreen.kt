@@ -5,6 +5,8 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.androidApp.ui.navigation.dashboard.DashboardScreen
+import hardcoder.dev.androidApp.ui.navigation.hero.HeroCreationScreen
+import hardcoder.dev.androidApp.ui.navigation.hero.HeroDeathScreen
 import hardcoder.dev.androidApp.ui.screens.splash.Splash
 
 class SplashScreen : Screen {
@@ -14,10 +16,13 @@ class SplashScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
 
         Splash(
-            onStartSetUp = {
-                navigator replaceAll WelcomeScreen()
+            onGoToHeroCreation = {
+                navigator replaceAll HeroCreationScreen()
             },
-            onNavigateToDashboard = {
+            onGoToHeroDeath = {
+                navigator replaceAll HeroDeathScreen()
+            },
+            onGoToDashboard = {
                 navigator replaceAll DashboardScreen()
             },
         )

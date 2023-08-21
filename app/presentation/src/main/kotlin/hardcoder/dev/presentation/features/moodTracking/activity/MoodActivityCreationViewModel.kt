@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.logic.features.moodTracking.moodActivity.CorrectActivityName
@@ -30,7 +30,7 @@ class MoodActivityCreationViewModel(
         items = iconResourceProvider.getIcons(),
     )
 
-    val creationController = SingleRequestController(
+    val creationController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             moodActivityCreator.create(

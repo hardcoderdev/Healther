@@ -24,6 +24,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,10 +40,10 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.input.InputController
-import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButton
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButtonConfig
 import hardcoder.dev.uikit.components.icon.Icon
+import hardcoder.dev.uikit.components.text.Text
 import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.preview.UiKitPreview
@@ -57,23 +58,88 @@ fun SearchTopBar(
     actionConfig: ActionConfig? = null,
     placeholderText: Int,
 ) {
-    var isSearchModeEnabled by remember {
-        mutableStateOf(false)
-    }
+    val state by controller.state.collectAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
+    val inputService = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+    var isSearchModeEnabled by remember { mutableStateOf(false) }
 
     TopAppBar(
         title = {
-            TopBarTitle(
-                titleResId = titleResId,
-                placeholderText = placeholderText,
-                searchText = controller.getInput(),
-                onSearchTextChanged = controller::changeInput,
-                isSearchModeEnabled = isSearchModeEnabled,
-                onToggleSearchMode = { isSearchModeEnabled = it },
-                onClearClick = {
-                    controller.changeInput("")
-                },
-            )
+            Box(
+                modifier = Modifier.padding(end = 16.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                AnimatedVisibility(
+                    visible = !isSearchModeEnabled,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = titleResId),
+                    )
+                }
+
+                AnimatedVisibility(
+                    visible = isSearchModeEnabled,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                            .heightIn(min = 40.dp, max = 60.dp)
+                            .padding(horizontal = 6.dp)
+                            .focusRequester(focusRequester),
+                        value = state.input,
+                        onValueChange = controller::changeInput,
+                        textStyle = MaterialTheme.typography.labelLarge,
+                        placeholder = {
+                            Text(
+                                text = stringResource(id = placeholderText),
+                                style = MaterialTheme.typography.labelLarge,
+                            )
+                        },
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                        ),
+                        trailingIcon = {
+                            Icon(
+                                iconResId = R.drawable.ic_clear,
+                                contentDescription = stringResource(id = R.string.icon_search_clear_content_description),
+                                modifier = Modifier.clickable {
+                                    controller.changeInput("")
+                                    inputService?.hide()
+                                    focusManager.clearFocus()
+                                    isSearchModeEnabled = false
+                                },
+                            )
+                        },
+                        maxLines = 1,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = androidx.compose.ui.text.input.ImeAction.Done),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hide()
+                            },
+                        ),
+                    )
+
+                    LaunchedEffect(isSearchModeEnabled) {
+                        if (isSearchModeEnabled) {
+                            focusRequester.requestFocus()
+                            inputService?.show()
+                        }
+                    }
+                }
+            }
         },
         colors = topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
@@ -94,18 +160,35 @@ fun SearchTopBar(
             }
         },
         actions = {
-            TopBarActions(
-                actionConfig = actionConfig,
-                isSearchModeEnabled = isSearchModeEnabled,
-                onToggleSearchMode = {
-                    isSearchModeEnabled = it
-                },
-            )
+            Row {
+                AnimatedVisibility(
+                    visible = !isSearchModeEnabled,
+                    enter = fadeIn() + expandHorizontally { -it },
+                    exit = fadeOut() + shrinkHorizontally { -it },
+                ) {
+                    CircleIconButton(
+                        circleIconButtonConfig = CircleIconButtonConfig.Filled(
+                            onClick = { isSearchModeEnabled = true },
+                            iconResId = R.drawable.ic_search,
+                        ),
+                    )
+                }
+                actionConfig?.let {
+                    it.actions.forEach { action ->
+                        CircleIconButton(
+                            circleIconButtonConfig = CircleIconButtonConfig.Filled(
+                                onClick = action.onActionClick,
+                                iconResId = action.iconResId,
+                            ),
+                        )
+                    }
+                }
+            }
         },
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchTopBar(
     @StringRes titleResId: Int,
@@ -116,21 +199,87 @@ fun SearchTopBar(
     onSearchTextChanged: (String) -> Unit,
     onClearClick: () -> Unit,
 ) {
-    var isSearchModeEnabled by remember {
-        mutableStateOf(false)
-    }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
+    val inputService = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+    var isSearchModeEnabled by remember { mutableStateOf(false) }
 
     TopAppBar(
         title = {
-            TopBarTitle(
-                titleResId = titleResId,
-                placeholderText = placeholderText,
-                searchText = searchText,
-                onSearchTextChanged = onSearchTextChanged,
-                isSearchModeEnabled = isSearchModeEnabled,
-                onToggleSearchMode = { isSearchModeEnabled = it },
-                onClearClick = onClearClick,
-            )
+            Box(
+                modifier = Modifier.padding(end = 16.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                AnimatedVisibility(
+                    visible = !isSearchModeEnabled,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = titleResId),
+                    )
+                }
+
+                AnimatedVisibility(
+                    visible = isSearchModeEnabled,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                            .heightIn(min = 40.dp, max = 60.dp)
+                            .padding(horizontal = 6.dp)
+                            .focusRequester(focusRequester),
+                        value = searchText,
+                        onValueChange = onSearchTextChanged,
+                        textStyle = MaterialTheme.typography.labelLarge,
+                        placeholder = {
+                            Text(
+                                text = stringResource(id = placeholderText),
+                                style = MaterialTheme.typography.labelLarge,
+                            )
+                        },
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                        ),
+                        trailingIcon = {
+                            Icon(
+                                iconResId = R.drawable.ic_clear,
+                                contentDescription = stringResource(id = R.string.icon_search_clear_content_description),
+                                modifier = Modifier.clickable {
+                                    onClearClick()
+                                    inputService?.hide()
+                                    focusManager.clearFocus()
+                                    isSearchModeEnabled = false
+                                },
+                            )
+                        },
+                        maxLines = 1,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = androidx.compose.ui.text.input.ImeAction.Done),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hide()
+                            },
+                        ),
+                    )
+
+                    LaunchedEffect(isSearchModeEnabled) {
+                        if (isSearchModeEnabled) {
+                            focusRequester.requestFocus()
+                            inputService?.show()
+                        }
+                    }
+                }
+            }
         },
         colors = topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
@@ -151,156 +300,31 @@ fun SearchTopBar(
             }
         },
         actions = {
-            TopBarActions(
-                actionConfig = actionConfig,
-                isSearchModeEnabled = isSearchModeEnabled,
-                onToggleSearchMode = {
-                    isSearchModeEnabled = it
-                },
-            )
-        },
-    )
-}
-
-@Composable
-private fun TopBarTitle(
-    searchText: String,
-    onSearchTextChanged: (String) -> Unit,
-    isSearchModeEnabled: Boolean,
-    titleResId: Int,
-    placeholderText: Int,
-    onToggleSearchMode: (Boolean) -> Unit,
-    onClearClick: () -> Unit,
-) {
-    val focusRequester = remember { FocusRequester() }
-    val inputService = LocalSoftwareKeyboardController.current
-
-    Box(
-        modifier = Modifier.padding(end = 16.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-        AnimatedVisibility(
-            visible = !isSearchModeEnabled,
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
-            androidx.compose.material3.Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = titleResId),
-            )
-        }
-
-        AnimatedVisibility(
-            visible = isSearchModeEnabled,
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
-            SearchTextField(
-                searchText = searchText,
-                onSearchTextChanged = onSearchTextChanged,
-                placeholderText = placeholderText,
-                onToggleSearchMode = onToggleSearchMode,
-                onClearClick = onClearClick,
-            )
-
-            LaunchedEffect(isSearchModeEnabled) {
-                if (isSearchModeEnabled) {
-                    focusRequester.requestFocus()
-                    inputService?.show()
+            Row {
+                AnimatedVisibility(
+                    visible = !isSearchModeEnabled,
+                    enter = fadeIn() + expandHorizontally { -it },
+                    exit = fadeOut() + shrinkHorizontally { -it },
+                ) {
+                    CircleIconButton(
+                        circleIconButtonConfig = CircleIconButtonConfig.Filled(
+                            onClick = { isSearchModeEnabled = true },
+                            iconResId = R.drawable.ic_search,
+                        ),
+                    )
+                }
+                actionConfig?.let {
+                    it.actions.forEach { action ->
+                        CircleIconButton(
+                            circleIconButtonConfig = CircleIconButtonConfig.Filled(
+                                onClick = action.onActionClick,
+                                iconResId = action.iconResId,
+                            ),
+                        )
+                    }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun TopBarActions(
-    actionConfig: ActionConfig? = null,
-    isSearchModeEnabled: Boolean,
-    onToggleSearchMode: (Boolean) -> Unit,
-) {
-    Row {
-        AnimatedVisibility(
-            visible = !isSearchModeEnabled,
-            enter = fadeIn() + expandHorizontally { -it },
-            exit = fadeOut() + shrinkHorizontally { -it },
-        ) {
-            CircleIconButton(
-                circleIconButtonConfig = CircleIconButtonConfig.Filled(
-                    onClick = { onToggleSearchMode(true) },
-                    iconResId = R.drawable.ic_search,
-                ),
-            )
-        }
-        actionConfig?.let {
-            it.actions.forEach { action ->
-                CircleIconButton(
-                    circleIconButtonConfig = CircleIconButtonConfig.Filled(
-                        onClick = action.onActionClick,
-                        iconResId = action.iconResId,
-                    ),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun SearchTextField(
-    searchText: String,
-    onSearchTextChanged: (String) -> Unit,
-    placeholderText: Int,
-    onToggleSearchMode: (Boolean) -> Unit,
-    onClearClick: () -> Unit,
-) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusRequester = remember { FocusRequester() }
-    val inputService = LocalSoftwareKeyboardController.current
-    val focusManager = LocalFocusManager.current
-
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .heightIn(min = 40.dp, max = 60.dp)
-            .padding(horizontal = 6.dp)
-            .focusRequester(focusRequester),
-        value = searchText,
-        onValueChange = onSearchTextChanged,
-        textStyle = MaterialTheme.typography.labelLarge,
-        placeholder = {
-            androidx.compose.material3.Text(
-                text = stringResource(id = placeholderText),
-                style = MaterialTheme.typography.labelLarge,
-            )
         },
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
-        trailingIcon = {
-            Icon(
-                iconResId = R.drawable.ic_clear,
-                contentDescription = stringResource(id = R.string.icon_search_clear_content_description),
-                modifier = Modifier.clickable {
-                    onClearClick()
-                    inputService?.hide()
-                    focusManager.clearFocus()
-                    onToggleSearchMode(false)
-                },
-            )
-        },
-        maxLines = 1,
-        singleLine = true,
-        keyboardOptions = KeyboardOptions.Default.copy(imeAction = androidx.compose.ui.text.input.ImeAction.Done),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                keyboardController?.hide()
-            },
-        ),
     )
 }
 

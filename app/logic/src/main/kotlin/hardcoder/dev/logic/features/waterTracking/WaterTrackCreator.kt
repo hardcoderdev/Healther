@@ -3,6 +3,7 @@ package hardcoder.dev.logic.features.waterTracking
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
+import hardcoder.dev.logic.features.waterTracking.validators.CorrectMillilitersCount
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 
@@ -16,12 +17,17 @@ class WaterTrackCreator(
         dateTime: Instant,
         millilitersCount: CorrectMillilitersCount,
         drinkTypeId: Int,
-    ) = withContext(dispatchers.io) {
-        appDatabase.waterTrackQueries.insert(
-            id = idGenerator.nextId(),
-            date = dateTime,
-            millilitersCount = millilitersCount.data,
-            drinkTypeId = drinkTypeId,
-        )
+    ): Int {
+        val waterTrackId = idGenerator.nextId()
+        withContext(dispatchers.io) {
+            appDatabase.waterTrackQueries.insert(
+                id = waterTrackId,
+                date = dateTime,
+                millilitersCount = millilitersCount.data,
+                drinkTypeId = drinkTypeId,
+            )
+        }
+
+        return waterTrackId
     }
 }

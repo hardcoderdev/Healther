@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.getInput
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
@@ -64,7 +64,7 @@ class MoodTrackingUpdateViewModel(
         itemsFlow = moodActivityProvider.provideAllActivities(),
     )
 
-    val updateController = SingleRequestController(
+    val updateController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             val selectedActivities = activitiesMultiSelectionController.selectedItemsOrEmptySet()
@@ -76,7 +76,7 @@ class MoodTrackingUpdateViewModel(
                 )
 
                 moodTrackUpdater.update(
-                    note = noteInputController.getInput(),
+                    note = noteInputController.getInput().ifEmpty { null },
                     moodTrack = moodTrack,
                     selectedActivities = selectedActivities.first(),
                 )
@@ -84,7 +84,7 @@ class MoodTrackingUpdateViewModel(
         },
     )
 
-    val deleteController = SingleRequestController(
+    val deleteController = RequestController(
         coroutineScope = viewModelScope,
         request = { moodTrackDeleter.deleteById(moodTrackId) },
     )

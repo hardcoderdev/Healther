@@ -5,9 +5,10 @@ import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItems
+import hardcoder.dev.controller.selection.selectedItemsOrEmptySet
 import hardcoder.dev.coroutines.firstNotNull
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
@@ -42,8 +43,8 @@ class DiaryUpdateViewModel(
         flow = initialDiaryTrack.filterNotNull().map { diaryTrack ->
             diaryTrack.diaryAttachmentGroup?.let { diaryAttachmentGroup ->
                 ReadOnlyDiaryAttachments(
-                    moodTracks = diaryAttachmentGroup.moodTracks,
                     fastingTracks = diaryAttachmentGroup.fastingTracks,
+                    moodTracks = diaryAttachmentGroup.moodTracks,
                     tags = diaryAttachmentGroup.tags,
                 )
             } ?: ReadOnlyDiaryAttachments()
@@ -61,14 +62,14 @@ class DiaryUpdateViewModel(
         itemsFlow = diaryTagProvider.provideAllDiaryTags(),
     )
 
-    val deleteController = SingleRequestController(
+    val deleteController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             diaryTrackDeleter.deleteById(diaryTrackId)
         },
     )
 
-    val updateController = SingleRequestController(
+    val updateController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             diaryTrackUpdater.update(
@@ -76,7 +77,9 @@ class DiaryUpdateViewModel(
                 content = contentInputController.validateAndRequire(),
                 diaryAttachmentGroup = initialDiaryTrack.firstNotNull().diaryAttachmentGroup?.copy(
                     tags = tagMultiSelectionController.requireSelectedItems(),
-                ) ?: DiaryAttachmentGroup(),
+                ) ?: DiaryAttachmentGroup(
+                    tags = tagMultiSelectionController.selectedItemsOrEmptySet().first(),
+                ),
             )
         },
         isAllowedFlow = contentInputController.state.map {
@@ -94,8 +97,8 @@ class DiaryUpdateViewModel(
     }
 
     data class ReadOnlyDiaryAttachments(
-        val moodTracks: List<MoodTrack> = emptyList(),
         val fastingTracks: List<FastingTrack> = emptyList(),
+        val moodTracks: List<MoodTrack> = emptyList(),
         val tags: Set<DiaryTag> = emptySet(),
     ) {
         val isEmpty = fastingTracks.isEmpty() && moodTracks.isEmpty()

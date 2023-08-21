@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButtonConfig
 import hardcoder.dev.uikit.preview.UiKitPreview
@@ -16,11 +16,13 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 
 @Composable
-internal fun <T : SingleRequestController> OutlinedRequestButtonWithIcon(
+internal fun <T : RequestController> OutlinedRequestButtonWithIcon(
     modifier: Modifier = Modifier,
     @DrawableRes iconResId: Int,
     @StringRes labelResId: Int,
+    formatArgs: List<Any> = emptyList(),
     controller: T,
+    sideEffect: (() -> Unit)? = null,
 ) {
     val state by controller.state.collectAsState()
 
@@ -29,7 +31,11 @@ internal fun <T : SingleRequestController> OutlinedRequestButtonWithIcon(
             modifier = modifier,
             iconResId = iconResId,
             labelResId = labelResId,
-            onClick = controller::request,
+            formatArgs = formatArgs,
+            onClick = {
+                controller.request()
+                sideEffect?.invoke()
+            },
             isEnabled = state.isRequestAllowed,
         ),
     )
@@ -43,7 +49,7 @@ internal fun OutlinedRequestButtonWithIconPreview() {
         OutlinedRequestButtonWithIcon(
             labelResId = R.string.placeholder_label,
             iconResId = R.drawable.ic_fab_add,
-            controller = SingleRequestController(
+            controller = RequestController(
                 coroutineScope = GlobalScope,
                 request = {},
             ),

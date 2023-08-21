@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.logic.features.waterTracking.drinkType.IncorrectDrinkTypeName
 import hardcoder.dev.logic.features.waterTracking.drinkType.ValidatedDrinkTypeName
@@ -72,7 +72,7 @@ private fun DrinkTypeCreationContent(
     nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
     iconSelectionController: SingleSelectionController<LocalIcon>,
     waterPercentageInputController: InputController<Int>,
-    creationController: SingleRequestController,
+    creationController: RequestController,
 ) {
     val context = LocalContext.current
 

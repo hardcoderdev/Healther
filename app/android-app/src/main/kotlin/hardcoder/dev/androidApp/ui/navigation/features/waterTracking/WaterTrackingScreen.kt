@@ -27,6 +27,9 @@ class WaterTrackingScreen : Screen {
             onGoToHistory = {
                 navigator += WaterTrackingHistoryScreen()
             },
+            onGoToAnalytics = {
+                navigator += WaterTrackingAnalyticsScreen()
+            },
         )
     }
 }

@@ -3,7 +3,7 @@ package hardcoder.dev.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.inAppReview.ReviewManager
 import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
@@ -19,10 +19,11 @@ class SettingsViewModel(
 
     val preferencesLoadingController = LoadingController(
         coroutineScope = viewModelScope,
-        flow = appPreferenceProvider.provideAppPreference().filterNotNull(),
+        flow = appPreferenceProvider.provideAppPreference()
+            .filterNotNull(),
     )
 
-    val appReviewRequestController = SingleRequestController(
+    val appReviewRequestController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             require(reviewManager.launchReviewFlow())

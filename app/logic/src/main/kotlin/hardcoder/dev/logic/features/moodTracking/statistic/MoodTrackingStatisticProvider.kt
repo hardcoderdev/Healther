@@ -37,13 +37,21 @@ class MoodTrackingStatisticProvider(
                 ) { moodTrackArray ->
                     val moodTrackList = moodTrackArray.toList()
 
-                    val happyMoodCount = moodTrackList.count { it.moodType.positivePercentage >= 80 }
+                    val happyMoodCount = moodTrackList.count {
+                        it.moodType.positivePercentage in 81..100
+                    }
 
-                    val neutralMoodCount = moodTrackList.count { it.moodType.positivePercentage >= 60 }
+                    val neutralMoodCount = moodTrackList.count {
+                        it.moodType.positivePercentage in 61..80
+                    }
 
-                    val notWellMoodCount = moodTrackList.count { it.moodType.positivePercentage >= 40 }
+                    val notWellMoodCount = moodTrackList.count {
+                        it.moodType.positivePercentage in 41..60
+                    }
 
-                    val badMoodCount = moodTrackList.count { it.moodType.positivePercentage >= 10 }
+                    val badMoodCount = moodTrackList.count {
+                        it.moodType.positivePercentage in 10..40
+                    }
 
                     val averageMood = moodTrackList.groupingBy {
                         it.moodType

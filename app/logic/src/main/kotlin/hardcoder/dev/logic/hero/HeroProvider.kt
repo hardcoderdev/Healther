@@ -15,18 +15,23 @@ class HeroProvider(
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
-    fun requireHero() = appDatabase.heroQueries
+    fun provideHero() = appDatabase.heroQueries
         .provideCurrentHero()
         .asFlow()
-        .map { it.executeAsOne().toEntity() }
+        .map { it.executeAsOneOrNull()?.toEntity() }
         .flowOn(dispatchers.io)
 
     private fun Hero.toEntity() = HeroEntity(
+        id = id,
         weight = weight,
         exerciseStressTime = exerciseStressTime,
         gender = genderIdMapper.mapToGender(genderId),
         name = name,
-        healthPoints = healthPoints,
+        currentHealthPoints = currentHealthPoints,
+        maxHealthPoints = maxHealthPoints,
         experiencePoints = experiencePoints,
+        level = level,
+        coins = coins,
+        crystals = crystals,
     )
 }

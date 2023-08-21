@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hero_welcome_title_topBar">Добро пожаловать</string>
-    <string name="hero_welcome_beforeWeStart_text">Перед тем, как мы начнём, ты можешь заполнить информацию о себе, которая поможет приложению работать корректно, например, чтобы по твоим показателям рассчитать ежедневную норму воды.</string>
-    <string name="hero_welcome_letsStart_buttonText">Давай заполним!</string>
-
-    <string name="hero_creation_enterYourWeightInKg_text">Выберите ваш вес в килограммах.</string>
-    <string name="hero_creation_enterExerciseStressTime_text">Сколько часов в день вы занимаетесь спортом или другими физическими нагрузками?</string>
-    <string name="hero_creation_title_topBar">Ваш пол</string>
-    <string name="hero_creation_forWhatWeNeedGender_text">• Ваш гендер нужен для различных рассчётов в приложении, например рассчёта нормы потребляемой воды.</string>
-    <string name="hero_creation_selectYourGender_text">Выбери свой гендер для более точных расчётов.</string>
-    <string name="hero_creation_create_buttonText">Создать героя</string>
+    <string name="hero_creation_title_topBar">Создание персонажа</string>
+    <string name="hero_creation_enterName_textField">Введите имя или ник:</string>
     <string name="hero_creation_nameIcon_contentDescription">Иконка ввода имени (ника)</string>
-    <string name="hero_creation_enterName_text">Введите имя или ник:</string>
-    <string name="hero_creation_enterName_textField">Например: Илья или драконоборец1997_)</string>
     <string name="hero_creation_nameEmpty">Это поле не может быть пустым!</string>
     <string name="hero_creation_nameMoreThanMaxCharsError">Максимальное кол-во символов: %d</string>
+    <string name="hero_creation_weightEmpty">Это поле не может быть пустым!</string>
+    <string name="hero_creation_enterYourWeightInKg_textField">Ваш вес в килограммах (например 70)…</string>
+    <string name="hero_creation_weight_invalidCharsError">Уберите символы: %s</string>
+    <string name="hero_creation_weightMoreThanMaximumBoundaryError">Максимальный вес: %d</string>
+    <string name="hero_creation_weightLessThanMinimumBoundaryError">Минимальный вес: %d</string>
+    <string name="hero_creation_weightIcon_contentDescription">Иконка ввода веса</string>
+    <string name="hero_creation_exerciseStressTimeEmpty">Это поле не может быть пустым!</string>
+    <string name="hero_creation_enterExerciseStressTime_textField">Сколько часов в день вы тренируетесь?</string>
+    <string name="hero_creation_exerciseStressTime_invalidCharsError">Уберите символы: %s</string>
+    <string name="hero_creation_exerciseStressTimeIcon_contentDescription">Иконка ввода времени тренировок</string>
+    <string name="hero_creation_exerciseStressTimeMoreThanMaximumBoundaryError">Максимальное время - %d часа</string>
+    <string name="hero_creation_exerciseStressTimeLessThanMinimumBoundaryError">Минимальное время - %d часа</string>
+    <string name="hero_creation_base_info_text">Основная информация:</string>
+    <string name="hero_creation_create_buttonText">Создать героя</string>
+
+    <string name="hero_death_title_topBar">Вы умерли…</string>
+
+    <string name="hero_inventory_title_topBar">Инвентарь героя</string>
 </resources>

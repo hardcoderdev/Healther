@@ -1,6 +1,7 @@
 package hardcoder.dev.datetime
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
@@ -18,10 +19,13 @@ import kotlinx.datetime.toLocalDateTime
 
 class DateTimeProvider(private val dispatchers: BackgroundCoroutineDispatchers) {
 
-    private fun <T> updatingFlow(value: () -> T) = flow {
+    private fun <T> updatingFlow(
+        value: () -> T,
+        delay: Duration = UPDATE_DELAY,
+    ) = flow {
         while (currentCoroutineContext().isActive) {
             emit(value())
-            delay(UPDATE_DELAY)
+            delay(delay)
         }
     }.distinctUntilChanged().flowOn(dispatchers.default)
 
@@ -31,7 +35,10 @@ class DateTimeProvider(private val dispatchers: BackgroundCoroutineDispatchers) 
         return startDate.getStartOfDay(getCurrentTimezone())..endDate.getEndOfDay(getCurrentTimezone())
     }
 
-    fun currentTimeFlow(): Flow<LocalDateTime> = updatingFlow(::currentTime)
+    fun currentTimeFlow(delay: Duration = UPDATE_DELAY): Flow<LocalDateTime> = updatingFlow(
+        value = ::currentTime,
+        delay = delay,
+    )
 
     fun currentDateFlow(): Flow<LocalDate> = updatingFlow(::currentDate)
 

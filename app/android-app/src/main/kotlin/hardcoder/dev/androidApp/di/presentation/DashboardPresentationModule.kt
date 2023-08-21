@@ -7,14 +7,20 @@ import org.koin.dsl.module
 val dashboardPresentationModule = module {
     viewModel {
         DashboardViewModel(
-            dailyRateStepsResolver = get(),
+            pedometerDailyRateStepsProvider = get(),
             pedometerManager = get(),
             dateTimeProvider = get(),
             waterTrackingMillilitersDrunkProvider = get(),
             pedometerTrackProvider = get(),
             currentFastingManager = get(),
             moodTrackProvider = get(),
+            moodTrackDailyRateProvider = get(),
             diaryTrackProvider = get(),
+            diaryDailyRateProvider = get(),
+            heroHealthPointsResolver = get(),
+            heroProvider = get(),
+            heroExperiencePointsProvider = get(),
+            heroExperiencePointsResolver = get(),
         )
     }
 }

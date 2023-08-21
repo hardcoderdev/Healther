@@ -18,9 +18,6 @@ class MoodTrackingHistoryScreen : Screen {
         MoodTrackingHistory(
             viewModel = viewModel,
             onGoBack = navigator::pop,
-            onMoodTrackUpdate = { moodTrackId ->
-                navigator += MoodTrackingUpdateScreen(moodTrackId)
-            },
         )
     }
 }

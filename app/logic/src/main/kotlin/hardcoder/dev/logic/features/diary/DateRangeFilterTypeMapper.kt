@@ -22,7 +22,7 @@ class DateRangeFilterTypeMapper(
 
     private val mapperScope = CoroutineScope(Dispatchers.IO + Job())
     private val firstLaunchTime = appPreferenceProvider.provideAppPreference().map {
-        requireNotNull(it).firstLaunchTime
+        requireNotNull(it!!.firstLaunchTime)
     }.stateIn(
         scope = mapperScope,
         started = SharingStarted.Eagerly,

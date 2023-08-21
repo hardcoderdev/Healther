@@ -1,5 +1,6 @@
 package hardcoder.dev.androidApp.di.presentation.features
 
+import hardcoder.dev.presentation.features.moodTracking.MoodTrackingAnalyticsViewModel
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingCreationViewModel
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingHistoryViewModel
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingUpdateViewModel
@@ -17,9 +18,18 @@ val moodTrackingPresentationModule = module {
     viewModel {
         MoodTrackingViewModel(
             moodWithActivitiesProvider = get(),
-            moodTrackProvider = get(),
             dateTimeProvider = get(),
+            currencyCollector = get(),
+            currencyProvider = get(),
+            experienceCollector = get(),
+        )
+    }
+
+    viewModel {
+        MoodTrackingAnalyticsViewModel(
+            moodTrackProvider = get(),
             moodTrackingStatisticProvider = get(),
+            dateTimeProvider = get(),
         )
     }
 
@@ -29,6 +39,12 @@ val moodTrackingPresentationModule = module {
             moodTypeProvider = get(),
             moodActivityProvider = get(),
             dateTimeProvider = get(),
+            currencyCreator = get(),
+            currencyCalculator = get(),
+            moodTrackDailyRateProvider = get(),
+            moodTrackProvider = get(),
+            experienceCreator = get(),
+            experienceCalculator = get(),
         )
     }
 

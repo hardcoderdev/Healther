@@ -6,7 +6,7 @@ import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.controller.input.validateAndRequire
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
@@ -44,7 +44,7 @@ class MoodTypeUpdateViewModel(
         initialInput = 0,
     )
 
-    val updateController = SingleRequestController(
+    val updateController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             moodTypeUpdater.update(
@@ -59,7 +59,7 @@ class MoodTypeUpdateViewModel(
         },
     )
 
-    val deleteController = SingleRequestController(
+    val deleteController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             moodTypeDeleter.deleteById(moodTypeId)

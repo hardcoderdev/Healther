@@ -3,41 +3,22 @@ package hardcoder.dev.presentation.features.moodTracking
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.datetime.toLocalDateTime
-import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
+import hardcoder.dev.logic.reward.currency.CurrencyCollector
+import hardcoder.dev.logic.reward.currency.CurrencyProvider
+import hardcoder.dev.logic.features.FeatureType
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
-import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatisticProvider
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
+import hardcoder.dev.logic.reward.experience.ExperienceCollector
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.minus
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class MoodTrackingViewModel(
     moodWithActivitiesProvider: MoodWithActivitiesProvider,
-    moodTrackProvider: MoodTrackProvider,
     dateTimeProvider: DateTimeProvider,
-    moodTrackingStatisticProvider: MoodTrackingStatisticProvider,
+    currencyProvider: CurrencyProvider,
+    currencyCollector: CurrencyCollector,
+    experienceCollector: ExperienceCollector,
 ) : ViewModel() {
-
-    private val moodTracksForTheLastMonth =
-        dateTimeProvider.currentDateFlow().map { currentDate ->
-            dateTimeProvider.dateRange(
-                startDate = currentDate.minus(1, DateTimeUnit.MONTH),
-                endDate = currentDate,
-            )
-        }.distinctUntilChanged().flatMapLatest { range ->
-            moodTrackProvider.provideAllMoodTracksByDayRange(range)
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = emptyList(),
-        )
 
     val moodWithActivityLoadingController = LoadingController(
         coroutineScope = viewModelScope,
@@ -46,19 +27,25 @@ class MoodTrackingViewModel(
         ),
     )
 
-    val statisticLoadingController = LoadingController(
+    val collectRewardController = RequestController(
         coroutineScope = viewModelScope,
-        flow = moodTrackingStatisticProvider.provideMoodTrackingStatistic(),
+        canBeReset = true,
+        request = {
+            currencyCollector.collect(featureType = FeatureType.MOOD_TRACKING)
+            experienceCollector.collect(featureType = FeatureType.MOOD_TRACKING)
+        },
     )
 
-    val chartEntriesLoadingController = LoadingController(
+    val rewardLoadingController = LoadingController(
         coroutineScope = viewModelScope,
-        flow = moodTracksForTheLastMonth.map { fastingTrackList ->
-            fastingTrackList.groupBy {
-                it.date.toLocalDateTime().dayOfMonth
-            }.map { entry ->
-                entry.key to entry.value.maxBy { it.moodType.positivePercentage }.moodType.positivePercentage
+        flow = currencyProvider.provideRewardsByDate(
+            isCollected = false,
+            featureType = FeatureType.MOOD_TRACKING,
+            dayRange = dateTimeProvider.currentDateRange(),
+        ).map { rewardList ->
+            rewardList.sumOf { reward ->
+                reward.amount.toDouble()
             }
-        }.distinctUntilChanged(),
+        },
     )
 }

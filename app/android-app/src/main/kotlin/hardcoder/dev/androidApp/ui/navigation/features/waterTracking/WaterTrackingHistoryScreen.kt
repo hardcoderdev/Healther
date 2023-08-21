@@ -18,9 +18,6 @@ class WaterTrackingHistoryScreen : Screen {
         WaterTrackingHistory(
             viewModel = viewModel,
             onGoBack = navigator::pop,
-            onWaterTrackUpdate = { waterTrackId -> // TODO MAYBE REMOVE UPDATE
-                navigator += WaterTrackingUpdateScreen(waterTrackId)
-            },
         )
     }
 }

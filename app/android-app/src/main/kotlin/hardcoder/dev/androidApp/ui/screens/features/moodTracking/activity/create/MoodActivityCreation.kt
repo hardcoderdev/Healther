@@ -21,7 +21,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.input.ValidatedInputController
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.logic.features.moodTracking.moodActivity.IncorrectActivityName
 import hardcoder.dev.logic.features.moodTracking.moodActivity.ValidatedActivityName
@@ -66,7 +66,7 @@ fun MoodActivityCreation(
 private fun MoodActivityCreationContent(
     activityNameController: ValidatedInputController<String, ValidatedActivityName>,
     iconSingleSelectionController: SingleSelectionController<LocalIcon>,
-    creationController: SingleRequestController,
+    creationController: RequestController,
 ) {
     val context = LocalContext.current
 

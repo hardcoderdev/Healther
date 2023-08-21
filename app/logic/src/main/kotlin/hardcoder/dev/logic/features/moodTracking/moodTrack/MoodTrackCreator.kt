@@ -27,32 +27,36 @@ class MoodTrackCreator(
         moodType: MoodType,
         date: Instant,
         selectedActivities: Set<MoodActivity>,
-    ) = withContext(dispatchers.io) {
+    ): Int {
         val moodTrackId = idGenerator.nextId()
 
-        appDatabase.moodTrackQueries.insert(
-            id = moodTrackId,
-            moodTypeId = moodType.id,
-            date = date,
-        )
-
-        if (note != null) {
-            diaryTrackCreator.create(
-                content = note,
+        withContext(dispatchers.io) {
+            appDatabase.moodTrackQueries.insert(
+                id = moodTrackId,
+                moodTypeId = moodType.id,
                 date = date,
-                diaryAttachmentGroup = DiaryAttachmentGroup(
-                    moodTracks = listOf(
-                        moodTrackProvider.provideById(moodTrackId).filterNotNull().first(),
-                    ),
-                ),
             )
+
+            if (note != null) {
+                diaryTrackCreator.create(
+                    content = note,
+                    date = date,
+                    diaryAttachmentGroup = DiaryAttachmentGroup(
+                        moodTracks = listOf(
+                            moodTrackProvider.provideById(moodTrackId).filterNotNull().first(),
+                        ),
+                    ),
+                )
+            }
+
+            selectedActivities.forEach { activity ->
+                moodWithActivityCreator.create(
+                    moodTrackId = moodTrackId,
+                    activityId = activity.id,
+                )
+            }
         }
 
-        selectedActivities.forEach { activity ->
-            moodWithActivityCreator.create(
-                moodTrackId = moodTrackId,
-                activityId = activity.id,
-            )
-        }
+        return moodTrackId
     }
 }

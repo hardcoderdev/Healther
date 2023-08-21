@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
-import hardcoder.dev.controller.request.SingleRequestController
+import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.logic.features.diary.diaryTag.CorrectDiaryTagName
@@ -37,7 +37,7 @@ class DiaryTagUpdateViewModel(
         items = iconResourceProvider.getIcons(),
     )
 
-    val updateController = SingleRequestController(
+    val updateController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             diaryTagUpdater.update(
@@ -51,7 +51,7 @@ class DiaryTagUpdateViewModel(
         },
     )
 
-    val deleteController = SingleRequestController(
+    val deleteController = RequestController(
         coroutineScope = viewModelScope,
         request = {
             diaryTagDeleter.deleteById(tagId)

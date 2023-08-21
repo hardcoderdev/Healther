@@ -34,13 +34,11 @@ import hardcoder.dev.androidApp.ui.screens.features.waterTracking.waterTrack.Wat
 @Composable
 fun WaterTrackingHistory(
     viewModel: WaterTrackingHistoryViewModel,
-    onWaterTrackUpdate: (Int) -> Unit,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             WaterTrackingHistoryContent(
-                onWaterTrackUpdate = onWaterTrackUpdate,
                 dateRangeInputController = viewModel.dateRangeInputController,
                 itemsLoadingController = viewModel.waterTracksLoadingController,
             )
@@ -56,7 +54,6 @@ fun WaterTrackingHistory(
 
 @Composable
 private fun WaterTrackingHistoryContent(
-    onWaterTrackUpdate: (Int) -> Unit,
     dateRangeInputController: InputController<ClosedRange<Instant>>,
     itemsLoadingController: LoadingController<List<WaterTrackingItem>>,
 ) {
@@ -74,9 +71,6 @@ private fun WaterTrackingHistoryContent(
         Spacer(modifier = Modifier.height(16.dp))
         WaterTracksHistory(
             itemsLoadingController = itemsLoadingController,
-            onTrackUpdate = { waterTrack ->
-                onWaterTrackUpdate(waterTrack.id)
-            },
         )
     }
 }
@@ -84,7 +78,6 @@ private fun WaterTrackingHistoryContent(
 @Composable
 private fun WaterTracksHistory(
     itemsLoadingController: LoadingController<List<WaterTrackingItem>>,
-    onTrackUpdate: (WaterTrackingItem) -> Unit,
 ) {
     LoadingContainer(controller = itemsLoadingController) { waterTrackingItems ->
         if (waterTrackingItems.isNotEmpty()) {
@@ -96,7 +89,9 @@ private fun WaterTracksHistory(
                 items(waterTrackingItems) { track ->
                     WaterTrackItemRow(
                         waterTrackingItem = track,
-                        onUpdate = onTrackUpdate,
+                        onUpdate = {
+                            /* no-op because money for track has already been collected */
+                        },
                     )
                 }
             }

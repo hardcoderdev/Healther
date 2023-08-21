@@ -2,24 +2,32 @@ package hardcoder.dev.androidApp.ui.screens.splash
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import hardcoder.dev.presentation.welcome.SplashViewModel
+import hardcoder.dev.presentation.splash.SplashViewModel
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun Splash(
-    onStartSetUp: () -> Unit,
-    onNavigateToDashboard: () -> Unit,
+    onGoToHeroCreation: () -> Unit,
+    onGoToHeroDeath: () -> Unit,
+    onGoToDashboard: () -> Unit,
     viewModel: SplashViewModel = koinViewModel(),
 ) {
     LoadingContainer(
-        controller = viewModel.isFirstLaunchLoadingController,
-        loadedContent = { isFirstLaunch ->
+        controller1 = viewModel.isFirstLaunchLoadingController,
+        controller2 = viewModel.healthPointsLoadingController,
+        loadedContent = { isFirstLaunch, healthPoints ->
             LaunchedEffect(isFirstLaunch) {
-                if (isFirstLaunch) {
-                    onStartSetUp()
-                } else {
-                    onNavigateToDashboard()
+                when {
+                    isFirstLaunch -> {
+                        onGoToHeroCreation()
+                    }
+                    healthPoints <= 0 -> {
+                        onGoToHeroDeath()
+                    }
+                    else -> {
+                        onGoToDashboard()
+                    }
                 }
             }
         },

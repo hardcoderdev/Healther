@@ -1,0 +1,21 @@
+import kotlin.Int;
+import kotlin.Boolean;
+import kotlinx.datetime.Instant;
+
+CREATE TABLE IF NOT EXISTS Penalty(
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    healthPointsAmount INTEGER AS Int NOT NULL,
+    featureTypeId INTEGER AS Int NOT NULL,
+    date INTEGER AS Instant NOT NULL,
+    isCollected INTEGER AS Boolean NOT NULL
+);
+
+insert:
+INSERT INTO Penalty(id, healthPointsAmount, featureTypeId, date, isCollected)
+VALUES (?, ?, ?, ?, ?);
+
+collect:
+UPDATE Penalty SET isCollected = TRUE WHERE featureTypeId = ?;
+
+provideAllPenaltiesByDate:
+SELECT * FROM Penalty WHERE isCollected = ? AND date BETWEEN ? AND ?;

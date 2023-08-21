@@ -39,4 +39,14 @@
         <item quantity="one">milliliter</item>
         <item quantity="other">milliliters</item>
     </plurals>
+
+    <plurals name="steps">
+        <item quantity="one">step</item>
+        <item quantity="other">steps</item>
+    </plurals>
+
+    <plurals name="entries">
+        <item quantity="one">entry</item>
+        <item quantity="other">entries</item>
+    </plurals>
 </resources>

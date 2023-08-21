@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">Healther</string>
 
-    <string name="gender_male">Мужской</string>
-    <string name="gender_female">Женский</string>
+    <string name="gender_male">Мужчина</string>
+    <string name="gender_female">Женщина</string>
 
     <string name="datetime_seconds">%dс</string>
     <string name="datetime_minutes">%dм</string>

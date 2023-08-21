@@ -11,4 +11,5 @@ data class FastingTrack(
     val fastingPlan: FastingPlan,
     val interruptedTime: Instant?,
     val fastingProgress: Float,
+    val isRewardCollected: Boolean,
 )

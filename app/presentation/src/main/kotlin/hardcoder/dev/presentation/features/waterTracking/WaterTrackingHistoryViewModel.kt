@@ -6,7 +6,7 @@ import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.coroutines.mapItems
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.features.waterTracking.WaterPercentageResolver
+import hardcoder.dev.logic.features.waterTracking.resolvers.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
