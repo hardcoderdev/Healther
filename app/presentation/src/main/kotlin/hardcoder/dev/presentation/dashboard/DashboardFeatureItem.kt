@@ -1,7 +1,6 @@
 package hardcoder.dev.presentation.dashboard
 
 import hardcoder.dev.logic.features.waterTracking.MillilitersDrunkToDailyRate
-import hardcoder.dev.logic.hero.Hero
 import kotlin.time.Duration
 
 sealed class DashboardFeatureItem {

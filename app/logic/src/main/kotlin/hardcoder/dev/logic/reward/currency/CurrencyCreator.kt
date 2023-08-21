@@ -1,6 +1,5 @@
 package hardcoder.dev.logic.reward.currency
 
-import android.util.Log
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
@@ -25,7 +24,6 @@ class CurrencyCreator(
         date: Instant,
         isCollected: Boolean,
     ) = withContext(dispatchers.io) {
-        Log.d("depdlped", "in creator $currencyAmount")
         appDatabase.currencyQueries.insert(
             id = idGenerator.nextId(),
             featureTypeId = featureTypeIdMapper.mapToId(featureType),

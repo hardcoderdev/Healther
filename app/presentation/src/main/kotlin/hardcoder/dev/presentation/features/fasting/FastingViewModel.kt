@@ -1,6 +1,5 @@
 package hardcoder.dev.presentation.features.fasting
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController

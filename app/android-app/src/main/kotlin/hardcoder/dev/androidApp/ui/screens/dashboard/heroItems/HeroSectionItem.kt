@@ -22,7 +22,6 @@ import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButtonConfig
 import hardcoder.dev.uikit.components.card.Card
 import hardcoder.dev.uikit.components.card.CardConfig
-import hardcoder.dev.uikit.components.icon.Icon
 import hardcoder.dev.uikit.components.icon.Image
 import hardcoder.dev.uikit.components.progressBar.LinearProgressBar
 import hardcoder.dev.uikit.components.text.Description
