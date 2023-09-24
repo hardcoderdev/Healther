@@ -1,5 +1,6 @@
 package hardcoder.dev.androidApp.ui.screens.features.diary.items
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -45,7 +46,7 @@ fun DiaryItem(
                         Spacer(modifier = Modifier.height(8.dp))
                         FlowRow(
                             modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
+                            verticalArrangement = Arrangement.Center,
                             maxItemsInEachRow = 3,
                         ) {
                             tags.take(MAX_TAGS_VISIBLE_IN_ITEM).forEach { tag ->

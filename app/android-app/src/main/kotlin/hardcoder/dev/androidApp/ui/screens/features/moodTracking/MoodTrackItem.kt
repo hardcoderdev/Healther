@@ -1,6 +1,7 @@
 package hardcoder.dev.androidApp.ui.screens.features.moodTracking
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -71,7 +72,7 @@ fun MoodTrackItem(
                     Spacer(modifier = Modifier.height(8.dp))
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
+                        verticalArrangement = Arrangement.Center,
                         maxItemsInEachRow = 3,
                     ) {
                         activitiesList.take(MAX_ACTIVITIES_VISIBLE_IN_ITEM).forEach { hobbyTrack ->

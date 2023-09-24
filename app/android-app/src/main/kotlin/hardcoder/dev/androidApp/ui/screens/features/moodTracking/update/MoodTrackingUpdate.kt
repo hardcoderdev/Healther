@@ -228,7 +228,7 @@ private fun SelectActivitiesSection(
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalArrangement = Arrangement.Center,
         itemModifier = Modifier.padding(top = 8.dp),
         emptyContent = { ManagementActivitiesButton(onManageActivities = onManageActivities) },
         actionButton = { ManagementActivitiesButton(onManageActivities = onManageActivities) },

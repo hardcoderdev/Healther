@@ -20,7 +20,7 @@ fun <T> SingleSelectionChipFlowRow(
     chipShape: RoundedCornerShape = RoundedCornerShape(32.dp),
     modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Center,
-    verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    verticalArrangement: Arrangement.Vertical = Arrangement.Center,
     maxItemsInEachRow: Int,
     actionButton: @Composable () -> Unit = {},
     itemContent: @Composable (item: T, isSelected: Boolean) -> Unit,
@@ -32,7 +32,7 @@ fun <T> SingleSelectionChipFlowRow(
             FlowRow(
                 modifier = modifier,
                 horizontalArrangement = horizontalArrangement,
-                verticalAlignment = verticalAlignment,
+                verticalArrangement = verticalArrangement,
                 maxItemsInEachRow = maxItemsInEachRow,
             ) {
                 actionButton()
@@ -43,10 +43,7 @@ fun <T> SingleSelectionChipFlowRow(
                         shape = chipShape,
                         isSelected = state.selectedItem == item,
                         chipContent = {
-                            itemContent(
-                                item = item,
-                                isSelected = state.selectedItem == item,
-                            )
+                            itemContent(item, state.selectedItem == item,)
                         },
                     )
                 }

@@ -143,7 +143,7 @@ private fun SelectTagsSection(
             .horizontalScroll(rememberScrollState()),
         itemModifier = Modifier.padding(top = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalArrangement = Arrangement.Center,
         actionButton = { ManagementTagsButton(onManageTags = onManageTags) },
         emptyContent = { ManagementTagsButton(onManageTags = onManageTags) },
         itemContent = { tag, _ ->

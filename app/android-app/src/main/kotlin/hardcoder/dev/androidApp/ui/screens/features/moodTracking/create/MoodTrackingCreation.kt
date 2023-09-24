@@ -216,7 +216,7 @@ private fun SelectActivitiesSection(
             .horizontalScroll(rememberScrollState()),
         itemModifier = Modifier.padding(top = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalArrangement = Arrangement.Center,
         actionButton = { ManagementActivitiesButton(onManageActivities = onManageActivities) },
         emptyContent = { ManagementActivitiesButton(onManageActivities = onManageActivities) },
         itemContent = { activity, _ ->
