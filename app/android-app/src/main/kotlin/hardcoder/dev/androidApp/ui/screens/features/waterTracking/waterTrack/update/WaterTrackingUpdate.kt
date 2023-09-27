@@ -19,13 +19,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.formatters.RegexHolder
-import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
 import hardcoder.dev.androidApp.ui.screens.dialogs.DatePickerDialog
 import hardcoder.dev.androidApp.ui.screens.dialogs.TimePickerDialog
 import hardcoder.dev.androidApp.ui.screens.features.waterTracking.drinkType.DrinkTypeItem
@@ -33,10 +34,14 @@ import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
+import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.logic.features.waterTracking.validators.IncorrectMillilitersCount
 import hardcoder.dev.logic.features.waterTracking.validators.ValidatedMillilitersCount
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackingUpdateViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.date.MockDateProvider
+import hardcoder.dev.mock.dataProviders.features.WaterTrackingMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
@@ -53,14 +58,22 @@ import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import org.koin.compose.koinInject
 
 @Composable
 fun WaterTrackingUpdate(
-    viewModel: WaterTrackingUpdateViewModel,
+    dateTimeFormatter: DateTimeFormatter,
+    dateTimeProvider: DateTimeProvider,
+    dateInputController: InputController<LocalDate>,
+    timeInputController: InputController<LocalTime>,
+    drinkSelectionController: SingleSelectionController<DrinkType>,
+    millilitersDrunkInputController: ValidatedInputController<Int, ValidatedMillilitersCount>,
+    updateController: RequestController,
     onManageDrinkTypes: () -> Unit,
     onGoBack: () -> Unit,
     onDeleteDialogShow: (Boolean) -> Unit,
@@ -68,12 +81,14 @@ fun WaterTrackingUpdate(
     ScaffoldWrapper(
         content = {
             WaterTrackingUpdateContent(
+                dateTimeFormatter = dateTimeFormatter,
+                dateTimeProvider = dateTimeProvider,
                 onManageDrinkTypes = onManageDrinkTypes,
-                dateInputController = viewModel.dateInputController,
-                timeInputController = viewModel.timeInputController,
-                drinkSelectionController = viewModel.drinkSelectionController,
-                millilitersDrunkInputController = viewModel.millilitersDrunkInputController,
-                updatingController = viewModel.updatingController,
+                dateInputController = dateInputController,
+                timeInputController = timeInputController,
+                drinkSelectionController = drinkSelectionController,
+                millilitersDrunkInputController = millilitersDrunkInputController,
+                updatingController = updateController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -97,6 +112,8 @@ fun WaterTrackingUpdate(
 
 @Composable
 private fun WaterTrackingUpdateContent(
+    dateTimeProvider: DateTimeProvider,
+    dateTimeFormatter: DateTimeFormatter,
     onManageDrinkTypes: () -> Unit,
     dateInputController: InputController<LocalDate>,
     timeInputController: InputController<LocalTime>,
@@ -117,7 +134,11 @@ private fun WaterTrackingUpdateContent(
                 onManageDrinkTypes = onManageDrinkTypes,
             )
             Spacer(modifier = Modifier.height(32.dp))
-            SelectDateSection(dateInputController = dateInputController)
+            SelectDateSection(
+                dateTimeFormatter = dateTimeFormatter,
+                dateTimeProvider = dateTimeProvider,
+                dateInputController = dateInputController,
+            )
             Spacer(modifier = Modifier.height(16.dp))
             SelectTimeSection(timeInputController = timeInputController)
         }
@@ -151,6 +172,7 @@ private fun EnterDrunkMillilitersSection(
                     is IncorrectMillilitersCount.Reason.Empty -> {
                         R.string.waterTracking_update_millilitersEmpty_text
                     }
+
                     is IncorrectMillilitersCount.Reason.MoreThanDailyWaterIntake -> {
                         R.string.waterTracking_update_millilitersMoreThanDailyWaterIntake_text
                     }
@@ -212,15 +234,18 @@ private fun DrinkTypeManagementButton(onManageDrinkTypes: () -> Unit) {
             modifier = Modifier.padding(4.dp),
             onClick = { onManageDrinkTypes() },
             text = stringResource(id = R.string.waterTracking_update_createDrinkType_management_text),
-            iconResId = LocalIconImpl(0, R.drawable.ic_create).resourceId,
+            iconResId = hardcoder.dev.icons.IconImpl(0, R.drawable.ic_create).resourceId,
             shape = RoundedCornerShape(32.dp),
         ),
     )
 }
 
 @Composable
-private fun SelectDateSection(dateInputController: InputController<LocalDate>) {
-    val dateTimeFormatter = koinInject<DateTimeFormatter>()
+private fun SelectDateSection(
+    dateTimeFormatter: DateTimeFormatter,
+    dateTimeProvider: DateTimeProvider,
+    dateInputController: InputController<LocalDate>,
+) {
     val dateInputControllerState by dateInputController.state.collectAsState()
     val formattedDate = dateTimeFormatter.formatDate(dateInputControllerState.input)
     var dialogOpen by remember {
@@ -241,6 +266,7 @@ private fun SelectDateSection(dateInputController: InputController<LocalDate>) {
     )
 
     DatePickerDialog(
+        dateTimeProvider = dateTimeProvider,
         dialogOpen = dialogOpen,
         onUpdateDialogOpen = { dialogOpen = it },
         dateInputController = dateInputController,
@@ -249,7 +275,12 @@ private fun SelectDateSection(dateInputController: InputController<LocalDate>) {
 
 @Composable
 private fun SelectTimeSection(timeInputController: InputController<LocalTime>) {
-    val dateTimeFormatter = koinInject<DateTimeFormatter>()
+    val dateTimeFormatter = if (!LocalInspectionMode.current) {
+        koinInject<DateTimeFormatter>()
+    } else {
+        DateTimeFormatter(LocalContext.current)
+    }
+
     val timeInputControllerState by timeInputController.state.collectAsState()
     val formattedDate = dateTimeFormatter.formatTime(timeInputControllerState.input)
     var dialogOpen by remember {
@@ -272,4 +303,27 @@ private fun SelectTimeSection(timeInputController: InputController<LocalTime>) {
         onUpdateDialogOpen = { dialogOpen = it },
         timeInputController = timeInputController,
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun WaterTrackingUpdatePreview() {
+    HealtherTheme {
+        WaterTrackingUpdate(
+            onGoBack = {},
+            onDeleteDialogShow = {},
+            onManageDrinkTypes = {},
+            dateTimeProvider = DateTimeProvider(dispatchers = DefaultBackgroundBackgroundCoroutineDispatchers),
+            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+            dateInputController = MockControllersProvider.inputController(input = MockDateProvider.localDate()),
+            timeInputController = MockControllersProvider.inputController(input = MockDateProvider.localTime()),
+            updateController = MockControllersProvider.requestController(),
+            millilitersDrunkInputController = MockControllersProvider.validatedInputController(0),
+            drinkSelectionController = MockControllersProvider.singleSelectionController(
+                dataList = WaterTrackingMockDataProvider.provideDrinkTypesList(
+                    context = LocalContext.current,
+                ),
+            )
+        )
+    }
 }

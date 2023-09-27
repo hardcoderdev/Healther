@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButtonConfig
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -42,7 +42,7 @@ internal fun <T : RequestController> FilledRequestButtonWithIcon(
 }
 
 @OptIn(DelicateCoroutinesApi::class)
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 internal fun FilledRequestButtonWithIconPreview() {
     HealtherThemePreview {

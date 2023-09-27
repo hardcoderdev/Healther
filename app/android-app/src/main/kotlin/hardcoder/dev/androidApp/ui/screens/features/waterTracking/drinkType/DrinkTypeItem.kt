@@ -3,11 +3,16 @@ package hardcoder.dev.androidApp.ui.screens.features.waterTracking.drinkType
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.icons.IconImpl
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.uikit.components.chip.Chip
 import hardcoder.dev.uikit.components.chip.ChipConfig
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun DrinkTypeItem(
@@ -26,4 +31,21 @@ fun DrinkTypeItem(
             isSelected = drinkType == selectedDrinkType,
         ),
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun DrinkTypeItemPreview() {
+    HealtherTheme {
+        DrinkTypeItem(
+            onSelect = {},
+            selectedDrinkType = null,
+            drinkType = DrinkType(
+                id = 0,
+                name = stringResource(R.string.predefined_drinkType_name_coffee),
+                hydrationIndexPercentage = 50,
+                icon = IconImpl(id = 0, resourceId = R.drawable.ic_apps),
+            ),
+        )
+    }
 }

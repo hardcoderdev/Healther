@@ -4,7 +4,7 @@ import android.content.Context
 
 import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatistic
 import hardcoder.dev.uikit.components.statistic.StatisticData
-import hardcoderdev.healther.app.android.app.R
+import hardcoderdev.healther.app.resources.R
 
 class MoodTrackingStatisticResolver(private val context: Context) {
 

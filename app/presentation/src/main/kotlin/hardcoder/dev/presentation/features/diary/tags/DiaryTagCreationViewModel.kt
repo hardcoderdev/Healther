@@ -10,13 +10,12 @@ import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.logic.features.diary.diaryTag.CorrectDiaryTagName
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagCreator
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagNameValidator
-import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.map
 
 class DiaryTagCreationViewModel(
     private val diaryTagCreator: DiaryTagCreator,
     private val diaryTagNameValidator: DiaryTagNameValidator,
-    iconResourceProvider: IconResourceProvider,
+    iconResourceProvider: hardcoder.dev.icons.IconResourceProvider,
 ) : ViewModel() {
 
     val iconSelectionController = SingleSelectionController(

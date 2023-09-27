@@ -1,7 +1,5 @@
 package hardcoder.dev.androidApp.ui.screens.features.diary.tags.update
 
-import android.content.Context
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
@@ -18,14 +17,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.icons.Icon
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.diary.diaryTag.IncorrectDiaryTagName
 import hardcoder.dev.logic.features.diary.diaryTag.ValidatedDiaryTagName
-import hardcoder.dev.logic.icons.LocalIcon
-import hardcoder.dev.presentation.features.diary.tags.DiaryTagUpdateViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.IconsMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
@@ -37,19 +37,23 @@ import hardcoder.dev.uikit.components.text.textField.TextInputAdapter
 import hardcoder.dev.uikit.components.text.textField.ValidatedTextField
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun DiaryTagUpdate(
-    viewModel: DiaryTagUpdateViewModel,
+    tagNameInputController: ValidatedInputController<String, ValidatedDiaryTagName>,
+    iconSelectionController: SingleSelectionController<Icon>,
+    updateController: RequestController,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             DiaryTagUpdateContent(
-                tagNameInputController = viewModel.tagNameInputController,
-                iconSelectionController = viewModel.iconSelectionController,
-                updateController = viewModel.updateController,
+                tagNameInputController = tagNameInputController,
+                iconSelectionController = iconSelectionController,
+                updateController = updateController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -64,18 +68,16 @@ fun DiaryTagUpdate(
 @Composable
 private fun DiaryTagUpdateContent(
     tagNameInputController: ValidatedInputController<String, ValidatedDiaryTagName>,
-    iconSelectionController: SingleSelectionController<LocalIcon>,
+    iconSelectionController: SingleSelectionController<Icon>,
     updateController: RequestController,
 ) {
-    val context = LocalContext.current
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
     ) {
         Column(Modifier.weight(2f)) {
-            EnterTagNameSection(context = context, tagNameInputController = tagNameInputController)
+            EnterTagNameSection(tagNameInputController = tagNameInputController)
             Spacer(modifier = Modifier.height(32.dp))
             SelectIconSection(iconSelectionController = iconSelectionController)
         }
@@ -92,9 +94,10 @@ private fun DiaryTagUpdateContent(
 
 @Composable
 private fun EnterTagNameSection(
-    context: Context,
     tagNameInputController: ValidatedInputController<String, ValidatedDiaryTagName>,
 ) {
+    val context = LocalContext.current
+
     Title(text = stringResource(id = R.string.diary_tag_update_enter_name_text))
     Spacer(modifier = Modifier.height(16.dp))
     ValidatedTextField(
@@ -129,7 +132,7 @@ private fun EnterTagNameSection(
 }
 
 @Composable
-private fun SelectIconSection(iconSelectionController: SingleSelectionController<LocalIcon>) {
+private fun SelectIconSection(iconSelectionController: SingleSelectionController<Icon>) {
     Title(text = stringResource(id = R.string.diary_tag_update_selectIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
     SingleCardSelectionVerticalGrid(
@@ -142,7 +145,25 @@ private fun SelectIconSection(iconSelectionController: SingleSelectionController
             Icon(
                 iconResId = icon.resourceId,
                 contentDescription = stringResource(id = R.string.diary_tag_update_tagIconContentDescription),
+                modifier = Modifier
+                    .size(60.dp)
+                    .padding(12.dp),
             )
         },
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun DiaryTagUpdatePreview() {
+    HealtherTheme {
+        DiaryTagUpdate(
+            onGoBack = {},
+            updateController = MockControllersProvider.requestController(),
+            tagNameInputController = MockControllersProvider.validatedInputController(""),
+            iconSelectionController = MockControllersProvider.singleSelectionController(
+                dataList = IconsMockDataProvider.icons(),
+            ),
+        )
+    }
 }

@@ -1,7 +1,5 @@
 package hardcoder.dev.androidApp.ui.screens.features.waterTracking.drinkType.create
 
-import android.content.Context
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,15 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.waterTracking.drinkType.IncorrectDrinkTypeName
 import hardcoder.dev.logic.features.waterTracking.drinkType.ValidatedDrinkTypeName
-import hardcoder.dev.logic.icons.LocalIcon
-import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeCreationViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.IconsMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
@@ -42,20 +40,25 @@ import hardcoder.dev.uikit.components.text.textField.TextInputAdapter
 import hardcoder.dev.uikit.components.text.textField.ValidatedTextField
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun DrinkTypeCreation(
-    viewModel: DrinkTypeCreationViewModel,
+    nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
+    iconSelectionController: SingleSelectionController<hardcoder.dev.icons.Icon>,
+    waterPercentageInputController: InputController<Int>,
+    creationController: RequestController,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             DrinkTypeCreationContent(
-                nameInputController = viewModel.nameInputController,
-                iconSelectionController = viewModel.iconSelectionController,
-                waterPercentageInputController = viewModel.waterPercentageInputController,
-                creationController = viewModel.creationController,
+                nameInputController = nameInputController,
+                iconSelectionController = iconSelectionController,
+                waterPercentageInputController = waterPercentageInputController,
+                creationController = creationController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -70,12 +73,10 @@ fun DrinkTypeCreation(
 @Composable
 private fun DrinkTypeCreationContent(
     nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
-    iconSelectionController: SingleSelectionController<LocalIcon>,
+    iconSelectionController: SingleSelectionController<hardcoder.dev.icons.Icon>,
     waterPercentageInputController: InputController<Int>,
     creationController: RequestController,
 ) {
-    val context = LocalContext.current
-
     Column(
         Modifier
             .fillMaxWidth()
@@ -86,7 +87,7 @@ private fun DrinkTypeCreationContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState()),
         ) {
-            EnterDrinkTypeNameSection(context = context, nameInputController = nameInputController)
+            EnterDrinkTypeNameSection(nameInputController = nameInputController)
             Spacer(modifier = Modifier.height(32.dp))
             SelectIconSection(iconSelectionController = iconSelectionController)
             Spacer(modifier = Modifier.height(32.dp))
@@ -104,10 +105,9 @@ private fun DrinkTypeCreationContent(
 }
 
 @Composable
-private fun EnterDrinkTypeNameSection(
-    context: Context,
-    nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
-) {
+private fun EnterDrinkTypeNameSection(nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>) {
+    val context = LocalContext.current
+
     Title(text = stringResource(id = R.string.waterTracking_drinkTypes_creation_enterName_text))
     Spacer(modifier = Modifier.height(16.dp))
     ValidatedTextField(
@@ -145,7 +145,7 @@ private fun EnterDrinkTypeNameSection(
 }
 
 @Composable
-private fun SelectIconSection(iconSelectionController: SingleSelectionController<LocalIcon>) {
+private fun SelectIconSection(iconSelectionController: SingleSelectionController<hardcoder.dev.icons.Icon>) {
     Title(text = stringResource(id = R.string.waterTracking_drinkTypes_creation_selectIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
     SingleCardSelectionHorizontalGrid(
@@ -186,4 +186,20 @@ private fun EnterDrinkHydrationIndexPercentageSection(
         controller = waterPercentageInputController,
         valueRange = 30..100,
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun DrinkTypeCreationPreview() {
+    HealtherTheme {
+        DrinkTypeCreation(
+            onGoBack = {},
+            nameInputController = MockControllersProvider.validatedInputController(""),
+            waterPercentageInputController = MockControllersProvider.inputController(0),
+            creationController = MockControllersProvider.requestController(),
+            iconSelectionController = MockControllersProvider.singleSelectionController(
+                dataList = IconsMockDataProvider.icons(),
+            ),
+        )
+    }
 }

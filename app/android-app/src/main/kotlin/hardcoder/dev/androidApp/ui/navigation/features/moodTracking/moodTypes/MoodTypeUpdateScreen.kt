@@ -44,7 +44,10 @@ data class MoodTypeUpdateScreen(val moodTypeId: Int) : Screen {
         )
 
         MoodTypeUpdate(
-            viewModel = viewModel,
+            moodTypeNameController = viewModel.moodTypeNameController,
+            iconSelectionController = viewModel.iconSelectionController,
+            positiveIndexController = viewModel.positiveIndexController,
+            updateController = viewModel.updateController,
             onGoBack = navigator::pop,
             onDeleteDialog = {
                 dialogOpen = it

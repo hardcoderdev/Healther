@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
@@ -27,10 +28,10 @@ import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
-import hardcoder.dev.presentation.features.pedometer.Available
-import hardcoder.dev.presentation.features.pedometer.NotAvailable
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.features.PedometerMockDataProvider
+import hardcoder.dev.presentation.features.pedometer.PedometerChartData
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
-import hardcoder.dev.presentation.features.pedometer.PedometerViewModel
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButton
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
@@ -51,28 +52,45 @@ import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 import kotlin.math.roundToInt
-import org.koin.compose.koinInject
 
 @Composable
 fun Pedometer(
-    viewModel: PedometerViewModel,
+    pedometerStatisticResolver: PedometerStatisticResolver,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    decimalFormatter: DecimalFormatter,
+    pedometerRejectedMapper: PedometerRejectedMapper,
+    chartEntriesLoadingController: LoadingController<PedometerChartData>,
+    dailyRateStepsLoadingController: LoadingController<Int>,
+    dailyRateProgressController: LoadingController<Float>,
+    pedometerAvailabilityLoadingController: LoadingController<PedometerManager.Availability>,
+    todayStatisticLoadingController: LoadingController<PedometerStatistic>,
+    statisticLoadingController: LoadingController<PedometerStatistic>,
+    pedometerToggleController: ToggleController,
+    rewardLoadingController: LoadingController<Double>,
+    collectRewardController: RequestController,
     onGoBack: () -> Unit,
     onGoToHistory: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             PedometerContent(
-                chartEntriesLoadingController = viewModel.chartEntriesLoadingController,
-                dailyRateStepsLoadingController = viewModel.dailyRateStepsLoadingController,
-                pedometerAvailabilityLoadingController = viewModel.pedometerAvailabilityLoadingController,
-                todayStatisticLoadingController = viewModel.todayStatisticLoadingController,
-                statisticLoadingController = viewModel.statisticLoadingController,
-                pedometerToggleController = viewModel.pedometerToggleController,
-                dailyRateProgressController = viewModel.dailyRateProgressController,
-                rewardLoadingController = viewModel.rewardLoadingController,
-                collectRewardController = viewModel.collectRewardController,
+                pedometerStatisticResolver = pedometerStatisticResolver,
+                millisDistanceFormatter = millisDistanceFormatter,
+                decimalFormatter = decimalFormatter,
+                pedometerRejectedMapper = pedometerRejectedMapper,
+                chartEntriesLoadingController = chartEntriesLoadingController,
+                dailyRateStepsLoadingController = dailyRateStepsLoadingController,
+                pedometerAvailabilityLoadingController = pedometerAvailabilityLoadingController,
+                todayStatisticLoadingController = todayStatisticLoadingController,
+                statisticLoadingController = statisticLoadingController,
+                pedometerToggleController = pedometerToggleController,
+                dailyRateProgressController = dailyRateProgressController,
+                rewardLoadingController = rewardLoadingController,
+                collectRewardController = collectRewardController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -94,7 +112,11 @@ fun Pedometer(
 
 @Composable
 private fun PedometerContent(
-    chartEntriesLoadingController: LoadingController<List<Pair<Int, Int>>>,
+    pedometerStatisticResolver: PedometerStatisticResolver,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    decimalFormatter: DecimalFormatter,
+    pedometerRejectedMapper: PedometerRejectedMapper,
+    chartEntriesLoadingController: LoadingController<PedometerChartData>,
     dailyRateStepsLoadingController: LoadingController<Int>,
     dailyRateProgressController: LoadingController<Float>,
     pedometerAvailabilityLoadingController: LoadingController<PedometerManager.Availability>,
@@ -104,8 +126,6 @@ private fun PedometerContent(
     rewardLoadingController: LoadingController<Double>,
     collectRewardController: RequestController,
 ) {
-    val pedometerRejectedMapper = koinInject<PedometerRejectedMapper>()
-
     LoadingContainer(pedometerAvailabilityLoadingController) { availability ->
         Column(
             modifier = Modifier
@@ -114,7 +134,10 @@ private fun PedometerContent(
                 .verticalScroll(rememberScrollState()),
         ) {
             when (availability) {
-                is Available -> AvailablePedometerSection(
+                is PedometerManager.Availability.Available -> AvailablePedometerSection(
+                    pedometerStatisticResolver = pedometerStatisticResolver,
+                    millisDistanceFormatter = millisDistanceFormatter,
+                    decimalFormatter = decimalFormatter,
                     chartEntriesLoadingController = chartEntriesLoadingController,
                     dailyRateStepsLoadingController = dailyRateStepsLoadingController,
                     todayStatisticLoadingController = todayStatisticLoadingController,
@@ -125,7 +148,7 @@ private fun PedometerContent(
                     collectRewardController = collectRewardController,
                 )
 
-                is NotAvailable -> {
+                is PedometerManager.Availability.NotAvailable -> {
                     PermissionsSection(
                         animationRepeatTimes = 1,
                         initial = Initial(
@@ -143,7 +166,10 @@ private fun PedometerContent(
 
 @Composable
 private fun AvailablePedometerSection(
-    chartEntriesLoadingController: LoadingController<List<Pair<Int, Int>>>,
+    pedometerStatisticResolver: PedometerStatisticResolver,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    decimalFormatter: DecimalFormatter,
+    chartEntriesLoadingController: LoadingController<PedometerChartData>,
     dailyRateStepsLoadingController: LoadingController<Int>,
     dailyProgressLoadingController: LoadingController<Float>,
     todayStatisticLoadingController: LoadingController<PedometerStatistic>,
@@ -166,9 +192,13 @@ private fun AvailablePedometerSection(
         controller2 = todayStatisticLoadingController,
         controller3 = statisticLoadingController,
         controller4 = rewardLoadingController,
-    ) { chartEntries, todayStatistic, statistic, totalReward ->
+    ) { chartData, todayStatistic, statistic, totalReward ->
         if (todayStatistic.totalSteps > 0) {
-            PedometerInfoSection(todayStatistic)
+            PedometerInfoSection(
+                millisDistanceFormatter = millisDistanceFormatter,
+                decimalFormatter = decimalFormatter,
+                statistic = todayStatistic,
+            )
             Spacer(modifier = Modifier.height(32.dp))
             RequestButtonWithIcon(
                 requestButtonConfig = RequestButtonConfig.Filled(
@@ -179,9 +209,12 @@ private fun AvailablePedometerSection(
                 ),
             )
             Spacer(modifier = Modifier.height(32.dp))
-            StatisticsSection(statistic)
+            StatisticsSection(
+                statistics = statistic,
+                pedometerStatisticResolver = pedometerStatisticResolver,
+            )
             Spacer(modifier = Modifier.height(32.dp))
-            ActivityChartSection(chartEntries)
+            ActivityChartSection(pedometerChartData = chartData)
         } else {
             EmptySection(emptyTitleResId = R.string.pedometer_nowEmpty_text)
         }
@@ -236,10 +269,11 @@ private fun DailyRateSection(
 }
 
 @Composable
-private fun PedometerInfoSection(statistic: PedometerStatistic) {
-    val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
-    val decimalFormatter = koinInject<DecimalFormatter>()
-
+private fun PedometerInfoSection(
+    statistic: PedometerStatistic,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    decimalFormatter: DecimalFormatter,
+) {
     Title(text = stringResource(id = R.string.pedometer_yourIndicatorsForThisDay_text))
     Spacer(modifier = Modifier.height(16.dp))
     Card(
@@ -276,22 +310,23 @@ private fun PedometerInfoSection(statistic: PedometerStatistic) {
 }
 
 @Composable
-private fun StatisticsSection(statistics: PedometerStatistic) {
-    val pedometerStatisticResolver = koinInject<PedometerStatisticResolver>()
-
+private fun StatisticsSection(
+    statistics: PedometerStatistic,
+    pedometerStatisticResolver: PedometerStatisticResolver,
+) {
     Title(text = stringResource(id = R.string.pedometer_statistic_text))
     Spacer(modifier = Modifier.height(16.dp))
     Statistics(statistics = pedometerStatisticResolver.resolve(statistics))
 }
 
 @Composable
-private fun ActivityChartSection(chartEntries: List<Pair<Int, Int>>) {
+private fun ActivityChartSection(pedometerChartData: PedometerChartData) {
     Title(text = stringResource(id = R.string.waterTracking_analytics_activity_chart))
     Spacer(modifier = Modifier.height(16.dp))
-    if (chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
+    if (pedometerChartData.entriesList.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
         ActivityLineChart(
             modifier = Modifier.height(400.dp),
-            chartEntries = chartEntries,
+            chartEntries = pedometerChartData.entriesList.map { it.from to it.to },
             xAxisValueFormatter = { value, _ ->
                 value.roundToInt().toString()
             },
@@ -301,5 +336,46 @@ private fun ActivityChartSection(chartEntries: List<Pair<Int, Int>>) {
         )
     } else {
         Description(text = stringResource(id = R.string.pedometer_chartNotEnoughData_text))
+    }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun PedometerPreview() {
+    val context = LocalContext.current
+    val millisDistanceFormatter = MillisDistanceFormatter(
+        context = LocalContext.current,
+        defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+    )
+    val decimalFormatter = DecimalFormatter()
+
+    HealtherTheme {
+        Pedometer(
+            onGoBack = {},
+            onGoToHistory = {},
+            millisDistanceFormatter = millisDistanceFormatter,
+            decimalFormatter = decimalFormatter,
+            pedometerStatisticResolver = PedometerStatisticResolver(
+                context = context,
+                millisDistanceFormatter = millisDistanceFormatter,
+                decimalFormatter = decimalFormatter,
+            ),
+            pedometerRejectedMapper = PedometerRejectedMapper(),
+            collectRewardController = MockControllersProvider.requestController(),
+            rewardLoadingController = MockControllersProvider.loadingController(20.0),
+            dailyRateProgressController = MockControllersProvider.loadingController(40.0f),
+            dailyRateStepsLoadingController = MockControllersProvider.loadingController(14_000),
+            pedometerToggleController = MockControllersProvider.toggleController(),
+            pedometerAvailabilityLoadingController = MockControllersProvider.loadingController(PedometerManager.Availability.Available),
+            statisticLoadingController = MockControllersProvider.loadingController(
+                data = PedometerMockDataProvider.pedometerStatistics(),
+            ),
+            todayStatisticLoadingController = MockControllersProvider.loadingController(
+                data = PedometerMockDataProvider.pedometerStatistics(),
+            ),
+            chartEntriesLoadingController = MockControllersProvider.loadingController(
+                data = PedometerMockDataProvider.pedometerChartData(),
+            ),
+        )
     }
 }

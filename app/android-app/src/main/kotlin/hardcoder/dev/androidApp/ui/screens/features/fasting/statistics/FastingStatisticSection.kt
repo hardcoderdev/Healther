@@ -11,14 +11,14 @@ import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanRes
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.uikit.components.statistic.Statistics
 import hardcoder.dev.uikit.components.text.Title
-import hardcoderdev.healther.app.android.app.R
-import org.koin.compose.koinInject
+import hardcoderdev.healther.app.resources.R
 
 @Composable
-fun FastingStatisticSection(statistic: FastingStatistic) {
-    val fastingStatisticResolver = koinInject<FastingStatisticResolver>()
-    val fastingPlanResourcesProvider = koinInject<FastingPlanResourcesProvider>()
-
+fun FastingStatisticSection(
+    statistic: FastingStatistic,
+    fastingStatisticResolver: FastingStatisticResolver,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+) {
     Title(text = stringResource(id = R.string.fasting_statistic_text))
     Spacer(modifier = Modifier.height(24.dp))
     Statistics(

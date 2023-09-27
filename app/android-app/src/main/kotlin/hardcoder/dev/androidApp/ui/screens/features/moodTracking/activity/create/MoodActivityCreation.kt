@@ -1,7 +1,5 @@
 package hardcoder.dev.androidApp.ui.screens.features.moodTracking.activity.create
 
-import android.content.Context
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,14 +17,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.icons.Icon
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodActivity.IncorrectActivityName
 import hardcoder.dev.logic.features.moodTracking.moodActivity.ValidatedActivityName
-import hardcoder.dev.logic.icons.LocalIcon
-import hardcoder.dev.presentation.features.moodTracking.activity.MoodActivityCreationViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.IconsMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
@@ -38,19 +37,23 @@ import hardcoder.dev.uikit.components.text.textField.TextInputAdapter
 import hardcoder.dev.uikit.components.text.textField.ValidatedTextField
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun MoodActivityCreation(
-    viewModel: MoodActivityCreationViewModel,
+    activityNameController: ValidatedInputController<String, ValidatedActivityName>,
+    iconSingleSelectionController: SingleSelectionController<Icon>,
+    creationController: RequestController,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             MoodActivityCreationContent(
-                activityNameController = viewModel.activityNameController,
-                iconSingleSelectionController = viewModel.iconSelectionController,
-                creationController = viewModel.creationController,
+                activityNameController = activityNameController,
+                iconSingleSelectionController = iconSingleSelectionController,
+                creationController = creationController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -65,21 +68,16 @@ fun MoodActivityCreation(
 @Composable
 private fun MoodActivityCreationContent(
     activityNameController: ValidatedInputController<String, ValidatedActivityName>,
-    iconSingleSelectionController: SingleSelectionController<LocalIcon>,
+    iconSingleSelectionController: SingleSelectionController<Icon>,
     creationController: RequestController,
 ) {
-    val context = LocalContext.current
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
     ) {
         Column(Modifier.weight(2f)) {
-            EnterActivityNameSection(
-                context = context,
-                activityNameController = activityNameController,
-            )
+            EnterActivityNameSection(activityNameController = activityNameController)
             Spacer(modifier = Modifier.height(32.dp))
             SelectIconSection(iconSingleSelectionController = iconSingleSelectionController)
         }
@@ -96,9 +94,10 @@ private fun MoodActivityCreationContent(
 
 @Composable
 private fun EnterActivityNameSection(
-    context: Context,
     activityNameController: ValidatedInputController<String, ValidatedActivityName>,
 ) {
+    val context = LocalContext.current
+
     Title(text = stringResource(id = R.string.moodTracking_activity_creation_enter_name_text))
     Spacer(modifier = Modifier.height(16.dp))
     ValidatedTextField(
@@ -133,7 +132,7 @@ private fun EnterActivityNameSection(
 }
 
 @Composable
-private fun SelectIconSection(iconSingleSelectionController: SingleSelectionController<LocalIcon>) {
+private fun SelectIconSection(iconSingleSelectionController: SingleSelectionController<Icon>) {
     Title(text = stringResource(id = R.string.moodTracking_activity_creation_selectIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
     SingleCardSelectionVerticalGrid(
@@ -152,4 +151,19 @@ private fun SelectIconSection(iconSingleSelectionController: SingleSelectionCont
             )
         },
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun MoodActivityCreationPreview() {
+    HealtherTheme {
+        MoodActivityCreation(
+            onGoBack = {},
+            activityNameController = MockControllersProvider.validatedInputController(""),
+            creationController = MockControllersProvider.requestController(),
+            iconSingleSelectionController = MockControllersProvider.singleSelectionController(
+                dataList = IconsMockDataProvider.icons() + IconsMockDataProvider.icons(),
+            ),
+        )
+    }
 }

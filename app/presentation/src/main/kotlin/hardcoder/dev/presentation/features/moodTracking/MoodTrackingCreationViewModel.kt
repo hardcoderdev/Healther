@@ -66,7 +66,7 @@ class MoodTrackingCreationViewModel(
         itemsFlow = moodTypeProvider.provideAllMoodTypes(),
     )
 
-    val noteController = InputController(
+    val noteInputController = InputController(
         coroutineScope = viewModelScope,
         initialInput = "",
     )
@@ -80,7 +80,7 @@ class MoodTrackingCreationViewModel(
         coroutineScope = viewModelScope,
         request = {
             val moodTrackId = moodTrackCreator.create(
-                note = noteController.state.value.input.ifEmpty { null },
+                note = noteInputController.state.value.input.ifEmpty { null },
                 moodType = moodTypeSelectionController.requireSelectedItem(),
                 date = dateController.getInput().toInstant(timeInputController.getInput()),
                 selectedActivities = activitiesMultiSelectionController.selectedItemsOrEmptySet().first(),

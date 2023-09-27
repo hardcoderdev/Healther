@@ -1,7 +1,7 @@
 package hardcoder.dev.androidApp.ui.screens.hero
 
 import hardcoder.dev.logic.hero.gender.Gender
-import hardcoderdev.healther.app.android.app.R
+import hardcoderdev.healther.app.resources.R
 
 class GenderResourcesProvider {
 

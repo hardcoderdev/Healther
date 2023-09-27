@@ -10,7 +10,7 @@ sealed class DashboardFeatureItem {
     ) : DashboardFeatureItem()
 
     data class PedometerFeature(
-        val permissionsGranted: Boolean,
+        val isPermissionsGranted: Boolean,
         val isPedometerRunning: Boolean,
         val stepsWalked: Int,
         val dailyRateInSteps: Int,

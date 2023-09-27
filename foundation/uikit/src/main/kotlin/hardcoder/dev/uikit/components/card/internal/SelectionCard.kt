@@ -26,7 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.uikit.components.icon.Image
 import hardcoder.dev.uikit.components.text.Title
-import hardcoder.dev.uikit.preview.UiKitPhonePreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 import androidx.compose.material3.Card as MaterialCard
@@ -70,7 +70,7 @@ internal fun SelectionCard(
     }
 }
 
-@UiKitPhonePreview
+@HealtherUiKitPreview
 @Composable
 internal fun SelectionCardPreview() {
     var isSelected by remember {

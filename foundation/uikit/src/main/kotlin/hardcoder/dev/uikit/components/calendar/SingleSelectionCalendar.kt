@@ -15,7 +15,7 @@ import epicarchitect.calendar.compose.datepicker.state.rememberEpicDatePickerSta
 import epicarchitect.calendar.compose.pager.config.rememberEpicCalendarPagerConfig
 import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.uikit.preview.UiKitPhonePreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import kotlinx.datetime.LocalDate
 
@@ -53,7 +53,7 @@ fun SingleSelectionCalendar(
     }
 }
 
-@UiKitPhonePreview
+@HealtherUiKitPreview
 @Composable
 private fun SingleSelectionCalendarWithHeaderPreview() {
     HealtherThemePreview {

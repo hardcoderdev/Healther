@@ -14,9 +14,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
+import hardcoder.dev.mock.dataProviders.DashboardMockDataProvider
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButtonConfig
@@ -26,11 +28,13 @@ import hardcoder.dev.uikit.components.icon.Image
 import hardcoder.dev.uikit.components.progressBar.LinearProgressBar
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Title
-import hardcoderdev.healther.app.android.app.R
-import org.koin.compose.koinInject
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun FastingFeatureItem(
+    millisDistanceFormatter: MillisDistanceFormatter,
     fastingFeature: DashboardFeatureItem.FastingFeature,
     onGoToFeature: () -> Unit,
     onStartFasting: () -> Unit,
@@ -52,7 +56,10 @@ fun FastingFeatureItem(
                             contentDescription = R.string.dashboard_fasting_feature,
                         )
                         Spacer(modifier = Modifier.width(16.dp))
-                        InfoSection(fastingFeature = fastingFeature)
+                        InfoSection(
+                            millisDistanceFormatter = millisDistanceFormatter,
+                            fastingFeature = fastingFeature,
+                        )
                     }
                     QuickActionsSection(
                         fastingFeature = fastingFeature,
@@ -67,10 +74,9 @@ fun FastingFeatureItem(
 
 @Composable
 private fun InfoSection(
+    millisDistanceFormatter: MillisDistanceFormatter,
     fastingFeature: DashboardFeatureItem.FastingFeature,
 ) {
-    val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
-
     Column(Modifier.fillMaxWidth()) {
         Title(text = stringResource(id = R.string.dashboard_fasting_feature))
         fastingFeature.timeLeftDuration?.let { timeLeftInMillis ->
@@ -134,6 +140,22 @@ private fun QuickActionsSection(
                 iconResId = R.drawable.ic_play,
                 onClick = onStartFasting,
             ),
+        )
+    }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun FastingFeatureItemPreview() {
+    HealtherTheme {
+        FastingFeatureItem(
+            onGoToFeature = {},
+            onStartFasting = {},
+            millisDistanceFormatter = MillisDistanceFormatter(
+                context = LocalContext.current,
+                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+            ),
+            fastingFeature = DashboardMockDataProvider.dashboardFastingFeature(),
         )
     }
 }

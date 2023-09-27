@@ -2,7 +2,6 @@ package hardcoder.dev.logic.features.moodTracking.moodActivity
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.logic.icons.LocalIcon
 import kotlinx.coroutines.withContext
 
 class MoodActivityUpdater(
@@ -13,7 +12,7 @@ class MoodActivityUpdater(
     suspend fun update(
         id: Int,
         name: CorrectActivityName,
-        icon: LocalIcon,
+        icon: hardcoder.dev.icons.Icon,
     ) = withContext(dispatchers.io) {
         appDatabase.moodActivityQueries.update(
             id = id,

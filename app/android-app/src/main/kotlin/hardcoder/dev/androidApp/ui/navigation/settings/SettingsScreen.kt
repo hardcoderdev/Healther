@@ -16,7 +16,8 @@ class SettingsScreen : Screen {
         val viewModel = koinViewModel<SettingsViewModel>()
 
         Settings(
-            viewModel = viewModel,
+            preferencesLoadingController = viewModel.preferencesLoadingController,
+            appReviewRequestController = viewModel.appReviewRequestController,
             onGoBack = navigator::pop,
         )
     }

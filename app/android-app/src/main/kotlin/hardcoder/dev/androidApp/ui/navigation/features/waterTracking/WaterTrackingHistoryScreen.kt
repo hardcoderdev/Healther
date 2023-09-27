@@ -16,7 +16,8 @@ class WaterTrackingHistoryScreen : Screen {
         val viewModel = koinViewModel<WaterTrackingHistoryViewModel>()
 
         WaterTrackingHistory(
-            viewModel = viewModel,
+            dateRangeInputController = viewModel.dateRangeInputController,
+            waterTracksLoadingController = viewModel.waterTracksLoadingController,
             onGoBack = navigator::pop,
         )
     }

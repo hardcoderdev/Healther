@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dashboard_title_topBar">Dashboard</string>
+    <string name="dashboard_fasting_feature">Fasting</string>
+    <string name="dashboard_heroSection_health_points_label">Health Points (HP)</string>
+    <string name="dashboard_heroSection_health_points_format">%1$d / %2$d</string>
+    <string name="dashboard_heroSection_experience_points_label">Experience Points (XP)</string>
+    <string name="dashboard_heroSection_experience_points_format">%1$s / %2$s</string>
+    <string name="dashboard_heroSection_level_format">%d level</string>
+    <string name="dashboard_heroSection_inventory_buttonText">Hero inventory</string>
+    <string name="dashboard_heroSection_shop_buttonText">Shop</string>
+    <string name="dashboard_mood_tracking_feature">Mood</string>
+    <string name="dashboard_pedometer_feature">Pedometer</string>
+    <string name="dashboard_diary_tracking_progress_format">%1$d %2$s out of %3$d</string>
+    <string name="dashboard_water_tracking_feature">Water balance</string>
+    <string name="dashboard_water_tracking_progress_format">%1$d ml from %2$d</string>
+    <string name="dashboard_pedometer_progress_format">%1$d %2$s from %3$d</string>
+    <string name="dashboard_mood_tracking_progress_format">%1$d %2$s from %3$d</string>    <string name="dashboard_start_fasting">Start fasting</string>
+    <string name="dashboard_fasting_is_not_active">Now you are not fasting.</string>
+    <string name="dashboard_mood_tracking_not_specified">You did not specified the mood today.</string>
+    <string name="dashboard_fasting_completed">Fasting completed.</string>
+    <string name="dashboard_finish_fasting">Save fasting</string>
+    <string name="dashboard_diary_feature">Health diary</string>
+    <string name="dashboard_diaryCreationQuickAction_contentDescription">Note creation</string>
+    <string name="dashboard_waterTrackingCreationQuickAction_contentDescription">Track creation</string>
+    <string name="dashboard_moodTrackingCreationQuickAction_contentDescription">Track creation</string>
+</resources>

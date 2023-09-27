@@ -10,7 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import hardcoder.dev.controller.input.InputController
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import com.chargemap.compose.numberpicker.NumberPicker as LibraryNumberPicker
 
@@ -49,7 +49,7 @@ fun NumberInput(
     )
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun NumberPickerPreview() {
     var selectedNumber by remember {

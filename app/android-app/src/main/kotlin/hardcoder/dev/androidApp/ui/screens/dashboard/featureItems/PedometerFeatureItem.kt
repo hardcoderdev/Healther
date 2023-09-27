@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.mock.dataProviders.DashboardMockDataProvider
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButton
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButtonConfig
@@ -29,7 +30,9 @@ import hardcoder.dev.uikit.components.icon.Image
 import hardcoder.dev.uikit.components.progressBar.LinearProgressBar
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Title
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun PedometerFeatureItem(
@@ -37,7 +40,7 @@ fun PedometerFeatureItem(
     onGoToFeature: () -> Unit,
     onTogglePedometerTrackingService: () -> Unit,
 ) {
-    val isPermissionsGranted = pedometerFeature.permissionsGranted
+    val isPermissionsGranted = pedometerFeature.isPermissionsGranted
     val isDailyRateClosed = pedometerFeature.stepsWalked == pedometerFeature.dailyRateInSteps
 
     Card(
@@ -118,6 +121,18 @@ private fun BoxScope.QuickActions(
                     R.string.pedometer_playIcon_contentDescription
                 },
             ),
+        )
+    }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun PedometerFeatureItemPreview() {
+    HealtherTheme {
+        PedometerFeatureItem(
+            onGoToFeature = {},
+            onTogglePedometerTrackingService = {},
+            pedometerFeature = DashboardMockDataProvider.dashboardPedometerFeature(),
         )
     }
 }

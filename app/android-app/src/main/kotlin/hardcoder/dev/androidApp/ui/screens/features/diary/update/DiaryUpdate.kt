@@ -1,7 +1,5 @@
 package hardcoder.dev.androidApp.ui.screens.features.diary.update
 
-import android.content.Context
-
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,23 +12,27 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
+import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.fasting.FastingItem
+import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.MoodTrackItem
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.IncorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.ValidatedDiaryTrackContent
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
 import hardcoder.dev.presentation.features.diary.DiaryUpdateViewModel
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
@@ -48,21 +50,33 @@ import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun DiaryUpdate(
-    viewModel: DiaryUpdateViewModel,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    dateTimeFormatter: DateTimeFormatter,
+    diaryAttachmentsLoadingController: LoadingController<DiaryUpdateViewModel.ReadOnlyDiaryAttachments>,
+    contentInputController: ValidatedInputController<String, ValidatedDiaryTrackContent>,
+    tagMultiSelectionController: MultiSelectionController<DiaryTag>,
+    updateController: RequestController,
+    deleteController: RequestController,
     onManageTags: () -> Unit,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             DiaryUpdateContent(
-                contentInputController = viewModel.contentInputController,
-                tagMultiSelectionController = viewModel.tagMultiSelectionController,
-                updateController = viewModel.updateController,
-                diaryAttachmentsLoadingController = viewModel.diaryAttachmentsLoadingController,
+                millisDistanceFormatter = millisDistanceFormatter,
+                fastingPlanResourcesProvider = fastingPlanResourcesProvider,
+                dateTimeFormatter = dateTimeFormatter,
+                contentInputController = contentInputController,
+                tagMultiSelectionController = tagMultiSelectionController,
+                updateController = updateController,
+                diaryAttachmentsLoadingController = diaryAttachmentsLoadingController,
                 onManageTags = onManageTags,
             )
         },
@@ -76,7 +90,7 @@ fun DiaryUpdate(
             actions = listOf(
                 Action(
                     iconResId = R.drawable.ic_delete,
-                    onActionClick = viewModel.deleteController::request,
+                    onActionClick = deleteController::request,
                 ),
             ),
         ),
@@ -85,14 +99,15 @@ fun DiaryUpdate(
 
 @Composable
 private fun DiaryUpdateContent(
+    millisDistanceFormatter: MillisDistanceFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    dateTimeFormatter: DateTimeFormatter,
     diaryAttachmentsLoadingController: LoadingController<DiaryUpdateViewModel.ReadOnlyDiaryAttachments>,
     contentInputController: ValidatedInputController<String, ValidatedDiaryTrackContent>,
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     updateController: RequestController,
     onManageTags: () -> Unit,
 ) {
-    val context = LocalContext.current
-
     Column(
         Modifier
             .fillMaxWidth()
@@ -103,16 +118,18 @@ private fun DiaryUpdateContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState()),
         ) {
-            EnterBasicInfoSection(
-                context = context,
-                contentInputController = contentInputController,
-            )
+            EnterBasicInfoSection(contentInputController = contentInputController)
             LoadingContainer(
                 controller = diaryAttachmentsLoadingController,
                 loadedContent = { readOnlyAttachments ->
                     if (!readOnlyAttachments.isEmpty) {
                         Spacer(modifier = Modifier.height(32.dp))
-                        AttachedEntitySection(readOnlyDiaryAttachments = readOnlyAttachments)
+                        AttachedEntitySection(
+                            millisDistanceFormatter = millisDistanceFormatter,
+                            fastingPlanResourcesProvider = fastingPlanResourcesProvider,
+                            dateTimeFormatter = dateTimeFormatter,
+                            readOnlyDiaryAttachments = readOnlyAttachments,
+                        )
                     }
                 },
             )
@@ -135,9 +152,10 @@ private fun DiaryUpdateContent(
 
 @Composable
 private fun EnterBasicInfoSection(
-    context: Context,
     contentInputController: ValidatedInputController<String, ValidatedDiaryTrackContent>,
 ) {
+    val context = LocalContext.current
+
     Title(text = stringResource(id = R.string.diary_update_enterInfo_text))
     Spacer(modifier = Modifier.height(16.dp))
     ValidatedTextField(
@@ -167,14 +185,25 @@ private fun EnterBasicInfoSection(
 }
 
 @Composable
-private fun AttachedEntitySection(readOnlyDiaryAttachments: DiaryUpdateViewModel.ReadOnlyDiaryAttachments) {
+private fun AttachedEntitySection(
+    millisDistanceFormatter: MillisDistanceFormatter,
+    dateTimeFormatter: DateTimeFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    readOnlyDiaryAttachments: DiaryUpdateViewModel.ReadOnlyDiaryAttachments,
+) {
     Title(text = stringResource(id = R.string.diary_update_attachedEntity_text))
     Spacer(modifier = Modifier.height(16.dp))
     readOnlyDiaryAttachments.fastingTracks.forEach { fastingTrack ->
-        FastingItem(fastingTrack = fastingTrack)
+        FastingItem(
+            dateTimeFormatter = dateTimeFormatter,
+            millisDistanceFormatter = millisDistanceFormatter,
+            fastingPlanResourcesProvider = fastingPlanResourcesProvider,
+            fastingTrack = fastingTrack,
+        )
     }
     readOnlyDiaryAttachments.moodTracks.forEach { moodTrack ->
         MoodTrackItem(
+            dateTimeFormatter = dateTimeFormatter,
             activitiesList = emptyList(),
             moodTrack = moodTrack,
             onUpdate = {},
@@ -221,4 +250,35 @@ private fun ManagementTagsButton(onManageTags: () -> Unit) {
             onClick = onManageTags,
         ),
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun DiaryUpdatePreview() {
+    HealtherTheme {
+        DiaryUpdate(
+            onGoBack = {},
+            onManageTags = {},
+            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+            fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
+            millisDistanceFormatter = MillisDistanceFormatter(
+                context = LocalContext.current,
+                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+            ),
+            updateController = MockControllersProvider.requestController(),
+            deleteController = MockControllersProvider.requestController(),
+            contentInputController = MockControllersProvider.validatedInputController(""),
+            diaryAttachmentsLoadingController = MockControllersProvider.loadingController(
+                data = DiaryMockDataProvider.diaryAttachmentsMoodTrack(
+                    context = LocalContext.current,
+                    isWithTags = true,
+                ),
+            ),
+            tagMultiSelectionController = MockControllersProvider.multiSelectionController(
+                dataList = DiaryMockDataProvider.diaryTagsList(
+                    context = LocalContext.current,
+                ),
+            ),
+        )
+    }
 }

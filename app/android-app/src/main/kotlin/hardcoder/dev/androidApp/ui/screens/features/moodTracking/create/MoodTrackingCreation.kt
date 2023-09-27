@@ -21,13 +21,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.androidApp.ui.screens.dialogs.DatePickerDialog
 import hardcoder.dev.androidApp.ui.screens.dialogs.TimePickerDialog
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.moodType.MoodItem
@@ -35,9 +35,14 @@ import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
+import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
-import hardcoder.dev.presentation.features.moodTracking.MoodTrackingCreationViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.date.MockDateProvider
+import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
@@ -56,14 +61,22 @@ import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.components.text.textField.TextField
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
-import org.koin.compose.koinInject
 
 @Composable
 fun MoodTrackingCreation(
-    viewModel: MoodTrackingCreationViewModel,
+    dateTimeProvider: DateTimeProvider,
+    dateTimeFormatter: DateTimeFormatter,
+    moodTypeSelectionController: SingleSelectionController<MoodType>,
+    dateInputController: InputController<LocalDate>,
+    timeInputController: InputController<LocalTime>,
+    noteInputController: InputController<String>,
+    activitiesMultiSelectionController: MultiSelectionController<MoodActivity>,
+    creationController: RequestController,
     onManageMoodTypes: () -> Unit,
     onManageMoodActivities: () -> Unit,
     onGoBack: () -> Unit,
@@ -71,12 +84,14 @@ fun MoodTrackingCreation(
     ScaffoldWrapper(
         content = {
             MoodTrackingCreationContent(
-                noteController = viewModel.noteController,
-                moodTypeSelectionController = viewModel.moodTypeSelectionController,
-                activitiesMultiSelectionController = viewModel.activitiesMultiSelectionController,
-                dateInputController = viewModel.dateController,
-                timeInputController = viewModel.timeInputController,
-                creationController = viewModel.creationController,
+                dateTimeProvider = dateTimeProvider,
+                dateTimeFormatter = dateTimeFormatter,
+                noteInputController = noteInputController,
+                moodTypeSelectionController = moodTypeSelectionController,
+                activitiesMultiSelectionController = activitiesMultiSelectionController,
+                dateInputController = dateInputController,
+                timeInputController = timeInputController,
+                creationController = creationController,
                 onManageMoodTypes = onManageMoodTypes,
                 onManageActivities = onManageMoodActivities,
             )
@@ -92,10 +107,12 @@ fun MoodTrackingCreation(
 
 @Composable
 private fun MoodTrackingCreationContent(
+    dateTimeProvider: DateTimeProvider,
+    dateTimeFormatter: DateTimeFormatter,
     moodTypeSelectionController: SingleSelectionController<MoodType>,
     dateInputController: InputController<LocalDate>,
     timeInputController: InputController<LocalTime>,
-    noteController: InputController<String>,
+    noteInputController: InputController<String>,
     activitiesMultiSelectionController: MultiSelectionController<MoodActivity>,
     creationController: RequestController,
     onManageActivities: () -> Unit,
@@ -116,16 +133,23 @@ private fun MoodTrackingCreationContent(
                 onManageMoodTypes = onManageMoodTypes,
             )
             Spacer(modifier = Modifier.height(16.dp))
-            EnterNoteSection(noteController = noteController)
+            EnterNoteSection(noteInputController = noteInputController)
             Spacer(modifier = Modifier.height(16.dp))
             SelectActivitiesSection(
                 activitiesMultiSelectionController = activitiesMultiSelectionController,
                 onManageActivities = onManageActivities,
             )
             Spacer(modifier = Modifier.height(16.dp))
-            SelectDateSection(dateInputController = dateInputController)
+            SelectDateSection(
+                dateTimeProvider = dateTimeProvider,
+                dateTimeFormatter = dateTimeFormatter,
+                dateInputController = dateInputController,
+            )
             Spacer(modifier = Modifier.height(16.dp))
-            SelectTimeSection(timeInputController = timeInputController)
+            SelectTimeSection(
+                dateTimeFormatter = dateTimeFormatter,
+                timeInputController = timeInputController,
+            )
         }
         Spacer(modifier = Modifier.height(16.dp))
         RequestButtonWithIcon(
@@ -242,12 +266,12 @@ private fun ManagementActivitiesButton(onManageActivities: () -> Unit) {
 }
 
 @Composable
-private fun EnterNoteSection(noteController: InputController<String>) {
+private fun EnterNoteSection(noteInputController: InputController<String>) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Title(text = stringResource(id = R.string.moodTracking_creation_youCanAddNote_text))
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
-            controller = noteController,
+            controller = noteInputController,
             label = R.string.moodTracking_creation_enterNote_textField,
             multiline = true,
             maxLines = 5,
@@ -263,8 +287,11 @@ private fun EnterNoteSection(noteController: InputController<String>) {
 }
 
 @Composable
-private fun SelectDateSection(dateInputController: InputController<LocalDate>) {
-    val dateTimeFormatter = koinInject<DateTimeFormatter>()
+private fun SelectDateSection(
+    dateTimeProvider: DateTimeProvider,
+    dateTimeFormatter: DateTimeFormatter,
+    dateInputController: InputController<LocalDate>,
+) {
     val dateInputControllerState by dateInputController.state.collectAsState()
     val formattedDate = dateTimeFormatter.formatDate(dateInputControllerState.input)
     var dialogOpen by remember {
@@ -285,6 +312,7 @@ private fun SelectDateSection(dateInputController: InputController<LocalDate>) {
     )
 
     DatePickerDialog(
+        dateTimeProvider = dateTimeProvider,
         dialogOpen = dialogOpen,
         onUpdateDialogOpen = { dialogOpen = it },
         dateInputController = dateInputController,
@@ -292,8 +320,10 @@ private fun SelectDateSection(dateInputController: InputController<LocalDate>) {
 }
 
 @Composable
-private fun SelectTimeSection(timeInputController: InputController<LocalTime>) {
-    val dateTimeFormatter = koinInject<DateTimeFormatter>()
+private fun SelectTimeSection(
+    dateTimeFormatter: DateTimeFormatter,
+    timeInputController: InputController<LocalTime>,
+) {
     val timeInputControllerState by timeInputController.state.collectAsState()
     val formattedDate = dateTimeFormatter.formatTime(timeInputControllerState.input)
     var dialogOpen by remember {
@@ -316,4 +346,32 @@ private fun SelectTimeSection(timeInputController: InputController<LocalTime>) {
         onUpdateDialogOpen = { dialogOpen = it },
         timeInputController = timeInputController,
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun MoodTrackingCreationPreview() {
+    HealtherTheme {
+        MoodTrackingCreation(
+            onManageMoodTypes = {},
+            onManageMoodActivities = {},
+            onGoBack = {},
+            dateTimeProvider = DateTimeProvider(dispatchers = DefaultBackgroundBackgroundCoroutineDispatchers),
+            dateTimeFormatter = DateTimeFormatter(LocalContext.current),
+            dateInputController = MockControllersProvider.inputController(MockDateProvider.localDate()),
+            timeInputController = MockControllersProvider.inputController(MockDateProvider.localTime()),
+            creationController = MockControllersProvider.requestController(),
+            noteInputController = MockControllersProvider.inputController(""),
+            moodTypeSelectionController = MockControllersProvider.singleSelectionController(
+                dataList = MoodTrackingMockDataProvider.moodTypesList(
+                    context = LocalContext.current,
+                ),
+            ),
+            activitiesMultiSelectionController = MockControllersProvider.multiSelectionController(
+                dataList = MoodTrackingMockDataProvider.moodActivitiesList(
+                    context = LocalContext.current,
+                ),
+            ),
+        )
+    }
 }

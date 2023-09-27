@@ -1,7 +1,5 @@
 package hardcoder.dev.androidApp.ui.screens.features.moodTracking.moodType.update
 
-import android.content.Context
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,15 +21,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.icons.Icon
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodType.IncorrectMoodTypeName
 import hardcoder.dev.logic.features.moodTracking.moodType.ValidatedMoodTypeName
-import hardcoder.dev.logic.icons.LocalIcon
-import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeUpdateViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.IconsMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
@@ -47,21 +46,26 @@ import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun MoodTypeUpdate(
-    viewModel: MoodTypeUpdateViewModel,
+    moodTypeNameController: ValidatedInputController<String, ValidatedMoodTypeName>,
+    iconSelectionController: SingleSelectionController<Icon>,
+    positiveIndexController: InputController<Int>,
+    updateController: RequestController,
     onGoBack: () -> Unit,
     onDeleteDialog: (Boolean) -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             MoodTypeUpdateContent(
-                moodTypeNameController = viewModel.moodTypeNameController,
-                iconSelectionController = viewModel.iconSelectionController,
-                positiveIndexController = viewModel.positiveIndexController,
-                updateController = viewModel.updateController,
+                moodTypeNameController = moodTypeNameController,
+                iconSelectionController = iconSelectionController,
+                positiveIndexController = positiveIndexController,
+                updateController = updateController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -86,12 +90,10 @@ fun MoodTypeUpdate(
 @Composable
 private fun MoodTypeUpdateContent(
     moodTypeNameController: ValidatedInputController<String, ValidatedMoodTypeName>,
-    iconSelectionController: SingleSelectionController<LocalIcon>,
+    iconSelectionController: SingleSelectionController<Icon>,
     positiveIndexController: InputController<Int>,
     updateController: RequestController,
 ) {
-    val context = LocalContext.current
-
     Column(
         Modifier
             .fillMaxWidth()
@@ -102,10 +104,7 @@ private fun MoodTypeUpdateContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState()),
         ) {
-            EnterMoodTypeNameSection(
-                context = context,
-                moodTypeNameController = moodTypeNameController,
-            )
+            EnterMoodTypeNameSection(moodTypeNameController = moodTypeNameController)
             Spacer(modifier = Modifier.height(32.dp))
             SelectIconSection(iconSelectionController = iconSelectionController)
             Spacer(modifier = Modifier.height(32.dp))
@@ -124,9 +123,10 @@ private fun MoodTypeUpdateContent(
 
 @Composable
 private fun EnterMoodTypeNameSection(
-    context: Context,
     moodTypeNameController: ValidatedInputController<String, ValidatedMoodTypeName>,
 ) {
+    val context = LocalContext.current
+
     Title(text = stringResource(id = R.string.moodTracking_moodType_update_enterName_text))
     Spacer(modifier = Modifier.height(16.dp))
     ValidatedTextField(
@@ -168,7 +168,7 @@ private fun EnterMoodTypeNameSection(
 }
 
 @Composable
-private fun SelectIconSection(iconSelectionController: SingleSelectionController<LocalIcon>) {
+private fun SelectIconSection(iconSelectionController: SingleSelectionController<Icon>) {
     Title(text = stringResource(id = R.string.moodTracking_moodType_update_selectMoodIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
     SingleCardSelectionHorizontalGrid(
@@ -208,4 +208,21 @@ private fun EnterMoodTypePositivePercentageSection(positiveIndexController: Inpu
         onValueChange = positiveIndexController::changeInput,
         valueRange = 10..100,
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun MoodTypeUpdatePreview() {
+    HealtherTheme {
+        MoodTypeUpdate(
+            onGoBack = {},
+            onDeleteDialog = {},
+            updateController = MockControllersProvider.requestController(),
+            positiveIndexController = MockControllersProvider.inputController(0),
+            moodTypeNameController = MockControllersProvider.validatedInputController(""),
+            iconSelectionController = MockControllersProvider.singleSelectionController(
+                dataList = IconsMockDataProvider.icons(),
+            ),
+        )
+    }
 }

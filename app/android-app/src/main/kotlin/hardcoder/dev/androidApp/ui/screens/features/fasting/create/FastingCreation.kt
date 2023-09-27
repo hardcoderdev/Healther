@@ -8,14 +8,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanItem
+import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
-import hardcoder.dev.presentation.features.fasting.FastingCreationViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
@@ -24,19 +27,27 @@ import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun FastingCreation(
-    viewModel: FastingCreationViewModel,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    fastingPlanSelectionController: SingleSelectionController<FastingPlan>,
+    customFastingHoursInputController: InputController<Int>,
+    creationController: RequestController,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             FastingCreationContent(
-                fastingPlanSelectionController = viewModel.fastingPlanSelectionController,
-                customFastingHoursInputController = viewModel.customFastingHoursInputController,
-                creationController = viewModel.creationController,
+                millisDistanceFormatter = millisDistanceFormatter,
+                fastingPlanResourcesProvider = fastingPlanResourcesProvider,
+                fastingPlanSelectionController = fastingPlanSelectionController,
+                customFastingHoursInputController = customFastingHoursInputController,
+                creationController = creationController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -50,6 +61,8 @@ fun FastingCreation(
 
 @Composable
 private fun FastingCreationContent(
+    millisDistanceFormatter: MillisDistanceFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     fastingPlanSelectionController: SingleSelectionController<FastingPlan>,
     customFastingHoursInputController: InputController<Int>,
     creationController: RequestController,
@@ -62,6 +75,8 @@ private fun FastingCreationContent(
         Column(Modifier.weight(2f)) {
             SelectPlanSection(
                 fastingPlanSelectionController = fastingPlanSelectionController,
+                millisDistanceFormatter = millisDistanceFormatter,
+                fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                 customFastingHoursInputController = customFastingHoursInputController,
             )
         }
@@ -78,6 +93,8 @@ private fun FastingCreationContent(
 
 @Composable
 private fun SelectPlanSection(
+    millisDistanceFormatter: MillisDistanceFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     fastingPlanSelectionController: SingleSelectionController<FastingPlan>,
     customFastingHoursInputController: InputController<Int>,
 ) {
@@ -93,10 +110,32 @@ private fun SelectPlanSection(
             controller = fastingPlanSelectionController,
             itemContent = { fastingPlan, _ ->
                 FastingPlanItem(
+                    millisDistanceFormatter = millisDistanceFormatter,
+                    fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                     customFastingHoursInputController = customFastingHoursInputController,
                     fastingPlan = fastingPlan,
                 )
             },
+        )
+    }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun FastingCreationPreview() {
+    HealtherTheme {
+        FastingCreation(
+            onGoBack = {},
+            fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
+            millisDistanceFormatter = MillisDistanceFormatter(
+                context = LocalContext.current,
+                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+            ),
+            creationController = MockControllersProvider.requestController(),
+            customFastingHoursInputController = MockControllersProvider.inputController(0),
+            fastingPlanSelectionController = MockControllersProvider.singleSelectionController(
+                dataList = FastingPlan.entries,
+            ),
         )
     }
 }

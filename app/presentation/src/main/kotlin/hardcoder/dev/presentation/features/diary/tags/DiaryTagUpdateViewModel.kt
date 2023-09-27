@@ -12,7 +12,6 @@ import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagDeleter
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagNameValidator
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagUpdater
-import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -23,7 +22,7 @@ class DiaryTagUpdateViewModel(
     private val diaryTagUpdater: DiaryTagUpdater,
     private val diaryTagProvider: DiaryTagProvider,
     diaryTagNameValidator: DiaryTagNameValidator,
-    iconResourceProvider: IconResourceProvider,
+    iconResourceProvider: hardcoder.dev.icons.IconResourceProvider,
 ) : ViewModel() {
 
     val tagNameInputController = ValidatedInputController(

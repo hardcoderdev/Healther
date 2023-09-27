@@ -15,13 +15,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import hardcoder.dev.uikit.components.card.Card
@@ -29,20 +28,18 @@ import hardcoder.dev.uikit.components.card.CardConfig
 import hardcoder.dev.uikit.components.chip.Chip
 import hardcoder.dev.uikit.components.chip.ChipConfig
 import hardcoder.dev.uikit.components.text.Description
-import hardcoderdev.healther.app.android.app.R
-import org.koin.compose.koinInject
+import hardcoderdev.healther.app.resources.R
 
 private const val MAX_ACTIVITIES_VISIBLE_IN_ITEM = 4
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MoodTrackItem(
+    dateTimeFormatter: DateTimeFormatter,
     activitiesList: List<MoodActivity>,
     moodTrack: MoodTrack,
     onUpdate: (MoodTrack) -> Unit,
 ) {
-    val dateTimeFormatter = koinInject<DateTimeFormatter>()
-
     Card(
         cardConfig = CardConfig.Action(
             onClick = { onUpdate(moodTrack) },

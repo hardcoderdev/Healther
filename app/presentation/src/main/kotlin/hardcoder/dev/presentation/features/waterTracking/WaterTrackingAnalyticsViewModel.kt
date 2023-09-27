@@ -43,11 +43,16 @@ class WaterTrackingAnalyticsViewModel(
         flow = waterTracksLoadingController.state.map {
             (it as? LoadingController.State.Loaded)?.data
         }.filterNotNull().map { waterTrackList ->
-            waterTrackList.groupBy {
-                it.timeInMillis.millisToLocalDateTime().hour
-            }.map { entry ->
-                entry.key to entry.value.sumOf { it.millilitersCount }
-            }
+            WaterTrackingChartData(
+                entriesList = waterTrackList.groupBy {
+                    it.timeInMillis.millisToLocalDateTime().hour
+                }.map { entry ->
+                    WaterTrackingChartEntry(
+                        from = entry.key,
+                        to = entry.value.sumOf { it.millilitersCount },
+                    )
+                },
+            )
         },
     )
 }

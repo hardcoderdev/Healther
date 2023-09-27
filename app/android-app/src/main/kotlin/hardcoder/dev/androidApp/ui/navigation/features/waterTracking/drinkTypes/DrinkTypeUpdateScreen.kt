@@ -44,7 +44,10 @@ data class DrinkTypeUpdateScreen(val drinkTypeId: Int) : Screen {
         )
 
         DrinkTypeUpdate(
-            viewModel = viewModel,
+            nameInputController = viewModel.nameInputController,
+            iconSelectionController = viewModel.iconSelectionController,
+            waterPercentageInputController = viewModel.waterPercentageInputController,
+            updateController = viewModel.updateController,
             onGoBack = navigator::pop,
             onDeleteDialogShow = {
                 dialogOpen = it

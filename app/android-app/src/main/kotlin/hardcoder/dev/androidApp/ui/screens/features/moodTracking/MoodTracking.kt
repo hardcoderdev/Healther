@@ -13,12 +13,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
-import hardcoder.dev.presentation.features.moodTracking.MoodTrackingViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.LoadingContainer
@@ -29,11 +32,16 @@ import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun MoodTracking(
-    viewModel: MoodTrackingViewModel,
+    dateTimeFormatter: DateTimeFormatter,
+    moodWithActivitiesController: LoadingController<List<MoodWithActivities>>,
+    rewardLoadingController: LoadingController<Double>,
+    collectRewardController: RequestController,
     onCreateMoodTrack: () -> Unit,
     onUpdateMoodTrack: (Int) -> Unit,
     onGoToHistory: () -> Unit,
@@ -44,9 +52,10 @@ fun MoodTracking(
         onFabClick = onCreateMoodTrack,
         content = {
             MoodTrackingContent(
-                moodWithActivitiesController = viewModel.moodWithActivityLoadingController,
-                rewardLoadingController = viewModel.rewardLoadingController,
-                collectRewardController = viewModel.collectRewardController,
+                dateTimeFormatter = dateTimeFormatter,
+                moodWithActivitiesController = moodWithActivitiesController,
+                rewardLoadingController = rewardLoadingController,
+                collectRewardController = collectRewardController,
                 onUpdateMoodTrack = onUpdateMoodTrack,
             )
         },
@@ -73,6 +82,7 @@ fun MoodTracking(
 
 @Composable
 private fun MoodTrackingContent(
+    dateTimeFormatter: DateTimeFormatter,
     moodWithActivitiesController: LoadingController<List<MoodWithActivities>>,
     rewardLoadingController: LoadingController<Double>,
     collectRewardController: RequestController,
@@ -98,6 +108,7 @@ private fun MoodTrackingContent(
             Spacer(modifier = Modifier.height(32.dp))
             if (moodWithActivitiesList.isNotEmpty()) {
                 MoodTrackingDiarySection(
+                    dateTimeFormatter = dateTimeFormatter,
                     moodWithActivitiesList = moodWithActivitiesList,
                     onUpdateTrack = { moodTrackId ->
                         onUpdateMoodTrack(moodTrackId)
@@ -112,6 +123,7 @@ private fun MoodTrackingContent(
 
 @Composable
 private fun ColumnScope.MoodTrackingDiarySection(
+    dateTimeFormatter: DateTimeFormatter,
     moodWithActivitiesList: List<MoodWithActivities>,
     onUpdateTrack: (Int) -> Unit,
 ) {
@@ -126,6 +138,7 @@ private fun ColumnScope.MoodTrackingDiarySection(
     ) {
         items(moodWithActivitiesList) { moodWithActivityTrack ->
             MoodTrackItem(
+                dateTimeFormatter = dateTimeFormatter,
                 moodTrack = moodWithActivityTrack.moodTrack,
                 activitiesList = moodWithActivityTrack.moodActivityList,
                 onUpdate = {
@@ -137,5 +150,27 @@ private fun ColumnScope.MoodTrackingDiarySection(
                 },
             )
         }
+    }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun MoodTrackingPreview() {
+    HealtherTheme {
+        MoodTracking(
+            onGoToHistory = {},
+            onGoToAnalytics = {},
+            onCreateMoodTrack = {},
+            onUpdateMoodTrack = {},
+            onGoBack = {},
+            dateTimeFormatter = DateTimeFormatter(LocalContext.current),
+            collectRewardController = MockControllersProvider.requestController(),
+            rewardLoadingController = MockControllersProvider.loadingController(20.0),
+            moodWithActivitiesController = MockControllersProvider.loadingController(
+                data = MoodTrackingMockDataProvider.moodWithActivitiesList(
+                    context = LocalContext.current,
+                ),
+            ),
+        )
     }
 }

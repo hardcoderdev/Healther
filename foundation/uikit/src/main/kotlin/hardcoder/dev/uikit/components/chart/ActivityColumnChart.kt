@@ -23,7 +23,7 @@ import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.component.shape.shader.DynamicShaders
 import com.patrykandpatrick.vico.core.entry.entriesOf
 import com.patrykandpatrick.vico.core.entry.entryModelOf
-import hardcoder.dev.uikit.preview.UiKitPhonePreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 
 @Composable
 fun ActivityColumnChart(
@@ -81,7 +81,7 @@ fun ActivityColumnChart(
     )
 }
 
-@UiKitPhonePreview
+@HealtherUiKitPreview
 @Composable
 private fun ActivityColumnChartPreview() {
     ActivityColumnChart(

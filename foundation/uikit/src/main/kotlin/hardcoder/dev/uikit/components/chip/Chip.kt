@@ -7,7 +7,7 @@ import hardcoder.dev.uikit.components.chip.internal.SelectionChip
 import hardcoder.dev.uikit.components.chip.internal.SelectionChipPreview
 import hardcoder.dev.uikit.components.chip.internal.StaticChip
 import hardcoder.dev.uikit.components.chip.internal.StaticChipPreview
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 
 @Composable
 fun Chip(chipConfig: ChipConfig) {
@@ -48,19 +48,19 @@ fun Chip(chipConfig: ChipConfig) {
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun ActionChipPreview() {
     ActionChipPreview()
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun SelectionChipPreview() {
     SelectionChipPreview()
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun StaticChipPreview() {
     StaticChipPreview()

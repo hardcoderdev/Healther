@@ -8,13 +8,16 @@ import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.navigation.features.moodTracking.moodActivities.MoodActivitiesScreen
 import hardcoder.dev.androidApp.ui.navigation.features.moodTracking.moodTypes.MoodTypesScreen
 import hardcoder.dev.androidApp.ui.screens.dialogs.DeleteTrackDialog
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.update.MoodTrackingUpdate
+import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingUpdateViewModel
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
 data class MoodTrackingUpdateScreen(val moodTrackId: Int) : Screen {
@@ -25,6 +28,8 @@ data class MoodTrackingUpdateScreen(val moodTrackId: Int) : Screen {
         val viewModel = koinViewModel<MoodTrackingUpdateViewModel> {
             parametersOf(moodTrackId)
         }
+        val dateTimeFormatter = koinInject<DateTimeFormatter>()
+        val dateTimeProvider = koinInject<DateTimeProvider>()
 
         LaunchedEffectWhenExecuted(
             controller = viewModel.updateController,
@@ -46,7 +51,14 @@ data class MoodTrackingUpdateScreen(val moodTrackId: Int) : Screen {
         )
 
         MoodTrackingUpdate(
-            viewModel = viewModel,
+            dateTimeProvider = dateTimeProvider,
+            dateTimeFormatter = dateTimeFormatter,
+            dateInputController = viewModel.dateController,
+            timeInputController = viewModel.timeInputController,
+            noteInputController = viewModel.noteInputController,
+            moodTypeSelectionController = viewModel.moodTypeSelectionController,
+            updateController = viewModel.updateController,
+            activitiesMultiSelectionController = viewModel.activitiesMultiSelectionController,
             onGoBack = navigator::pop,
             onManageMoodTypes = {
                 navigator += MoodTypesScreen()

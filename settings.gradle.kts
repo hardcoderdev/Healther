@@ -26,7 +26,9 @@ dependencyResolutionManagement {
 rootProject.name = "Healther"
 include(
     ":app:android-app",
-    ":app:database",
+    ":app:resources",
+    ":app:data:database",
+    ":app:data:mock",
     ":app:logic",
     ":app:presentation"
 )
@@ -38,5 +40,6 @@ include(
     ":foundation:datetime",
     ":foundation:math",
     ":foundation:inappreview",
-    ":foundation:controllers"
+    ":foundation:controllers",
+    ":foundation:icons",
 )

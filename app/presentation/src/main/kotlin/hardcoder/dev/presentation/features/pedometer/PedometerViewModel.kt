@@ -63,11 +63,16 @@ class PedometerViewModel(
         flow = pedometerTrackProvider.providePedometerTracksByRange(
             dateTimeProvider.currentDateRange(),
         ).map { pedometerTracks ->
-            pedometerTracks.groupBy {
-                it.range.start.toLocalDateTime().hour
-            }.map { entry ->
-                entry.key to entry.value.sumOf { it.stepsCount }
-            }
+            PedometerChartData(
+                entriesList = pedometerTracks.groupBy {
+                    it.range.start.toLocalDateTime().hour
+                }.map { entry ->
+                    PedometerChartEntry(
+                        from = entry.key,
+                        to = entry.value.sumOf { it.stepsCount },
+                    )
+                },
+            )
         },
     )
 

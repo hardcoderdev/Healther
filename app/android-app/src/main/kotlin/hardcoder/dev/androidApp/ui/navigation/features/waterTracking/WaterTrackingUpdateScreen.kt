@@ -8,12 +8,15 @@ import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.navigation.features.waterTracking.drinkTypes.DrinkTypesScreen
 import hardcoder.dev.androidApp.ui.screens.dialogs.DeleteTrackDialog
 import hardcoder.dev.androidApp.ui.screens.features.waterTracking.waterTrack.update.WaterTrackingUpdate
+import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingUpdateViewModel
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
 data class WaterTrackingUpdateScreen(val waterTrackId: Int) : Screen {
@@ -24,6 +27,8 @@ data class WaterTrackingUpdateScreen(val waterTrackId: Int) : Screen {
         val viewModel = koinViewModel<WaterTrackingUpdateViewModel> {
             parametersOf(waterTrackId)
         }
+        val dateTimeProvider = koinInject<DateTimeProvider>()
+        val dateTimeFormatter = koinInject<DateTimeFormatter>()
 
         LaunchedEffectWhenExecuted(
             controller = viewModel.deletionController,
@@ -45,7 +50,13 @@ data class WaterTrackingUpdateScreen(val waterTrackId: Int) : Screen {
         )
 
         WaterTrackingUpdate(
-            viewModel = viewModel,
+            dateTimeProvider = dateTimeProvider,
+            dateTimeFormatter = dateTimeFormatter,
+            dateInputController = viewModel.dateInputController,
+            timeInputController = viewModel.timeInputController,
+            drinkSelectionController = viewModel.drinkSelectionController,
+            millilitersDrunkInputController = viewModel.millilitersDrunkInputController,
+            updateController = viewModel.updatingController,
             onGoBack = navigator::pop,
             onManageDrinkTypes = {
                 navigator += DrinkTypesScreen()

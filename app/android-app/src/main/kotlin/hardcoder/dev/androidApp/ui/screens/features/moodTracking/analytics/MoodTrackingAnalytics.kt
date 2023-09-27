@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingChartData
 import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatistic
-import hardcoder.dev.presentation.features.moodTracking.MoodTrackingAnalyticsViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
 import hardcoder.dev.uikit.components.chart.ActivityColumnChart
 import hardcoder.dev.uikit.components.chart.MINIMUM_ENTRIES_FOR_SHOWING_CHART
 import hardcoder.dev.uikit.components.container.LoadingContainer
@@ -22,20 +25,24 @@ import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 import kotlin.math.roundToInt
-import org.koin.compose.koinInject
 
 @Composable
 fun MoodTrackingAnalytics(
-    viewModel: MoodTrackingAnalyticsViewModel,
+    moodTrackingStatisticResolver: MoodTrackingStatisticResolver,
+    statisticLoadingController: LoadingController<MoodTrackingStatistic?>,
+    chartEntriesLoadingController: LoadingController<MoodTrackingChartData>,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             MoodTrackingAnalyticsContent(
-                statisticLoadingController = viewModel.statisticLoadingController,
-                chartEntriesLoadingController = viewModel.chartEntriesLoadingController,
+                moodTrackingStatisticResolver = moodTrackingStatisticResolver,
+                statisticLoadingController = statisticLoadingController,
+                chartEntriesLoadingController = chartEntriesLoadingController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -49,22 +56,26 @@ fun MoodTrackingAnalytics(
 
 @Composable
 private fun MoodTrackingAnalyticsContent(
+    moodTrackingStatisticResolver: MoodTrackingStatisticResolver,
     statisticLoadingController: LoadingController<MoodTrackingStatistic?>,
-    chartEntriesLoadingController: LoadingController<List<Pair<Int, Int>>>
+    chartEntriesLoadingController: LoadingController<MoodTrackingChartData>,
 ) {
     LoadingContainer(
         controller1 = statisticLoadingController,
         controller2 = chartEntriesLoadingController,
-    ) { statistic, chartEntries ->
+    ) { statistic, chartData ->
         Column(
             Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
         ) {
-            if (chartEntries.isNotEmpty() && statistic != null) {
-                StatisticSection(statistic = statistic)
+            if (chartData.entriesList.isNotEmpty() && statistic != null) {
+                StatisticSection(
+                    moodTrackingStatisticResolver = moodTrackingStatisticResolver,
+                    statistic = statistic,
+                )
                 Spacer(modifier = Modifier.height(32.dp))
-                ChartSection(chartEntries)
+                ChartSection(moodTrackingChartData = chartData)
                 Spacer(modifier = Modifier.height(32.dp))
             } else {
                 EmptySection(emptyTitleResId = R.string.moodTracking_analyticsNowEmpty_text)
@@ -74,23 +85,24 @@ private fun MoodTrackingAnalyticsContent(
 }
 
 @Composable
-private fun StatisticSection(statistic: MoodTrackingStatistic) {
-    val moodTrackingStatisticResolver = koinInject<MoodTrackingStatisticResolver>()
-
+private fun StatisticSection(
+    moodTrackingStatisticResolver: MoodTrackingStatisticResolver,
+    statistic: MoodTrackingStatistic,
+) {
     Title(text = stringResource(id = R.string.moodTracking_statistic_text))
     Spacer(modifier = Modifier.height(16.dp))
     Statistics(statistics = moodTrackingStatisticResolver.resolve(statistic))
 }
 
 @Composable
-private fun ChartSection(chartEntries: List<Pair<Int, Int>>) {
+private fun ChartSection(moodTrackingChartData: MoodTrackingChartData) {
     Title(text = stringResource(id = R.string.moodTracking_activity_chart))
     Spacer(modifier = Modifier.height(16.dp))
-    if (chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
+    if (moodTrackingChartData.entriesList.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
         ActivityColumnChart(
             isZoomEnabled = true,
             modifier = Modifier.height(100.dp),
-            chartEntries = chartEntries,
+            chartEntries = moodTrackingChartData.entriesList.map { it.from to it.to },
             xAxisValueFormatter = { value, _ ->
                 value.roundToInt().toString()
             },
@@ -100,5 +112,24 @@ private fun ChartSection(chartEntries: List<Pair<Int, Int>>) {
         )
     } else {
         Description(text = stringResource(id = R.string.moodTracking_chartNotEnoughData_text))
+    }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun MoodTrackingAnalyticsPreview() {
+    HealtherTheme {
+        MoodTrackingAnalytics(
+            onGoBack = {},
+            moodTrackingStatisticResolver = MoodTrackingStatisticResolver(context = LocalContext.current),
+            statisticLoadingController = MockControllersProvider.loadingController(
+                data = MoodTrackingMockDataProvider.moodTrackingStatistics(
+                    context = LocalContext.current,
+                ),
+            ),
+            chartEntriesLoadingController = MockControllersProvider.loadingController(
+                data = MoodTrackingMockDataProvider.moodTrackingChartData(),
+            ),
+        )
     }
 }

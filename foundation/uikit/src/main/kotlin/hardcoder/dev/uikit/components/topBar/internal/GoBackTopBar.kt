@@ -16,7 +16,7 @@ import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButtonCo
 import hardcoder.dev.uikit.components.text.Text
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.DropdownConfig
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 
@@ -88,7 +88,7 @@ internal fun GoBackTopBar(
     )
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 internal fun GoBackTopBarPreview() {
     HealtherThemePreview {

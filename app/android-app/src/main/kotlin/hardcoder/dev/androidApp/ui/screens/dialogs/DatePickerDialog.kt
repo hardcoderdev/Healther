@@ -1,28 +1,26 @@
 package hardcoder.dev.androidApp.ui.screens.dialogs
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.getInput
+import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
 import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.date.MockDateProvider
 import hardcoder.dev.uikit.components.calendar.SingleSelectionCalendar
 import hardcoder.dev.uikit.components.dialog.TitleDialog
-import hardcoderdev.healther.app.android.app.R
-import kotlinx.datetime.Clock
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import org.koin.compose.koinInject
 
 @Composable
 fun DatePickerDialog(
+    dateTimeProvider: DateTimeProvider,
     dialogOpen: Boolean,
     dateInputController: InputController<LocalDate>,
     onUpdateDialogOpen: (Boolean) -> Unit,
 ) {
-    val dateTimeProvider = koinInject<DateTimeProvider>()
-
     TitleDialog(
         dialogOpen = dialogOpen,
         onUpdateDialogOpen = onUpdateDialogOpen,
@@ -46,13 +44,13 @@ fun DatePickerDialog(
 
 @Preview
 @Composable
-fun DatePickerDialogPreview() {
-    DatePickerDialog(
-        dateInputController = InputController(
-            coroutineScope = rememberCoroutineScope(),
-            initialInput = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        ),
-        onUpdateDialogOpen = {},
-        dialogOpen = true,
-    )
+private fun DatePickerDialogPreview() {
+    HealtherTheme {
+        DatePickerDialog(
+            dateTimeProvider = DateTimeProvider(dispatchers = DefaultBackgroundBackgroundCoroutineDispatchers),
+            dateInputController = MockControllersProvider.inputController(MockDateProvider.localDate()),
+            onUpdateDialogOpen = {},
+            dialogOpen = true,
+        )
+    }
 }

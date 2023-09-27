@@ -19,7 +19,6 @@ import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeUpdater
 import hardcoder.dev.logic.features.waterTracking.drinkType.PredefinedDrinkTypeProvider
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatisticProvider
-import hardcoder.dev.logic.icons.IconResourceProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -30,7 +29,7 @@ val waterTrackingLogicModule = module {
     singleOf(::WaterTrackMillilitersValidator)
     singleOf(::DrinkTypeNameValidator)
     singleOf(::DrinkTypeNameValidator)
-    singleOf<IconResourceProvider>(::DrinkTypeIconProvider)
+    singleOf<hardcoder.dev.icons.IconResourceProvider>(::DrinkTypeIconProvider)
 
     single {
         WaterTrackingDailyRateProvider(

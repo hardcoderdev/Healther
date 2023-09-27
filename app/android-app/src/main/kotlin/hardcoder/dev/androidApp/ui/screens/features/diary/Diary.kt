@@ -21,19 +21,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
+import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.diary.items.DiaryItem
+import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.diary.DateRangeFilterType
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack
-import hardcoder.dev.presentation.features.diary.DiaryViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
 import hardcoder.dev.uikit.components.bottomSheet.BottomSheet
 import hardcoder.dev.uikit.components.bottomSheet.rememberBottomSheetState
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
@@ -53,13 +59,24 @@ import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 
 @Composable
 fun Diary(
-    viewModel: DiaryViewModel,
+    dateTimeFormatter: DateTimeFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    dateRangeFilterTypeResourcesProvider: DateRangeFilterTypeResourcesProvider,
+    tagMultiSelectionController: MultiSelectionController<DiaryTag>,
+    diaryTrackLoadingController: LoadingController<List<DiaryTrack>>,
+    filteredTrackLoadingController: LoadingController<List<DiaryTrack>>,
+    rewardLoadingController: LoadingController<Double>,
+    collectRewardController: RequestController,
+    searchTextInputController: InputController<String>,
+    dateRangeFilterTypeSelectionController: SingleSelectionController<DateRangeFilterType>,
     onGoBack: () -> Unit,
     onCreateDiaryTrack: () -> Unit,
     onUpdateDiaryTrack: (Int) -> Unit,
@@ -71,8 +88,9 @@ fun Diary(
         state = filterBottomSheetState,
         sheetContent = {
             FilterBottomSheetContent(
-                dateRangeFilterTypeSelectionController = viewModel.dateRangeFilterTypeSelectionController,
-                tagMultiSelectionController = viewModel.tagMultiSelectionController,
+                dateRangeFilterTypeResourcesProvider = dateRangeFilterTypeResourcesProvider,
+                dateRangeFilterTypeSelectionController = dateRangeFilterTypeSelectionController,
+                tagMultiSelectionController = tagMultiSelectionController,
                 onClose = {
                     scope.launch {
                         filterBottomSheetState.toggle()
@@ -85,18 +103,21 @@ fun Diary(
             onFabClick = onCreateDiaryTrack,
             content = {
                 DiaryContent(
-                    diaryTrackLoadingController = viewModel.diaryTrackLoadingController,
-                    filteredTrackLoadingController = viewModel.filteredTrackLoadingController,
-                    tagMultiSelectionController = viewModel.tagMultiSelectionController,
-                    rewardLoadingController = viewModel.rewardLoadingController,
-                    collectRewardController = viewModel.collectRewardController,
-                    searchText = viewModel.searchTextInputController.getInput(),
+                    dateTimeFormatter = dateTimeFormatter,
+                    millisDistanceFormatter = millisDistanceFormatter,
+                    fastingPlanResourcesProvider = fastingPlanResourcesProvider,
+                    diaryTrackLoadingController = diaryTrackLoadingController,
+                    filteredTrackLoadingController = filteredTrackLoadingController,
+                    tagMultiSelectionController = tagMultiSelectionController,
+                    rewardLoadingController = rewardLoadingController,
+                    collectRewardController = collectRewardController,
+                    searchText = searchTextInputController.getInput(),
                     onUpdateDiaryTrack = onUpdateDiaryTrack,
                 )
             },
             topBarConfig = TopBarConfig(
                 type = TopBarType.SearchTopBarController(
-                    controller = viewModel.searchTextInputController,
+                    controller = searchTextInputController,
                     titleResId = R.string.diary_title_topBar,
                     placeholderText = R.string.diary_searchTrack_textField,
                     onGoBack = onGoBack,
@@ -120,6 +141,9 @@ fun Diary(
 
 @Composable
 private fun DiaryContent(
+    dateTimeFormatter: DateTimeFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     diaryTrackLoadingController: LoadingController<List<DiaryTrack>>,
     filteredTrackLoadingController: LoadingController<List<DiaryTrack>>,
@@ -158,6 +182,9 @@ private fun DiaryContent(
 
                     searchText.isEmpty() && tagMultiSelectionControllerState.value is MultiSelectionController.State.Empty -> {
                         DiaryTrackListSection(
+                            dateTimeFormatter = dateTimeFormatter,
+                            millisDistanceFormatter = millisDistanceFormatter,
+                            fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                             items = diaryItemsList,
                             onUpdateTrack = { diaryTrack ->
                                 if (diaryTrack.isRewardCollected) {
@@ -180,6 +207,9 @@ private fun DiaryContent(
 
                     else -> {
                         DiaryTrackListSection(
+                            dateTimeFormatter = dateTimeFormatter,
+                            millisDistanceFormatter = millisDistanceFormatter,
+                            fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                             items = filteredDiaryTrackList,
                             onUpdateTrack = { diaryTrack ->
                                 if (diaryTrack.isRewardCollected) {
@@ -198,6 +228,9 @@ private fun DiaryContent(
 
 @Composable
 private fun ColumnScope.DiaryTrackListSection(
+    dateTimeFormatter: DateTimeFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     items: List<DiaryTrack>,
     onUpdateTrack: (DiaryTrack) -> Unit,
 ) {
@@ -210,6 +243,9 @@ private fun ColumnScope.DiaryTrackListSection(
     ) {
         items(items) { diaryTrack ->
             DiaryItem(
+                dateTimeFormatter = dateTimeFormatter,
+                millisDistanceFormatter = millisDistanceFormatter,
+                fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                 diaryTrack = diaryTrack,
                 onUpdate = onUpdateTrack,
             )
@@ -219,6 +255,7 @@ private fun ColumnScope.DiaryTrackListSection(
 
 @Composable
 private fun FilterBottomSheetContent(
+    dateRangeFilterTypeResourcesProvider: DateRangeFilterTypeResourcesProvider,
     modifier: Modifier = Modifier,
     dateRangeFilterTypeSelectionController: SingleSelectionController<DateRangeFilterType>,
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
@@ -239,7 +276,10 @@ private fun FilterBottomSheetContent(
             Icon(iconResId = R.drawable.ic_clear, modifier = Modifier.clickable { onClose() })
         }
         Spacer(modifier = Modifier.height(32.dp))
-        DateRangeSection(dateRangeFilterTypeSelectionController = dateRangeFilterTypeSelectionController)
+        DateRangeSection(
+            dateRangeFilterTypeResourcesProvider = dateRangeFilterTypeResourcesProvider,
+            dateRangeFilterTypeSelectionController = dateRangeFilterTypeSelectionController,
+        )
         if (state is MultiSelectionController.State.Loaded) {
             if (state.items.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(32.dp))
@@ -250,9 +290,10 @@ private fun FilterBottomSheetContent(
 }
 
 @Composable
-private fun DateRangeSection(dateRangeFilterTypeSelectionController: SingleSelectionController<DateRangeFilterType>) {
-    val dateRangeFilterTypeResourcesProvider = koinInject<DateRangeFilterTypeResourcesProvider>()
-
+private fun DateRangeSection(
+    dateRangeFilterTypeResourcesProvider: DateRangeFilterTypeResourcesProvider,
+    dateRangeFilterTypeSelectionController: SingleSelectionController<DateRangeFilterType>,
+) {
     Description(text = stringResource(R.string.diary_selectDateRange_subtitle_bottomSheet_text))
     SingleSelectionChipFlowRow(
         controller = dateRangeFilterTypeSelectionController,
@@ -265,8 +306,7 @@ private fun DateRangeSection(dateRangeFilterTypeSelectionController: SingleSelec
         chipShape = RoundedCornerShape(16.dp),
         maxItemsInEachRow = 4,
         itemContent = { dateRangeFilter, _ ->
-            val dateRangeFilterTypeResources =
-                dateRangeFilterTypeResourcesProvider.provide(dateRangeFilter)
+            val dateRangeFilterTypeResources = dateRangeFilterTypeResourcesProvider.provide(dateRangeFilter)
             Label(text = stringResource(id = dateRangeFilterTypeResources.nameResId))
         },
     )
@@ -292,4 +332,40 @@ private fun FilterTagSection(tagMultiSelectionController: MultiSelectionControll
             )
         },
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun DiaryPreview() {
+    HealtherTheme {
+        Diary(
+            onGoBack = {},
+            onCreateDiaryTrack = {},
+            onUpdateDiaryTrack = {},
+            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+            millisDistanceFormatter = MillisDistanceFormatter(
+                context = LocalContext.current,
+                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+            ),
+            fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
+            dateRangeFilterTypeResourcesProvider = DateRangeFilterTypeResourcesProvider(),
+            dateRangeFilterTypeSelectionController = MockControllersProvider.singleSelectionController(
+                dataList = DateRangeFilterType.entries,
+            ),
+            collectRewardController = MockControllersProvider.requestController(),
+            searchTextInputController = MockControllersProvider.inputController(""),
+            filteredTrackLoadingController = MockControllersProvider.loadingController(
+                data = emptyList(),
+            ),
+            rewardLoadingController = MockControllersProvider.loadingController(20.0),
+            diaryTrackLoadingController = MockControllersProvider.loadingController(
+                data = DiaryMockDataProvider.diaryTracksList(
+                    context = LocalContext.current,
+                ),
+            ),
+            tagMultiSelectionController = MockControllersProvider.multiSelectionController(
+                dataList = emptyList(),
+            ),
+        )
+    }
 }

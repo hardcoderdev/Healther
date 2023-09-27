@@ -14,7 +14,6 @@ import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeDeleter
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeUpdater
-import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -25,7 +24,7 @@ class MoodTypeUpdateViewModel(
     private val moodTypeProvider: MoodTypeProvider,
     private val moodTypeUpdater: MoodTypeUpdater,
     private val moodTypeDeleter: MoodTypeDeleter,
-    iconResourceProvider: IconResourceProvider,
+    iconResourceProvider: hardcoder.dev.icons.IconResourceProvider,
 ) : ViewModel() {
 
     val moodTypeNameController = ValidatedInputController(

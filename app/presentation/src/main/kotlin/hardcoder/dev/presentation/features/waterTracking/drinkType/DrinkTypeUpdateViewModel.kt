@@ -15,7 +15,6 @@ import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeDeleter
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeNameValidator
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeUpdater
-import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -27,7 +26,7 @@ class DrinkTypeUpdateViewModel(
     drinkTypeProvider: DrinkTypeProvider,
     drinkTypeUpdater: DrinkTypeUpdater,
     drinkTypeDeleter: DrinkTypeDeleter,
-    iconResourceProvider: IconResourceProvider,
+    iconResourceProvider: hardcoder.dev.icons.IconResourceProvider,
 ) : ViewModel() {
 
     private val initialDrinkType = MutableStateFlow<DrinkType?>(null)

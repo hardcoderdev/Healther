@@ -2,7 +2,7 @@ package hardcoder.dev.androidApp.ui.formatters
 
 import android.content.Context
 
-import hardcoderdev.healther.app.android.app.R
+import hardcoderdev.healther.app.resources.R
 
 class LiquidFormatter(
     private val context: Context,

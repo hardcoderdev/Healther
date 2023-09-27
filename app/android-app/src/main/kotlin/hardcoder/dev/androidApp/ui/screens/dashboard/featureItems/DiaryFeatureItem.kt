@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.mock.dataProviders.DashboardMockDataProvider
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButton
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButtonConfig
@@ -29,7 +30,9 @@ import hardcoder.dev.uikit.components.icon.Image
 import hardcoder.dev.uikit.components.progressBar.LinearProgressBar
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Title
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun DiaryFeatureItem(
@@ -107,6 +110,18 @@ private fun BoxScope.QuickActions(
                 iconResId = R.drawable.ic_create,
                 contentDescription = R.string.dashboard_diaryCreationQuickAction_contentDescription,
             ),
+        )
+    }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun DiaryFeatureItemPreview() {
+    HealtherTheme {
+        DiaryFeatureItem(
+            onGoToFeature = {},
+            onCreateDiaryTrack = {},
+            diaryFeature = DashboardMockDataProvider.dashboardDiaryFeature(),
         )
     }
 }

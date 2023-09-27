@@ -11,24 +11,33 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
+import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
+import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack
+import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
 import hardcoder.dev.uikit.components.card.Card
 import hardcoder.dev.uikit.components.card.CardConfig
 import hardcoder.dev.uikit.components.chip.Chip
 import hardcoder.dev.uikit.components.chip.ChipConfig
 import hardcoder.dev.uikit.components.text.Description
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 private const val MAX_TAGS_VISIBLE_IN_ITEM = 4
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DiaryItem(
+    dateTimeFormatter: DateTimeFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     diaryTrack: DiaryTrack,
     onUpdate: (DiaryTrack) -> Unit,
 ) {
@@ -71,11 +80,19 @@ fun DiaryItem(
                     }
                     diaryTrack.diaryAttachmentGroup?.fastingTracks?.forEach {
                         Spacer(modifier = Modifier.height(8.dp))
-                        DiaryFastingItem(fastingTrack = it)
+                        DiaryFastingItem(
+                            dateTimeFormatter = dateTimeFormatter,
+                            millisDistanceFormatter = millisDistanceFormatter,
+                            fastingPlanResourcesProvider = fastingPlanResourcesProvider,
+                            fastingTrack = it,
+                        )
                     }
                     diaryTrack.diaryAttachmentGroup?.moodTracks?.forEach {
                         Spacer(modifier = Modifier.height(8.dp))
-                        DiaryMoodItem(moodTrack = it)
+                        DiaryMoodItem(
+                            dateTimeFormatter = dateTimeFormatter,
+                            moodTrack = it,
+                        )
                     }
                 }
             },
@@ -97,4 +114,23 @@ private fun TagCounterChip(tagsLeftCount: Int) {
             ),
         ),
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun DiaryItemPreview() {
+    HealtherTheme {
+        DiaryItem(
+            onUpdate = {},
+            fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
+            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+            millisDistanceFormatter = MillisDistanceFormatter(
+                context = LocalContext.current,
+                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+            ),
+            diaryTrack = DiaryMockDataProvider.diaryTracksList(
+                context = LocalContext.current,
+            ).first(),
+        )
+    }
 }

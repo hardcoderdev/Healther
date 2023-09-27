@@ -16,7 +16,7 @@ class DiaryTagsScreen : Screen {
         val viewModel = koinViewModel<DiaryTagsViewModel>()
 
         DiaryTags(
-            viewModel = viewModel,
+            diaryTagsLoadingController = viewModel.diaryTagsLoadingController,
             onGoBack = navigator::pop,
             onCreateDiaryTag = {
                 navigator += DiaryTagCreationScreen()

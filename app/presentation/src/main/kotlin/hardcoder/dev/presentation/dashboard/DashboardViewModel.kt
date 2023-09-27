@@ -18,7 +18,6 @@ import hardcoder.dev.logic.hero.HeroProvider
 import hardcoder.dev.logic.reward.experience.HeroExperiencePointsProgressResolver
 import hardcoder.dev.logic.reward.experience.HeroExperiencePointsProvider
 import hardcoder.dev.math.safeDiv
-import hardcoder.dev.presentation.features.pedometer.Available
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
 import hardcoder.dev.presentation.features.pedometer.toggleTracking
 import kotlinx.coroutines.flow.combine
@@ -117,7 +116,7 @@ class DashboardViewModel(
             stepsWalked = stepsWalked,
             dailyRateInSteps = dailyRateInSteps,
             isPedometerRunning = isPedometerRunning,
-            permissionsGranted = availability is Available,
+            isPermissionsGranted = availability is PedometerManager.Availability.Available,
             progress = stepsWalked safeDiv dailyRateInSteps,
         )
     }

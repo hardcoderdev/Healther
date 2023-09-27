@@ -16,7 +16,7 @@ class DrinkTypesScreen : Screen {
         val viewModel = koinViewModel<DrinkTypesViewModel>()
 
         DrinkTypes(
-            viewModel = viewModel,
+            drinkTypesLoadingController = viewModel.drinkTypesLoadingController,
             onGoBack = navigator::pop,
             onCreateDrinkType = {
                 navigator += DrinkTypeCreationScreen()

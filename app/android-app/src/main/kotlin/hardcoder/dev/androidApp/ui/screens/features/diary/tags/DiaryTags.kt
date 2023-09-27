@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
-import hardcoder.dev.presentation.features.diary.tags.DiaryTagsViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
 import hardcoder.dev.uikit.components.chip.Chip
 import hardcoder.dev.uikit.components.chip.ChipConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
@@ -21,11 +23,13 @@ import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.section.EmptySection
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun DiaryTags(
-    viewModel: DiaryTagsViewModel,
+    diaryTagsLoadingController: LoadingController<List<DiaryTag>>,
     onCreateDiaryTag: () -> Unit,
     onUpdateDiaryTag: (Int) -> Unit,
     onGoBack: () -> Unit,
@@ -33,7 +37,7 @@ fun DiaryTags(
     ScaffoldWrapper(
         content = {
             DiaryTagsContent(
-                tagsLoadingController = viewModel.diaryTagsLoadingController,
+                tagsLoadingController = diaryTagsLoadingController,
                 onUpdateDiaryTag = onUpdateDiaryTag,
             )
         },
@@ -87,4 +91,21 @@ private fun DiaryTagsContent(
             }
         },
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun DiaryTagsPreview() {
+    HealtherTheme {
+        DiaryTags(
+            onGoBack = {},
+            onCreateDiaryTag = {},
+            onUpdateDiaryTag = {},
+            diaryTagsLoadingController = MockControllersProvider.loadingController(
+                data = DiaryMockDataProvider.diaryTagsList(
+                    context = LocalContext.current,
+                ),
+            ),
+        )
+    }
 }

@@ -16,7 +16,7 @@ class MoodTypesScreen : Screen {
         val viewModel = koinViewModel<MoodTypesViewModel>()
 
         MoodTypes(
-            viewModel = viewModel,
+            moodTypesLoadingController = viewModel.moodTypesLoadingController,
             onGoBack = navigator::pop,
             onCreateMoodType = {
                 navigator += MoodTypeCreationScreen()

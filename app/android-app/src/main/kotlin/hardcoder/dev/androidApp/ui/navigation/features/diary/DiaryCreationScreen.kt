@@ -23,7 +23,9 @@ class DiaryCreationScreen : Screen {
         )
 
         DiaryCreation(
-            viewModel = viewModel,
+            contentController = viewModel.contentController,
+            creationController = viewModel.creationController,
+            tagMultiSelectionController = viewModel.tagMultiSelectionController,
             onGoBack = navigator::pop,
             onManageTags = {
                 navigator += DiaryTagsScreen()

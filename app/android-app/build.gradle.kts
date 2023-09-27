@@ -41,6 +41,8 @@ android {
 
 dependencies {
     implementation(projects.app.presentation)
+    implementation(projects.app.resources)
+    implementation(projects.app.data.mock)
     implementation(projects.foundation.uikit)
     implementation(platform(libs.compose.bom))
     implementation(libs.activity.ktx)

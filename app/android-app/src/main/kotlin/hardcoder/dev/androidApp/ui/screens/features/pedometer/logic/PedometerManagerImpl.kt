@@ -8,8 +8,6 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.PedometerService
 import hardcoder.dev.permissions.PermissionsController
-import hardcoder.dev.presentation.features.pedometer.Available
-import hardcoder.dev.presentation.features.pedometer.NotAvailable
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
 import hardcoder.dev.presentation.features.pedometer.PedometerManager.Availability
 import hardcoder.dev.presentation.features.pedometer.RejectReason
@@ -69,11 +67,11 @@ class PedometerManagerImpl(
     private fun checkAvailability(): Availability {
         return when {
             !PedometerService.isAvailable(context) -> {
-                NotAvailable(RejectReason.ServiceNotAvailable)
+                Availability.NotAvailable(RejectReason.ServiceNotAvailable)
             }
 
             !batteryRequirementsController.isIgnoringBatteryOptimizations() -> {
-                NotAvailable(RejectReason.BatteryNotIgnoreOptimizations)
+                Availability.NotAvailable(RejectReason.BatteryNotIgnoreOptimizations)
             }
 
             permissions.any {
@@ -82,11 +80,11 @@ class PedometerManagerImpl(
                     it,
                 ) != PackageManager.PERMISSION_GRANTED
             } -> {
-                NotAvailable(RejectReason.PermissionsNotGranted)
+                Availability.NotAvailable(RejectReason.PermissionsNotGranted)
             }
 
             else -> {
-                Available
+                Availability.Available
             }
         }
     }

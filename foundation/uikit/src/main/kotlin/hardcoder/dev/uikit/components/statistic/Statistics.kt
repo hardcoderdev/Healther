@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.uikit.components.text.Text
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 
@@ -47,7 +47,7 @@ fun Statistics(
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun StatisticsPreview() {
     HealtherThemePreview {

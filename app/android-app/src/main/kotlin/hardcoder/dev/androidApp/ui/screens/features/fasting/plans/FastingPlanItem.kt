@@ -15,20 +15,18 @@ import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.uikit.components.picker.NumberInput
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Headline
-import hardcoderdev.healther.app.android.app.R
+import hardcoderdev.healther.app.resources.R
 import kotlin.time.Duration.Companion.hours
-import org.koin.compose.koinInject
 
 @Composable
 fun FastingPlanItem(
     customFastingHoursInputController: InputController<Int>,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    millisDistanceFormatter: MillisDistanceFormatter,
     modifier: Modifier = Modifier,
     fastingPlan: FastingPlan,
 ) {
-    val fastingPlanResourcesProvider = koinInject<FastingPlanResourcesProvider>()
-    val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
     val fastingPlanResources = fastingPlanResourcesProvider.provide(fastingPlan)
-
     val fastingHoursInMillis = fastingPlanResources.fastingHoursCount.hours.inWholeMilliseconds
     val eatingHoursInMillis = fastingPlanResources.eatingHoursCount.hours.inWholeMilliseconds
 

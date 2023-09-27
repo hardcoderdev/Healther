@@ -1,7 +1,6 @@
 package hardcoder.dev.androidApp.ui.screens.features.waterTracking.drinkType.update
 
 import android.content.Context
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,15 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.icons.Icon
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.waterTracking.drinkType.IncorrectDrinkTypeName
 import hardcoder.dev.logic.features.waterTracking.drinkType.ValidatedDrinkTypeName
-import hardcoder.dev.logic.icons.LocalIcon
-import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeUpdateViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.IconsMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
@@ -44,21 +44,26 @@ import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun DrinkTypeUpdate(
-    viewModel: DrinkTypeUpdateViewModel,
+    nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
+    iconSelectionController: SingleSelectionController<Icon>,
+    waterPercentageInputController: InputController<Int>,
+    updateController: RequestController,
     onGoBack: () -> Unit,
     onDeleteDialogShow: (Boolean) -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             DrinkTypeUpdateContent(
-                nameInputController = viewModel.nameInputController,
-                iconSelectionController = viewModel.iconSelectionController,
-                waterPercentageInputController = viewModel.waterPercentageInputController,
-                updateController = viewModel.updateController,
+                nameInputController = nameInputController,
+                iconSelectionController = iconSelectionController,
+                waterPercentageInputController = waterPercentageInputController,
+                updateController = updateController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -83,7 +88,7 @@ fun DrinkTypeUpdate(
 @Composable
 private fun DrinkTypeUpdateContent(
     nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
-    iconSelectionController: SingleSelectionController<LocalIcon>,
+    iconSelectionController: SingleSelectionController<Icon>,
     waterPercentageInputController: InputController<Int>,
     updateController: RequestController,
 ) {
@@ -159,7 +164,7 @@ private fun EnterDrinkTypeNameSection(
 
 @Composable
 private fun SelectIconSection(
-    iconSelectionController: SingleSelectionController<LocalIcon>,
+    iconSelectionController: SingleSelectionController<Icon>,
 ) {
     Title(text = stringResource(id = R.string.waterTracking_drinkTypes_update_selectIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
@@ -201,4 +206,21 @@ private fun EnterDrinkHydrationIndexPercentageSection(
         controller = waterPercentageInputController,
         valueRange = 30..100,
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun DrinkTypeUpdatePreview() {
+    HealtherTheme {
+        DrinkTypeUpdate(
+            onDeleteDialogShow = {},
+            onGoBack = {},
+            nameInputController = MockControllersProvider.validatedInputController(""),
+            waterPercentageInputController = MockControllersProvider.inputController(0),
+            updateController = MockControllersProvider.requestController(),
+            iconSelectionController = MockControllersProvider.singleSelectionController(
+                dataList = IconsMockDataProvider.icons(),
+            ),
+        )
+    }
 }

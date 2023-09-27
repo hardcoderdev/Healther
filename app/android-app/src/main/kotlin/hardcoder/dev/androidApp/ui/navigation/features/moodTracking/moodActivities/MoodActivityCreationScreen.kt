@@ -22,7 +22,9 @@ class MoodActivityCreationScreen : Screen {
         )
 
         MoodActivityCreation(
-            viewModel = viewModel,
+            activityNameController = viewModel.activityNameController,
+            iconSingleSelectionController = viewModel.iconSelectionController,
+            creationController = viewModel.creationController,
             onGoBack = navigator::pop,
         )
     }

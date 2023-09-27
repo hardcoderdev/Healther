@@ -11,36 +11,47 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.MoodTrackItem
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
+import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
-import hardcoder.dev.presentation.features.moodTracking.MoodTrackingHistoryViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.date.MockDateProvider
+import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
 import hardcoder.dev.uikit.components.calendar.SingleSelectionCalendar
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 import kotlinx.datetime.Instant
-import org.koin.compose.koinInject
 
 @Composable
 fun MoodTrackingHistory(
-    viewModel: MoodTrackingHistoryViewModel,
+    dateTimeProvider: DateTimeProvider,
+    dateTimeFormatter: DateTimeFormatter,
+    moodWithActivitiesLoadingController: LoadingController<List<MoodWithActivities>>,
+    dateRangeInputController: InputController<ClosedRange<Instant>>,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             MoodTrackingHistoryContent(
-                dateRangeInputController = viewModel.dateRangeInputController,
-                moodWithActivitiesLoadingController = viewModel.moodWithActivityLoadingController,
+                dateTimeProvider = dateTimeProvider,
+                dateTimeFormatter = dateTimeFormatter,
+                dateRangeInputController = dateRangeInputController,
+                moodWithActivitiesLoadingController = moodWithActivitiesLoadingController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -54,11 +65,11 @@ fun MoodTrackingHistory(
 
 @Composable
 private fun MoodTrackingHistoryContent(
+    dateTimeProvider: DateTimeProvider,
+    dateTimeFormatter: DateTimeFormatter,
     moodWithActivitiesLoadingController: LoadingController<List<MoodWithActivities>>,
     dateRangeInputController: InputController<ClosedRange<Instant>>,
 ) {
-    val dateTimeProvider = koinInject<DateTimeProvider>()
-
     Column(Modifier.padding(16.dp)) {
         SingleSelectionCalendar(
             dateTimeProvider = dateTimeProvider,
@@ -70,6 +81,7 @@ private fun MoodTrackingHistoryContent(
         )
         Spacer(modifier = Modifier.height(16.dp))
         MoodTracksHistory(
+            dateTimeFormatter = dateTimeFormatter,
             moodWithActivitiesLoadingController = moodWithActivitiesLoadingController,
         )
     }
@@ -77,6 +89,7 @@ private fun MoodTrackingHistoryContent(
 
 @Composable
 private fun MoodTracksHistory(
+    dateTimeFormatter: DateTimeFormatter,
     moodWithActivitiesLoadingController: LoadingController<List<MoodWithActivities>>,
 ) {
     LoadingContainer(
@@ -90,11 +103,12 @@ private fun MoodTracksHistory(
                 ) {
                     items(moodWithActivitiesList) { moodWithActivityTrack ->
                         MoodTrackItem(
+                            dateTimeFormatter = dateTimeFormatter,
                             moodTrack = moodWithActivityTrack.moodTrack,
                             activitiesList = moodWithActivityTrack.moodActivityList,
                             onUpdate = {
                                 /* no-op because money for track has already been collected */
-                            }
+                            },
                         )
                     }
                 }
@@ -103,4 +117,22 @@ private fun MoodTracksHistory(
             }
         },
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun MoodTrackingHistoryPreview() {
+    HealtherTheme {
+        MoodTrackingHistory(
+            onGoBack = {},
+            dateTimeFormatter = DateTimeFormatter(LocalContext.current),
+            dateTimeProvider = DateTimeProvider(dispatchers = DefaultBackgroundBackgroundCoroutineDispatchers),
+            dateRangeInputController = MockControllersProvider.inputController(MockDateProvider.instantRange()),
+            moodWithActivitiesLoadingController = MockControllersProvider.loadingController(
+                data = MoodTrackingMockDataProvider.moodWithActivitiesList(
+                    context = LocalContext.current,
+                ),
+            ),
+        )
+    }
 }

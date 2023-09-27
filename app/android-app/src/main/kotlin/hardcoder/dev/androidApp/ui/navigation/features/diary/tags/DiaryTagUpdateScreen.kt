@@ -29,7 +29,9 @@ data class DiaryTagUpdateScreen(val diaryTagId: Int) : Screen {
         )
 
         DiaryTagUpdate(
-            viewModel = viewModel,
+            tagNameInputController = viewModel.tagNameInputController,
+            iconSelectionController = viewModel.iconSelectionController,
+            updateController = viewModel.updateController,
             onGoBack = navigator::pop,
         )
     }

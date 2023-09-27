@@ -5,7 +5,7 @@ import hardcoder.dev.uikit.components.button.internal.radioButton.FilledRadioBut
 import hardcoder.dev.uikit.components.button.internal.radioButton.FilledRadioButtonPreview
 import hardcoder.dev.uikit.components.button.internal.radioButton.OutlinedRadioButton
 import hardcoder.dev.uikit.components.button.internal.radioButton.OutlinedRadioButtonPreview
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 
 @Composable
 fun RadioButton(radioButtonConfig: RadioButtonConfig) {
@@ -27,13 +27,13 @@ fun RadioButton(radioButtonConfig: RadioButtonConfig) {
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun FilledRadioButtonPreview() {
     FilledRadioButtonPreview()
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun OutlinedRadioButtonPreview() {
     OutlinedRadioButtonPreview()

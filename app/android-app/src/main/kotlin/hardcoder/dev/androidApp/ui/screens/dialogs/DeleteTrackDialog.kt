@@ -1,13 +1,14 @@
 package hardcoder.dev.androidApp.ui.screens.dialogs
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import hardcoder.dev.controller.request.RequestController
+import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.uikit.components.dialog.TitleDialog
 import hardcoder.dev.uikit.components.text.Label
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun DeleteTrackDialog(
@@ -40,13 +41,12 @@ fun DeleteTrackDialog(
 
 @Preview
 @Composable
-fun Preview() {
-    DeleteTrackDialog(
-        onUpdateDialogOpen = {},
-        dialogOpen = true,
-        controller = RequestController(
-            coroutineScope = rememberCoroutineScope(),
-            request = {},
-        ),
-    )
+private fun DeleteTrackDialogPreview() {
+    HealtherTheme {
+        DeleteTrackDialog(
+            onUpdateDialogOpen = {},
+            dialogOpen = true,
+            controller = MockControllersProvider.requestController(),
+        )
+    }
 }

@@ -16,7 +16,7 @@ class MoodActivitiesScreen : Screen {
         val viewModel = koinViewModel<MoodActivitiesViewModel>()
 
         MoodActivities(
-            viewModel = viewModel,
+            activitiesLoadingController = viewModel.activitiesLoadingController,
             onGoBack = navigator::pop,
             onCreateMoodActivity = {
                 navigator += MoodActivityCreationScreen()

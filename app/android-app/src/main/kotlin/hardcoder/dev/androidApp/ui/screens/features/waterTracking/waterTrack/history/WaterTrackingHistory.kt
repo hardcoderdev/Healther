@@ -11,14 +11,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
+import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackingHistoryViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.date.MockDateProvider
+import hardcoder.dev.mock.dataProviders.features.WaterTrackingMockDataProvider
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
 import hardcoder.dev.uikit.components.calendar.SingleSelectionCalendar
 import hardcoder.dev.uikit.components.container.LoadingContainer
@@ -26,21 +31,23 @@ import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoderdev.healther.app.resources.R
 import kotlinx.datetime.Instant
 import org.koin.compose.koinInject
 import hardcoder.dev.androidApp.ui.screens.features.waterTracking.waterTrack.WaterTrackItem as WaterTrackItemRow
 
 @Composable
 fun WaterTrackingHistory(
-    viewModel: WaterTrackingHistoryViewModel,
+    dateRangeInputController: InputController<ClosedRange<Instant>>,
+    waterTracksLoadingController: LoadingController<List<WaterTrackingItem>>,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             WaterTrackingHistoryContent(
-                dateRangeInputController = viewModel.dateRangeInputController,
-                itemsLoadingController = viewModel.waterTracksLoadingController,
+                dateRangeInputController = dateRangeInputController,
+                itemsLoadingController = waterTracksLoadingController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -57,7 +64,11 @@ private fun WaterTrackingHistoryContent(
     dateRangeInputController: InputController<ClosedRange<Instant>>,
     itemsLoadingController: LoadingController<List<WaterTrackingItem>>,
 ) {
-    val dateTimeProvider = koinInject<DateTimeProvider>()
+    val dateTimeProvider = if (!LocalInspectionMode.current) {
+        koinInject<DateTimeProvider>()
+    } else {
+        DateTimeProvider(dispatchers = DefaultBackgroundBackgroundCoroutineDispatchers)
+    }
 
     Column(Modifier.padding(16.dp)) {
         SingleSelectionCalendar(
@@ -100,4 +111,20 @@ private fun WaterTracksHistory(
             Description(text = stringResource(id = R.string.waterTracking_history_emptyDayHistory_text))
         }
     }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun WaterTrackingHistoryPreview() {
+    WaterTrackingHistory(
+        onGoBack = {},
+        dateRangeInputController = MockControllersProvider.inputController(
+            input = MockDateProvider.instantRange(),
+        ),
+        waterTracksLoadingController = MockControllersProvider.loadingController(
+            data = WaterTrackingMockDataProvider.waterTrackingItemsList(
+                context = LocalContext.current,
+            ),
+        ),
+    )
 }

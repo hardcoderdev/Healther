@@ -15,11 +15,15 @@ import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.PedometerInfoCard
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
+import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
-import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.date.MockDateProvider
+import hardcoder.dev.mock.dataProviders.features.PedometerMockDataProvider
+import hardcoder.dev.presentation.features.pedometer.PedometerChartData
 import hardcoder.dev.uikit.components.calendar.SingleSelectionCalendar
 import hardcoder.dev.uikit.components.card.Card
 import hardcoder.dev.uikit.components.card.CardConfig
@@ -31,22 +35,29 @@ import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 import kotlin.math.roundToInt
 import kotlinx.datetime.Instant
-import org.koin.compose.koinInject
 
 @Composable
 fun PedometerHistory(
-    viewModel: PedometerHistoryViewModel,
+    decimalFormatter: DecimalFormatter,
+    dateTimeProvider: DateTimeProvider,
+    dateRangeInputController: InputController<ClosedRange<Instant>>,
+    statisticLoadingController: LoadingController<PedometerStatistic>,
+    chartEntriesLoadingController: LoadingController<PedometerChartData>,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             PedometerHistoryContent(
-                dateRangeInputController = viewModel.dateRangeInputController,
-                statisticLoadingController = viewModel.statisticLoadingController,
-                chartEntriesLoadingController = viewModel.chartEntriesLoadingController,
+                decimalFormatter = decimalFormatter,
+                dateTimeProvider = dateTimeProvider,
+                dateRangeInputController = dateRangeInputController,
+                statisticLoadingController = statisticLoadingController,
+                chartEntriesLoadingController = chartEntriesLoadingController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -60,16 +71,16 @@ fun PedometerHistory(
 
 @Composable
 private fun PedometerHistoryContent(
+    decimalFormatter: DecimalFormatter,
+    dateTimeProvider: DateTimeProvider,
     dateRangeInputController: InputController<ClosedRange<Instant>>,
     statisticLoadingController: LoadingController<PedometerStatistic>,
-    chartEntriesLoadingController: LoadingController<List<Pair<Int, Int>>>,
+    chartEntriesLoadingController: LoadingController<PedometerChartData>,
 ) {
-    val dateTimeProvider = koinInject<DateTimeProvider>()
-
     LoadingContainer(
         controller1 = statisticLoadingController,
         controller2 = chartEntriesLoadingController,
-    ) { statistic, chartEntries ->
+    ) { statistic, chartData ->
         Column(Modifier.padding(16.dp)) {
             SingleSelectionCalendar(
                 dateTimeProvider = dateTimeProvider,
@@ -80,12 +91,15 @@ private fun PedometerHistoryContent(
                 },
             )
             Spacer(modifier = Modifier.height(16.dp))
-            PedometerTracksHistory(statistic)
+            PedometerTracksHistory(
+                pedometerStatistic = statistic,
+                decimalFormatter = decimalFormatter,
+            )
             Spacer(modifier = Modifier.height(16.dp))
-            if (chartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
+            if (chartData.entriesList.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
                 ActivityLineChart(
                     modifier = Modifier.weight(2f),
-                    chartEntries = chartEntries,
+                    chartEntries = chartData.entriesList.map { it.from to it.to },
                     xAxisValueFormatter = { value, _ ->
                         value.roundToInt().toString()
                     },
@@ -103,12 +117,11 @@ private fun PedometerHistoryContent(
 
 @Composable
 private fun PedometerTracksHistory(
-    state: PedometerStatistic,
+    decimalFormatter: DecimalFormatter,
+    pedometerStatistic: PedometerStatistic,
 ) {
-    val decimalFormatter = koinInject<DecimalFormatter>()
-
     Spacer(modifier = Modifier.height(16.dp))
-    if (state.totalSteps != 0) {
+    if (pedometerStatistic.totalSteps != 0) {
         Title(text = stringResource(id = R.string.pedometer_history_yourIndicatorsForThisDay_text))
         Spacer(modifier = Modifier.height(16.dp))
         Card(
@@ -123,17 +136,17 @@ private fun PedometerTracksHistory(
                         PedometerInfoCard(
                             iconResId = R.drawable.ic_directions_walk,
                             nameResId = R.string.pedometer_stepsLabel_text,
-                            value = state.totalSteps.toString(),
+                            value = pedometerStatistic.totalSteps.toString(),
                         )
                         PedometerInfoCard(
                             iconResId = R.drawable.ic_my_location,
                             nameResId = R.string.pedometer_kilometersLabel_text,
-                            value = decimalFormatter.roundAndFormatToString(state.totalKilometers),
+                            value = decimalFormatter.roundAndFormatToString(pedometerStatistic.totalKilometers),
                         )
                         PedometerInfoCard(
                             iconResId = R.drawable.ic_fire,
                             nameResId = R.string.pedometer_caloriesLabel_text,
-                            value = decimalFormatter.roundAndFormatToString(state.totalCalories),
+                            value = decimalFormatter.roundAndFormatToString(pedometerStatistic.totalCalories),
                         )
                     }
                 },
@@ -142,5 +155,24 @@ private fun PedometerTracksHistory(
     } else {
         Spacer(modifier = Modifier.height(16.dp))
         Description(text = stringResource(id = R.string.pedometer_emptyDayHistory_text))
+    }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun PedometerHistoryPreview() {
+    HealtherTheme {
+        PedometerHistory(
+            onGoBack = {},
+            decimalFormatter = DecimalFormatter(),
+            dateTimeProvider = DateTimeProvider(dispatchers = DefaultBackgroundBackgroundCoroutineDispatchers),
+            dateRangeInputController = MockControllersProvider.inputController(MockDateProvider.instantRange()),
+            chartEntriesLoadingController = MockControllersProvider.loadingController(
+                data = PedometerMockDataProvider.pedometerChartData(),
+            ),
+            statisticLoadingController = MockControllersProvider.loadingController(
+                data = PedometerMockDataProvider.pedometerStatistics(),
+            ),
+        )
     }
 }

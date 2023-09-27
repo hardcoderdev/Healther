@@ -10,10 +10,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.icons.IconImpl
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
 import hardcoder.dev.uikit.components.text.Label
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun MoodItem(
@@ -34,5 +39,21 @@ fun MoodItem(
         )
         Spacer(modifier = Modifier.height(20.dp))
         Label(text = moodType.name)
+    }
+}
+
+@Preview
+@Composable
+private fun MoodItemPreview() {
+    HealtherTheme {
+        MoodItem(
+            moodType =
+            MoodType(
+                id = 0,
+                name = stringResource(R.string.predefined_moodType_name_bad),
+                icon = IconImpl(id = 0, resourceId = R.drawable.ic_analytics),
+                positivePercentage = 70,
+            )
+        )
     }
 }

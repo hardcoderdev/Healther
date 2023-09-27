@@ -86,17 +86,22 @@ class FastingViewModel(
     val chartEntriesLoadingController = LoadingController(
         coroutineScope = viewModelScope,
         flow = fastingTracksForTheLastMonth.map { fastingTrackList ->
-            fastingTrackList.groupBy {
-                it.startTime.toLocalDateTime().dayOfMonth
-            }.map { entry ->
-                entry.key to entry.value.maxBy { it.duration }
-            }.map { (fastingDayOfMonth, fastingTrack) ->
-                val fastingDuration = fastingTrack.interruptedTime?.let {
-                    it - fastingTrack.startTime
-                } ?: fastingTrack.duration
+            FastingChartData(
+                entriesList = fastingTrackList.groupBy {
+                    it.startTime.toLocalDateTime().dayOfMonth
+                }.map { entry ->
+                    entry.key to entry.value.maxBy { it.duration }
+                }.map { (fastingDayOfMonth, fastingTrack) ->
+                    val fastingDuration = fastingTrack.interruptedTime?.let {
+                        it - fastingTrack.startTime
+                    } ?: fastingTrack.duration
 
-                fastingDayOfMonth to fastingDuration.inWholeHours
-            }
+                    FastingChartEntry(
+                        from = fastingDayOfMonth,
+                        to = fastingDuration.inWholeHours
+                    )
+                }
+            )
         },
     )
 

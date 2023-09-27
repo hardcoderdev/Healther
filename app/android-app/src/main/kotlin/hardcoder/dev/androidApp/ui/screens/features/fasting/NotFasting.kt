@@ -10,24 +10,40 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
+import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
+import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
+import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticResolver
 import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticSection
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.logic.features.fasting.track.FastingTrack
+import hardcoder.dev.mock.dataProviders.features.FastingMockDataProvider
+import hardcoder.dev.presentation.features.fasting.FastingChartData
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButtonConfig
 import hardcoder.dev.uikit.components.chart.ActivityColumnChart
 import hardcoder.dev.uikit.components.chart.MINIMUM_ENTRIES_FOR_SHOWING_CHART
+import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.section.EmptySection
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Title
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.components.topBar.TopBarConfig
+import hardcoder.dev.uikit.components.topBar.TopBarType
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 import kotlin.math.roundToInt
 
 @Composable
 fun NotFasting(
-    fastingChartEntries: List<Pair<Int, Long>>,
+    fastingStatisticResolver: FastingStatisticResolver,
+    dateTimeFormatter: DateTimeFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    chartData: FastingChartData,
     fastingStatistic: FastingStatistic?,
     lastFastingTracks: List<FastingTrack>,
     onCreateFastingTrack: () -> Unit,
@@ -42,12 +58,21 @@ fun NotFasting(
                 .weight(2f)
                 .verticalScroll(rememberScrollState()),
         ) {
-            FastingLastTracksSection(lastFastingTrackList = lastFastingTracks)
+            FastingLastTracksSection(
+                millisDistanceFormatter = millisDistanceFormatter,
+                dateTimeFormatter = dateTimeFormatter,
+                fastingPlanResourcesProvider = fastingPlanResourcesProvider,
+                lastFastingTrackList = lastFastingTracks,
+            )
             Spacer(modifier = Modifier.height(32.dp))
             fastingStatistic?.let { statistic ->
-                FastingStatisticSection(statistic = statistic)
+                FastingStatisticSection(
+                    fastingStatisticResolver = fastingStatisticResolver,
+                    fastingPlanResourcesProvider = fastingPlanResourcesProvider,
+                    statistic = statistic,
+                )
                 Spacer(modifier = Modifier.height(32.dp))
-                FastingChartSection(fastingChartEntries = fastingChartEntries)
+                FastingChartSection(fastingChartData = chartData)
             } ?: run {
                 EmptySection(emptyTitleResId = R.string.fasting_nowEmpty_text)
             }
@@ -64,7 +89,12 @@ fun NotFasting(
 }
 
 @Composable
-private fun FastingLastTracksSection(lastFastingTrackList: List<FastingTrack>) {
+private fun FastingLastTracksSection(
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    dateTimeFormatter: DateTimeFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    lastFastingTrackList: List<FastingTrack>,
+) {
     Title(text = stringResource(id = R.string.fasting_lastFastingTracks_text))
     Spacer(modifier = Modifier.height(16.dp))
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -72,21 +102,26 @@ private fun FastingLastTracksSection(lastFastingTrackList: List<FastingTrack>) {
             Description(text = stringResource(id = R.string.fasting_lastTracksNotEnoughData_text))
         } else {
             lastFastingTrackList.forEach {
-                FastingItem(fastingTrack = it)
+                FastingItem(
+                    dateTimeFormatter = dateTimeFormatter,
+                    millisDistanceFormatter = millisDistanceFormatter,
+                    fastingPlanResourcesProvider = fastingPlanResourcesProvider,
+                    fastingTrack = it,
+                )
             }
         }
     }
 }
 
 @Composable
-private fun FastingChartSection(fastingChartEntries: List<Pair<Int, Long>>) {
+private fun FastingChartSection(fastingChartData: FastingChartData) {
     Title(text = stringResource(id = R.string.fasting_activity_chart))
     Spacer(modifier = Modifier.height(16.dp))
-    if (fastingChartEntries.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
+    if (fastingChartData.entriesList.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
         ActivityColumnChart(
             isZoomEnabled = true,
             modifier = Modifier.height(200.dp),
-            chartEntries = fastingChartEntries,
+            chartEntries = fastingChartData.entriesList.map { it.from to it.to },
             xAxisValueFormatter = { value, _ ->
                 value.roundToInt().toString()
             },
@@ -96,5 +131,34 @@ private fun FastingChartSection(fastingChartEntries: List<Pair<Int, Long>>) {
         )
     } else {
         Description(text = stringResource(id = R.string.fasting_chartNotEnoughData_text))
+    }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun NotFastingPreview() {
+    HealtherTheme {
+        ScaffoldWrapper(
+            topBarConfig = TopBarConfig(
+                type = TopBarType.TitleTopBar(
+                    titleResId = R.string.fasting_title_topBar,
+                ),
+            ),
+            content = {
+                NotFasting(
+                    onCreateFastingTrack = {},
+                    fastingStatisticResolver = FastingStatisticResolver(context = LocalContext.current),
+                    dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+                    fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
+                    millisDistanceFormatter = MillisDistanceFormatter(
+                        context = LocalContext.current,
+                        defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+                    ),
+                    fastingStatistic = FastingMockDataProvider.fastingStatistics(),
+                    chartData = FastingMockDataProvider.fastingChartData(),
+                    lastFastingTracks = FastingMockDataProvider.fastingTracksList(),
+                )
+            },
+        )
     }
 }

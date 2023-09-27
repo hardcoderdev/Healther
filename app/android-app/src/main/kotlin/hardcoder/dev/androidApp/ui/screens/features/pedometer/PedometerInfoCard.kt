@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.uikit.components.icon.Icon
 import hardcoder.dev.uikit.components.text.Label
 import hardcoder.dev.uikit.components.text.Title
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun PedometerInfoCard(
@@ -24,5 +27,17 @@ fun PedometerInfoCard(
         Spacer(modifier = Modifier.height(8.dp))
         Title(text = value)
         Label(text = stringResource(id = nameResId))
+    }
+}
+
+@Preview
+@Composable
+private fun PedometerInfoCardPreview() {
+    HealtherTheme {
+        PedometerInfoCard(
+            iconResId = R.drawable.ic_directions_walk,
+            nameResId = R.string.pedometer_stepsLabel_text,
+            value = "13 000",
+        )
     }
 }

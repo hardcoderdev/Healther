@@ -11,7 +11,7 @@ import com.chargemap.compose.numberpicker.FullHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import hardcoder.dev.controller.input.InputController
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import kotlinx.datetime.LocalTime
 
@@ -45,7 +45,7 @@ fun TimeNumberPicker(
     )
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun TimeNumberPickerPreview() {
     HealtherThemePreview {

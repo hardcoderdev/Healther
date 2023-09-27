@@ -16,7 +16,7 @@ import hardcoder.dev.uikit.components.topBar.DropdownItem
 import hardcoder.dev.uikit.components.topBar.TopBar
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoderdev.healther.foundation.uikit.R
 
 @Composable
@@ -55,7 +55,7 @@ fun ScaffoldWrapper(
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun ScaffoldWrapperPreview() {
     ScaffoldWrapper(

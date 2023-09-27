@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.uikit.components.text.Text
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 
@@ -73,7 +73,7 @@ internal fun OutlinedRadioButton(
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 internal fun OutlinedRadioButtonPreview() {
     HealtherThemePreview {

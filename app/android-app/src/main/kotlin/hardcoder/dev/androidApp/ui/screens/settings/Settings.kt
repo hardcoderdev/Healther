@@ -1,7 +1,6 @@
 package hardcoder.dev.androidApp.ui.screens.settings
 
 import android.content.Intent
-
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +15,8 @@ import androidx.core.net.toUri
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.logic.appPreferences.AppPreference
-import hardcoder.dev.presentation.settings.SettingsViewModel
+import hardcoder.dev.mock.dataProviders.AppPreferencesMockDataProvider
+import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
@@ -26,21 +26,24 @@ import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 private const val DEVELOPER_PAGE_LINK =
     "https://play.google.com/store/apps/dev?id=7383576086355039907"
 
 @Composable
 fun Settings(
-    viewModel: SettingsViewModel,
+    preferencesLoadingController: LoadingController<AppPreference>,
+    appReviewRequestController: RequestController,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             SettingsContent(
-                preferencesLoadingController = viewModel.preferencesLoadingController,
-                appReviewRequestController = viewModel.appReviewRequestController,
+                preferencesLoadingController = preferencesLoadingController,
+                appReviewRequestController = appReviewRequestController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -106,4 +109,18 @@ private fun SettingsContent(
             }
         },
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun SettingsPreview() {
+    HealtherTheme {
+        Settings(
+            onGoBack = {},
+            appReviewRequestController = MockControllersProvider.requestController(),
+            preferencesLoadingController = MockControllersProvider.loadingController(
+                data = AppPreferencesMockDataProvider.appPreferences(),
+            ),
+        )
+    }
 }

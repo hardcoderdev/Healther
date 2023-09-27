@@ -5,7 +5,7 @@ import hardcoder.dev.uikit.components.button.internal.simpleButton.FilledSimpleB
 import hardcoder.dev.uikit.components.button.internal.simpleButton.FilledSimpleButtonPreview
 import hardcoder.dev.uikit.components.button.internal.simpleButton.OutlinedSimpleButton
 import hardcoder.dev.uikit.components.button.internal.simpleButton.OutlinedSimpleButtonPreview
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 
 @Composable
 fun SimpleButton(simpleButtonConfig: SimpleButtonConfig) {
@@ -30,13 +30,13 @@ fun SimpleButton(simpleButtonConfig: SimpleButtonConfig) {
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun FilledSimpleButtonPreview() {
     FilledSimpleButtonPreview()
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun OutlinedSimpleButtonPreview() {
     OutlinedSimpleButtonPreview()

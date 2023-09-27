@@ -5,7 +5,7 @@ import hardcoder.dev.uikit.components.button.internal.textIconButton.FilledTextI
 import hardcoder.dev.uikit.components.button.internal.textIconButton.FilledTextIconButtonPreview
 import hardcoder.dev.uikit.components.button.internal.textIconButton.OutlinedTextIconButton
 import hardcoder.dev.uikit.components.button.internal.textIconButton.OutlinedTextIconButtonPreview
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 
 @Composable
 fun TextIconButton(textIconButtonConfig: TextIconButtonConfig) {
@@ -36,13 +36,13 @@ fun TextIconButton(textIconButtonConfig: TextIconButtonConfig) {
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun FilledTextIconButtonPreview() {
     FilledTextIconButtonPreview()
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun OutlinedTextIconButtonPreview() {
     OutlinedTextIconButtonPreview()

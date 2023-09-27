@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.MoodTracking
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingViewModel
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 class MoodTrackingScreen : Screen {
 
@@ -14,9 +16,13 @@ class MoodTrackingScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<MoodTrackingViewModel>()
+        val dateTimeFormatter = koinInject<DateTimeFormatter>()
 
         MoodTracking(
-            viewModel = viewModel,
+            dateTimeFormatter = dateTimeFormatter,
+            moodWithActivitiesController = viewModel.moodWithActivityLoadingController,
+            rewardLoadingController = viewModel.rewardLoadingController,
+            collectRewardController = viewModel.collectRewardController,
             onGoBack = navigator::pop,
             onCreateMoodTrack = {
                 navigator += MoodTrackingCreationScreen()

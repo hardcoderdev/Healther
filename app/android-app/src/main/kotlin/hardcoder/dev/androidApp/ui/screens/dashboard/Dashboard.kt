@@ -9,29 +9,42 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
+import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.DiaryFeatureItem
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.FastingFeatureItem
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.MoodTrackingFeatureItem
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.PedometerFeatureItem
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.WaterTrackingFeatureItem
 import hardcoder.dev.androidApp.ui.screens.dashboard.heroItems.HeroSectionItem
+import hardcoder.dev.androidApp.ui.screens.hero.HeroImageByGenderResolver
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
+import hardcoder.dev.mock.dataProviders.DashboardMockDataProvider
+import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
 import hardcoder.dev.presentation.dashboard.DashboardHeroItem
-import hardcoder.dev.presentation.dashboard.DashboardViewModel
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun Dashboard(
-    viewModel: DashboardViewModel,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    heroImageByGenderResolver: HeroImageByGenderResolver,
+    decimalFormatter: DecimalFormatter,
+    featureItemsLoadingController: LoadingController<List<DashboardFeatureItem>>,
+    heroItemsLoadingController: LoadingController<DashboardHeroItem.HeroSection>,
+    pedometerToggleController: ToggleController,
+    healthPointsLoadingController: LoadingController<Int>,
     onGoToWaterTrackingFeature: () -> Unit,
     onCreateWaterTrack: () -> Unit,
     onGoToPedometerFeature: () -> Unit,
@@ -49,6 +62,9 @@ fun Dashboard(
     ScaffoldWrapper(
         content = {
             DashboardContent(
+                millisDistanceFormatter = millisDistanceFormatter,
+                heroImageByGenderResolver = heroImageByGenderResolver,
+                decimalFormatter = decimalFormatter,
                 onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
                 onCreateWaterTrack = onCreateWaterTrack,
                 onGoToPedometerFeature = onGoToPedometerFeature,
@@ -61,10 +77,10 @@ fun Dashboard(
                 onGoToDeathScreen = onGoToDeathScreen,
                 onGoToInventory = onGoToInventory,
                 onGoToShop = onGoToShop,
-                featureItemsLoadingController = viewModel.featuresLoadingController,
-                heroItemsLoadingController = viewModel.heroLoadingController,
-                pedometerToggleController = viewModel.pedometerToggleController,
-                healthPointsLoadingController = viewModel.healthPointsLoadingController,
+                featureItemsLoadingController = featureItemsLoadingController,
+                heroItemsLoadingController = heroItemsLoadingController,
+                pedometerToggleController = pedometerToggleController,
+                healthPointsLoadingController = healthPointsLoadingController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -85,6 +101,9 @@ fun Dashboard(
 
 @Composable
 private fun DashboardContent(
+    millisDistanceFormatter: MillisDistanceFormatter,
+    heroImageByGenderResolver: HeroImageByGenderResolver,
+    decimalFormatter: DecimalFormatter,
     onGoToWaterTrackingFeature: () -> Unit,
     onCreateWaterTrack: () -> Unit,
     onGoToPedometerFeature: () -> Unit,
@@ -120,11 +139,14 @@ private fun DashboardContent(
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
         ) {
             heroCharacterSection(
+                heroImageByGenderResolver = heroImageByGenderResolver,
+                decimalFormatter = decimalFormatter,
                 item = heroItems,
                 onGoToInventory = onGoToInventory,
                 onGoToShop = onGoToShop,
             )
             featureSection(
+                millisDistanceFormatter = millisDistanceFormatter,
                 items = featureItems,
                 onGoToDiary = onGoToDiary,
                 onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
@@ -142,12 +164,16 @@ private fun DashboardContent(
 }
 
 private fun LazyListScope.heroCharacterSection(
+    heroImageByGenderResolver: HeroImageByGenderResolver,
+    decimalFormatter: DecimalFormatter,
     item: DashboardHeroItem.HeroSection,
     onGoToInventory: () -> Unit,
     onGoToShop: () -> Unit,
 ) {
     item {
         HeroSectionItem(
+            heroImageByGenderResolver = heroImageByGenderResolver,
+            decimalFormatter = decimalFormatter,
             hero = item.hero,
             healthPointsProgress = item.healthPointsProgress,
             experiencePointsProgress = item.experiencePointsProgress,
@@ -159,6 +185,7 @@ private fun LazyListScope.heroCharacterSection(
 }
 
 private fun LazyListScope.featureSection(
+    millisDistanceFormatter: MillisDistanceFormatter,
     items: List<DashboardFeatureItem>,
     onGoToWaterTrackingFeature: () -> Unit,
     onCreateWaterTrack: () -> Unit,
@@ -191,6 +218,7 @@ private fun LazyListScope.featureSection(
 
             is DashboardFeatureItem.FastingFeature -> {
                 FastingFeatureItem(
+                    millisDistanceFormatter = millisDistanceFormatter,
                     fastingFeature = feature,
                     onGoToFeature = onGoToFastingFeature,
                     onStartFasting = onStartFasting,
@@ -213,5 +241,41 @@ private fun LazyListScope.featureSection(
                 )
             }
         }
+    }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun DashboardPreview() {
+    HealtherTheme {
+        Dashboard(
+            onCreateDiaryTrack = {},
+            onCreateMoodTrack = {},
+            onCreateWaterTrack = {},
+            onGoToDeathScreen = {},
+            onGoToDiary = {},
+            onGoToFastingFeature = {},
+            onGoToInventory = {},
+            onGoToMoodTrackingFeature = {},
+            onGoToPedometerFeature = {},
+            onGoToSettings = {},
+            onGoToShop = {},
+            onGoToWaterTrackingFeature = {},
+            onStartFasting = {},
+            heroImageByGenderResolver = HeroImageByGenderResolver(),
+            decimalFormatter = DecimalFormatter(),
+            millisDistanceFormatter = MillisDistanceFormatter(
+                context = LocalContext.current,
+                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+            ),
+            pedometerToggleController = MockControllersProvider.toggleController(),
+            healthPointsLoadingController = MockControllersProvider.loadingController(50),
+            heroItemsLoadingController = MockControllersProvider.loadingController(
+                data = DashboardMockDataProvider.dashboardHeroSection(),
+            ),
+            featureItemsLoadingController = MockControllersProvider.loadingController(
+                data = DashboardMockDataProvider.dashboardFeatureSectionsList(),
+            ),
+        )
     }
 }

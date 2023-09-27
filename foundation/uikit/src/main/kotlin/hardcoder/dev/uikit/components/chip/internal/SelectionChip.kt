@@ -30,7 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.uikit.components.text.Text
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 
@@ -89,7 +89,7 @@ internal fun SelectionChip(
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 internal fun SelectionChipPreview() {
     var isSelected by remember {

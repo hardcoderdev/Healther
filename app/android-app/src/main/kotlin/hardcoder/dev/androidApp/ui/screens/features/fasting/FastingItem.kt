@@ -20,11 +20,15 @@ import hardcoder.dev.uikit.components.card.Card
 import hardcoder.dev.uikit.components.card.CardConfig
 import hardcoder.dev.uikit.components.progressBar.CircularProgressBar
 import hardcoder.dev.uikit.components.text.Label
-import hardcoderdev.healther.app.android.app.R
-import org.koin.compose.koinInject
+import hardcoderdev.healther.app.resources.R
 
 @Composable
-fun FastingItem(fastingTrack: FastingTrack) {
+fun FastingItem(
+    dateTimeFormatter: DateTimeFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    fastingTrack: FastingTrack,
+) {
     Card(
         cardConfig = CardConfig.Static(
             cardContent = {
@@ -33,9 +37,16 @@ fun FastingItem(fastingTrack: FastingTrack) {
                         .fillMaxWidth()
                         .padding(16.dp),
                 ) {
-                    ProgressSection(fastingTrack = fastingTrack)
+                    ProgressSection(
+                        millisDistanceFormatter = millisDistanceFormatter,
+                        fastingTrack = fastingTrack,
+                    )
                     Spacer(modifier = Modifier.width(16.dp))
-                    DateInfoSection(fastingTrack = fastingTrack)
+                    DateInfoSection(
+                        fastingTrack = fastingTrack,
+                        dateTimeFormatter = dateTimeFormatter,
+                        fastingPlanResourcesProvider = fastingPlanResourcesProvider,
+                    )
                 }
             },
         ),
@@ -43,9 +54,10 @@ fun FastingItem(fastingTrack: FastingTrack) {
 }
 
 @Composable
-private fun ProgressSection(fastingTrack: FastingTrack) {
-    val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
-
+private fun ProgressSection(
+    millisDistanceFormatter: MillisDistanceFormatter,
+    fastingTrack: FastingTrack,
+) {
     val fastingTimePassedInMillis = fastingTrack.interruptedTime?.let {
         it - fastingTrack.startTime
     } ?: run {
@@ -64,10 +76,11 @@ private fun ProgressSection(fastingTrack: FastingTrack) {
 }
 
 @Composable
-private fun DateInfoSection(fastingTrack: FastingTrack) {
-    val dateTimeFormatter = koinInject<DateTimeFormatter>()
-    val fastingPlanResourcesProvider = koinInject<FastingPlanResourcesProvider>()
-
+private fun DateInfoSection(
+    dateTimeFormatter: DateTimeFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    fastingTrack: FastingTrack,
+) {
     val fastingEndDateAndTimeMillis = fastingTrack.interruptedTime ?: run {
         fastingTrack.startTime + fastingTrack.duration
     }

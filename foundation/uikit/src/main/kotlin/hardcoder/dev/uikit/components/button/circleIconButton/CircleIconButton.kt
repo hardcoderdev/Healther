@@ -5,7 +5,7 @@ import hardcoder.dev.uikit.components.button.internal.circleIconButton.FilledCir
 import hardcoder.dev.uikit.components.button.internal.circleIconButton.FilledCircleIconButtonPreview
 import hardcoder.dev.uikit.components.button.internal.circleIconButton.OutlinedCircleIconButton
 import hardcoder.dev.uikit.components.button.internal.circleIconButton.OutlinedCircleIconButtonPreview
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 
 @Composable
 fun CircleIconButton(circleIconButtonConfig: CircleIconButtonConfig) {
@@ -30,13 +30,13 @@ fun CircleIconButton(circleIconButtonConfig: CircleIconButtonConfig) {
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun FilledCircleIconButtonPreview() {
     FilledCircleIconButtonPreview()
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun OutlinedCircleIconButtonPreview() {
     OutlinedCircleIconButtonPreview()

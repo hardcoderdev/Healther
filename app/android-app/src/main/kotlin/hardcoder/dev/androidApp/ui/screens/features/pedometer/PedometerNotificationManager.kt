@@ -12,7 +12,7 @@ import android.os.Build
 
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
-import hardcoderdev.healther.app.android.app.R
+import hardcoderdev.healther.app.resources.R
 
 class PedometerNotificationManager(private val context: Context) {
 

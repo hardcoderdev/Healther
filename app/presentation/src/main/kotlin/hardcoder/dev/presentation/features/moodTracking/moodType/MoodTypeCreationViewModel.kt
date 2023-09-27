@@ -12,13 +12,12 @@ import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeCreator
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
-import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.map
 
 class MoodTypeCreationViewModel(
     moodTypeCreator: MoodTypeCreator,
     moodTypeNameValidator: MoodTypeNameValidator,
-    iconResourceProvider: IconResourceProvider,
+    iconResourceProvider: hardcoder.dev.icons.IconResourceProvider,
 ) : ViewModel() {
 
     val moodTypeNameController = ValidatedInputController(

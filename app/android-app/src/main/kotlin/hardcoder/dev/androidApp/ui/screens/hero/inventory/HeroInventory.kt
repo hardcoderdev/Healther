@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun HeroInventory(
@@ -26,4 +28,14 @@ fun HeroInventory(
 @Composable
 private fun HeroInventoryContent() {
     // TODO
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun HeroInventoryPreview() {
+    HealtherTheme {
+        HeroInventory(
+            onGoBack = {}
+        )
+    }
 }

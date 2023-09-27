@@ -6,7 +6,7 @@ import hardcoder.dev.uikit.components.button.internal.requestButton.FilledReques
 import hardcoder.dev.uikit.components.button.internal.requestButton.FilledRequestButtonWithIconPreview
 import hardcoder.dev.uikit.components.button.internal.requestButton.OutlinedRequestButtonWithIcon
 import hardcoder.dev.uikit.components.button.internal.requestButton.OutlinedRequestButtonWithIconPreview
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 
 @Composable
 fun <T : RequestController> RequestButtonWithIcon(requestButtonConfig: RequestButtonConfig<T>) {
@@ -31,13 +31,13 @@ fun <T : RequestController> RequestButtonWithIcon(requestButtonConfig: RequestBu
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun FilledRequestButtonWithIconPreview() {
     FilledRequestButtonWithIconPreview()
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun OutlinedRequestButtonWithIconPreview() {
     OutlinedRequestButtonWithIconPreview()

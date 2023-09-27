@@ -22,7 +22,7 @@ import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.component.shape.shader.DynamicShaders
 import com.patrykandpatrick.vico.core.entry.entriesOf
 import com.patrykandpatrick.vico.core.entry.entryModelOf
-import hardcoder.dev.uikit.preview.UiKitPhonePreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 
 const val MINIMUM_ENTRIES_FOR_SHOWING_CHART = 2
 
@@ -77,7 +77,7 @@ fun ActivityLineChart(
     )
 }
 
-@UiKitPhonePreview
+@HealtherUiKitPreview
 @Composable
 private fun ActivityLineChartPreview() {
     ActivityLineChart(

@@ -22,7 +22,9 @@ class DiaryTagCreationScreen : Screen {
         )
 
         DiaryTagCreation(
-            viewModel = viewModel,
+            tagNameInputController = viewModel.nameInputController,
+            iconSelectionController = viewModel.iconSelectionController,
+            creationController = viewModel.creationController,
             onGoBack = navigator::pop,
         )
     }

@@ -10,13 +10,12 @@ import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.logic.features.moodTracking.moodActivity.CorrectActivityName
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityCreator
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityNameValidator
-import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.map
 
 class MoodActivityCreationViewModel(
     private val moodActivityCreator: MoodActivityCreator,
     moodActivityNameValidator: MoodActivityNameValidator,
-    iconResourceProvider: IconResourceProvider,
+    iconResourceProvider: hardcoder.dev.icons.IconResourceProvider,
 ) : ViewModel() {
 
     val activityNameController = ValidatedInputController(

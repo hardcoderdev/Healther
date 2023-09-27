@@ -6,6 +6,8 @@ import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toLocalDateTime
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
+import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingChartData
+import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingChartEntry
 import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatisticProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
@@ -45,11 +47,18 @@ class MoodTrackingAnalyticsViewModel(
     val chartEntriesLoadingController = LoadingController(
         coroutineScope = viewModelScope,
         flow = moodTracksForTheLastMonth.map { fastingTrackList ->
-            fastingTrackList.groupBy {
-                it.date.toLocalDateTime().dayOfMonth
-            }.map { entry ->
-                entry.key to entry.value.maxBy { it.moodType.positivePercentage }.moodType.positivePercentage
-            }
+            MoodTrackingChartData(
+                entriesList = fastingTrackList.groupBy {
+                    it.date.toLocalDateTime().dayOfMonth
+                }.map { entry ->
+                    MoodTrackingChartEntry(
+                        from = entry.key,
+                        to = entry.value.maxBy {
+                            it.moodType.positivePercentage
+                        }.moodType.positivePercentage,
+                    )
+                },
+            )
         }.distinctUntilChanged(),
     )
 }

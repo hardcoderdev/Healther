@@ -10,7 +10,7 @@ import hardcoder.dev.uikit.components.topBar.internal.SearchTopBar
 import hardcoder.dev.uikit.components.topBar.internal.SearchTopBarPreview
 import hardcoder.dev.uikit.components.topBar.internal.SimpleTopBar
 import hardcoder.dev.uikit.components.topBar.internal.SimpleTopBarPreview
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 
 sealed class TopBarType {
     object WithoutTopBar : TopBarType()
@@ -91,19 +91,19 @@ fun TopBar(
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun GoBackTopBarPreview() {
     GoBackTopBarPreview()
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun SearchTopBarPreview() {
     SearchTopBarPreview()
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun SimpleTopBarPreview() {
     SimpleTopBarPreview()

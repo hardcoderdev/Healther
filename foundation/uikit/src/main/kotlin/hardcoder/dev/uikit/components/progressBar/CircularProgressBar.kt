@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 import androidx.compose.material3.Text as MaterialText
@@ -103,7 +103,7 @@ fun CircularProgressBar(
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun CircularProgressBarPreview() {
     HealtherThemePreview {

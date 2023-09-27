@@ -5,7 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 import androidx.compose.material.Icon as MaterialIcon
@@ -24,7 +24,7 @@ fun Icon(
     )
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun IconPreview() {
     HealtherThemePreview {

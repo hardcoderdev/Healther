@@ -12,7 +12,6 @@ import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityDelete
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityNameValidator
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityUpdater
-import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -23,7 +22,7 @@ class MoodActivityUpdateViewModel(
     private val moodActivityDeleter: MoodActivityDeleter,
     private val moodActivityUpdater: MoodActivityUpdater,
     private val moodActivityProvider: MoodActivityProvider,
-    iconResourceProvider: IconResourceProvider,
+    iconResourceProvider: hardcoder.dev.icons.IconResourceProvider,
 ) : ViewModel() {
 
     val activityNameController = ValidatedInputController(

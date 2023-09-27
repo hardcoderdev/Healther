@@ -1,7 +1,7 @@
 package hardcoder.dev.androidApp.ui.screens.features.diary
 
 import hardcoder.dev.logic.features.diary.DateRangeFilterType
-import hardcoderdev.healther.app.android.app.R
+import hardcoderdev.healther.app.resources.R
 
 class DateRangeFilterTypeResourcesProvider {
 

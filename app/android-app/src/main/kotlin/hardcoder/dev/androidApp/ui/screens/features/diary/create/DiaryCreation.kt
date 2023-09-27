@@ -12,20 +12,21 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.IncorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.ValidatedDiaryTrackContent
-import hardcoder.dev.presentation.features.diary.DiaryCreationViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.chip.Chip
@@ -39,20 +40,24 @@ import hardcoder.dev.uikit.components.text.textField.ValidatedTextField
 import hardcoder.dev.uikit.components.text.textField.textFieldValidationResourcesAdapter
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun DiaryCreation(
-    viewModel: DiaryCreationViewModel,
+    contentController: ValidatedInputController<String, ValidatedDiaryTrackContent>,
+    creationController: RequestController,
+    tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     onManageTags: () -> Unit,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             DiaryCreationContent(
-                contentController = viewModel.contentController,
-                creationController = viewModel.creationController,
-                tagMultiSelectionController = viewModel.tagMultiSelectionController,
+                contentController = contentController,
+                creationController = creationController,
+                tagMultiSelectionController = tagMultiSelectionController,
                 onManageTags = onManageTags,
             )
         },
@@ -166,4 +171,22 @@ private fun ManagementTagsButton(onManageTags: () -> Unit) {
             onClick = onManageTags,
         ),
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun DiaryCreationPreview() {
+    HealtherTheme {
+        DiaryCreation(
+            onGoBack = {},
+            onManageTags = {},
+            contentController = MockControllersProvider.validatedInputController(""),
+            creationController = MockControllersProvider.requestController(),
+            tagMultiSelectionController = MockControllersProvider.multiSelectionController(
+                dataList = DiaryMockDataProvider.diaryTagsList(
+                    context = LocalContext.current,
+                ),
+            ),
+        )
+    }
 }

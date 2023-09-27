@@ -8,20 +8,24 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
+import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
 import hardcoder.dev.uikit.components.text.Description
-import hardcoderdev.healther.app.android.app.R
-import org.koin.compose.koinInject
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
-fun DiaryMoodItem(moodTrack: MoodTrack) {
-    val dateTimeFormatter = koinInject<DateTimeFormatter>()
-
+fun DiaryMoodItem(
+    dateTimeFormatter: DateTimeFormatter,
+    moodTrack: MoodTrack,
+) {
     Row(modifier = Modifier.fillMaxWidth()) {
         Image(
             modifier = Modifier.size(50.dp),
@@ -37,6 +41,19 @@ fun DiaryMoodItem(moodTrack: MoodTrack) {
                     dateTimeFormatter.formatTime(moodTrack.date),
                 ),
             ),
+        )
+    }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun DiaryMoodItemPreview() {
+    HealtherTheme {
+        DiaryMoodItem(
+            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+            moodTrack = MoodTrackingMockDataProvider.moodTracksList(
+                context = LocalContext.current,
+            ).first(),
         )
     }
 }

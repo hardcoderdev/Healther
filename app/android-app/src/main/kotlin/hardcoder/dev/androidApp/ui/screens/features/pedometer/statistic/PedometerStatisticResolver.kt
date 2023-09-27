@@ -6,7 +6,7 @@ import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
 import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.uikit.components.statistic.StatisticData
-import hardcoderdev.healther.app.android.app.R
+import hardcoderdev.healther.app.resources.R
 
 class PedometerStatisticResolver(
     private val context: Context,

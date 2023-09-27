@@ -11,30 +11,42 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
+import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticResolver
 import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticSection
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.features.FastingMockDataProvider
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
+import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.progressBar.CircularProgressBar
 import hardcoder.dev.uikit.components.section.EmptyBlock
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Headline
-import hardcoderdev.healther.app.android.app.R
-import org.koin.compose.koinInject
+import hardcoder.dev.uikit.components.topBar.TopBarConfig
+import hardcoder.dev.uikit.components.topBar.TopBarType
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun Fasting(
+    dateTimeFormatter: DateTimeFormatter,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    millisDistanceFormatter: MillisDistanceFormatter,
     state: FastingViewModel.FastingState.Fasting,
     fastingStatistic: FastingStatistic?,
     interruptFastingController: RequestController,
+    fastingStatisticResolver: FastingStatisticResolver,
 ) {
     Column(
         modifier = Modifier
@@ -46,12 +58,23 @@ fun Fasting(
                 .weight(2f)
                 .verticalScroll(rememberScrollState()),
         ) {
-            FastingProgressSection(state = state)
+            FastingProgressSection(
+                millisDistanceFormatter = millisDistanceFormatter,
+                state = state,
+            )
             Spacer(modifier = Modifier.height(64.dp))
-            FastingInfoSection(state = state)
+            FastingInfoSection(
+                dateTimeFormatter = dateTimeFormatter,
+                fastingPlanResourcesProvider = fastingPlanResourcesProvider,
+                state = state,
+            )
             Spacer(modifier = Modifier.height(16.dp))
             fastingStatistic?.let { statistic ->
-                FastingStatisticSection(statistic = statistic)
+                FastingStatisticSection(
+                    fastingPlanResourcesProvider = fastingPlanResourcesProvider,
+                    fastingStatisticResolver = fastingStatisticResolver,
+                    statistic = statistic,
+                )
             } ?: run {
                 EmptyBlock(
                     emptyTitleResId = R.string.fasting_nowEmpty_text,
@@ -59,21 +82,22 @@ fun Fasting(
                 )
             }
         }
-    Spacer(modifier = Modifier.height(32.dp))
-    RequestButtonWithIcon(
-        requestButtonConfig = RequestButtonConfig.Filled(
-            controller = interruptFastingController,
-            iconResId = R.drawable.ic_close,
-            labelResId = R.string.fasting_interrupt_buttonText,
-        ),
-    )
-}
+        Spacer(modifier = Modifier.height(32.dp))
+        RequestButtonWithIcon(
+            requestButtonConfig = RequestButtonConfig.Filled(
+                controller = interruptFastingController,
+                iconResId = R.drawable.ic_close,
+                labelResId = R.string.fasting_interrupt_buttonText,
+            ),
+        )
+    }
 }
 
 @Composable
-private fun ColumnScope.FastingProgressSection(state: FastingViewModel.FastingState.Fasting) {
-    val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
-
+private fun ColumnScope.FastingProgressSection(
+    millisDistanceFormatter: MillisDistanceFormatter,
+    state: FastingViewModel.FastingState.Fasting,
+) {
     Headline(
         text = stringResource(id = R.string.fasting_in_progress_text),
         modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -93,9 +117,11 @@ private fun ColumnScope.FastingProgressSection(state: FastingViewModel.FastingSt
 }
 
 @Composable
-private fun FastingInfoSection(state: FastingViewModel.FastingState.Fasting) {
-    val fastingPlanResourcesProvider = koinInject<FastingPlanResourcesProvider>()
-    val dateTimeFormatter = koinInject<DateTimeFormatter>()
+private fun FastingInfoSection(
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    dateTimeFormatter: DateTimeFormatter,
+    state: FastingViewModel.FastingState.Fasting,
+) {
     val formattedDate = dateTimeFormatter.formatTime(state.startTimeInMillis)
     val fastingPlanResources = fastingPlanResourcesProvider.provide(state.selectedPlan)
 
@@ -112,4 +138,32 @@ private fun FastingInfoSection(state: FastingViewModel.FastingState.Fasting) {
             formatArgs = arrayOf(stringResource(id = fastingPlanResources.nameResId)),
         ),
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun FastingPreview() {
+    HealtherTheme {
+        ScaffoldWrapper(
+            topBarConfig = TopBarConfig(
+                type = TopBarType.TitleTopBar(
+                    titleResId = R.string.fasting_title_topBar,
+                ),
+            ),
+            content = {
+                Fasting(
+                    dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+                    fastingStatisticResolver = FastingStatisticResolver(context = LocalContext.current),
+                    fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
+                    millisDistanceFormatter = MillisDistanceFormatter(
+                        context = LocalContext.current,
+                        defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+                    ),
+                    state = FastingMockDataProvider.fastingState(),
+                    interruptFastingController = MockControllersProvider.requestController(),
+                    fastingStatistic = FastingMockDataProvider.fastingStatistics(),
+                )
+            },
+        )
+    }
 }

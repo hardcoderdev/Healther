@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
 import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity
-import hardcoder.dev.presentation.features.moodTracking.activity.MoodActivitiesViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
 import hardcoder.dev.uikit.components.chip.Chip
 import hardcoder.dev.uikit.components.chip.ChipConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
@@ -21,11 +23,13 @@ import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.section.EmptySection
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun MoodActivities(
-    viewModel: MoodActivitiesViewModel,
+    activitiesLoadingController: LoadingController<List<MoodActivity>>,
     onCreateMoodActivity: () -> Unit,
     onUpdateMoodActivity: (Int) -> Unit,
     onGoBack: () -> Unit,
@@ -34,7 +38,7 @@ fun MoodActivities(
         content = {
             MoodActivitiesContent(
                 onUpdateActivity = onUpdateMoodActivity,
-                activitiesLoadingController = viewModel.activitiesLoadingController,
+                activitiesLoadingController = activitiesLoadingController,
             )
         },
         onFabClick = onCreateMoodActivity,
@@ -87,4 +91,21 @@ private fun MoodActivitiesContent(
             }
         },
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun MoodActivitiesPreview() {
+    HealtherTheme {
+        MoodActivities(
+            onGoBack = {},
+            onCreateMoodActivity = {},
+            onUpdateMoodActivity = {},
+            activitiesLoadingController = MockControllersProvider.loadingController(
+                data = MoodTrackingMockDataProvider.moodActivitiesList(
+                    context = LocalContext.current,
+                ),
+            ),
+        )
+    }
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
 import hardcoder.dev.androidApp.ui.screens.hero.HeroImageByGenderResolver
 import hardcoder.dev.logic.hero.Hero
+import hardcoder.dev.mock.dataProviders.HeroMockDataProvider
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButtonConfig
 import hardcoder.dev.uikit.components.card.Card
@@ -26,11 +27,14 @@ import hardcoder.dev.uikit.components.icon.Image
 import hardcoder.dev.uikit.components.progressBar.LinearProgressBar
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Title
-import hardcoderdev.healther.app.android.app.R
-import org.koin.compose.koinInject
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun HeroSectionItem(
+    heroImageByGenderResolver: HeroImageByGenderResolver,
+    decimalFormatter: DecimalFormatter,
     hero: Hero,
     healthPointsProgress: Float,
     experiencePointsProgress: Float,
@@ -38,8 +42,6 @@ fun HeroSectionItem(
     onGoToInventory: () -> Unit,
     onGoToShop: () -> Unit,
 ) {
-    val heroImageByGenderResolver = koinInject<HeroImageByGenderResolver>()
-
     Card(
         cardConfig = CardConfig.Static {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -52,12 +54,14 @@ fun HeroSectionItem(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 ExperienceSection(
+                    decimalFormatter = decimalFormatter,
                     currentExperiencePoints = hero.experiencePoints,
                     experiencePointsToNextLevel = experiencePointsToNextLevel,
                     experiencePointsProgress = experiencePointsProgress,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 CurrencySection(
+                    decimalFormatter = decimalFormatter,
                     coinsAmount = hero.coins,
                     crystalsAmount = hero.crystals,
                 )
@@ -130,12 +134,11 @@ private fun HealthSection(
 
 @Composable
 private fun ExperienceSection(
+    decimalFormatter: DecimalFormatter,
     currentExperiencePoints: Float,
     experiencePointsToNextLevel: Float,
     experiencePointsProgress: Float,
 ) {
-    val decimalFormatter = koinInject<DecimalFormatter>()
-
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -162,11 +165,10 @@ private fun ExperienceSection(
 
 @Composable
 private fun CurrencySection(
+    decimalFormatter: DecimalFormatter,
     coinsAmount: Float,
-    crystalsAmount: Int
+    crystalsAmount: Int,
 ) {
-    val decimalFormatter = koinInject<DecimalFormatter>()
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -174,7 +176,7 @@ private fun CurrencySection(
         Spacer(modifier = Modifier.width(8.dp))
         Image(
             imageResId = R.drawable.sample_ic_coin,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
         )
     }
     Spacer(modifier = Modifier.height(8.dp))
@@ -185,7 +187,7 @@ private fun CurrencySection(
         Spacer(modifier = Modifier.width(8.dp))
         Image(
             imageResId = R.drawable.sample_ic_crystasl,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
         )
     }
 }
@@ -210,4 +212,21 @@ private fun ExtraActionsSection(
             onClick = onGoToShop,
         ),
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun HeroSectionItemPreview() {
+    HealtherTheme {
+        HeroSectionItem(
+            onGoToShop = {},
+            onGoToInventory = {},
+            heroImageByGenderResolver = HeroImageByGenderResolver(),
+            decimalFormatter = DecimalFormatter(),
+            healthPointsProgress = 0.3f,
+            experiencePointsProgress = 0.5f,
+            experiencePointsToNextLevel = 30f,
+            hero = HeroMockDataProvider.hero(),
+        )
+    }
 }

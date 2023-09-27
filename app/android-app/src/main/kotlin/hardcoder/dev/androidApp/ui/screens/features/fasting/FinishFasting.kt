@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -23,21 +24,28 @@ import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.request.RequestController
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.features.FastingMockDataProvider
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.LoadingContainer
+import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.icon.Image
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Headline
 import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.components.text.textField.TextField
-import hardcoderdev.healther.app.android.app.R
-import org.koin.compose.koinInject
+import hardcoder.dev.uikit.components.topBar.TopBarConfig
+import hardcoder.dev.uikit.components.topBar.TopBarType
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun FinishFasting(
     state: FastingViewModel.FastingState.Finished,
+    millisDistanceFormatter: MillisDistanceFormatter,
     noteInputController: InputController<String>,
     rewardLoadingController: LoadingController<Float>,
     createRewardController: RequestController,
@@ -73,7 +81,10 @@ fun FinishFasting(
                     .weight(2f)
                     .verticalScroll(rememberScrollState()),
             ) {
-                CongratulationsSection(state = state)
+                CongratulationsSection(
+                    millisDistanceFormatter = millisDistanceFormatter,
+                    state = state,
+                )
                 Spacer(modifier = Modifier.height(32.dp))
                 AddNoteSection(noteInputController = noteInputController)
             }
@@ -92,9 +103,10 @@ fun FinishFasting(
 }
 
 @Composable
-private fun CongratulationsSection(state: FastingViewModel.FastingState.Finished) {
-    val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
-
+private fun CongratulationsSection(
+    millisDistanceFormatter: MillisDistanceFormatter,
+    state: FastingViewModel.FastingState.Finished,
+) {
     val formattedFastingTime = millisDistanceFormatter.formatMillisDistance(
         distanceInMillis = state.timeLeftInMillis.inWholeMilliseconds,
         usePlurals = true,
@@ -144,4 +156,33 @@ private fun AddNoteSection(noteInputController: InputController<String>) {
             .fillMaxWidth()
             .height(120.dp),
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun FinishFastingPreview() {
+    HealtherTheme {
+        ScaffoldWrapper(
+            content = {
+                FinishFasting(
+                    onClose = {},
+                    millisDistanceFormatter = MillisDistanceFormatter(
+                        context = LocalContext.current,
+                        defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+                    ),
+                    state = FastingMockDataProvider.finishedState(),
+                    collectRewardController = MockControllersProvider.requestController(),
+                    createRewardController = MockControllersProvider.requestController(),
+                    rewardLoadingController = MockControllersProvider.loadingController(20.0f),
+                    noteInputController = MockControllersProvider.inputController(""),
+                )
+            },
+            topBarConfig = TopBarConfig(
+                type = TopBarType.TopBarWithNavigationBack(
+                    titleResId = R.string.fasting_finish_title_topBar,
+                    onGoBack = {},
+                ),
+            ),
+        )
+    }
 }

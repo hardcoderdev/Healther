@@ -1,6 +1,19 @@
 package hardcoder.dev.androidApp.ui.screens.features.fasting
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
+import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
+import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
+import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticResolver
+import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.input.InputController
+import hardcoder.dev.controller.request.RequestController
+import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
+import hardcoder.dev.logic.features.fasting.track.FastingTrack
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.features.FastingMockDataProvider
+import hardcoder.dev.presentation.features.fasting.FastingChartData
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
@@ -8,48 +21,71 @@ import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun FastingInitial(
-    viewModel: FastingViewModel,
+    dateTimeFormatter: DateTimeFormatter,
+    fastingStatisticResolver: FastingStatisticResolver,
+    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    noteInputController: InputController<String>,
+    rewardLoadingController: LoadingController<Float>,
+    interruptFastingController: RequestController,
+    collectRewardController: RequestController,
+    createRewardController: RequestController,
+    fastingStateLoadingController: LoadingController<FastingViewModel.FastingState>,
+    fastingStatisticsLoadingController: LoadingController<FastingStatistic?>,
+    fastingChartDataLoadingController: LoadingController<FastingChartData>,
+    lastThreeFastingTracksLoadingController: LoadingController<List<FastingTrack>>,
     onCreateFastingTrack: () -> Unit,
     onGoToFastingHistory: () -> Unit,
     onGoBack: () -> Unit,
 ) {
     LoadingContainer(
-        controller1 = viewModel.fastingStateLoadingController,
-        controller2 = viewModel.statisticLoadingController,
-        controller3 = viewModel.chartEntriesLoadingController,
-        controller4 = viewModel.lastThreeFastingTrackLoadingController,
-        loadedContent = { fastingState, statistic, chartEntries, lastThreeFastingTrackList ->
+        controller1 = fastingStateLoadingController,
+        controller2 = fastingStatisticsLoadingController,
+        controller3 = fastingChartDataLoadingController,
+        controller4 = lastThreeFastingTracksLoadingController,
+        loadedContent = { fastingState, statistic, chartData, lastThreeFastingTrackList ->
             ScaffoldWrapper(
                 content = {
                     when (fastingState) {
                         is FastingViewModel.FastingState.NotFasting -> {
                             NotFasting(
+                                millisDistanceFormatter = millisDistanceFormatter,
+                                dateTimeFormatter = dateTimeFormatter,
+                                fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                                 onCreateFastingTrack = onCreateFastingTrack,
                                 fastingStatistic = statistic,
-                                fastingChartEntries = chartEntries,
+                                chartData = chartData,
                                 lastFastingTracks = lastThreeFastingTrackList,
+                                fastingStatisticResolver = fastingStatisticResolver,
                             )
                         }
 
                         is FastingViewModel.FastingState.Fasting -> {
                             Fasting(
                                 state = fastingState,
+                                fastingStatisticResolver = fastingStatisticResolver,
+                                millisDistanceFormatter = millisDistanceFormatter,
+                                dateTimeFormatter = dateTimeFormatter,
+                                fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                                 fastingStatistic = statistic,
-                                interruptFastingController = viewModel.interruptFastingController,
+                                interruptFastingController = interruptFastingController,
                             )
                         }
 
                         is FastingViewModel.FastingState.Finished -> {
                             FinishFasting(
                                 state = fastingState,
-                                noteInputController = viewModel.noteInputController,
-                                rewardLoadingController = viewModel.rewardLoadingController,
-                                collectRewardController = viewModel.collectRewardController,
-                                createRewardController = viewModel.createRewardController,
+                                millisDistanceFormatter = millisDistanceFormatter,
+                                noteInputController = noteInputController,
+                                rewardLoadingController = rewardLoadingController,
+                                collectRewardController = collectRewardController,
+                                createRewardController = createRewardController,
                                 onClose = onGoBack,
                             )
                         }
@@ -101,4 +137,40 @@ private fun topBarConfig(
             onGoBack = onGoBack,
         ),
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun FastingInitialPreview() {
+    HealtherTheme {
+        FastingInitial(
+            onGoBack = {},
+            onCreateFastingTrack = {},
+            onGoToFastingHistory = {},
+            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+            fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
+            fastingStatisticResolver = FastingStatisticResolver(context = LocalContext.current),
+            millisDistanceFormatter = MillisDistanceFormatter(
+                context = LocalContext.current,
+                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+            ),
+            createRewardController = MockControllersProvider.requestController(),
+            collectRewardController = MockControllersProvider.requestController(),
+            interruptFastingController = MockControllersProvider.requestController(),
+            noteInputController = MockControllersProvider.inputController(""),
+            fastingChartDataLoadingController = MockControllersProvider.loadingController(
+                data = FastingMockDataProvider.fastingChartData(),
+            ),
+            fastingStateLoadingController = MockControllersProvider.loadingController(
+                data = FastingMockDataProvider.fastingState(),
+            ),
+            fastingStatisticsLoadingController = MockControllersProvider.loadingController(
+                data = FastingMockDataProvider.fastingStatistics(),
+            ),
+            rewardLoadingController = MockControllersProvider.loadingController(20.0f),
+            lastThreeFastingTracksLoadingController = MockControllersProvider.loadingController(
+                data = FastingMockDataProvider.fastingTracksList(),
+            ),
+        )
+    }
 }

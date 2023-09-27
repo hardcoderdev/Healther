@@ -21,7 +21,7 @@ import epicarchitect.calendar.compose.datepicker.state.EpicDatePickerState
 import epicarchitect.calendar.compose.datepicker.state.rememberEpicDatePickerState
 import hardcoder.dev.uikit.components.icon.Icon
 import hardcoder.dev.uikit.components.text.Title
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 import java.time.Month
@@ -74,7 +74,7 @@ fun CustomMonthHeader(
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun CustomMonthHeaderPreview() {
     HealtherThemePreview {

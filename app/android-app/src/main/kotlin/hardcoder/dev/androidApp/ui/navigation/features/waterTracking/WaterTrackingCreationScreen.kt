@@ -4,11 +4,14 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.navigation.features.waterTracking.drinkTypes.DrinkTypesScreen
 import hardcoder.dev.androidApp.ui.screens.features.waterTracking.waterTrack.create.WaterTrackingCreation
+import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingCreationViewModel
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 class WaterTrackingCreationScreen : Screen {
 
@@ -16,6 +19,8 @@ class WaterTrackingCreationScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<WaterTrackingCreationViewModel>()
+        val dateTimeFormatter = koinInject<DateTimeFormatter>()
+        val dateTimeProvider = koinInject<DateTimeProvider>()
 
         LaunchedEffectWhenExecuted(
             controller = viewModel.creationController,
@@ -23,7 +28,13 @@ class WaterTrackingCreationScreen : Screen {
         )
 
         WaterTrackingCreation(
-            viewModel = viewModel,
+            dateTimeProvider = dateTimeProvider,
+            dateTimeFormatter = dateTimeFormatter,
+            millilitersDrunkInputController = viewModel.millilitersDrunkInputController,
+            drinkSelectionController = viewModel.drinkSelectionController,
+            dateInputController = viewModel.dateInputController,
+            timeInputController = viewModel.timeInputController,
+            creationController = viewModel.creationController,
             onGoBack = navigator::pop,
             onManageDrinkTypes = {
                 navigator += DrinkTypesScreen()

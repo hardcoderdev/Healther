@@ -11,7 +11,13 @@ interface PedometerManager {
     suspend fun requestBattery()
     fun stopTracking()
 
-    sealed class Availability
+    sealed class Availability {
+        data object Available : Availability()
+
+        data class NotAvailable(
+            val rejectReason: RejectReason,
+        ) : Availability()
+    }
 }
 
 suspend inline fun PedometerManager.toggleTracking() {
@@ -22,14 +28,8 @@ suspend inline fun PedometerManager.toggleTracking() {
     }
 }
 
-object Available : PedometerManager.Availability()
-
-data class NotAvailable(
-    val rejectReason: RejectReason,
-) : PedometerManager.Availability()
-
 sealed class RejectReason {
-    object BatteryNotIgnoreOptimizations : RejectReason()
-    object PermissionsNotGranted : RejectReason()
-    object ServiceNotAvailable : RejectReason()
+    data object BatteryNotIgnoreOptimizations : RejectReason()
+    data object PermissionsNotGranted : RejectReason()
+    data object ServiceNotAvailable : RejectReason()
 }

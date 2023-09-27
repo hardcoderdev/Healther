@@ -1,6 +1,5 @@
 package hardcoder.dev.androidApp.ui.screens.hero.creation
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,7 +29,7 @@ import hardcoder.dev.logic.hero.ValidatedHeroExerciseStress
 import hardcoder.dev.logic.hero.ValidatedHeroName
 import hardcoder.dev.logic.hero.ValidatedHeroWeight
 import hardcoder.dev.logic.hero.gender.Gender
-import hardcoder.dev.presentation.hero.HeroCreationViewModel
+import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
@@ -43,19 +42,28 @@ import hardcoder.dev.uikit.components.text.textField.TextInputAdapter
 import hardcoder.dev.uikit.components.text.textField.ValidatedTextField
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
-import org.koin.compose.koinInject
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
-fun HeroCreation(viewModel: HeroCreationViewModel) {
+fun HeroCreation(
+    genderResourcesProvider: GenderResourcesProvider,
+    heroCreationController: RequestController,
+    genderSelectionController: SingleSelectionController<Gender>,
+    nameInputController: ValidatedInputController<String, ValidatedHeroName>,
+    weightInputController: ValidatedInputController<String, ValidatedHeroWeight>,
+    exerciseStressTimeInputController: ValidatedInputController<String, ValidatedHeroExerciseStress>,
+) {
     ScaffoldWrapper(
         content = {
             HeroCreationContent(
-                heroCreationController = viewModel.heroCreationController,
-                genderSelectionController = viewModel.genderSelectionController,
-                nameInputController = viewModel.nameInputController,
-                weightInputController = viewModel.weightInputController,
-                exerciseStressTimeInputController = viewModel.exerciseStressTimeInputController,
+                genderResourcesProvider = genderResourcesProvider,
+                heroCreationController = heroCreationController,
+                genderSelectionController = genderSelectionController,
+                nameInputController = nameInputController,
+                weightInputController = weightInputController,
+                exerciseStressTimeInputController = exerciseStressTimeInputController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -68,14 +76,13 @@ fun HeroCreation(viewModel: HeroCreationViewModel) {
 
 @Composable
 private fun HeroCreationContent(
+    genderResourcesProvider: GenderResourcesProvider,
     heroCreationController: RequestController,
     genderSelectionController: SingleSelectionController<Gender>,
     nameInputController: ValidatedInputController<String, ValidatedHeroName>,
     weightInputController: ValidatedInputController<String, ValidatedHeroWeight>,
     exerciseStressTimeInputController: ValidatedInputController<String, ValidatedHeroExerciseStress>,
 ) {
-    val context = LocalContext.current
-
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -86,13 +93,16 @@ private fun HeroCreationContent(
                 .weight(2f)
                 .verticalScroll(rememberScrollState()),
         ) {
-            SelectGenderSection(genderSelectionController = genderSelectionController)
+            SelectGenderSection(
+                genderResourcesProvider = genderResourcesProvider,
+                genderSelectionController = genderSelectionController,
+            )
             Spacer(modifier = Modifier.height(16.dp))
-            EnterNameSection(context = context, nameInputController = nameInputController)
+            EnterNameSection(nameInputController = nameInputController)
             Spacer(modifier = Modifier.height(16.dp))
-            EnterWeight(context = context, weightInputController = weightInputController)
+            EnterWeight(weightInputController = weightInputController)
             Spacer(modifier = Modifier.height(16.dp))
-            EnterExerciseStress(context = context, exerciseStressTimeInputController = exerciseStressTimeInputController)
+            EnterExerciseStress(exerciseStressTimeInputController = exerciseStressTimeInputController)
         }
         Spacer(modifier = Modifier.height(16.dp))
         RequestButtonWithIcon(
@@ -106,9 +116,10 @@ private fun HeroCreationContent(
 }
 
 @Composable
-private fun SelectGenderSection(genderSelectionController: SingleSelectionController<Gender>) {
-    val genderResourcesProvider = koinInject<GenderResourcesProvider>()
-
+private fun SelectGenderSection(
+    genderResourcesProvider: GenderResourcesProvider,
+    genderSelectionController: SingleSelectionController<Gender>,
+) {
     SingleCardSelectionRow(
         controller = genderSelectionController,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -137,9 +148,10 @@ private fun SelectGenderSection(genderSelectionController: SingleSelectionContro
 
 @Composable
 private fun EnterNameSection(
-    context: Context,
     nameInputController: ValidatedInputController<String, ValidatedHeroName>,
 ) {
+    val context = LocalContext.current
+
     ValidatedTextField(
         modifier = Modifier.fillMaxWidth(),
         label = R.string.hero_creation_enterName_textField,
@@ -179,9 +191,10 @@ private fun EnterNameSection(
 
 @Composable
 private fun EnterWeight(
-    context: Context,
     weightInputController: ValidatedInputController<String, ValidatedHeroWeight>,
 ) {
+    val context = LocalContext.current
+
     ValidatedTextField(
         modifier = Modifier.fillMaxWidth(),
         label = R.string.hero_creation_enterYourWeightInKg_textField,
@@ -238,9 +251,10 @@ private fun EnterWeight(
 
 @Composable
 private fun EnterExerciseStress(
-    context: Context,
     exerciseStressTimeInputController: ValidatedInputController<String, ValidatedHeroExerciseStress>,
 ) {
+    val context = LocalContext.current
+
     ValidatedTextField(
         modifier = Modifier.fillMaxWidth(),
         label = R.string.hero_creation_enterExerciseStressTime_textField,
@@ -293,4 +307,21 @@ private fun EnterExerciseStress(
             )
         },
     )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun HeroCreationPreview() {
+    HealtherTheme {
+        HeroCreation(
+            genderResourcesProvider = GenderResourcesProvider(),
+            nameInputController = MockControllersProvider.validatedInputController(""),
+            heroCreationController = MockControllersProvider.requestController(),
+            exerciseStressTimeInputController = MockControllersProvider.validatedInputController(""),
+            weightInputController = MockControllersProvider.validatedInputController(""),
+            genderSelectionController = MockControllersProvider.singleSelectionController(
+                dataList = Gender.entries,
+            ),
+        )
+    }
 }

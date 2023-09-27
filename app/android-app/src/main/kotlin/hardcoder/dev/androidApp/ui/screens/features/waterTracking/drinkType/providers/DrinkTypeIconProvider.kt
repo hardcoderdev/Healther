@@ -1,9 +1,9 @@
 package hardcoder.dev.androidApp.ui.screens.features.waterTracking.drinkType.providers
 
-import hardcoder.dev.androidApp.ui.icons.LocalIconImpl
-import hardcoder.dev.logic.icons.IconResourceProvider
-import hardcoder.dev.logic.icons.LocalIcon
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.icons.IconImpl
+import hardcoder.dev.icons.IconResourceProvider
+import hardcoder.dev.icons.Icon
+import hardcoderdev.healther.app.resources.R
 
 class DrinkTypeIconProvider : IconResourceProvider {
 
@@ -26,9 +26,9 @@ class DrinkTypeIconProvider : IconResourceProvider {
         create(id = 15, resourceId = R.drawable.ic_snowboarding),
     )
 
-    override fun getIcons(): List<LocalIcon> = icons
+    override fun getIcons(): List<Icon> = icons
 
-    override fun getIcon(id: Int): LocalIcon = icons.first { it.id == id }
+    override fun getIcon(id: Int): Icon = icons.first { it.id == id }
 
-    private fun create(id: Int, resourceId: Int) = LocalIconImpl(id, resourceId)
+    private fun create(id: Int, resourceId: Int) = IconImpl(id, resourceId)
 }

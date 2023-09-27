@@ -11,16 +11,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.logic.features.waterTracking.MillilitersDrunkToDailyRate
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.features.WaterTrackingMockDataProvider
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
-import hardcoder.dev.presentation.features.waterTracking.WaterTrackingViewModel
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.LoadingContainer
@@ -33,33 +33,33 @@ import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun WaterTracking(
-    viewModel: WaterTrackingViewModel,
+    waterTracksLoadingController: LoadingController<List<WaterTrackingItem>>,
+    millilitersDrunkLoadingController: LoadingController<MillilitersDrunkToDailyRate>,
+    progressController: LoadingController<Float>,
+    rewardLoadingController: LoadingController<Double>,
+    collectRewardController: RequestController,
     onCreateWaterTrack: () -> Unit,
     onUpdateWaterTrack: (Int) -> Unit,
     onGoToHistory: () -> Unit,
     onGoToAnalytics: () -> Unit,
     onGoBack: () -> Unit,
+    isFabShowing: Boolean,
 ) {
-    val millilitersDrunkState by viewModel.millilitersDrunkLoadingController.state.collectAsState()
-
-    // TODO MAYBE EXTENSION
-    val isFabShowing = (millilitersDrunkState as? LoadingController.State.Loaded)?.data?.let {
-        it.millilitersDrunkCount < it.dailyWaterIntake
-    } ?: false
-
     ScaffoldWrapper(
         content = {
             WaterTrackingContent(
                 onUpdateWaterTrack = onUpdateWaterTrack,
-                waterTracksLoadingController = viewModel.waterTracksLoadingController,
-                millilitersDrunkLoadingController = viewModel.millilitersDrunkLoadingController,
-                progressController = viewModel.dailyRateProgressController,
-                rewardLoadingController = viewModel.rewardLoadingController,
-                collectRewardController = viewModel.collectRewardController
+                waterTracksLoadingController = waterTracksLoadingController,
+                millilitersDrunkLoadingController = millilitersDrunkLoadingController,
+                progressController = progressController,
+                rewardLoadingController = rewardLoadingController,
+                collectRewardController = collectRewardController,
             )
         },
         onFabClick = if (isFabShowing) onCreateWaterTrack else null,
@@ -173,5 +173,31 @@ private fun ColumnScope.TrackDiarySection(
                 onUpdate = onUpdateWaterTrack,
             )
         }
+    }
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+private fun WaterTrackingPreview() {
+    HealtherTheme {
+        WaterTracking(
+            onGoBack = {},
+            onGoToAnalytics = {},
+            onGoToHistory = {},
+            onCreateWaterTrack = {},
+            onUpdateWaterTrack = {},
+            isFabShowing = true,
+            collectRewardController = MockControllersProvider.requestController(),
+            rewardLoadingController = MockControllersProvider.loadingController(20.0),
+            progressController = MockControllersProvider.loadingController(0.7f),
+            millilitersDrunkLoadingController = MockControllersProvider.loadingController(
+                data = WaterTrackingMockDataProvider.millilitersDrunkToDailyRate(),
+            ),
+            waterTracksLoadingController = MockControllersProvider.loadingController(
+                data = WaterTrackingMockDataProvider.waterTrackingItemsList(
+                    context = LocalContext.current,
+                ),
+            ),
+        )
     }
 }

@@ -12,13 +12,12 @@ import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.logic.features.waterTracking.drinkType.CorrectDrinkTypeName
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeCreator
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeNameValidator
-import hardcoder.dev.logic.icons.IconResourceProvider
 import kotlinx.coroutines.flow.map
 
 class DrinkTypeCreationViewModel(
     drinkTypeCreator: DrinkTypeCreator,
     drinkTypeNameValidator: DrinkTypeNameValidator,
-    iconResourceProvider: IconResourceProvider,
+    iconResourceProvider: hardcoder.dev.icons.IconResourceProvider,
 ) : ViewModel() {
 
     val nameInputController = ValidatedInputController(

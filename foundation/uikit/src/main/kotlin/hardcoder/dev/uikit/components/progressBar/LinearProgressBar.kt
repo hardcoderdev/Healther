@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 
 @Composable
@@ -50,7 +50,7 @@ fun LinearProgressBar(
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun LinearProgressBarPreview() {
     HealtherThemePreview {

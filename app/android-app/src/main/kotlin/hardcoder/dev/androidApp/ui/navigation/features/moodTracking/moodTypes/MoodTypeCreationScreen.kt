@@ -22,7 +22,10 @@ class MoodTypeCreationScreen : Screen {
         )
 
         MoodTypeCreation(
-            viewModel = viewModel,
+            moodTypeNameController = viewModel.moodTypeNameController,
+            iconSelectionController = viewModel.iconSelectionController,
+            positiveIndexController = viewModel.positiveIndexController,
+            creationController = viewModel.creationController,
             onGoBack = navigator::pop,
         )
     }

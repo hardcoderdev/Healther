@@ -14,13 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.icons.resourceId
+import hardcoder.dev.icons.resourceId
+import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
 import hardcoder.dev.uikit.components.card.Card
 import hardcoder.dev.uikit.components.card.CardConfig
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Title
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoderdev.healther.app.resources.R
+import kotlinx.datetime.Clock
 
 @Composable
 fun WaterTrackItem(
@@ -62,5 +65,29 @@ fun WaterTrackItem(
                 }
             },
         ),
+    )
+}
+
+@HealtherScreenPhonePreviews
+@Composable
+fun WaterTrackingItemPreview() {
+    WaterTrackItem(
+        onUpdate = {},
+        waterTrackingItem = WaterTrackingItem(
+            id = 0,
+            millilitersCount = 1000,
+            resolvedMillilitersCount = 800,
+            isCollected = true,
+            timeInMillis = Clock.System.now().toEpochMilliseconds(),
+            drinkType = DrinkType(
+                id = 0,
+                name = stringResource(R.string.predefined_drinkType_name_coffee),
+                icon = hardcoder.dev.icons.IconImpl(
+                    id = 0,
+                    resourceId = R.drawable.ic_history
+                ),
+                hydrationIndexPercentage = 80
+            ),
+        )
     )
 }

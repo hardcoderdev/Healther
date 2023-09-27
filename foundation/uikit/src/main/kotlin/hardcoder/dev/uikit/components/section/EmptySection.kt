@@ -20,7 +20,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Title
-import hardcoder.dev.uikit.preview.UiKitPhonePreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPhonePreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 
@@ -71,7 +71,7 @@ fun EmptyBlock(
     )
 }
 
-@UiKitPhonePreview
+@HealtherUiKitPhonePreview
 @Composable
 private fun EmptySectionPreview() {
     HealtherThemePreview {
@@ -86,7 +86,7 @@ private fun EmptySectionPreview() {
     }
 }
 
-@UiKitPhonePreview
+@HealtherUiKitPhonePreview
 @Composable
 private fun EmptyBlockPreview() {
     HealtherThemePreview {

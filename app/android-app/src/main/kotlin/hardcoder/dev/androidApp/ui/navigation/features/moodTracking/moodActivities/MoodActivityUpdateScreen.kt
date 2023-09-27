@@ -29,7 +29,10 @@ data class MoodActivityUpdateScreen(val moodActivityId: Int) : Screen {
         )
 
         MoodActivityUpdate(
-            viewModel = viewModel,
+            activityNameController = viewModel.activityNameController,
+            iconSingleSelectionController = viewModel.iconSingleSelectionController,
+            updateController = viewModel.updateController,
+            deleteController = viewModel.deleteController,
             onGoBack = navigator::pop,
         )
     }

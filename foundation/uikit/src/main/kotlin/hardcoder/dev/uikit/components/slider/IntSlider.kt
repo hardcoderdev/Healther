@@ -11,7 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import hardcoder.dev.controller.input.InputController
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 
 @Composable
@@ -59,7 +59,7 @@ fun IntSlider(
     )
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 private fun IntSliderPreview() {
     var selectedValue by remember {

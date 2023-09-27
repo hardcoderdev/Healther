@@ -22,7 +22,10 @@ class DrinkTypeCreationScreen : Screen {
         )
 
         DrinkTypeCreation(
-            viewModel = viewModel,
+            nameInputController = viewModel.nameInputController,
+            iconSelectionController = viewModel.iconSelectionController,
+            waterPercentageInputController = viewModel.waterPercentageInputController,
+            creationController = viewModel.creationController,
             onGoBack = navigator::pop,
         )
     }

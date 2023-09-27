@@ -1,15 +1,15 @@
 package hardcoder.dev.androidApp.ui.screens.dialogs
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.getInput
-import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
-import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.date.MockDateProvider
 import hardcoder.dev.uikit.components.dialog.TitleDialog
 import hardcoder.dev.uikit.components.picker.TimeNumberPicker
-import hardcoderdev.healther.app.android.app.R
+import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoderdev.healther.app.resources.R
 import kotlinx.datetime.LocalTime
 
 @Composable
@@ -40,13 +40,12 @@ fun TimePickerDialog(
 
 @Preview
 @Composable
-fun TimePickerDialogPreview() {
-    TimePickerDialog(
-        onUpdateDialogOpen = {},
-        dialogOpen = true,
-        timeInputController = InputController(
-            rememberCoroutineScope(),
-            DateTimeProvider(DefaultBackgroundBackgroundCoroutineDispatchers).currentTime().time,
-        ),
-    )
+private fun TimePickerDialogPreview() {
+    HealtherTheme {
+        TimePickerDialog(
+            onUpdateDialogOpen = {},
+            dialogOpen = true,
+            timeInputController = MockControllersProvider.inputController(MockDateProvider.localTime()),
+        )
+    }
 }

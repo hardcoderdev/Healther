@@ -15,7 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import hardcoder.dev.uikit.preview.UiKitPhonePreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPhonePreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 
@@ -79,7 +79,7 @@ fun FilledSpinner(
     }
 }
 
-@UiKitPhonePreview
+@HealtherUiKitPhonePreview
 @Composable
 private fun SpinnerPreview() {
     var expanded by remember {

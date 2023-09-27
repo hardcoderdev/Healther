@@ -7,7 +7,7 @@ import hardcoder.dev.uikit.components.card.internal.SelectionCard
 import hardcoder.dev.uikit.components.card.internal.SelectionCardPreview
 import hardcoder.dev.uikit.components.card.internal.StaticCard
 import hardcoder.dev.uikit.components.card.internal.StaticCardPreview
-import hardcoder.dev.uikit.preview.UiKitPhonePreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 
 @Composable
 fun Card(cardConfig: CardConfig) {
@@ -31,19 +31,19 @@ fun Card(cardConfig: CardConfig) {
     }
 }
 
-@UiKitPhonePreview
+@HealtherUiKitPreview
 @Composable
 private fun ActionCardPreview() {
     ActionCardPreview()
 }
 
-@UiKitPhonePreview
+@HealtherUiKitPreview
 @Composable
 private fun SelectionCardPreview() {
     SelectionCardPreview()
 }
 
-@UiKitPhonePreview
+@HealtherUiKitPreview
 @Composable
 private fun StaticCardPreview() {
     StaticCardPreview()

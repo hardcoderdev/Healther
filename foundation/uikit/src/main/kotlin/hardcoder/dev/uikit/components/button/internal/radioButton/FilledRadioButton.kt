@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.uikit.preview.UiKitPreview
+import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 
@@ -64,7 +64,7 @@ fun FilledRadioButton(
     }
 }
 
-@UiKitPreview
+@HealtherUiKitPreview
 @Composable
 internal fun FilledRadioButtonPreview() {
     HealtherThemePreview {
