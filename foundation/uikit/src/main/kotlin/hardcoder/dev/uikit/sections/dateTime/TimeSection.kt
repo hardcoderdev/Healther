@@ -14,6 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.input.InputController
+import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
+import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.date.MockDateProvider
@@ -27,6 +29,7 @@ import kotlinx.datetime.LocalTime
 
 @Composable
 fun TimeSection(
+    dateTimeProvider: DateTimeProvider,
     dateTimeFormatter: DateTimeFormatter,
     timeInputController: InputController<LocalTime>,
 ) {
@@ -51,6 +54,7 @@ fun TimeSection(
 
     TimePickerDialog(
         dialogOpen = dialogOpen,
+        dateTimeProvider = dateTimeProvider,
         onUpdateDialogOpen = { dialogOpen = it },
         timeInputController = timeInputController,
     )
@@ -62,6 +66,7 @@ private fun TimeSectionPreview() {
     HealtherThemePreview {
         TimeSection(
             dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+            dateTimeProvider = DateTimeProvider(dispatchers = DefaultBackgroundBackgroundCoroutineDispatchers),
             timeInputController = MockControllersProvider.inputController(MockDateProvider.localTime()),
         )
     }

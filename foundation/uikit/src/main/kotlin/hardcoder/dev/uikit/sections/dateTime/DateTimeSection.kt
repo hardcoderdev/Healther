@@ -82,6 +82,7 @@ fun DateTimeSection(
 
     TimePickerDialog(
         dialogOpen = isTimeDialogOpen,
+        dateTimeProvider = dateTimeProvider,
         onUpdateDialogOpen = { isTimeDialogOpen = it },
         timeInputController = timeInputController,
     )

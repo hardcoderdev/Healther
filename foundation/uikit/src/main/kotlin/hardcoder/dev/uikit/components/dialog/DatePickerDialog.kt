@@ -29,7 +29,10 @@ fun DatePickerDialog(
         negativeOptionResId = R.string.datePickerDialog_negative_option,
         positiveOptionResId = R.string.datePickerDialog_positive_option,
         onSelect = { onUpdateDialogOpen(false) },
-        onCancel = { onUpdateDialogOpen(false) },
+        onCancel = {
+            dateInputController.changeInput(dateTimeProvider.currentDate())
+            onUpdateDialogOpen(false)
+        },
         dialogContent = {
             SingleSelectionCalendar(
                 dateTimeProvider = dateTimeProvider,

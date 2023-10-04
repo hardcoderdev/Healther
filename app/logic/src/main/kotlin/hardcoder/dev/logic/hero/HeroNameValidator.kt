@@ -12,7 +12,7 @@ class HeroNameValidator {
 
     private fun String.incorrectReason(): IncorrectHeroName.Reason? {
         return when {
-            isEmpty() -> IncorrectHeroName.Reason.Empty
+            isBlank() -> IncorrectHeroName.Reason.Empty
             length > HERO_NAME_MAX_CHARS -> IncorrectHeroName.Reason.MoreThanMaxChars(
                 HERO_NAME_MAX_CHARS,
             )

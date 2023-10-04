@@ -12,7 +12,7 @@ class HeroWeightValidator {
 
     private fun String.incorrectReason(): IncorrectHeroWeight.Reason? {
         return when {
-            isEmpty() -> IncorrectHeroWeight.Reason.Empty
+            isBlank() -> IncorrectHeroWeight.Reason.Empty
             this.contains(",") || this.contains(".") -> IncorrectHeroWeight.Reason.InvalidCharsInWeight(
                 invalidChars = charArrayOf(',', '.'),
             )

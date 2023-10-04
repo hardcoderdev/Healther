@@ -12,7 +12,7 @@ class MoodActivityNameValidator {
 
     private fun String.incorrectReason(): IncorrectActivityName.Reason? {
         return when {
-            isEmpty() -> IncorrectActivityName.Reason.Empty
+            isBlank() -> IncorrectActivityName.Reason.Empty
             length > ACTIVITY_NAME_MAX_CHARS -> IncorrectActivityName.Reason.MoreThanMaxChars(
                 ACTIVITY_NAME_MAX_CHARS,
             )

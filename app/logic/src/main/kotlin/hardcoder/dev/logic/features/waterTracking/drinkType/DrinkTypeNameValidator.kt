@@ -12,7 +12,7 @@ class DrinkTypeNameValidator {
 
     private fun String.incorrectReason(): IncorrectDrinkTypeName.Reason? {
         return when {
-            isEmpty() -> IncorrectDrinkTypeName.Reason.Empty
+            isBlank() -> IncorrectDrinkTypeName.Reason.Empty
             length > DRINK_TYPE_NAME_MAX_CHARS -> IncorrectDrinkTypeName.Reason.MoreThanMaxChars(
                 DRINK_TYPE_NAME_MAX_CHARS,
             )
