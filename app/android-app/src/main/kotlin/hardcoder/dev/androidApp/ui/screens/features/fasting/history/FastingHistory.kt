@@ -14,8 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.fasting.FastingItem
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.controller.LoadingController
@@ -42,8 +40,8 @@ import kotlinx.datetime.Instant
 @Composable
 fun FastingHistory(
     dateTimeProvider: DateTimeProvider,
-    millisDistanceFormatter: MillisDistanceFormatter,
-    dateTimeFormatter: DateTimeFormatter,
+    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     dateRangeInputController: InputController<ClosedRange<Instant>>,
     fastingTracksLoadingController: LoadingController<List<FastingTrack>>,
@@ -71,8 +69,8 @@ fun FastingHistory(
 
 @Composable
 private fun FastingHistoryContent(
-    millisDistanceFormatter: MillisDistanceFormatter,
-    dateTimeFormatter: DateTimeFormatter,
+    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
     dateTimeProvider: DateTimeProvider,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     dateRangeInputController: InputController<ClosedRange<Instant>>,
@@ -99,8 +97,8 @@ private fun FastingHistoryContent(
 
 @Composable
 private fun FastingTracksHistory(
-    millisDistanceFormatter: MillisDistanceFormatter,
-    dateTimeFormatter: DateTimeFormatter,
+    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     fastingTracksLoadingController: LoadingController<List<FastingTrack>>,
 ) {
@@ -137,11 +135,11 @@ private fun FastingHistoryPreview() {
     HealtherTheme {
         FastingHistory(
             onGoBack = {},
-            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+            dateTimeFormatter = hardcoder.dev.formatters.DateTimeFormatter(context = LocalContext.current),
             dateTimeProvider = DateTimeProvider(dispatchers = DefaultBackgroundBackgroundCoroutineDispatchers),
-            millisDistanceFormatter = MillisDistanceFormatter(
+            millisDistanceFormatter = hardcoder.dev.formatters.MillisDistanceFormatter(
                 context = LocalContext.current,
-                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+                defaultAccuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.DAYS,
             ),
             fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
             dateRangeInputController = MockControllersProvider.inputController(MockDateProvider.instantRange()),

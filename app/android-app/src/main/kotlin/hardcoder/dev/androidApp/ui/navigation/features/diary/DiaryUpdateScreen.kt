@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.navigation.features.diary.tags.DiaryTagsScreen
 import hardcoder.dev.androidApp.ui.screens.features.diary.update.DiaryUpdate
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
@@ -23,8 +21,8 @@ data class DiaryUpdateScreen(val diaryTrackId: Int) : Screen {
         val viewModel = koinViewModel<DiaryUpdateViewModel> {
             parametersOf(diaryTrackId)
         }
-        val dateTimeFormatter = koinInject<DateTimeFormatter>()
-        val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
+        val dateTimeFormatter = koinInject<hardcoder.dev.formatters.DateTimeFormatter>()
+        val millisDistanceFormatter = koinInject<hardcoder.dev.formatters.MillisDistanceFormatter>()
         val fastingPlanResourcesProvider = koinInject<FastingPlanResourcesProvider>()
 
         LaunchedEffectWhenExecuted(

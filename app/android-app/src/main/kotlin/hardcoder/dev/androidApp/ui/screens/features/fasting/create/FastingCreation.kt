@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanItem
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.controller.input.InputController
@@ -33,7 +32,7 @@ import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun FastingCreation(
-    millisDistanceFormatter: MillisDistanceFormatter,
+    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     fastingPlanSelectionController: SingleSelectionController<FastingPlan>,
     customFastingHoursInputController: InputController<Int>,
@@ -61,7 +60,7 @@ fun FastingCreation(
 
 @Composable
 private fun FastingCreationContent(
-    millisDistanceFormatter: MillisDistanceFormatter,
+    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     fastingPlanSelectionController: SingleSelectionController<FastingPlan>,
     customFastingHoursInputController: InputController<Int>,
@@ -93,7 +92,7 @@ private fun FastingCreationContent(
 
 @Composable
 private fun SelectPlanSection(
-    millisDistanceFormatter: MillisDistanceFormatter,
+    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     fastingPlanSelectionController: SingleSelectionController<FastingPlan>,
     customFastingHoursInputController: InputController<Int>,
@@ -127,9 +126,9 @@ private fun FastingCreationPreview() {
         FastingCreation(
             onGoBack = {},
             fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
-            millisDistanceFormatter = MillisDistanceFormatter(
+            millisDistanceFormatter = hardcoder.dev.formatters.MillisDistanceFormatter(
                 context = LocalContext.current,
-                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+                defaultAccuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.DAYS,
             ),
             creationController = MockControllersProvider.requestController(),
             customFastingHoursInputController = MockControllersProvider.inputController(0),

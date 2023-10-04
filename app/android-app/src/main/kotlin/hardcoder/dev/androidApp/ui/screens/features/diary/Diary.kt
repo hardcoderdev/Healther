@@ -24,8 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.diary.items.DiaryItem
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.controller.LoadingController
@@ -66,8 +64,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun Diary(
-    dateTimeFormatter: DateTimeFormatter,
-    millisDistanceFormatter: MillisDistanceFormatter,
+    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     dateRangeFilterTypeResourcesProvider: DateRangeFilterTypeResourcesProvider,
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
@@ -141,8 +139,8 @@ fun Diary(
 
 @Composable
 private fun DiaryContent(
-    dateTimeFormatter: DateTimeFormatter,
-    millisDistanceFormatter: MillisDistanceFormatter,
+    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     diaryTrackLoadingController: LoadingController<List<DiaryTrack>>,
@@ -228,8 +226,8 @@ private fun DiaryContent(
 
 @Composable
 private fun ColumnScope.DiaryTrackListSection(
-    dateTimeFormatter: DateTimeFormatter,
-    millisDistanceFormatter: MillisDistanceFormatter,
+    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     items: List<DiaryTrack>,
     onUpdateTrack: (DiaryTrack) -> Unit,
@@ -342,10 +340,10 @@ private fun DiaryPreview() {
             onGoBack = {},
             onCreateDiaryTrack = {},
             onUpdateDiaryTrack = {},
-            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
-            millisDistanceFormatter = MillisDistanceFormatter(
+            dateTimeFormatter = hardcoder.dev.formatters.DateTimeFormatter(context = LocalContext.current),
+            millisDistanceFormatter = hardcoder.dev.formatters.MillisDistanceFormatter(
                 context = LocalContext.current,
-                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+                defaultAccuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.DAYS,
             ),
             fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
             dateRangeFilterTypeResourcesProvider = DateRangeFilterTypeResourcesProvider(),

@@ -1,15 +1,11 @@
 package hardcoder.dev.androidApp.ui.screens.features.waterTracking.drinkType.update
 
 import android.content.Context
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -24,7 +20,6 @@ import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.icons.Icon
-import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.waterTracking.drinkType.IncorrectDrinkTypeName
 import hardcoder.dev.logic.features.waterTracking.drinkType.ValidatedDrinkTypeName
 import hardcoder.dev.mock.controllers.MockControllersProvider
@@ -32,7 +27,6 @@ import hardcoder.dev.mock.dataProviders.IconsMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
-import hardcoder.dev.uikit.components.container.SingleCardSelectionHorizontalGrid
 import hardcoder.dev.uikit.components.icon.Icon
 import hardcoder.dev.uikit.components.slider.IntSlider
 import hardcoder.dev.uikit.components.text.Description
@@ -45,6 +39,7 @@ import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.sections.creation.SelectIconSection
 import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoderdev.healther.app.resources.R
 
@@ -106,7 +101,10 @@ private fun DrinkTypeUpdateContent(
         ) {
             EnterDrinkTypeNameSection(context = context, nameInputController = nameInputController)
             Spacer(modifier = Modifier.height(32.dp))
-            SelectIconSection(iconSelectionController)
+            SelectIconSection(
+                titleResId = R.string.waterTracking_drinkTypes_creation_selectIcon_text,
+                iconSelectionController = iconSelectionController,
+            )
             Spacer(modifier = Modifier.height(32.dp))
             EnterDrinkHydrationIndexPercentageSection(waterPercentageInputController)
         }
@@ -157,31 +155,6 @@ private fun EnterDrinkTypeNameSection(
                 contentDescription = stringResource(
                     id = R.string.waterTracking_drinkTypes_creation_nameIcon_contentDescription,
                 ),
-            )
-        },
-    )
-}
-
-@Composable
-private fun SelectIconSection(
-    iconSelectionController: SingleSelectionController<Icon>,
-) {
-    Title(text = stringResource(id = R.string.waterTracking_drinkTypes_creation_selectIcon_text))
-    Spacer(modifier = Modifier.height(16.dp))
-    SingleCardSelectionHorizontalGrid(
-        modifier = Modifier.height(200.dp),
-        rows = GridCells.Fixed(count = 3),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(8.dp),
-        controller = iconSelectionController,
-        itemContent = { icon, _ ->
-            Icon(
-                modifier = Modifier
-                    .size(60.dp)
-                    .padding(12.dp),
-                iconResId = icon.resourceId,
-                contentDescription = stringResource(R.string.waterTracking_drinkTypes_creation_drinkTypeIconContentDescription),
             )
         },
     )

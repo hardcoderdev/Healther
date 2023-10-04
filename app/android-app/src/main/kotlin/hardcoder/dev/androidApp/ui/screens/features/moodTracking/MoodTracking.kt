@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
@@ -38,7 +37,7 @@ import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun MoodTracking(
-    dateTimeFormatter: DateTimeFormatter,
+    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
     moodWithActivitiesController: LoadingController<List<MoodWithActivities>>,
     rewardLoadingController: LoadingController<Double>,
     collectRewardController: RequestController,
@@ -82,7 +81,7 @@ fun MoodTracking(
 
 @Composable
 private fun MoodTrackingContent(
-    dateTimeFormatter: DateTimeFormatter,
+    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
     moodWithActivitiesController: LoadingController<List<MoodWithActivities>>,
     rewardLoadingController: LoadingController<Double>,
     collectRewardController: RequestController,
@@ -123,7 +122,7 @@ private fun MoodTrackingContent(
 
 @Composable
 private fun ColumnScope.MoodTrackingDiarySection(
-    dateTimeFormatter: DateTimeFormatter,
+    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
     moodWithActivitiesList: List<MoodWithActivities>,
     onUpdateTrack: (Int) -> Unit,
 ) {
@@ -163,7 +162,7 @@ private fun MoodTrackingPreview() {
             onCreateMoodTrack = {},
             onUpdateMoodTrack = {},
             onGoBack = {},
-            dateTimeFormatter = DateTimeFormatter(LocalContext.current),
+            dateTimeFormatter = hardcoder.dev.formatters.DateTimeFormatter(LocalContext.current),
             collectRewardController = MockControllersProvider.requestController(),
             rewardLoadingController = MockControllersProvider.loadingController(20.0),
             moodWithActivitiesController = MockControllersProvider.loadingController(

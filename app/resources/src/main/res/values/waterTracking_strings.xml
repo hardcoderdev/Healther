@@ -15,7 +15,6 @@
     <string name="waterTracking_creation_drinkTypeNotSelected_text">Создайте и выберите тип напитка!</string>
     <string name="waterTracking_creation_enterMillilitersCount_text">Введите количество выпитого напитка (в мл):</string>
     <string name="waterTracking_creation_enterMillilitersCountHint_textField">Количество выпитого напитка…</string>
-    <string name="waterTracking_creation_selectAnotherDate_text">Уже пили воду раньше?\nВы можете изменить дату.</string>
     <string name="waterTracking_creation_enterDrinkType_text">Выберите тип напитка…</string>
     <string name="waterTracking_creation_millilitersMoreThanDailyWaterIntake_text">Введёные вами мл больше, чем дневная норма!</string>
 

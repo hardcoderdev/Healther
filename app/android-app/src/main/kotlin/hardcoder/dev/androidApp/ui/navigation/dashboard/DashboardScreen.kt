@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.navigation.features.diary.DiaryCreationScreen
 import hardcoder.dev.androidApp.ui.navigation.features.diary.DiaryScreen
 import hardcoder.dev.androidApp.ui.navigation.features.fasting.FastingCreationScreen
@@ -32,8 +30,8 @@ class DashboardScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<DashboardViewModel>()
         val heroImageByGenderResolver = koinInject<HeroImageByGenderResolver>()
-        val decimalFormatter = koinInject<DecimalFormatter>()
-        val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
+        val decimalFormatter = koinInject<hardcoder.dev.formatters.DecimalFormatter>()
+        val millisDistanceFormatter = koinInject<hardcoder.dev.formatters.MillisDistanceFormatter>()
 
         Dashboard(
             millisDistanceFormatter = millisDistanceFormatter,

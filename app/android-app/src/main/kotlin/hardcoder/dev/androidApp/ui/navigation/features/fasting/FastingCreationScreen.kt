@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.fasting.create.FastingCreation
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.presentation.features.fasting.FastingCreationViewModel
@@ -19,7 +18,7 @@ class FastingCreationScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<FastingCreationViewModel>()
         val fastingPlanResourcesProvider = koinInject<FastingPlanResourcesProvider>()
-        val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
+        val millisDistanceFormatter = koinInject<hardcoder.dev.formatters.MillisDistanceFormatter>()
 
         LaunchedEffectWhenExecuted(
             controller = viewModel.creationController,

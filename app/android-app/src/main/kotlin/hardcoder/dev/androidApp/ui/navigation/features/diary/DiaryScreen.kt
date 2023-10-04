@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.diary.DateRangeFilterTypeResourcesProvider
 import hardcoder.dev.androidApp.ui.screens.features.diary.Diary
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
@@ -20,8 +18,8 @@ class DiaryScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<DiaryViewModel>()
         val dateRangeFilterTypeResourcesProvider = koinInject<DateRangeFilterTypeResourcesProvider>()
-        val dateTimeFormatter = koinInject<DateTimeFormatter>()
-        val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
+        val dateTimeFormatter = koinInject<hardcoder.dev.formatters.DateTimeFormatter>()
+        val millisDistanceFormatter = koinInject<hardcoder.dev.formatters.MillisDistanceFormatter>()
         val fastingPlanResourcesProvider = koinInject<FastingPlanResourcesProvider>()
 
         Diary(

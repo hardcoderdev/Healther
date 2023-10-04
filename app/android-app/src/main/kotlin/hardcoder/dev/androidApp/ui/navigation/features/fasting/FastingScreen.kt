@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.fasting.FastingInitial
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticResolver
@@ -19,8 +17,8 @@ class FastingScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<FastingViewModel>()
-        val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
-        val dateTimeFormatter = koinInject<DateTimeFormatter>()
+        val millisDistanceFormatter = koinInject<hardcoder.dev.formatters.MillisDistanceFormatter>()
+        val dateTimeFormatter = koinInject<hardcoder.dev.formatters.DateTimeFormatter>()
         val fastingPlanResourcesProvider = koinInject<FastingPlanResourcesProvider>()
         val fastingStatisticResolver = koinInject<FastingStatisticResolver>()
 

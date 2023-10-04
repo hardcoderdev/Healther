@@ -12,7 +12,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
@@ -23,7 +22,7 @@ import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun DiaryMoodItem(
-    dateTimeFormatter: DateTimeFormatter,
+    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
     moodTrack: MoodTrack,
 ) {
     Row(modifier = Modifier.fillMaxWidth()) {
@@ -50,7 +49,7 @@ fun DiaryMoodItem(
 private fun DiaryMoodItemPreview() {
     HealtherTheme {
         DiaryMoodItem(
-            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+            dateTimeFormatter = hardcoder.dev.formatters.DateTimeFormatter(context = LocalContext.current),
             moodTrack = MoodTrackingMockDataProvider.moodTracksList(
                 context = LocalContext.current,
             ).first(),

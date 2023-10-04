@@ -27,10 +27,11 @@ rootProject.name = "Healther"
 include(
     ":app:android-app",
     ":app:resources",
+    ":app:formatters",
     ":app:data:database",
     ":app:data:mock",
     ":app:logic",
-    ":app:presentation"
+    ":app:presentation",
 )
 include(
     ":foundation:coroutines",

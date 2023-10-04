@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.Pedometer
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.PedometerRejectedMapper
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.statistic.PedometerStatisticResolver
@@ -20,8 +18,8 @@ class PedometerScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<PedometerViewModel>()
         val pedometerRejectedMapper = koinInject<PedometerRejectedMapper>()
-        val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
-        val decimalFormatter = koinInject<DecimalFormatter>()
+        val millisDistanceFormatter = koinInject<hardcoder.dev.formatters.MillisDistanceFormatter>()
+        val decimalFormatter = koinInject<hardcoder.dev.formatters.DecimalFormatter>()
         val pedometerStatisticResolver = koinInject<PedometerStatisticResolver>()
 
         Pedometer(

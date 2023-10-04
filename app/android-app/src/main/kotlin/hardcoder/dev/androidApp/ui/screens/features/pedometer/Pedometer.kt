@@ -19,14 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.permissions.Initial
 import hardcoder.dev.androidApp.ui.permissions.PermissionsSection
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.statistic.PedometerStatisticResolver
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.controller.request.RequestController
+import hardcoder.dev.formatters.DecimalFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.PedometerMockDataProvider
@@ -38,14 +38,10 @@ import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.card.Card
 import hardcoder.dev.uikit.components.card.CardConfig
-import hardcoder.dev.uikit.components.chart.ActivityLineChart
-import hardcoder.dev.uikit.components.chart.MINIMUM_ENTRIES_FOR_SHOWING_CHART
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.progressBar.LinearProgressBar
 import hardcoder.dev.uikit.components.section.EmptySection
-import hardcoder.dev.uikit.components.statistic.Statistics
-import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Headline
 import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.components.topBar.Action
@@ -53,9 +49,10 @@ import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.sections.analytics.ChartSection
+import hardcoder.dev.uikit.sections.analytics.StatisticsSection
 import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoderdev.healther.app.resources.R
-import kotlin.math.roundToInt
 
 @Composable
 fun Pedometer(
@@ -192,12 +189,12 @@ private fun AvailablePedometerSection(
         controller2 = todayStatisticLoadingController,
         controller3 = statisticLoadingController,
         controller4 = rewardLoadingController,
-    ) { chartData, todayStatistic, statistic, totalReward ->
-        if (todayStatistic.totalSteps > 0) {
+    ) { chartData, todayStatistics, statistics, totalReward ->
+        if (todayStatistics.totalSteps > 0) {
             PedometerInfoSection(
                 millisDistanceFormatter = millisDistanceFormatter,
                 decimalFormatter = decimalFormatter,
-                statistic = todayStatistic,
+                statistic = todayStatistics,
             )
             Spacer(modifier = Modifier.height(32.dp))
             RequestButtonWithIcon(
@@ -209,12 +206,12 @@ private fun AvailablePedometerSection(
                 ),
             )
             Spacer(modifier = Modifier.height(32.dp))
-            StatisticsSection(
-                statistics = statistic,
-                pedometerStatisticResolver = pedometerStatisticResolver,
-            )
+            StatisticsSection(statisticsDataList = pedometerStatisticResolver.resolve(statistics))
             Spacer(modifier = Modifier.height(32.dp))
-            ActivityChartSection(pedometerChartData = chartData)
+            ChartSection(
+                titleResId = R.string.pedometer_analytics_activity_chart,
+                chartData = chartData.entriesList.map { it.from to it.to },
+            )
         } else {
             EmptySection(emptyTitleResId = R.string.pedometer_nowEmpty_text)
         }
@@ -307,36 +304,6 @@ private fun PedometerInfoSection(
             },
         ),
     )
-}
-
-@Composable
-private fun StatisticsSection(
-    statistics: PedometerStatistic,
-    pedometerStatisticResolver: PedometerStatisticResolver,
-) {
-    Title(text = stringResource(id = R.string.analytics_generalStatistics_text))
-    Spacer(modifier = Modifier.height(16.dp))
-    Statistics(statistics = pedometerStatisticResolver.resolve(statistics))
-}
-
-@Composable
-private fun ActivityChartSection(pedometerChartData: PedometerChartData) {
-    Title(text = stringResource(id = R.string.pedometer_analytics_activity_chart))
-    Spacer(modifier = Modifier.height(16.dp))
-    if (pedometerChartData.entriesList.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
-        ActivityLineChart(
-            modifier = Modifier.height(400.dp),
-            chartEntries = pedometerChartData.entriesList.map { it.from to it.to },
-            xAxisValueFormatter = { value, _ ->
-                value.roundToInt().toString()
-            },
-            yAxisValueFormatter = { value, _ ->
-                value.roundToInt().toString()
-            },
-        )
-    } else {
-        Description(text = stringResource(id = R.string.analytics_chartNotEnoughData_text))
-    }
 }
 
 @HealtherScreenPhonePreviews

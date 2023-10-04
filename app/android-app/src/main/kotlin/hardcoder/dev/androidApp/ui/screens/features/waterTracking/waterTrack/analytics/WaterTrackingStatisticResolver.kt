@@ -1,15 +1,13 @@
 package hardcoder.dev.androidApp.ui.screens.features.waterTracking.waterTrack.analytics
 
 import android.content.Context
-
-import hardcoder.dev.androidApp.ui.formatters.LiquidFormatter
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatistic
 import hardcoder.dev.uikit.components.statistic.StatisticData
 import hardcoderdev.healther.app.resources.R
 
 class WaterTrackingStatisticResolver(
     private val context: Context,
-    private val liquidFormatter: LiquidFormatter,
+    private val liquidFormatter: hardcoder.dev.formatters.LiquidFormatter,
 ) {
 
     fun resolve(statistic: WaterTrackingStatistic): List<StatisticData> {
@@ -18,7 +16,7 @@ class WaterTrackingStatisticResolver(
                 name = context.getString(R.string.waterTracking_statistic_water_total_drunk),
                 value = liquidFormatter.formatMillisDistance(
                     defaultMilliliters = statistic.totalMilliliters,
-                    accuracy = LiquidFormatter.Accuracy.MILLILITERS,
+                    accuracy = hardcoder.dev.formatters.LiquidFormatter.Accuracy.MILLILITERS,
                 ),
             ),
             StatisticData(

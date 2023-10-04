@@ -11,8 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.DiaryFeatureItem
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.FastingFeatureItem
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.MoodTrackingFeatureItem
@@ -22,8 +20,10 @@ import hardcoder.dev.androidApp.ui.screens.dashboard.heroItems.HeroSectionItem
 import hardcoder.dev.androidApp.ui.screens.hero.HeroImageByGenderResolver
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
-import hardcoder.dev.mock.dataProviders.DashboardMockDataProvider
+import hardcoder.dev.formatters.DecimalFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.mock.dataProviders.DashboardMockDataProvider
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
 import hardcoder.dev.presentation.dashboard.DashboardHeroItem
 import hardcoder.dev.uikit.components.container.LoadingContainer

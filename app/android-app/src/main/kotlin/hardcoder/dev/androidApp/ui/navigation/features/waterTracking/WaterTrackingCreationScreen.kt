@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.navigation.features.waterTracking.drinkTypes.DrinkTypesScreen
 import hardcoder.dev.androidApp.ui.screens.features.waterTracking.waterTrack.create.WaterTrackingCreation
 import hardcoder.dev.datetime.DateTimeProvider
@@ -19,7 +18,7 @@ class WaterTrackingCreationScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<WaterTrackingCreationViewModel>()
-        val dateTimeFormatter = koinInject<DateTimeFormatter>()
+        val dateTimeFormatter = koinInject<hardcoder.dev.formatters.DateTimeFormatter>()
         val dateTimeProvider = koinInject<DateTimeProvider>()
 
         LaunchedEffectWhenExecuted(

@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.navigation.features.moodTracking.moodActivities.MoodActivitiesScreen
 import hardcoder.dev.androidApp.ui.navigation.features.moodTracking.moodTypes.MoodTypesScreen
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.create.MoodTrackingCreation
@@ -20,7 +19,7 @@ class MoodTrackingCreationScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<MoodTrackingCreationViewModel>()
-        val dateTimeFormatter = koinInject<DateTimeFormatter>()
+        val dateTimeFormatter = koinInject<hardcoder.dev.formatters.DateTimeFormatter>()
         val dateTimeProvider = koinInject<DateTimeProvider>()
 
         LaunchedEffectWhenExecuted(

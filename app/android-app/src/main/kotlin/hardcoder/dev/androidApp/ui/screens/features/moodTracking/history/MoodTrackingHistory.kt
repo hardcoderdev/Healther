@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.MoodTrackItem
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
@@ -22,6 +21,7 @@ import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
+import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.date.MockDateProvider

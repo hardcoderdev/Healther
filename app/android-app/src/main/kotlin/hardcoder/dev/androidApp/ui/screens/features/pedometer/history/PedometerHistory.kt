@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.PedometerInfoCard
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
@@ -43,7 +42,7 @@ import kotlinx.datetime.Instant
 
 @Composable
 fun PedometerHistory(
-    decimalFormatter: DecimalFormatter,
+    decimalFormatter: hardcoder.dev.formatters.DecimalFormatter,
     dateTimeProvider: DateTimeProvider,
     dateRangeInputController: InputController<ClosedRange<Instant>>,
     statisticLoadingController: LoadingController<PedometerStatistic>,
@@ -71,7 +70,7 @@ fun PedometerHistory(
 
 @Composable
 private fun PedometerHistoryContent(
-    decimalFormatter: DecimalFormatter,
+    decimalFormatter: hardcoder.dev.formatters.DecimalFormatter,
     dateTimeProvider: DateTimeProvider,
     dateRangeInputController: InputController<ClosedRange<Instant>>,
     statisticLoadingController: LoadingController<PedometerStatistic>,
@@ -117,7 +116,7 @@ private fun PedometerHistoryContent(
 
 @Composable
 private fun PedometerTracksHistory(
-    decimalFormatter: DecimalFormatter,
+    decimalFormatter: hardcoder.dev.formatters.DecimalFormatter,
     pedometerStatistic: PedometerStatistic,
 ) {
     Spacer(modifier = Modifier.height(16.dp))
@@ -164,7 +163,7 @@ private fun PedometerHistoryPreview() {
     HealtherTheme {
         PedometerHistory(
             onGoBack = {},
-            decimalFormatter = DecimalFormatter(),
+            decimalFormatter = hardcoder.dev.formatters.DecimalFormatter(),
             dateTimeProvider = DateTimeProvider(dispatchers = DefaultBackgroundBackgroundCoroutineDispatchers),
             dateRangeInputController = MockControllersProvider.inputController(MockDateProvider.instantRange()),
             chartEntriesLoadingController = MockControllersProvider.loadingController(

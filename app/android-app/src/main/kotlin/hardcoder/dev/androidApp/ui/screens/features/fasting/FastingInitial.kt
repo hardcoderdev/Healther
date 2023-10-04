@@ -2,8 +2,6 @@ package hardcoder.dev.androidApp.ui.screens.features.fasting
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticResolver
 import hardcoder.dev.controller.LoadingController
@@ -27,10 +25,10 @@ import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun FastingInitial(
-    dateTimeFormatter: DateTimeFormatter,
+    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
     fastingStatisticResolver: FastingStatisticResolver,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
-    millisDistanceFormatter: MillisDistanceFormatter,
+    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
     noteInputController: InputController<String>,
     rewardLoadingController: LoadingController<Float>,
     interruptFastingController: RequestController,
@@ -147,12 +145,12 @@ private fun FastingInitialPreview() {
             onGoBack = {},
             onCreateFastingTrack = {},
             onGoToFastingHistory = {},
-            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+            dateTimeFormatter = hardcoder.dev.formatters.DateTimeFormatter(context = LocalContext.current),
             fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
             fastingStatisticResolver = FastingStatisticResolver(context = LocalContext.current),
-            millisDistanceFormatter = MillisDistanceFormatter(
+            millisDistanceFormatter = hardcoder.dev.formatters.MillisDistanceFormatter(
                 context = LocalContext.current,
-                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+                defaultAccuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.DAYS,
             ),
             createRewardController = MockControllersProvider.requestController(),
             collectRewardController = MockControllersProvider.requestController(),

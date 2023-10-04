@@ -13,8 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.mock.dataProviders.features.FastingMockDataProvider
@@ -25,8 +23,8 @@ import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun DiaryFastingItem(
-    dateTimeFormatter: DateTimeFormatter,
-    millisDistanceFormatter: MillisDistanceFormatter,
+    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     fastingTrack: FastingTrack,
 ) {
@@ -51,7 +49,7 @@ fun DiaryFastingItem(
             percentage = fastingTrack.fastingProgress,
             innerText = millisDistanceFormatter.formatMillisDistance(
                 distanceInMillis = fastingDurationInMillis.inWholeMilliseconds,
-                accuracy = MillisDistanceFormatter.Accuracy.MINUTES,
+                accuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.MINUTES,
             ),
         )
         Spacer(modifier = Modifier.width(16.dp))
@@ -92,11 +90,11 @@ private fun DiaryFastingItemPreview() {
     HealtherTheme {
         DiaryFastingItem(
             fastingTrack = FastingMockDataProvider.fastingTracksList().first(),
-            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+            dateTimeFormatter = hardcoder.dev.formatters.DateTimeFormatter(context = LocalContext.current),
             fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
-            millisDistanceFormatter = MillisDistanceFormatter(
+            millisDistanceFormatter = hardcoder.dev.formatters.MillisDistanceFormatter(
                 context = LocalContext.current,
-                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
+                defaultAccuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.DAYS,
             ),
         )
     }
