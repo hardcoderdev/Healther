@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="errors_fieldCantBeEmptyError">This field can\'t be empty!</string>
+    <string name="errors_moreThanMaxCharsError">Max characters: %d</string>
+    <string name="errors_invalidCharsError">Remove characters: %s</string>
+</resources>

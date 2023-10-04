@@ -202,7 +202,7 @@ private fun AvailablePedometerSection(
             Spacer(modifier = Modifier.height(32.dp))
             RequestButtonWithIcon(
                 requestButtonConfig = RequestButtonConfig.Filled(
-                    labelResId = R.string.waterTracking_collectReward,
+                    labelResId = R.string.currency_collectReward,
                     formatArgs = listOf(totalReward),
                     controller = collectRewardController,
                     iconResId = R.drawable.ic_money,
@@ -314,14 +314,14 @@ private fun StatisticsSection(
     statistics: PedometerStatistic,
     pedometerStatisticResolver: PedometerStatisticResolver,
 ) {
-    Title(text = stringResource(id = R.string.pedometer_statistic_text))
+    Title(text = stringResource(id = R.string.analytics_generalStatistics_text))
     Spacer(modifier = Modifier.height(16.dp))
     Statistics(statistics = pedometerStatisticResolver.resolve(statistics))
 }
 
 @Composable
 private fun ActivityChartSection(pedometerChartData: PedometerChartData) {
-    Title(text = stringResource(id = R.string.waterTracking_analytics_activity_chart))
+    Title(text = stringResource(id = R.string.pedometer_analytics_activity_chart))
     Spacer(modifier = Modifier.height(16.dp))
     if (pedometerChartData.entriesList.count() >= MINIMUM_ENTRIES_FOR_SHOWING_CHART) {
         ActivityLineChart(
@@ -335,7 +335,7 @@ private fun ActivityChartSection(pedometerChartData: PedometerChartData) {
             },
         )
     } else {
-        Description(text = stringResource(id = R.string.pedometer_chartNotEnoughData_text))
+        Description(text = stringResource(id = R.string.analytics_chartNotEnoughData_text))
     }
 }
 

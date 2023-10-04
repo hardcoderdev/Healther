@@ -47,7 +47,7 @@ fun MoodTrackingAnalytics(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.moodTracking_analytics_title_topBar,
+                titleResId = R.string.analytics_title_topBar,
                 onGoBack = onGoBack,
             ),
         ),
@@ -78,7 +78,7 @@ private fun MoodTrackingAnalyticsContent(
                 ChartSection(moodTrackingChartData = chartData)
                 Spacer(modifier = Modifier.height(32.dp))
             } else {
-                EmptySection(emptyTitleResId = R.string.moodTracking_analyticsNowEmpty_text)
+                EmptySection(emptyTitleResId = R.string.analytics_nowEmpty_text)
             }
         }
     }
@@ -89,7 +89,7 @@ private fun StatisticSection(
     moodTrackingStatisticResolver: MoodTrackingStatisticResolver,
     statistic: MoodTrackingStatistic,
 ) {
-    Title(text = stringResource(id = R.string.moodTracking_statistic_text))
+    Title(text = stringResource(id = R.string.analytics_generalStatistics_text))
     Spacer(modifier = Modifier.height(16.dp))
     Statistics(statistics = moodTrackingStatisticResolver.resolve(statistic))
 }
@@ -111,7 +111,7 @@ private fun ChartSection(moodTrackingChartData: MoodTrackingChartData) {
             },
         )
     } else {
-        Description(text = stringResource(id = R.string.moodTracking_chartNotEnoughData_text))
+        Description(text = stringResource(id = R.string.analytics_chartNotEnoughData_text))
     }
 }
 

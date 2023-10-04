@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="dashboard_title_topBar">Дашборд</string>
-    <string name="dashboard_fasting_feature">Голодание</string>
+
     <string name="dashboard_heroSection_health_points_label">Очки здоровья (ОЗ)</string>
     <string name="dashboard_heroSection_health_points_format">%1$d / %2$d</string>
     <string name="dashboard_heroSection_experience_points_label">Очки опыта (ОП)</string>
@@ -9,20 +9,21 @@
     <string name="dashboard_heroSection_level_format">%d-ый уровень</string>
     <string name="dashboard_heroSection_inventory_buttonText">Инвентарь героя</string>
     <string name="dashboard_heroSection_shop_buttonText">Магазин</string>
+
+    <string name="dashboard_water_tracking_feature">Водный баланс</string>
+    <string name="dashboard_fasting_feature">Голодание</string>
     <string name="dashboard_mood_tracking_feature">Настроение</string>
     <string name="dashboard_pedometer_feature">Шагомер</string>
-    <string name="dashboard_water_tracking_feature">Водный баланс</string>
+    <string name="dashboard_diary_feature">Дневник здоровья</string>
+
     <string name="dashboard_diary_tracking_progress_format">%1$d %2$s из %3$d</string>
     <string name="dashboard_water_tracking_progress_format">%1$d мл из %2$d</string>
     <string name="dashboard_mood_tracking_progress_format">%1$d %2$s из %3$d</string>
     <string name="dashboard_pedometer_progress_format">%1$d %2$s из %3$d</string>
+
     <string name="dashboard_start_fasting">Начать голодание</string>
     <string name="dashboard_fasting_is_not_active">Сейчас вы не голодаете.</string>
     <string name="dashboard_mood_tracking_not_specified">Вы не указали настроение сегодня.</string>
     <string name="dashboard_fasting_completed">Голодание завершено.</string>
     <string name="dashboard_finish_fasting">Сохранить голодание</string>
-    <string name="dashboard_diary_feature">Дневник здоровья</string>
-    <string name="dashboard_diaryCreationQuickAction_contentDescription">Создание заметки</string>
-    <string name="dashboard_waterTrackingCreationQuickAction_contentDescription">Создание трека</string>
-    <string name="dashboard_moodTrackingCreationQuickAction_contentDescription">Создание трека</string>
 </resources>

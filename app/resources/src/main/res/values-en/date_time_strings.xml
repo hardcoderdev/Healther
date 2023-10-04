@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dateTime_selectedDate_formatText">Date: %s</string>
+    <string name="dateTime_selectedTime_formatText">Time: %s</string>
+
+    <string name="dateRangeFilterType_byDay">Day</string>
+    <string name="dateRangeFilterType_byWeek">Week</string>
+    <string name="dateRangeFilterType_byMonth">Month</string>
+    <string name="dateRangeFilterType_byYear">Year</string>
+    <string name="dateRangeFilterType_byAllPeriod">All time</string>
+</resources>

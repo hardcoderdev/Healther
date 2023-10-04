@@ -9,7 +9,6 @@
     <string name="fasting_in_progress_text">You are fasting!</string>
     <string name="fasting_startDate_text">You started a fast: %s</string>
     <string name="fasting_interrupt_buttonText">Break fasting</string>
-    <string name="fasting_statistic_text">General statistics:</string>
     <string name="fasting_statistic_not_enough_data_text">Too little information</string>
     <string name="fasting_statistic_max_hours_text">Maximum hours</string>
     <string name="fasting_statistic_average_hours_text">Hours on average</string>
@@ -32,9 +31,6 @@
     <string name="fasting_finish_fail_results_text">Excellent results! You tried your best and managed to survive %s! Do not give up and try even harder, and you will definitely be able to complete the plan completely!</string>
     <string name="fasting_finish_goNext_buttonText">Great, thanks!</string>
     <string name="fasting_finish_addNoteOptional_text">You can add a note if you want:</string>
-
-    <string name="fasting_history_title_topBar">Detailed history</string>
-    <string name="fasting_history_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
 
     <string name="fasting_itemPlan_description_formatText">You will fast for %1$s and after that you will have %2$s to eat.</string>
     <string name="fasting_itemPlan_selectFastingHours_text">Select the number of hours after which the fast will end:</string>

@@ -88,7 +88,7 @@ fun WaterTrackingCreation(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.waterTracking_creation_create_title_topBar,
+                titleResId = R.string.tracking_creation_title_topBar,
                 onGoBack = onGoBack,
             ),
         ),
@@ -135,7 +135,7 @@ private fun WaterTrackingCreationContent(
             requestButtonConfig = RequestButtonConfig.Filled(
                 controller = creationController,
                 iconResId = R.drawable.ic_done,
-                labelResId = R.string.waterTracking_creation_saveEntry_buttonText,
+                labelResId = R.string.tracking_createEntry_buttonText,
             ),
         )
     }
@@ -160,7 +160,7 @@ private fun EnterDrunkMillilitersSection(
             } else {
                 when (it.reason) {
                     is IncorrectMillilitersCount.Reason.Empty -> {
-                        R.string.waterTracking_creation_millilitersEmpty_text
+                        R.string.errors_fieldCantBeEmptyError
                     }
 
                     is IncorrectMillilitersCount.Reason.MoreThanDailyWaterIntake -> {
@@ -223,7 +223,7 @@ private fun DrinkTypeManagementButton(onManageDrinkType: () -> Unit) {
         chipConfig = ChipConfig.Action(
             modifier = Modifier.padding(4.dp),
             onClick = { onManageDrinkType() },
-            text = stringResource(id = R.string.waterTracking_creation_createDrinkType_management_text),
+            text = stringResource(id = R.string.waterTracking_drinkTypes_title_topBar),
             iconResId = hardcoder.dev.icons.IconImpl(0, R.drawable.ic_create).resourceId,
             shape = RoundedCornerShape(32.dp),
         ),
@@ -247,7 +247,7 @@ private fun SelectDateSection(
     TextIconButton(
         textIconButtonConfig = TextIconButtonConfig.Outlined(
             iconResId = R.drawable.ic_date,
-            labelResId = R.string.waterTracking_creation_selectedDate_formatText,
+            labelResId = R.string.dateTime_selectedDate_formatText,
             formatArgs = listOf(formattedDate),
             onClick = {
                 dialogOpen = true
@@ -277,7 +277,7 @@ private fun SelectTimeSection(
     TextIconButton(
         textIconButtonConfig = TextIconButtonConfig.Outlined(
             iconResId = R.drawable.ic_time,
-            labelResId = R.string.waterTracking_creation_selectedTime_formatText,
+            labelResId = R.string.dateTime_selectedTime_formatText,
             formatArgs = listOf(formattedDate),
             onClick = {
                 dialogOpen = true

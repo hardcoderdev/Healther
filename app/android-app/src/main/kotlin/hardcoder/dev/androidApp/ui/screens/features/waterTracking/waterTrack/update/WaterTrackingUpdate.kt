@@ -93,7 +93,7 @@ fun WaterTrackingUpdate(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.waterTracking_update_title_topBar,
+                titleResId = R.string.tracking_update_title_topBar,
                 onGoBack = onGoBack,
             ),
         ),
@@ -147,7 +147,7 @@ private fun WaterTrackingUpdateContent(
             requestButtonConfig = RequestButtonConfig.Filled(
                 controller = updatingController,
                 iconResId = R.drawable.ic_done,
-                labelResId = R.string.waterTracking_update_update_buttonText,
+                labelResId = R.string.tracking_updateEntry_buttonText,
             ),
         )
     }
@@ -157,6 +157,8 @@ private fun WaterTrackingUpdateContent(
 private fun EnterDrunkMillilitersSection(
     millilitersDrunkInputController: ValidatedInputController<Int, ValidatedMillilitersCount>,
 ) {
+    Title(text = stringResource(id = R.string.waterTracking_creation_enterMillilitersCount_text))
+    Spacer(modifier = Modifier.height(16.dp))
     ValidatedTextField(
         modifier = Modifier.fillMaxWidth(),
         controller = millilitersDrunkInputController,
@@ -170,17 +172,17 @@ private fun EnterDrunkMillilitersSection(
             } else {
                 when (it.reason) {
                     is IncorrectMillilitersCount.Reason.Empty -> {
-                        R.string.waterTracking_update_millilitersEmpty_text
+                        R.string.errors_fieldCantBeEmptyError
                     }
 
                     is IncorrectMillilitersCount.Reason.MoreThanDailyWaterIntake -> {
-                        R.string.waterTracking_update_millilitersMoreThanDailyWaterIntake_text
+                        R.string.waterTracking_creation_millilitersMoreThanDailyWaterIntake_text
                     }
                 }
             }
         },
         regex = RegexHolder.textFieldDigitRegex,
-        label = R.string.waterTracking_update_enterMillilitersCountHint_textField,
+        label = R.string.waterTracking_creation_enterMillilitersCountHint_textField,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done,
@@ -194,7 +196,7 @@ private fun SelectDrinkTypeSection(
     drinkSelectionController: SingleSelectionController<DrinkType>,
     onManageDrinkTypes: () -> Unit,
 ) {
-    Title(text = stringResource(id = R.string.waterTracking_update_enterDrinkType_text))
+    Title(text = stringResource(id = R.string.waterTracking_creation_enterDrinkType_text))
     Spacer(modifier = Modifier.height(8.dp))
 
     when (val state = drinkSelectionController.state.collectAsState().value) {
@@ -233,7 +235,7 @@ private fun DrinkTypeManagementButton(onManageDrinkTypes: () -> Unit) {
         chipConfig = ChipConfig.Action(
             modifier = Modifier.padding(4.dp),
             onClick = { onManageDrinkTypes() },
-            text = stringResource(id = R.string.waterTracking_update_createDrinkType_management_text),
+            text = stringResource(id = R.string.waterTracking_drinkTypes_title_topBar),
             iconResId = hardcoder.dev.icons.IconImpl(0, R.drawable.ic_create).resourceId,
             shape = RoundedCornerShape(32.dp),
         ),
@@ -252,12 +254,12 @@ private fun SelectDateSection(
         mutableStateOf(false)
     }
 
-    Title(text = stringResource(id = R.string.waterTracking_update_selectAnotherDate_text))
+    Title(text = stringResource(id = R.string.waterTracking_creation_selectAnotherDate_text))
     Spacer(modifier = Modifier.height(16.dp))
     TextIconButton(
         textIconButtonConfig = TextIconButtonConfig.Outlined(
             iconResId = R.drawable.ic_date,
-            labelResId = R.string.waterTracking_update_selectedDate_formatText,
+            labelResId = R.string.dateTime_selectedDate_formatText,
             formatArgs = listOf(formattedDate),
             onClick = {
                 dialogOpen = true
@@ -290,7 +292,7 @@ private fun SelectTimeSection(timeInputController: InputController<LocalTime>) {
     TextIconButton(
         textIconButtonConfig = TextIconButtonConfig.Outlined(
             iconResId = R.drawable.ic_time,
-            labelResId = R.string.waterTracking_creation_selectedTime_formatText,
+            labelResId = R.string.dateTime_selectedTime_formatText,
             formatArgs = listOf(formattedDate),
             onClick = {
                 dialogOpen = true

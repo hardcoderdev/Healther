@@ -62,7 +62,7 @@ fun PedometerHistory(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.pedometer_history_title_topBar,
+                titleResId = R.string.history_title_topBar,
                 onGoBack = onGoBack,
             ),
         ),
@@ -154,7 +154,7 @@ private fun PedometerTracksHistory(
         )
     } else {
         Spacer(modifier = Modifier.height(16.dp))
-        Description(text = stringResource(id = R.string.pedometer_emptyDayHistory_text))
+        Description(text = stringResource(id = R.string.pedometer_history_emptyDayHistory_text))
     }
 }
 

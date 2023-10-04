@@ -9,45 +9,20 @@
     <string name="waterTracking_average_water_intakes">Average number of water drinks per day</string>
     <string name="waterTracking_analytics_activity_chart">Activity chart (by hours):</string>
     <string name="waterTracking_diary_text">Drunk diary:</string>
-    <string name="waterTracking_analytics_statistic_text">General statistic:</string>
     <string name="waterTracking_statistic_water_total_drunk">Total drunk</string>
-    <string name="waterTracking_collectReward">Collect %.2f coins</string>
-
-    <string name="waterTracking_analytics_title_topBar">Analytics &amp; statistics</string>
-    <string name="waterTracking_analytics_chartNotEnoughData_text">аWe don\'t have enough data yet to display a graph. Use this feature and the graph will appear later!</string>
-    <string name="waterTracking_analyticsNowEmpty_text">Now it\'s empty. Analytics (chart and statistics) will appear after a certain time of using this feature.</string>
-
 
     <string name="waterTracking_creation_drinkTypeNotSelected_text">Create and choose the type of drink!</string>
-    <string name="waterTracking_creation_create_title_topBar">Create an entry</string>
     <string name="waterTracking_creation_enterMillilitersCount_text">Enter the amount of drink you have drunk (in ml):</string>
     <string name="waterTracking_creation_enterMillilitersCountHint_textField">The amount of drink you drink…</string>
     <string name="waterTracking_creation_selectAnotherDate_text">Have you drunk water before? You can change the date.</string>
     <string name="waterTracking_creation_enterDrinkType_text">Select the type of drink…</string>
-    <string name="waterTracking_creation_saveEntry_buttonText">Create entry</string>
-    <string name="waterTracking_creation_millilitersEmpty_text">This field can\'t be empty!</string>
-    <string name="waterTracking_creation_selectedDate_formatText">Date: %s</string>
-    <string name="waterTracking_creation_selectedTime_formatText">Time: %s</string>
     <string name="waterTracking_creation_millilitersMoreThanDailyWaterIntake_text">The ml entered by you is more, than daily rate!</string>
-    <string name="waterTracking_creation_createDrinkType_management_text">Create your drink</string>
-
-    <string name="waterTracking_update_title_topBar">Entry update</string>
-    <string name="waterTracking_update_update_buttonText">Update entry</string>
-    <string name="waterTracking_update_enterMillilitersCountHint_textField">The amount of drink you drink…</string>
-    <string name="waterTracking_update_selectAnotherDate_text">Have you drunk water before? You can change the date.</string>
-    <string name="waterTracking_update_enterDrinkType_text">Select the type of drink…</string>
-    <string name="waterTracking_update_selectedDate_formatText">Date: %s</string>
-    <string name="waterTracking_update_millilitersEmpty_text">This field cannot be empty!</string>
-    <string name="waterTracking_update_millilitersMoreThanDailyWaterIntake_text">The ml entered by you is more, than daily rate!</string>
-    <string name="waterTracking_update_createDrinkType_management_text">Create your drink</string>
-
-    <string name="waterTracking_history_title_topBar">Detailed history</string>
-    <string name="waterTracking_history_emptyDayHistory_text">You haven\'t added any entries on this day.</string>
 
     <string name="waterTracking_drinkTypes_title_topBar">Drink type management</string>
     <string name="waterTracking_drinkTypes_nowEmpty_text">Now it\'s empty. In order to add a custom drink, it appears in the right corner!</string>
 
     <string name="waterTracking_drinkTypes_creation_title_topBar">Creating a drink</string>
+    <string name="waterTracking_drinkTypes_creation_createTrack_buttonText">Create a drink</string>
     <string name="waterTracking_drinkTypes_creation_enterName_text">Enter the name of the drink:</string>
     <string name="waterTracking_drinkTypes_creation_nameIcon_contentDescription">Name input icon</string>
     <string name="waterTracking_drinkTypes_creation_enterName_textField">E.g. a gin tonic…</string>
@@ -55,21 +30,9 @@
     <string name="waterTracking_drinkTypes_creation_drinkTypeIconContentDescription">Drink type icon</string>
     <string name="waterTracking_drinkTypes_creation_selectHydrationIndex_text">Specify the drink hydration index:</string>
     <string name="waterTracking_drinkTypes_creation_selectedIndex_formatText">Selected index: %d%%</string>
-    <string name="waterTracking_drinkTypes_creation_createTrack_buttonText">Save a drink</string>
-    <string name="waterTracking_drinkTypes_creation_nameEmpty">This field can\'t be empty!</string>
-    <string name="waterTracking_drinkTypes_creation_nameMoreThanMaxCharsError">Max characters: %d</string>
 
-    <string name="waterTracking_drinkTypes_update_title_topBar">Drink type update</string>
-    <string name="waterTracking_drinkTypes_update_selectedIndex_formatText">Selected index: %d%%</string>
-    <string name="waterTracking_drinkTypes_update_selectHydrationIndex_text">Specify the drink hydration index:</string>
-    <string name="waterTracking_drinkTypes_update_drinkTypeIconContentDescription">Drink type icon</string>
-    <string name="waterTracking_drinkTypes_update_selectIcon_text">Select a drink icon:</string>
-    <string name="waterTracking_drinkTypes_update_nameIcon_contentDescription">Name input icon</string>
-    <string name="waterTracking_drinkTypes_update_enterName_textField">E.g. a gin tonic…</string>
-    <string name="waterTracking_drinkTypes_update_enterName_text">Enter the name of the drink:</string>
-    <string name="waterTracking_drinkTypes_update_createTrack_buttonText">Update drink type</string>
-    <string name="waterTracking_drinkTypes_update_nameEmpty">This field can\'t be empty!</string>
-    <string name="waterTracking_drinkTypes_update_nameMoreThanMaxCharsError">Max characters: %d</string>
+    <string name="waterTracking_drinkTypes_update_title_topBar">Updating a drink</string>
+    <string name="waterTracking_drinkTypes_update_createTrack_buttonText">Update drink</string>
 
     <string name="predefined_drinkType_name_water">Water</string>
     <string name="predefined_drinkType_name_coffee">Coffee</string>

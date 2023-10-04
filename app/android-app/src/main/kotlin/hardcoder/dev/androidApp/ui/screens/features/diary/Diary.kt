@@ -166,7 +166,7 @@ private fun DiaryContent(
 
                 RequestButtonWithIcon(
                     requestButtonConfig = RequestButtonConfig.Filled(
-                        labelResId = R.string.waterTracking_collectReward,
+                        labelResId = R.string.currency_collectReward,
                         formatArgs = listOf(totalReward),
                         controller = collectRewardController,
                         iconResId = R.drawable.ic_money,

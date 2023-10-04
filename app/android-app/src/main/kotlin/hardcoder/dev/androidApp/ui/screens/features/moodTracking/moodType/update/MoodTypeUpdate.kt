@@ -127,12 +127,12 @@ private fun EnterMoodTypeNameSection(
 ) {
     val context = LocalContext.current
 
-    Title(text = stringResource(id = R.string.moodTracking_moodType_update_enterName_text))
+    Title(text = stringResource(id = R.string.moodTracking_moodType_creation_enterName_text))
     Spacer(modifier = Modifier.height(16.dp))
     ValidatedTextField(
         controller = moodTypeNameController,
         modifier = Modifier.fillMaxWidth(),
-        label = R.string.moodTracking_moodType_update_enterName_textField,
+        label = R.string.moodTracking_moodType_creation_enterName_textField,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done,
@@ -141,7 +141,7 @@ private fun EnterMoodTypeNameSection(
             Icon(
                 iconResId = R.drawable.ic_description,
                 contentDescription = stringResource(
-                    id = R.string.waterTracking_drinkTypes_update_nameIcon_contentDescription,
+                    id = R.string.moodTracking_moodTypes_creation_iconContentDescription,
                 ),
             )
         },
@@ -152,12 +152,12 @@ private fun EnterMoodTypeNameSection(
             } else {
                 when (val reason = it.reason) {
                     is IncorrectMoodTypeName.Reason.Empty -> {
-                        context.getString(R.string.moodTracking_moodType_update_nameEmpty_error)
+                        context.getString(R.string.errors_fieldCantBeEmptyError)
                     }
 
                     is IncorrectMoodTypeName.Reason.MoreThanMaxChars -> {
                         context.getString(
-                            R.string.moodTracking_moodType_update_nameMoreThanMaxChars_error,
+                            R.string.errors_moreThanMaxCharsError,
                             reason.maxChars,
                         )
                     }
@@ -169,7 +169,7 @@ private fun EnterMoodTypeNameSection(
 
 @Composable
 private fun SelectIconSection(iconSelectionController: SingleSelectionController<Icon>) {
-    Title(text = stringResource(id = R.string.moodTracking_moodType_update_selectMoodIcon_text))
+    Title(text = stringResource(id = R.string.moodTracking_moodType_creation_selectIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
     SingleCardSelectionHorizontalGrid(
         controller = iconSelectionController,
@@ -181,7 +181,7 @@ private fun SelectIconSection(iconSelectionController: SingleSelectionController
         itemContent = { icon, _ ->
             Icon(
                 iconResId = icon.resourceId,
-                contentDescription = stringResource(id = R.string.waterTracking_drinkTypes_update_drinkTypeIconContentDescription),
+                contentDescription = stringResource(id = R.string.moodTracking_moodTypes_creation_iconContentDescription),
                 modifier = Modifier
                     .size(60.dp)
                     .padding(12.dp),
@@ -194,11 +194,11 @@ private fun SelectIconSection(iconSelectionController: SingleSelectionController
 private fun EnterMoodTypePositivePercentageSection(positiveIndexController: InputController<Int>) {
     val state by positiveIndexController.state.collectAsState()
 
-    Title(text = stringResource(id = R.string.moodTracking_moodType_update_selectPositivePercentage_text))
+    Title(text = stringResource(id = R.string.moodTracking_moodType_creation_selectPositivePercentage_text))
     Spacer(modifier = Modifier.height(16.dp))
     Description(
         text = stringResource(
-            id = R.string.moodTracking_moodType_update_selectedPositivePercentage_formatText,
+            id = R.string.moodTracking_moodType_creation_selectedIndex_formatText,
             formatArgs = arrayOf(state.input),
         ),
     )

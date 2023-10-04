@@ -1,22 +1,3 @@
 <resources>
     <string name="app_name" translatable="false">Healther</string>
-
-    <string name="gender_male">Мужчина</string>
-    <string name="gender_female">Женщина</string>
-
-    <string name="datetime_seconds">%dс</string>
-    <string name="datetime_minutes">%dм</string>
-    <string name="datetime_hours">%dч</string>
-    <string name="datetime_days">%dд</string>
-
-    <string name="liquid_hectoliters">%dгл</string>
-    <string name="liquid_decaliters">%dдал</string>
-    <string name="liquid_liters">%dл</string>
-    <string name="liquid_milliliters">%dмл</string>
-
-    <string name="dateRangeFilterType_byDay">День</string>
-    <string name="dateRangeFilterType_byWeek">Неделя</string>
-    <string name="dateRangeFilterType_byMonth">Месяц</string>
-    <string name="dateRangeFilterType_byYear">Год</string>
-    <string name="dateRangeFilterType_byAllPeriod">Весь период</string>
 </resources>

@@ -116,12 +116,12 @@ private fun EnterActivityNameSection(
             } else {
                 when (val reason = it.reason) {
                     is IncorrectActivityName.Reason.Empty -> {
-                        context.getString(R.string.moodTracking_activity_creation_nameEmpty_error)
+                        context.getString(R.string.errors_fieldCantBeEmptyError)
                     }
 
                     is IncorrectActivityName.Reason.MoreThanMaxChars -> {
                         context.getString(
-                            R.string.moodTracking_activity_creation_nameMoreThanMaxChars_error,
+                            R.string.errors_moreThanMaxCharsError,
                             reason.maxChars,
                         )
                     }

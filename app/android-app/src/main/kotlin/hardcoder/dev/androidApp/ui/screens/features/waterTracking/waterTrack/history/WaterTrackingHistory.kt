@@ -32,6 +32,7 @@ import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoderdev.healther.app.resources.R
 import kotlinx.datetime.Instant
 import org.koin.compose.koinInject
@@ -52,7 +53,7 @@ fun WaterTrackingHistory(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.waterTracking_history_title_topBar,
+                titleResId = R.string.history_title_topBar,
                 onGoBack = onGoBack,
             ),
         ),
@@ -108,7 +109,7 @@ private fun WaterTracksHistory(
             }
         } else {
             Spacer(modifier = Modifier.height(16.dp))
-            Description(text = stringResource(id = R.string.waterTracking_history_emptyDayHistory_text))
+            Description(text = stringResource(id = R.string.history_emptyDayHistory_text))
         }
     }
 }
@@ -116,15 +117,17 @@ private fun WaterTracksHistory(
 @HealtherScreenPhonePreviews
 @Composable
 private fun WaterTrackingHistoryPreview() {
-    WaterTrackingHistory(
-        onGoBack = {},
-        dateRangeInputController = MockControllersProvider.inputController(
-            input = MockDateProvider.instantRange(),
-        ),
-        waterTracksLoadingController = MockControllersProvider.loadingController(
-            data = WaterTrackingMockDataProvider.waterTrackingItemsList(
-                context = LocalContext.current,
+    HealtherTheme {
+        WaterTrackingHistory(
+            onGoBack = {},
+            dateRangeInputController = MockControllersProvider.inputController(
+                input = MockDateProvider.instantRange(),
             ),
-        ),
-    )
+            waterTracksLoadingController = MockControllersProvider.loadingController(
+                data = WaterTrackingMockDataProvider.waterTrackingItemsList(
+                    context = LocalContext.current,
+                ),
+            ),
+        )
+    }
 }

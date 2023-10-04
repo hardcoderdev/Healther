@@ -98,12 +98,12 @@ private fun EnterTagNameSection(
 ) {
     val context = LocalContext.current
 
-    Title(text = stringResource(id = R.string.diary_tag_update_enter_name_text))
+    Title(text = stringResource(id = R.string.diary_tag_creation_enter_name_text))
     Spacer(modifier = Modifier.height(16.dp))
     ValidatedTextField(
         controller = tagNameInputController,
         modifier = Modifier.fillMaxWidth(),
-        label = R.string.diary_tag_update_enterName_textField,
+        label = R.string.diary_tag_creation_enterName_textField,
         multiline = false,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
@@ -116,12 +116,12 @@ private fun EnterTagNameSection(
             } else {
                 when (val reason = it.reason) {
                     is IncorrectDiaryTagName.Reason.Empty -> {
-                        context.getString(R.string.diary_tag_update_nameEmpty_error)
+                        context.getString(R.string.errors_fieldCantBeEmptyError)
                     }
 
                     is IncorrectDiaryTagName.Reason.MoreThanMaxChars -> {
                         context.getString(
-                            R.string.diary_tag_update_nameMoreThanMaxChars_error,
+                            R.string.errors_moreThanMaxCharsError,
                             reason.maxChars,
                         )
                     }
@@ -133,7 +133,7 @@ private fun EnterTagNameSection(
 
 @Composable
 private fun SelectIconSection(iconSelectionController: SingleSelectionController<Icon>) {
-    Title(text = stringResource(id = R.string.diary_tag_update_selectIcon_text))
+    Title(text = stringResource(id = R.string.diary_tag_creation_selectIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
     SingleCardSelectionVerticalGrid(
         controller = iconSelectionController,
@@ -144,7 +144,7 @@ private fun SelectIconSection(iconSelectionController: SingleSelectionController
         itemContent = { icon, _ ->
             Icon(
                 iconResId = icon.resourceId,
-                contentDescription = stringResource(id = R.string.diary_tag_update_tagIconContentDescription),
+                contentDescription = stringResource(id = R.string.diary_tag_creation_tagIconContentDescription),
                 modifier = Modifier
                     .size(60.dp)
                     .padding(12.dp),

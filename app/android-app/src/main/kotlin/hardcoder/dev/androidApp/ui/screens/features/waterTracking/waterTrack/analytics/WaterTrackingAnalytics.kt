@@ -48,7 +48,7 @@ fun WaterTrackingAnalytics(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.waterTracking_analytics_title_topBar,
+                titleResId = R.string.analytics_title_topBar,
                 onGoBack = onGoBack,
             ),
         ),
@@ -79,7 +79,7 @@ private fun WaterTrackingAnalyticsContent(
                 ChartSection(chartData = chartData)
                 Spacer(modifier = Modifier.height(16.dp))
             } else {
-                EmptySection(emptyTitleResId = R.string.waterTracking_analyticsNowEmpty_text)
+                EmptySection(emptyTitleResId = R.string.analytics_nowEmpty_text)
             }
         }
     }
@@ -101,7 +101,7 @@ private fun ChartSection(chartData: WaterTrackingChartData) {
             },
         )
     } else {
-        Description(text = stringResource(id = R.string.waterTracking_analytics_chartNotEnoughData_text))
+        Description(text = stringResource(id = R.string.analytics_chartNotEnoughData_text))
     }
 }
 
@@ -110,7 +110,7 @@ private fun StatisticSection(
     waterTrackingStatisticResolver: WaterTrackingStatisticResolver,
     waterTrackingStatistic: WaterTrackingStatistic,
 ) {
-    Title(text = stringResource(id = R.string.waterTracking_analytics_statistic_text))
+    Title(text = stringResource(id = R.string.analytics_generalStatistics_text))
     Spacer(modifier = Modifier.height(16.dp))
     Statistics(statistics = waterTrackingStatisticResolver.resolve(statistic = waterTrackingStatistic))
 }

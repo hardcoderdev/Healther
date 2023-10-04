@@ -126,7 +126,9 @@ private fun EnterBasicInfoSection(contentController: ValidatedInputController<St
                 null
             } else {
                 when (it.reason) {
-                    IncorrectDiaryTrackContent.Reason.Empty -> R.string.diary_creation_descriptionEmpty_text
+                    IncorrectDiaryTrackContent.Reason.Empty -> {
+                        R.string.errors_fieldCantBeEmptyError
+                    }
                 }
             }
         },
@@ -165,7 +167,7 @@ private fun ManagementTagsButton(onManageTags: () -> Unit) {
     Chip(
         chipConfig = ChipConfig.Action(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.diary_creation_manageTags_buttonText),
+            text = stringResource(id = R.string.diary_tags_title_topBar),
             iconResId = R.drawable.ic_create,
             shape = RoundedCornerShape(32.dp),
             onClick = onManageTags,

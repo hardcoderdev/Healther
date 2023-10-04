@@ -109,11 +109,11 @@ private fun EnterActivityNameSection(
 ) {
     val context = LocalContext.current
 
-    Title(text = stringResource(id = R.string.moodTracking_activity_update_enter_name_text))
+    Title(text = stringResource(id = R.string.moodTracking_activity_creation_enter_name_text))
     Spacer(modifier = Modifier.height(16.dp))
     ValidatedTextField(
         controller = activityNameController,
-        label = R.string.moodTracking_activity_update_enterActivityName_textField,
+        label = R.string.moodTracking_activity_creation_enterActivityName_textField,
         multiline = false,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
@@ -127,12 +127,12 @@ private fun EnterActivityNameSection(
             } else {
                 when (val reason = it.reason) {
                     is IncorrectActivityName.Reason.Empty -> {
-                        context.getString(R.string.moodTracking_activity_update_nameEmpty_error)
+                        context.getString(R.string.errors_fieldCantBeEmptyError)
                     }
 
                     is IncorrectActivityName.Reason.MoreThanMaxChars -> {
                         context.getString(
-                            R.string.moodTracking_activity_update_nameMoreThanMaxChars_error,
+                            R.string.errors_moreThanMaxCharsError,
                             reason.maxChars,
                         )
                     }
@@ -144,7 +144,7 @@ private fun EnterActivityNameSection(
 
 @Composable
 private fun SelectIconSection(iconSelectionController: SingleSelectionController<Icon>) {
-    Title(text = stringResource(id = R.string.moodTracking_activity_update_selectIcon_text))
+    Title(text = stringResource(id = R.string.moodTracking_activity_creation_selectIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
     SingleCardSelectionVerticalGrid(
         controller = iconSelectionController,
@@ -155,7 +155,7 @@ private fun SelectIconSection(iconSelectionController: SingleSelectionController
         itemContent = { icon, _ ->
             Icon(
                 iconResId = icon.resourceId,
-                contentDescription = stringResource(id = R.string.moodTracking_activity_update_activityIconContentDescription),
+                contentDescription = stringResource(id = R.string.moodTracking_activity_creation_iconContentDescription),
                 modifier = Modifier
                     .size(60.dp)
                     .padding(12.dp),

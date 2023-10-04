@@ -140,13 +140,13 @@ private fun EnterMoodTypeNameSection(
                 when (val reason = it.reason) {
                     is IncorrectMoodTypeName.Reason.Empty -> {
                         context.getString(
-                            R.string.moodTracking_moodType_creation_nameEmpty_error,
+                            R.string.errors_fieldCantBeEmptyError,
                         )
                     }
 
                     is IncorrectMoodTypeName.Reason.MoreThanMaxChars -> {
                         context.getString(
-                            R.string.moodTracking_moodType_creation_nameMoreThanMaxChars_error,
+                            R.string.errors_moreThanMaxCharsError,
                             reason.maxChars,
                         )
                     }
@@ -170,7 +170,7 @@ private fun SelectIconSection(iconSelectionController: SingleSelectionController
         itemContent = { icon, _ ->
             Icon(
                 iconResId = icon.resourceId,
-                contentDescription = stringResource(id = R.string.waterTracking_drinkTypes_creation_drinkTypeIconContentDescription),
+                contentDescription = stringResource(id = R.string.moodTracking_moodTypes_creation_iconContentDescription),
                 modifier = Modifier
                     .size(60.dp)
                     .padding(12.dp),

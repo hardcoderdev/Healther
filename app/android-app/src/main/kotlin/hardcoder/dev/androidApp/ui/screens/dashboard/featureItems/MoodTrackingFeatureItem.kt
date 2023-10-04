@@ -108,7 +108,7 @@ private fun BoxScope.QuickActions(
             circleIconButtonConfig = CircleIconButtonConfig.Outlined(
                 onClick = onCreateMoodTrack,
                 iconResId = R.drawable.ic_create,
-                contentDescription = R.string.dashboard_moodTrackingCreationQuickAction_contentDescription,
+                contentDescription = R.string.tracking_creation_title_topBar,
             ),
         )
     }

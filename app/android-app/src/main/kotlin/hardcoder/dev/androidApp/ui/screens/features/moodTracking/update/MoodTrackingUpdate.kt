@@ -101,7 +101,7 @@ fun MoodTrackingUpdate(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.moodTracking_creation_title_topBar,
+                titleResId = R.string.tracking_update_title_topBar,
                 onGoBack = onGoBack,
             ),
         ),
@@ -169,7 +169,7 @@ private fun MoodTrackingUpdateContent(
             requestButtonConfig = RequestButtonConfig.Filled(
                 controller = updateController,
                 iconResId = R.drawable.ic_save,
-                labelResId = R.string.moodTracking_update_buttonText,
+                labelResId = R.string.tracking_updateEntry_buttonText,
             ),
         )
     }
@@ -189,7 +189,7 @@ private fun SelectMoodSection(
             emptyContent = {
                 MoodTypeManagementButton(onManageMoodTypes = onManageMoodTypes)
                 Spacer(modifier = Modifier.height(8.dp))
-                ErrorText(text = stringResource(id = R.string.moodTracking_update_moodTypeNotSelected_text))
+                ErrorText(text = stringResource(id = R.string.moodTracking_creation_moodTypeNotSelected_text))
             },
             itemModifier = {
                 Modifier.padding(
@@ -270,7 +270,7 @@ private fun ManagementActivitiesButton(onManageActivities: () -> Unit) {
     Chip(
         chipConfig = ChipConfig.Action(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.moodTracking_update_manageActivities_buttonText),
+            text = stringResource(id = R.string.moodTracking_creation_manageActivities_buttonText),
             iconResId = R.drawable.ic_create,
             shape = RoundedCornerShape(32.dp),
             onClick = onManageActivities,
@@ -285,7 +285,7 @@ private fun EnterNoteSection(noteInputController: InputController<String>) {
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
             controller = noteInputController,
-            label = R.string.moodTracking_update_enterNote_textField,
+            label = R.string.moodTracking_creation_enterNote_textField,
             multiline = true,
             maxLines = 5,
             keyboardOptions = KeyboardOptions(
@@ -316,7 +316,7 @@ private fun SelectDateSection(
     TextIconButton(
         textIconButtonConfig = TextIconButtonConfig.Outlined(
             iconResId = R.drawable.ic_date,
-            labelResId = R.string.moodTracking_moodType_update_selectedDate_formatText,
+            labelResId = R.string.dateTime_selectedDate_formatText,
             formatArgs = listOf(formattedDate),
             onClick = {
                 dialogOpen = true
@@ -346,7 +346,7 @@ private fun SelectTimeSection(
     TextIconButton(
         textIconButtonConfig = TextIconButtonConfig.Outlined(
             iconResId = R.drawable.ic_time,
-            labelResId = R.string.waterTracking_creation_selectedTime_formatText,
+            labelResId = R.string.dateTime_selectedTime_formatText,
             formatArgs = listOf(formattedDate),
             onClick = {
                 dialogOpen = true

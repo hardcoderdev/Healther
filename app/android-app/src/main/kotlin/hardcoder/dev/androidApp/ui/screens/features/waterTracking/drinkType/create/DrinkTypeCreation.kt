@@ -121,12 +121,12 @@ private fun EnterDrinkTypeNameSection(nameInputController: ValidatedInputControl
             } else {
                 when (val reason = it.reason) {
                     is IncorrectDrinkTypeName.Reason.Empty -> {
-                        context.getString(R.string.waterTracking_drinkTypes_creation_nameEmpty)
+                        context.getString(R.string.errors_fieldCantBeEmptyError)
                     }
 
                     is IncorrectDrinkTypeName.Reason.MoreThanMaxChars -> {
                         context.getString(
-                            R.string.waterTracking_drinkTypes_creation_nameMoreThanMaxCharsError,
+                            R.string.errors_moreThanMaxCharsError,
                             reason.maxChars,
                         )
                     }

@@ -118,12 +118,12 @@ private fun EnterTagNameSection(
             } else {
                 when (val reason = it.reason) {
                     is IncorrectDiaryTagName.Reason.Empty -> {
-                        context.getString(R.string.diary_tag_creation_nameEmpty_error)
+                        context.getString(R.string.errors_fieldCantBeEmptyError)
                     }
 
                     is IncorrectDiaryTagName.Reason.MoreThanMaxChars -> {
                         context.getString(
-                            R.string.diary_tag_creation_nameMoreThanMaxChars_error,
+                            R.string.errors_moreThanMaxCharsError,
                             reason.maxChars,
                         )
                     }

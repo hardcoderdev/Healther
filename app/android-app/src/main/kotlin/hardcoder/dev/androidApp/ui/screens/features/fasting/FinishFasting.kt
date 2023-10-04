@@ -91,7 +91,7 @@ fun FinishFasting(
             Spacer(modifier = Modifier.height(16.dp))
             RequestButtonWithIcon(
                 requestButtonConfig = RequestButtonConfig.Filled(
-                    labelResId = R.string.waterTracking_collectReward,
+                    labelResId = R.string.currency_collectReward,
                     formatArgs = listOf(totalReward),
                     controller = collectRewardController,
                     sideEffect = onClose,

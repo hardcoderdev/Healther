@@ -109,7 +109,7 @@ private fun WaterTrackingContent(
                 Spacer(modifier = Modifier.height(32.dp))
                 RequestButtonWithIcon(
                     requestButtonConfig = RequestButtonConfig.Filled(
-                        labelResId = R.string.waterTracking_collectReward,
+                        labelResId = R.string.currency_collectReward,
                         formatArgs = listOf(totalReward),
                         controller = collectRewardController,
                         iconResId = R.drawable.ic_money,

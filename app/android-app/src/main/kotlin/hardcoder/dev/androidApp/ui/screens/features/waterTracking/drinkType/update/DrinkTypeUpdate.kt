@@ -126,12 +126,12 @@ private fun EnterDrinkTypeNameSection(
     context: Context,
     nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
 ) {
-    Title(text = stringResource(id = R.string.waterTracking_drinkTypes_update_enterName_text))
+    Title(text = stringResource(id = R.string.waterTracking_drinkTypes_creation_enterName_text))
     Spacer(modifier = Modifier.height(16.dp))
     ValidatedTextField(
         modifier = Modifier.fillMaxWidth(),
         controller = nameInputController,
-        label = R.string.waterTracking_drinkTypes_update_enterName_textField,
+        label = R.string.waterTracking_drinkTypes_creation_enterName_textField,
         inputAdapter = TextInputAdapter,
         validationAdapter = TextFieldValidationAdapter {
             if (it !is IncorrectDrinkTypeName) {
@@ -139,12 +139,12 @@ private fun EnterDrinkTypeNameSection(
             } else {
                 when (val reason = it.reason) {
                     is IncorrectDrinkTypeName.Reason.Empty -> {
-                        context.getString(R.string.waterTracking_drinkTypes_update_nameEmpty)
+                        context.getString(R.string.errors_fieldCantBeEmptyError)
                     }
 
                     is IncorrectDrinkTypeName.Reason.MoreThanMaxChars -> {
                         context.getString(
-                            R.string.waterTracking_drinkTypes_update_nameMoreThanMaxCharsError,
+                            R.string.errors_moreThanMaxCharsError,
                             reason.maxChars,
                         )
                     }
@@ -155,7 +155,7 @@ private fun EnterDrinkTypeNameSection(
             Icon(
                 iconResId = R.drawable.ic_description,
                 contentDescription = stringResource(
-                    id = R.string.waterTracking_drinkTypes_update_nameIcon_contentDescription,
+                    id = R.string.waterTracking_drinkTypes_creation_nameIcon_contentDescription,
                 ),
             )
         },
@@ -166,7 +166,7 @@ private fun EnterDrinkTypeNameSection(
 private fun SelectIconSection(
     iconSelectionController: SingleSelectionController<Icon>,
 ) {
-    Title(text = stringResource(id = R.string.waterTracking_drinkTypes_update_selectIcon_text))
+    Title(text = stringResource(id = R.string.waterTracking_drinkTypes_creation_selectIcon_text))
     Spacer(modifier = Modifier.height(16.dp))
     SingleCardSelectionHorizontalGrid(
         modifier = Modifier.height(200.dp),
@@ -181,7 +181,7 @@ private fun SelectIconSection(
                     .size(60.dp)
                     .padding(12.dp),
                 iconResId = icon.resourceId,
-                contentDescription = stringResource(R.string.waterTracking_drinkTypes_update_drinkTypeIconContentDescription),
+                contentDescription = stringResource(R.string.waterTracking_drinkTypes_creation_drinkTypeIconContentDescription),
             )
         },
     )
@@ -193,11 +193,11 @@ private fun EnterDrinkHydrationIndexPercentageSection(
 ) {
     val state by waterPercentageInputController.state.collectAsState()
 
-    Title(text = stringResource(id = R.string.waterTracking_drinkTypes_update_selectHydrationIndex_text))
+    Title(text = stringResource(id = R.string.waterTracking_drinkTypes_creation_selectHydrationIndex_text))
     Spacer(modifier = Modifier.height(16.dp))
     Description(
         text = stringResource(
-            id = R.string.waterTracking_drinkTypes_update_selectedIndex_formatText,
+            id = R.string.waterTracking_drinkTypes_creation_selectedIndex_formatText,
             formatArgs = arrayOf(state.input),
         ),
     )

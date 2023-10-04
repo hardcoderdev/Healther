@@ -56,7 +56,7 @@ fun MoodTrackingHistory(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.moodTracking_history_title_topBar,
+                titleResId = R.string.history_title_topBar,
                 onGoBack = onGoBack,
             ),
         ),
@@ -113,7 +113,7 @@ private fun MoodTracksHistory(
                     }
                 }
             } else {
-                Description(text = stringResource(id = R.string.moodTracking_history_emptyDay_text))
+                Description(text = stringResource(id = R.string.history_emptyDayHistory_text))
             }
         },
     )
