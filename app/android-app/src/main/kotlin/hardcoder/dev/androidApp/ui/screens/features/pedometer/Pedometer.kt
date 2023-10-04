@@ -1,6 +1,5 @@
 package hardcoder.dev.androidApp.ui.screens.features.pedometer
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -245,19 +244,17 @@ private fun DailyRateSection(
                 ),
             )
             Spacer(modifier = Modifier.height(16.dp))
-            AnimatedVisibility(visible = todayStatistic.totalSteps < dailyRateSteps) {
-                CircleIconButton(
-                    circleIconButtonConfig = CircleIconButtonConfig.Filled(
-                        onClick = pedometerToggleController::toggle,
-                        iconResId = if (pedometerTrackingState.isActive) R.drawable.ic_stop else R.drawable.ic_play,
-                        contentDescription = if (pedometerTrackingState.isActive) {
-                            R.string.pedometer_stopIcon_contentDescription
-                        } else {
-                            R.string.pedometer_playIcon_contentDescription
-                        },
-                    ),
-                )
-            }
+            CircleIconButton(
+                circleIconButtonConfig = CircleIconButtonConfig.Filled(
+                    onClick = pedometerToggleController::toggle,
+                    iconResId = if (pedometerTrackingState.isActive) R.drawable.ic_stop else R.drawable.ic_play,
+                    contentDescription = if (pedometerTrackingState.isActive) {
+                        R.string.pedometer_stopIcon_contentDescription
+                    } else {
+                        R.string.pedometer_playIcon_contentDescription
+                    },
+                ),
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
