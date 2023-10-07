@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.PedometerInfoCard
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
@@ -19,6 +18,7 @@ import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
+import hardcoder.dev.formatters.DecimalFormatter
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.date.MockDateProvider
@@ -62,7 +62,7 @@ fun PedometerHistory(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.pedometer_history_title_topBar,
+                titleResId = R.string.history_title_topBar,
                 onGoBack = onGoBack,
             ),
         ),
@@ -154,7 +154,7 @@ private fun PedometerTracksHistory(
         )
     } else {
         Spacer(modifier = Modifier.height(16.dp))
-        Description(text = stringResource(id = R.string.pedometer_emptyDayHistory_text))
+        Description(text = stringResource(id = R.string.pedometer_history_emptyDayHistory_text))
     }
 }
 

@@ -10,7 +10,7 @@ class DiaryTagNameValidator {
 
     private fun String.incorrectReason(): IncorrectDiaryTagName.Reason? {
         return when {
-            isEmpty() -> IncorrectDiaryTagName.Reason.Empty
+            isBlank() -> IncorrectDiaryTagName.Reason.Empty
             length > DIARY_TAG_NAME_MAX_CHARS -> IncorrectDiaryTagName.Reason.MoreThanMaxChars(
                 DIARY_TAG_NAME_MAX_CHARS,
             )

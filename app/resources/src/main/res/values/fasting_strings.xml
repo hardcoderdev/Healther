@@ -7,7 +7,6 @@
     <string name="fasting_in_progress_text">Вы голодаете!</string>
     <string name="fasting_startDate_text">Вы начали голодание: %s</string>
     <string name="fasting_interrupt_buttonText">Сорвать голодание</string>
-    <string name="fasting_statistic_text">Общая статистика:</string>
     <string name="fasting_statistic_not_enough_data_text">Мало инфы</string>
     <string name="fasting_statistic_max_hours_text">Максимум часов</string>
     <string name="fasting_statistic_average_hours_text">Часов в среднем</string>
@@ -31,9 +30,6 @@
     <string name="fasting_finish_fail_results_text">Отличные результаты! Вы старались изо всех сил и смогли продержаться %s! Не сдавайтесь и старайтесь ещё больше, и у вас обязательно получится завершить план полностью!</string>
     <string name="fasting_finish_goNext_buttonText">Хорошо, спасибо!</string>
     <string name="fasting_finish_addNoteOptional_text">Можете добавить заметку, если хотите:</string>
-
-    <string name="fasting_history_title_topBar">Подробная история</string>
-    <string name="fasting_history_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
 
     <string name="fasting_itemPlan_description_formatText">Вы будете голодать на протяжении %1$s и после этого у вас будет %2$s на приём пищи.</string>
     <string name="fasting_itemPlan_selectFastingHours_text">Выберите количество часов, по истечению которых закончится голодание:</string>

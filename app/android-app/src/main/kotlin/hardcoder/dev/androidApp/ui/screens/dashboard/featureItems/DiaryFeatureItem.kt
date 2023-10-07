@@ -108,7 +108,7 @@ private fun BoxScope.QuickActions(
             circleIconButtonConfig = CircleIconButtonConfig.Outlined(
                 onClick = onCreateDiaryTrack,
                 iconResId = R.drawable.ic_create,
-                contentDescription = R.string.dashboard_diaryCreationQuickAction_contentDescription,
+                contentDescription = R.string.tracking_creation_title_topBar,
             ),
         )
     }

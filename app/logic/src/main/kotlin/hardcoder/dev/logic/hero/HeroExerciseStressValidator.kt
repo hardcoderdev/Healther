@@ -12,7 +12,7 @@ class HeroExerciseStressValidator {
 
     private fun String.incorrectReason(): IncorrectHeroHeroExerciseStress.Reason? {
         return when {
-            isEmpty() -> IncorrectHeroHeroExerciseStress.Reason.Empty
+            isBlank() -> IncorrectHeroHeroExerciseStress.Reason.Empty
             this.contains(",") || this.contains(".") -> IncorrectHeroHeroExerciseStress.Reason.InvalidCharsInWeight(
                 invalidChars = charArrayOf(',', '.'),
             )

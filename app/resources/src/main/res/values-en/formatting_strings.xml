@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="gender_male">Man</string>
-    <string name="gender_female">Woman</string>
-
     <string name="datetime_seconds">%ds</string>
     <string name="datetime_minutes">%dm</string>
     <string name="datetime_hours">%dh</string>
@@ -12,10 +9,4 @@
     <string name="liquid_decaliters">%ddkl</string>
     <string name="liquid_liters">%dl</string>
     <string name="liquid_milliliters">%dml</string>
-
-    <string name="dateRangeFilterType_byDay">Day</string>
-    <string name="dateRangeFilterType_byWeek">Week</string>
-    <string name="dateRangeFilterType_byMonth">Month</string>
-    <string name="dateRangeFilterType_byYear">Year</string>
-    <string name="dateRangeFilterType_byAllPeriod">All time</string>
 </resources>

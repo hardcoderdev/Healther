@@ -49,7 +49,6 @@ fun WaterTracking(
     onGoToHistory: () -> Unit,
     onGoToAnalytics: () -> Unit,
     onGoBack: () -> Unit,
-    isFabShowing: Boolean,
 ) {
     ScaffoldWrapper(
         content = {
@@ -62,7 +61,7 @@ fun WaterTracking(
                 collectRewardController = collectRewardController,
             )
         },
-        onFabClick = if (isFabShowing) onCreateWaterTrack else null,
+        onFabClick = onCreateWaterTrack,
         actionConfig = ActionConfig(
             actions = listOf(
                 Action(
@@ -109,7 +108,7 @@ private fun WaterTrackingContent(
                 Spacer(modifier = Modifier.height(32.dp))
                 RequestButtonWithIcon(
                     requestButtonConfig = RequestButtonConfig.Filled(
-                        labelResId = R.string.waterTracking_collectReward,
+                        labelResId = R.string.currency_collectReward,
                         formatArgs = listOf(totalReward),
                         controller = collectRewardController,
                         iconResId = R.drawable.ic_money,
@@ -186,7 +185,6 @@ private fun WaterTrackingPreview() {
             onGoToHistory = {},
             onCreateWaterTrack = {},
             onUpdateWaterTrack = {},
-            isFabShowing = true,
             collectRewardController = MockControllersProvider.requestController(),
             rewardLoadingController = MockControllersProvider.loadingController(20.0),
             progressController = MockControllersProvider.loadingController(0.7f),

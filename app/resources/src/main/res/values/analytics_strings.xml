@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analytics_title_topBar">Аналитика и статистика</string>
+    <string name="analytics_chartNotEnoughData_text">У нас пока недостаточно данных для отображения графика. Используйте эту фичу и график появится позже!</string>
+    <string name="analytics_nowEmpty_text">Сейчас здесь пусто. Аналитика (график и статистика) появится спустя определенное время пользования этой фичей.</string>
+    <string name="analytics_generalStatistics_text">Общая статистика:</string>
+</resources>

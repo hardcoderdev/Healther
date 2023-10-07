@@ -10,7 +10,7 @@ class MoodTypeNameValidator {
 
     private fun String.incorrectReason(): IncorrectMoodTypeName.Reason? {
         return when {
-            isEmpty() -> IncorrectMoodTypeName.Reason.Empty
+            isBlank() -> IncorrectMoodTypeName.Reason.Empty
             length > MOOD_TYPE_NAME_MAX_CHARS -> IncorrectMoodTypeName.Reason.MoreThanMaxChars(
                 MOOD_TYPE_NAME_MAX_CHARS,
             )

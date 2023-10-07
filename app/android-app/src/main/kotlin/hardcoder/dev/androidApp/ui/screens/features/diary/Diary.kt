@@ -24,8 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.diary.items.DiaryItem
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.controller.LoadingController
@@ -34,6 +32,8 @@ import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.formatters.DateTimeFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.diary.DateRangeFilterType
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
@@ -166,7 +166,7 @@ private fun DiaryContent(
 
                 RequestButtonWithIcon(
                     requestButtonConfig = RequestButtonConfig.Filled(
-                        labelResId = R.string.waterTracking_collectReward,
+                        labelResId = R.string.currency_collectReward,
                         formatArgs = listOf(totalReward),
                         controller = collectRewardController,
                         iconResId = R.drawable.ic_money,

@@ -1,9 +1,9 @@
 package hardcoder.dev.androidApp.di.ui
 
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
-import hardcoder.dev.androidApp.ui.formatters.LiquidFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
+import hardcoder.dev.formatters.DateTimeFormatter
+import hardcoder.dev.formatters.DecimalFormatter
+import hardcoder.dev.formatters.LiquidFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module

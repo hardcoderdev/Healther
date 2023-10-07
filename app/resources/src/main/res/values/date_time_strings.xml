@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dateTime_selectedDate_formatText">Дата: %s</string>
+    <string name="dateTime_selectedTime_formatText">Время: %s</string>
+
+    <string name="dateTime_selectDate">Выберите дату:</string>
+    <string name="dateTime_selectTime">Выберите время:</string>
+    <string name="dateTime_selectDateAndTime">Выберите дату и время:</string>
+
+    <string name="dateRangeFilterType_byDay">День</string>
+    <string name="dateRangeFilterType_byWeek">Неделя</string>
+    <string name="dateRangeFilterType_byMonth">Месяц</string>
+    <string name="dateRangeFilterType_byYear">Год</string>
+    <string name="dateRangeFilterType_byAllPeriod">Весь период</string>
+</resources>

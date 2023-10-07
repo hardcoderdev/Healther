@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="datetime_seconds">%dс</string>
+    <string name="datetime_minutes">%dм</string>
+    <string name="datetime_hours">%dч</string>
+    <string name="datetime_days">%dд</string>
+
+    <string name="liquid_hectoliters">%dгл</string>
+    <string name="liquid_decaliters">%dдал</string>
+    <string name="liquid_liters">%dл</string>
+    <string name="liquid_milliliters">%dмл</string>
+</resources>

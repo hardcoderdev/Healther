@@ -18,8 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.screens.features.fasting.FastingItem
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.MoodTrackItem
@@ -27,6 +25,8 @@ import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
+import hardcoder.dev.formatters.DateTimeFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTrack.IncorrectDiaryTrackContent
@@ -156,12 +156,12 @@ private fun EnterBasicInfoSection(
 ) {
     val context = LocalContext.current
 
-    Title(text = stringResource(id = R.string.diary_update_enterInfo_text))
+    Title(text = stringResource(id = R.string.diary_creation_enterInfo_text))
     Spacer(modifier = Modifier.height(16.dp))
     ValidatedTextField(
         controller = contentInputController,
         modifier = Modifier.fillMaxWidth(),
-        label = R.string.diary_update_enterNote_textField,
+        label = R.string.diary_creation_enterNote_textField,
         multiline = true,
         minLines = 5,
         maxLines = 5,
@@ -176,7 +176,7 @@ private fun EnterBasicInfoSection(
             } else {
                 when (it.reason) {
                     is IncorrectDiaryTrackContent.Reason.Empty -> {
-                        context.getString(R.string.diary_update_descriptionEmpty_text)
+                        context.getString(R.string.errors_fieldCantBeEmptyError)
                     }
                 }
             }
@@ -217,7 +217,7 @@ private fun SelectTagsSection(
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     onManageTags: () -> Unit,
 ) {
-    Title(text = stringResource(id = R.string.diary_update_youMaySelectTags_text))
+    Title(text = stringResource(id = R.string.diary_creation_youMaySelectTags_text))
     Spacer(modifier = Modifier.height(16.dp))
     MultiSelectionChipFlowRow(
         controller = tagMultiSelectionController,
@@ -244,7 +244,7 @@ private fun ManagementTagsButton(onManageTags: () -> Unit) {
     Chip(
         chipConfig = ChipConfig.Action(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.diary_update_manageTags_buttonText),
+            text = stringResource(id = R.string.diary_tags_title_topBar),
             iconResId = R.drawable.ic_create,
             shape = RoundedCornerShape(32.dp),
             onClick = onManageTags,

@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="hero_gender_male">Man</string>
+    <string name="hero_gender_female">Woman</string>
+
     <string name="hero_creation_title_topBar">Hero creation</string>
     <string name="hero_creation_nameIcon_contentDescription">Name (nickname) input icon</string>
     <string name="hero_creation_enterName_textField">Enter name or nickname:</string>
-    <string name="hero_creation_nameEmpty">This field can\'t be empty!</string>
-    <string name="hero_creation_nameMoreThanMaxCharsError">Max characters: %d</string>
     <string name="hero_creation_enterYourWeightInKg_textField">Your weight in kilograms (e.g. 70)…</string>
-    <string name="hero_creation_weightEmpty">This field can\'t be empty!</string>
-    <string name="hero_creation_weight_invalidCharsError">Remove characters: %s</string>
     <string name="hero_creation_weightMoreThanMaximumBoundaryError">Maximum weight: %d</string>
     <string name="hero_creation_weightLessThanMinimumBoundaryError">Minimum weight: %d</string>
     <string name="hero_creation_weightIcon_contentDescription">Weight input icon</string>
-    <string name="hero_creation_exerciseStressTimeEmpty">This field can\'t be empty!</string>
     <string name="hero_creation_enterExerciseStressTime_textField">How many hours a day do you train?</string>
-    <string name="hero_creation_exerciseStressTime_invalidCharsError">Remove characters: %s</string>
     <string name="hero_creation_exerciseStressTimeIcon_contentDescription">Icon for entering training time</string>
     <string name="hero_creation_exerciseStressTimeMoreThanMaximumBoundaryError">Maximum time - %d hours</string>
     <string name="hero_creation_exerciseStressTimeLessThanMinimumBoundaryError">Minimal time - %d hours</string>

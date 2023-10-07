@@ -20,10 +20,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.request.RequestController
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.FastingMockDataProvider
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
@@ -91,7 +91,7 @@ fun FinishFasting(
             Spacer(modifier = Modifier.height(16.dp))
             RequestButtonWithIcon(
                 requestButtonConfig = RequestButtonConfig.Filled(
-                    labelResId = R.string.waterTracking_collectReward,
+                    labelResId = R.string.currency_collectReward,
                     formatArgs = listOf(totalReward),
                     controller = collectRewardController,
                     sideEffect = onClose,

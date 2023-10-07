@@ -2,11 +2,11 @@ package hardcoder.dev.logic.features.pedometer
 
 import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.reward.currency.CurrencyType
+import hardcoder.dev.logic.features.FeatureType
 import hardcoder.dev.logic.reward.currency.CurrencyCalculator
 import hardcoder.dev.logic.reward.currency.CurrencyCreator
+import hardcoder.dev.logic.reward.currency.CurrencyType
 import hardcoder.dev.logic.reward.currency.RewardableAction
-import hardcoder.dev.logic.features.FeatureType
 import hardcoder.dev.logic.reward.experience.ExperienceAction
 import hardcoder.dev.logic.reward.experience.ExperienceCalculator
 import hardcoder.dev.logic.reward.experience.ExperienceCreator
@@ -48,29 +48,31 @@ class PedometerStepHandler(
             pedometerDailyRateStepsProvider.resolve().first().toFloat(),
         ).times(100)
 
-        experienceCreator.create(
-            date = dateTimeProvider.currentInstant(),
-            isCollected = false,
-            featureType = FeatureType.PEDOMETER,
-            linkedTrackId = currentTrackId,
-            experiencePointsAmount = experienceCalculator.calculateExperienceFor(
-                experienceAction = ExperienceAction.DailyRateProgress(
-                    currentProgressInPercentage = dailyRateProgress,
-                )
-            )
-        )
-
-        currencyCreator.create(
-            date = dateTimeProvider.currentInstant(),
-            currencyType = CurrencyType.COINS,
-            isCollected = false,
-            featureType = FeatureType.PEDOMETER,
-            linkedTrackId = currentTrackId,
-            currencyAmount = currencyCalculator.calculateRewardFor(
-                rewardableAction = RewardableAction.DailyRateProgress(
-                    currentProgressInPercentage = dailyRateProgress,
+        if (dailyRateProgress < 1.0f) {
+            experienceCreator.create(
+                date = dateTimeProvider.currentInstant(),
+                isCollected = false,
+                featureType = FeatureType.PEDOMETER,
+                linkedTrackId = currentTrackId,
+                experiencePointsAmount = experienceCalculator.calculateExperienceFor(
+                    experienceAction = ExperienceAction.DailyRateProgress(
+                        currentProgressInPercentage = dailyRateProgress,
+                    ),
                 ),
-            ),
-        )
+            )
+
+            currencyCreator.create(
+                date = dateTimeProvider.currentInstant(),
+                currencyType = CurrencyType.COINS,
+                isCollected = false,
+                featureType = FeatureType.PEDOMETER,
+                linkedTrackId = currentTrackId,
+                currencyAmount = currencyCalculator.calculateRewardFor(
+                    rewardableAction = RewardableAction.DailyRateProgress(
+                        currentProgressInPercentage = dailyRateProgress,
+                    ),
+                ),
+            )
+        }
     }
 }

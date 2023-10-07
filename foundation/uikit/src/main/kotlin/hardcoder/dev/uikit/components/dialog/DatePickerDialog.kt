@@ -1,4 +1,4 @@
-package hardcoder.dev.androidApp.ui.screens.dialogs
+package hardcoder.dev.uikit.components.dialog
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -9,7 +9,6 @@ import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.date.MockDateProvider
 import hardcoder.dev.uikit.components.calendar.SingleSelectionCalendar
-import hardcoder.dev.uikit.components.dialog.TitleDialog
 import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoderdev.healther.app.resources.R
 import kotlinx.datetime.LocalDate
@@ -30,7 +29,10 @@ fun DatePickerDialog(
         negativeOptionResId = R.string.datePickerDialog_negative_option,
         positiveOptionResId = R.string.datePickerDialog_positive_option,
         onSelect = { onUpdateDialogOpen(false) },
-        onCancel = { onUpdateDialogOpen(false) },
+        onCancel = {
+            dateInputController.changeInput(dateTimeProvider.currentDate())
+            onUpdateDialogOpen(false)
+        },
         dialogContent = {
             SingleSelectionCalendar(
                 dateTimeProvider = dateTimeProvider,

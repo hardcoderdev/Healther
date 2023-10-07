@@ -19,7 +19,7 @@ fun FastingStatisticSection(
     fastingStatisticResolver: FastingStatisticResolver,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
 ) {
-    Title(text = stringResource(id = R.string.fasting_statistic_text))
+    Title(text = stringResource(id = R.string.analytics_generalStatistics_text))
     Spacer(modifier = Modifier.height(24.dp))
     Statistics(
         modifier = Modifier.fillMaxWidth(),

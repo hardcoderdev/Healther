@@ -1,4 +1,4 @@
-package hardcoder.dev.androidApp.ui.formatters
+package hardcoder.dev.formatters
 
 object RegexHolder {
 

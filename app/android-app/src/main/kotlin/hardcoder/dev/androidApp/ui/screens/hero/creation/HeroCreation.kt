@@ -163,12 +163,12 @@ private fun EnterNameSection(
             } else {
                 when (val reason = it.reason) {
                     is IncorrectHeroName.Reason.Empty -> {
-                        context.getString(R.string.hero_creation_nameEmpty)
+                        context.getString(R.string.errors_fieldCantBeEmptyError)
                     }
 
                     is IncorrectHeroName.Reason.MoreThanMaxChars -> {
                         context.getString(
-                            R.string.hero_creation_nameMoreThanMaxCharsError,
+                            R.string.errors_moreThanMaxCharsError,
                             reason.maxChars,
                         )
                     }
@@ -207,7 +207,7 @@ private fun EnterWeight(
                 when (val reason = it.reason) {
                     is IncorrectHeroWeight.Reason.Empty -> {
                         context.getString(
-                            R.string.hero_creation_weightEmpty,
+                            R.string.errors_fieldCantBeEmptyError,
                         )
                     }
 
@@ -227,7 +227,7 @@ private fun EnterWeight(
 
                     is IncorrectHeroWeight.Reason.InvalidCharsInWeight -> {
                         context.getString(
-                            R.string.hero_creation_weight_invalidCharsError,
+                            R.string.errors_invalidCharsError,
                             reason.invalidChars,
                         )
                     }
@@ -267,7 +267,7 @@ private fun EnterExerciseStress(
                 when (val reason = it.reason) {
                     is IncorrectHeroHeroExerciseStress.Reason.Empty -> {
                         context.getString(
-                            R.string.hero_creation_exerciseStressTimeEmpty,
+                            R.string.errors_fieldCantBeEmptyError,
                         )
                     }
 
@@ -287,7 +287,7 @@ private fun EnterExerciseStress(
 
                     is IncorrectHeroHeroExerciseStress.Reason.InvalidCharsInWeight -> {
                         context.getString(
-                            R.string.hero_creation_exerciseStressTime_invalidCharsError,
+                            R.string.errors_invalidCharsError,
                             reason.invalidChars.joinToString(separator = " "),
                         )
                     }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analytics_title_topBar">Analytics &amp; Statistics</string>
+    <string name="analytics_chartNotEnoughData_text">We don\'t have enough data yet to display a graph. Use this feature and the graph will appear later!</string>
+    <string name="analytics_nowEmpty_text">Now it\'s empty. Analytics (chart and statistics) will appear after a certain time of using this feature.</string>
+    <string name="analytics_generalStatistics_text">General statistics:</string>
+</resources>

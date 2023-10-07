@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
-import hardcoder.dev.androidApp.ui.formatters.MillisDistanceFormatter
 import hardcoder.dev.androidApp.ui.navigation.features.diary.DiaryCreationScreen
 import hardcoder.dev.androidApp.ui.navigation.features.diary.DiaryScreen
 import hardcoder.dev.androidApp.ui.navigation.features.fasting.FastingCreationScreen
@@ -21,6 +19,8 @@ import hardcoder.dev.androidApp.ui.navigation.settings.SettingsScreen
 import hardcoder.dev.androidApp.ui.navigation.shop.ShopScreen
 import hardcoder.dev.androidApp.ui.screens.dashboard.Dashboard
 import hardcoder.dev.androidApp.ui.screens.hero.HeroImageByGenderResolver
+import hardcoder.dev.formatters.DecimalFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.presentation.dashboard.DashboardViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject

@@ -8,9 +8,9 @@ import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import hardcoder.dev.androidApp.ui.screens.dialogs.DeleteTrackDialog
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.moodType.update.MoodTypeUpdate
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeUpdateViewModel
+import hardcoder.dev.uikit.components.dialog.DeleteTrackDialog
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf

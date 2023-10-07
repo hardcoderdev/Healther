@@ -14,11 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -27,9 +22,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DateTimeFormatter
-import hardcoder.dev.androidApp.ui.screens.dialogs.DatePickerDialog
-import hardcoder.dev.androidApp.ui.screens.dialogs.TimePickerDialog
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.moodType.MoodItem
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.request.RequestController
@@ -37,6 +29,7 @@ import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
 import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
@@ -45,8 +38,6 @@ import hardcoder.dev.mock.dataProviders.date.MockDateProvider
 import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
-import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
-import hardcoder.dev.uikit.components.button.textIconButton.TextIconButtonConfig
 import hardcoder.dev.uikit.components.card.Card
 import hardcoder.dev.uikit.components.card.CardConfig
 import hardcoder.dev.uikit.components.chip.Chip
@@ -62,6 +53,7 @@ import hardcoder.dev.uikit.components.text.textField.TextField
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.sections.dateTime.DateTimeSection
 import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoderdev.healther.app.resources.R
 import kotlinx.datetime.LocalDate
@@ -98,7 +90,7 @@ fun MoodTrackingCreation(
         },
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
-                titleResId = R.string.moodTracking_creation_title_topBar,
+                titleResId = R.string.tracking_creation_title_topBar,
                 onGoBack = onGoBack,
             ),
         ),
@@ -140,14 +132,10 @@ private fun MoodTrackingCreationContent(
                 onManageActivities = onManageActivities,
             )
             Spacer(modifier = Modifier.height(16.dp))
-            SelectDateSection(
+            DateTimeSection(
                 dateTimeProvider = dateTimeProvider,
                 dateTimeFormatter = dateTimeFormatter,
                 dateInputController = dateInputController,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            SelectTimeSection(
-                dateTimeFormatter = dateTimeFormatter,
                 timeInputController = timeInputController,
             )
         }
@@ -156,7 +144,7 @@ private fun MoodTrackingCreationContent(
             requestButtonConfig = RequestButtonConfig.Filled(
                 controller = creationController,
                 iconResId = R.drawable.ic_save,
-                labelResId = R.string.moodTracking_creation_buttonText,
+                labelResId = R.string.tracking_createEntry_buttonText,
             ),
         )
     }
@@ -284,68 +272,6 @@ private fun EnterNoteSection(noteInputController: InputController<String>) {
                 .height(120.dp),
         )
     }
-}
-
-@Composable
-private fun SelectDateSection(
-    dateTimeProvider: DateTimeProvider,
-    dateTimeFormatter: DateTimeFormatter,
-    dateInputController: InputController<LocalDate>,
-) {
-    val dateInputControllerState by dateInputController.state.collectAsState()
-    val formattedDate = dateTimeFormatter.formatDate(dateInputControllerState.input)
-    var dialogOpen by remember {
-        mutableStateOf(false)
-    }
-
-    Title(text = stringResource(id = R.string.moodTracking_moodType_creation_selectAnotherDate_text))
-    Spacer(modifier = Modifier.height(16.dp))
-    TextIconButton(
-        textIconButtonConfig = TextIconButtonConfig.Outlined(
-            iconResId = R.drawable.ic_date,
-            labelResId = R.string.moodTracking_moodType_creation_selectedDate_formatText,
-            formatArgs = listOf(formattedDate),
-            onClick = {
-                dialogOpen = true
-            },
-        ),
-    )
-
-    DatePickerDialog(
-        dateTimeProvider = dateTimeProvider,
-        dialogOpen = dialogOpen,
-        onUpdateDialogOpen = { dialogOpen = it },
-        dateInputController = dateInputController,
-    )
-}
-
-@Composable
-private fun SelectTimeSection(
-    dateTimeFormatter: DateTimeFormatter,
-    timeInputController: InputController<LocalTime>,
-) {
-    val timeInputControllerState by timeInputController.state.collectAsState()
-    val formattedDate = dateTimeFormatter.formatTime(timeInputControllerState.input)
-    var dialogOpen by remember {
-        mutableStateOf(false)
-    }
-
-    TextIconButton(
-        textIconButtonConfig = TextIconButtonConfig.Outlined(
-            iconResId = R.drawable.ic_time,
-            labelResId = R.string.waterTracking_creation_selectedTime_formatText,
-            formatArgs = listOf(formattedDate),
-            onClick = {
-                dialogOpen = true
-            },
-        ),
-    )
-
-    TimePickerDialog(
-        dialogOpen = dialogOpen,
-        onUpdateDialogOpen = { dialogOpen = it },
-        timeInputController = timeInputController,
-    )
 }
 
 @HealtherScreenPhonePreviews

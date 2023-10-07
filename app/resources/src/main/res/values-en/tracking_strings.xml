@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tracking_creation_title_topBar">Creating an entry</string>
+    <string name="tracking_createEntry_buttonText">Create entry</string>
+
+    <string name="tracking_update_title_topBar">Updating an entry</string>
+    <string name="tracking_updateEntry_buttonText">Update entry</string>
+</resources>

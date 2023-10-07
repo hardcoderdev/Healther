@@ -10,7 +10,7 @@ class DiaryTrackContentValidator {
 
     private fun String.incorrectReason(): IncorrectDiaryTrackContent.Reason? {
         return when {
-            isEmpty() -> IncorrectDiaryTrackContent.Reason.Empty
+            isBlank() -> IncorrectDiaryTrackContent.Reason.Empty
             else -> null
         }
     }

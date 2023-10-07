@@ -7,11 +7,11 @@ class GenderResourcesProvider {
 
     private val map = mapOf(
         Gender.MALE to listOf(
-            R.string.gender_male,
+            R.string.hero_gender_male,
             R.drawable.gender_male,
         ),
         Gender.FEMALE to listOf(
-            R.string.gender_female,
+            R.string.hero_gender_female,
             R.drawable.gender_female,
         ),
     )

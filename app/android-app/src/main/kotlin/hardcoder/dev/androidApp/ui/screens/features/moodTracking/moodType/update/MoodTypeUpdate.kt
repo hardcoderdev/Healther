@@ -1,14 +1,10 @@
 package hardcoder.dev.androidApp.ui.screens.features.moodTracking.moodType.update
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -26,7 +22,6 @@ import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.icons.Icon
-import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodType.IncorrectMoodTypeName
 import hardcoder.dev.logic.features.moodTracking.moodType.ValidatedMoodTypeName
 import hardcoder.dev.mock.controllers.MockControllersProvider
@@ -34,7 +29,6 @@ import hardcoder.dev.mock.dataProviders.IconsMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
-import hardcoder.dev.uikit.components.container.SingleCardSelectionHorizontalGrid
 import hardcoder.dev.uikit.components.icon.Icon
 import hardcoder.dev.uikit.components.slider.IntSlider
 import hardcoder.dev.uikit.components.text.Description
@@ -47,6 +41,7 @@ import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.sections.creation.SelectIconSection
 import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoderdev.healther.app.resources.R
 
@@ -106,7 +101,10 @@ private fun MoodTypeUpdateContent(
         ) {
             EnterMoodTypeNameSection(moodTypeNameController = moodTypeNameController)
             Spacer(modifier = Modifier.height(32.dp))
-            SelectIconSection(iconSelectionController = iconSelectionController)
+            SelectIconSection(
+                titleResId = R.string.moodTracking_moodType_creation_selectIcon_text,
+                iconSelectionController = iconSelectionController,
+            )
             Spacer(modifier = Modifier.height(32.dp))
             EnterMoodTypePositivePercentageSection(positiveIndexController = positiveIndexController)
         }
@@ -127,12 +125,12 @@ private fun EnterMoodTypeNameSection(
 ) {
     val context = LocalContext.current
 
-    Title(text = stringResource(id = R.string.moodTracking_moodType_update_enterName_text))
+    Title(text = stringResource(id = R.string.moodTracking_moodType_creation_enterName_text))
     Spacer(modifier = Modifier.height(16.dp))
     ValidatedTextField(
         controller = moodTypeNameController,
         modifier = Modifier.fillMaxWidth(),
-        label = R.string.moodTracking_moodType_update_enterName_textField,
+        label = R.string.moodTracking_moodType_creation_enterName_textField,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done,
@@ -141,7 +139,7 @@ private fun EnterMoodTypeNameSection(
             Icon(
                 iconResId = R.drawable.ic_description,
                 contentDescription = stringResource(
-                    id = R.string.waterTracking_drinkTypes_update_nameIcon_contentDescription,
+                    id = R.string.moodTracking_moodTypes_creation_iconContentDescription,
                 ),
             )
         },
@@ -152,12 +150,12 @@ private fun EnterMoodTypeNameSection(
             } else {
                 when (val reason = it.reason) {
                     is IncorrectMoodTypeName.Reason.Empty -> {
-                        context.getString(R.string.moodTracking_moodType_update_nameEmpty_error)
+                        context.getString(R.string.errors_fieldCantBeEmptyError)
                     }
 
                     is IncorrectMoodTypeName.Reason.MoreThanMaxChars -> {
                         context.getString(
-                            R.string.moodTracking_moodType_update_nameMoreThanMaxChars_error,
+                            R.string.errors_moreThanMaxCharsError,
                             reason.maxChars,
                         )
                     }
@@ -168,37 +166,14 @@ private fun EnterMoodTypeNameSection(
 }
 
 @Composable
-private fun SelectIconSection(iconSelectionController: SingleSelectionController<Icon>) {
-    Title(text = stringResource(id = R.string.moodTracking_moodType_update_selectMoodIcon_text))
-    Spacer(modifier = Modifier.height(16.dp))
-    SingleCardSelectionHorizontalGrid(
-        controller = iconSelectionController,
-        modifier = Modifier.height(200.dp),
-        rows = GridCells.Fixed(count = 3),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(8.dp),
-        itemContent = { icon, _ ->
-            Icon(
-                iconResId = icon.resourceId,
-                contentDescription = stringResource(id = R.string.waterTracking_drinkTypes_update_drinkTypeIconContentDescription),
-                modifier = Modifier
-                    .size(60.dp)
-                    .padding(12.dp),
-            )
-        },
-    )
-}
-
-@Composable
 private fun EnterMoodTypePositivePercentageSection(positiveIndexController: InputController<Int>) {
     val state by positiveIndexController.state.collectAsState()
 
-    Title(text = stringResource(id = R.string.moodTracking_moodType_update_selectPositivePercentage_text))
+    Title(text = stringResource(id = R.string.moodTracking_moodType_creation_selectPositivePercentage_text))
     Spacer(modifier = Modifier.height(16.dp))
     Description(
         text = stringResource(
-            id = R.string.moodTracking_moodType_update_selectedPositivePercentage_formatText,
+            id = R.string.moodTracking_moodType_creation_selectedIndex_formatText,
             formatArgs = arrayOf(state.input),
         ),
     )

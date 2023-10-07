@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.androidApp.ui.formatters.DecimalFormatter
 import hardcoder.dev.androidApp.ui.screens.hero.HeroImageByGenderResolver
+import hardcoder.dev.formatters.DecimalFormatter
 import hardcoder.dev.logic.hero.Hero
 import hardcoder.dev.mock.dataProviders.HeroMockDataProvider
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.icons.IconImpl
 import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
@@ -82,12 +83,9 @@ fun WaterTrackingItemPreview() {
             drinkType = DrinkType(
                 id = 0,
                 name = stringResource(R.string.predefined_drinkType_name_coffee),
-                icon = hardcoder.dev.icons.IconImpl(
-                    id = 0,
-                    resourceId = R.drawable.ic_history
-                ),
-                hydrationIndexPercentage = 80
+                icon = IconImpl(id = 0, resourceId = R.drawable.ic_history),
+                hydrationIndexPercentage = 80,
             ),
-        )
+        ),
     )
 }

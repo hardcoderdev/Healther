@@ -1,53 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="waterTracking_Item_milliliters_formatText">%1$d (%2$d) мл</string>
-
-    <string name="waterTracking_millilitersCount_formatText">%1$d / %2$d мл</string>
     <string name="waterTracking_title_topBar">Водный баланс</string>
     <string name="waterTracking_nowEmpty_text">Сейчас здесь пусто. Для того, чтобы добавить запись воспользуйтесь кнопкой в правом нижнем углу!</string>
     <string name="waterTracking_statistic_water_total_drunk">Всего выпито</string>
     <string name="waterTracking_average_hydration_index">Процент воды в напитках</string>
     <string name="waterTracking_average_water_intakes">Среднее число приёмов воды в день</string>
     <string name="waterTracking_favourite_drink_type">Любимый напиток</string>
-    <string name="waterTracking_analytics_statistic_text">Общая статистика:</string>
-    <string name="waterTracking_analytics_activity_chart">График активности (по часам):</string>
+    <string name="waterTracking_analytics_activity_chart">Приемы воды (по часам):</string>
     <string name="waterTracking_diary_text">Дневник выпитого:</string>
-    <string name="waterTracking_collectReward">Собрать %.2f монет</string>
 
-    <string name="waterTracking_analytics_title_topBar">Аналитика и статистика</string>
-    <string name="waterTracking_analytics_chartNotEnoughData_text">У нас пока недостаточно данных для отображения графика. Используйте эту фичу и график появится позже!</string>
-    <string name="waterTracking_analyticsNowEmpty_text">Сейчас здесь пусто. Аналитика (график и статистика) появится спустя определенное время пользования этой фичей.</string>
+    <string name="waterTracking_Item_milliliters_formatText">%1$d (%2$d) мл</string>
+    <string name="waterTracking_millilitersCount_formatText">%1$d / %2$d мл</string>
 
     <string name="waterTracking_creation_drinkTypeNotSelected_text">Создайте и выберите тип напитка!</string>
-    <string name="waterTracking_creation_create_title_topBar">Создание записи</string>
     <string name="waterTracking_creation_enterMillilitersCount_text">Введите количество выпитого напитка (в мл):</string>
     <string name="waterTracking_creation_enterMillilitersCountHint_textField">Количество выпитого напитка…</string>
-    <string name="waterTracking_creation_selectAnotherDate_text">Уже пили воду раньше?\nВы можете изменить дату.</string>
     <string name="waterTracking_creation_enterDrinkType_text">Выберите тип напитка…</string>
-    <string name="waterTracking_creation_saveEntry_buttonText">Создать запись</string>
-    <string name="waterTracking_creation_millilitersEmpty_text">Это поле не может быть пустым!</string>
-    <string name="waterTracking_creation_selectedDate_formatText">Дата: %s</string>
-    <string name="waterTracking_creation_selectedTime_formatText">Время: %s</string>
     <string name="waterTracking_creation_millilitersMoreThanDailyWaterIntake_text">Введёные вами мл больше, чем дневная норма!</string>
-    <string name="waterTracking_creation_createDrinkType_management_text">Управление напитками</string>
-
-    <string name="waterTracking_update_update_buttonText">Обновить запись</string>
-    <string name="waterTracking_update_title_topBar">Обновление записи</string>
-    <string name="waterTracking_update_enterMillilitersCountHint_textField">Количество выпитого напитка…</string>
-    <string name="waterTracking_update_selectAnotherDate_text">Уже пили воду раньше? Вы можете изменить дату.</string>
-    <string name="waterTracking_update_enterDrinkType_text">Выберите тип напитка…</string>
-    <string name="waterTracking_update_selectedDate_formatText">Дата: %s</string>
-    <string name="waterTracking_update_millilitersEmpty_text">Это поле не может быть пустым!</string>
-    <string name="waterTracking_update_millilitersMoreThanDailyWaterIntake_text">Введёные вами мл больше, чем дневная норма!</string>
-    <string name="waterTracking_update_createDrinkType_management_text">Управление напитками</string>
-
-    <string name="waterTracking_history_title_topBar">Подробная история</string>
-    <string name="waterTracking_history_emptyDayHistory_text">В этот день вы не добавляли записей.</string>
 
     <string name="waterTracking_drinkTypes_title_topBar">Управление напитками</string>
     <string name="waterTracking_drinkTypes_nowEmpty_text">Сейчас здесь пусто. Для того, чтобы добавить кастомный напиток воспользуйтесь кнопкой в правом нижнем углу!</string>
 
     <string name="waterTracking_drinkTypes_creation_title_topBar">Создание напитка</string>
+    <string name="waterTracking_drinkTypes_creation_createTrack_buttonText">Создать напиток</string>
+
     <string name="waterTracking_drinkTypes_creation_enterName_text">Введите название напитка:</string>
     <string name="waterTracking_drinkTypes_creation_nameIcon_contentDescription">Иконка ввода названия</string>
     <string name="waterTracking_drinkTypes_creation_enterName_textField">Например, Джин-тоник…</string>
@@ -55,21 +31,9 @@
     <string name="waterTracking_drinkTypes_creation_drinkTypeIconContentDescription">Иконка напитка</string>
     <string name="waterTracking_drinkTypes_creation_selectHydrationIndex_text">Укажите индекс гидратации напитка:</string>
     <string name="waterTracking_drinkTypes_creation_selectedIndex_formatText">Выбранный индекс: %d%%</string>
-    <string name="waterTracking_drinkTypes_creation_createTrack_buttonText">Сохранить напиток</string>
-    <string name="waterTracking_drinkTypes_creation_nameEmpty">Это поле не может быть пустым!</string>
-    <string name="waterTracking_drinkTypes_creation_nameMoreThanMaxCharsError">Максимальное кол-во символов: %d</string>
 
     <string name="waterTracking_drinkTypes_update_title_topBar">Обновление напитка</string>
-    <string name="waterTracking_drinkTypes_update_selectedIndex_formatText">Выбранный индекс: %d%%</string>
-    <string name="waterTracking_drinkTypes_update_selectHydrationIndex_text">Укажите индекс гидратации напитка:</string>
-    <string name="waterTracking_drinkTypes_update_drinkTypeIconContentDescription">Иконка напитка</string>
-    <string name="waterTracking_drinkTypes_update_selectIcon_text">Выберите иконку напитка:</string>
-    <string name="waterTracking_drinkTypes_update_nameIcon_contentDescription">Иконка ввода названия</string>
-    <string name="waterTracking_drinkTypes_update_enterName_textField">Например, Джин-тоник…</string>
-    <string name="waterTracking_drinkTypes_update_enterName_text">Введите название напитка:</string>
     <string name="waterTracking_drinkTypes_update_createTrack_buttonText">Обновить напиток</string>
-    <string name="waterTracking_drinkTypes_update_nameEmpty">Это поле не может быть пустым!</string>
-    <string name="waterTracking_drinkTypes_update_nameMoreThanMaxCharsError">Максимальное кол-во символов: %d</string>
 
     <string name="predefined_drinkType_name_water">Вода</string>
     <string name="predefined_drinkType_name_coffee">Кофе</string>

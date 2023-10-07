@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="errors_fieldCantBeEmptyError">Это поле не может быть пустым!</string>
+    <string name="errors_moreThanMaxCharsError">Максимальное кол-во символов: %d</string>
+    <string name="errors_invalidCharsError">Уберите символы: %s</string>
+</resources>
