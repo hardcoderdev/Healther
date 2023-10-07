@@ -19,6 +19,8 @@ import hardcoder.dev.androidApp.ui.navigation.settings.SettingsScreen
 import hardcoder.dev.androidApp.ui.navigation.shop.ShopScreen
 import hardcoder.dev.androidApp.ui.screens.dashboard.Dashboard
 import hardcoder.dev.androidApp.ui.screens.hero.HeroImageByGenderResolver
+import hardcoder.dev.formatters.DecimalFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.presentation.dashboard.DashboardViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -30,8 +32,8 @@ class DashboardScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<DashboardViewModel>()
         val heroImageByGenderResolver = koinInject<HeroImageByGenderResolver>()
-        val decimalFormatter = koinInject<hardcoder.dev.formatters.DecimalFormatter>()
-        val millisDistanceFormatter = koinInject<hardcoder.dev.formatters.MillisDistanceFormatter>()
+        val decimalFormatter = koinInject<DecimalFormatter>()
+        val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
 
         Dashboard(
             millisDistanceFormatter = millisDistanceFormatter,

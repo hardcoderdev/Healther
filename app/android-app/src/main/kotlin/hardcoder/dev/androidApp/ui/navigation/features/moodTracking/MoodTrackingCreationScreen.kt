@@ -8,6 +8,7 @@ import hardcoder.dev.androidApp.ui.navigation.features.moodTracking.moodActiviti
 import hardcoder.dev.androidApp.ui.navigation.features.moodTracking.moodTypes.MoodTypesScreen
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.create.MoodTrackingCreation
 import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingCreationViewModel
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
 import org.koin.androidx.compose.koinViewModel
@@ -19,7 +20,7 @@ class MoodTrackingCreationScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<MoodTrackingCreationViewModel>()
-        val dateTimeFormatter = koinInject<hardcoder.dev.formatters.DateTimeFormatter>()
+        val dateTimeFormatter = koinInject<DateTimeFormatter>()
         val dateTimeProvider = koinInject<DateTimeProvider>()
 
         LaunchedEffectWhenExecuted(

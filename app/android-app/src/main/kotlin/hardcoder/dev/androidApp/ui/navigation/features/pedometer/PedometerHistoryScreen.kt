@@ -6,6 +6,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.history.PedometerHistory
 import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.formatters.DecimalFormatter
 import hardcoder.dev.presentation.features.pedometer.PedometerHistoryViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -16,7 +17,7 @@ class PedometerHistoryScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<PedometerHistoryViewModel>()
-        val decimalFormatter = koinInject<hardcoder.dev.formatters.DecimalFormatter>()
+        val decimalFormatter = koinInject<DecimalFormatter>()
         val dateTimeProvider = koinInject<DateTimeProvider>()
 
         PedometerHistory(

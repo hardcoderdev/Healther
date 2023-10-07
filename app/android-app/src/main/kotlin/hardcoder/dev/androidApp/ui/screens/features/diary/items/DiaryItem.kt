@@ -16,6 +16,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
+import hardcoder.dev.formatters.DateTimeFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack
 import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
@@ -33,8 +35,8 @@ private const val MAX_TAGS_VISIBLE_IN_ITEM = 4
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DiaryItem(
-    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    dateTimeFormatter: DateTimeFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     diaryTrack: DiaryTrack,
     onUpdate: (DiaryTrack) -> Unit,
@@ -121,10 +123,10 @@ private fun DiaryItemPreview() {
         DiaryItem(
             onUpdate = {},
             fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
-            dateTimeFormatter = hardcoder.dev.formatters.DateTimeFormatter(context = LocalContext.current),
-            millisDistanceFormatter = hardcoder.dev.formatters.MillisDistanceFormatter(
+            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
+            millisDistanceFormatter = MillisDistanceFormatter(
                 context = LocalContext.current,
-                defaultAccuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.DAYS,
+                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
             ),
             diaryTrack = DiaryMockDataProvider.diaryTracksList(
                 context = LocalContext.current,

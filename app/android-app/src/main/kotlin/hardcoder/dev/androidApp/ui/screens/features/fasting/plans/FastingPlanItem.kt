@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.input.InputController
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.logic.features.fasting.plan.FastingPlan
 import hardcoder.dev.uikit.components.picker.NumberInput
 import hardcoder.dev.uikit.components.text.Description
@@ -21,7 +22,7 @@ import kotlin.time.Duration.Companion.hours
 fun FastingPlanItem(
     customFastingHoursInputController: InputController<Int>,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
     modifier: Modifier = Modifier,
     fastingPlan: FastingPlan,
 ) {
@@ -44,12 +45,12 @@ fun FastingPlanItem(
                         formatArgs = arrayOf(
                             millisDistanceFormatter.formatMillisDistance(
                                 distanceInMillis = fastingHoursInMillis,
-                                accuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.HOURS,
+                                accuracy = MillisDistanceFormatter.Accuracy.HOURS,
                                 usePlurals = true,
                             ),
                             millisDistanceFormatter.formatMillisDistance(
                                 distanceInMillis = eatingHoursInMillis,
-                                accuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.HOURS,
+                                accuracy = MillisDistanceFormatter.Accuracy.HOURS,
                                 usePlurals = true,
                             ),
                         ),

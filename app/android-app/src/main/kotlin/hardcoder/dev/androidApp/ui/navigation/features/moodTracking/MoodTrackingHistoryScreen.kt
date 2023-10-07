@@ -6,6 +6,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.history.MoodTrackingHistory
 import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingHistoryViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -17,7 +18,7 @@ class MoodTrackingHistoryScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<MoodTrackingHistoryViewModel>()
         val dateTimeProvider = koinInject<DateTimeProvider>()
-        val dateTimeFormatter = koinInject<hardcoder.dev.formatters.DateTimeFormatter>()
+        val dateTimeFormatter = koinInject<DateTimeFormatter>()
 
         MoodTrackingHistory(
             dateTimeProvider = dateTimeProvider,

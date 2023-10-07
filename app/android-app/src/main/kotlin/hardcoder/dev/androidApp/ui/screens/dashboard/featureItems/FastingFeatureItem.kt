@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.mock.dataProviders.DashboardMockDataProvider
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
@@ -33,7 +34,7 @@ import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun FastingFeatureItem(
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
     fastingFeature: DashboardFeatureItem.FastingFeature,
     onGoToFeature: () -> Unit,
     onStartFasting: () -> Unit,
@@ -73,7 +74,7 @@ fun FastingFeatureItem(
 
 @Composable
 private fun InfoSection(
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
     fastingFeature: DashboardFeatureItem.FastingFeature,
 ) {
     Column(Modifier.fillMaxWidth()) {
@@ -87,7 +88,7 @@ private fun InfoSection(
                 Description(
                     text = millisDistanceFormatter.formatMillisDistance(
                         distanceInMillis = timeLeftInMillis.inWholeMilliseconds,
-                        accuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.SECONDS,
+                        accuracy = MillisDistanceFormatter.Accuracy.SECONDS,
                         usePlurals = true,
                     ),
                 )
@@ -150,9 +151,9 @@ private fun FastingFeatureItemPreview() {
         FastingFeatureItem(
             onGoToFeature = {},
             onStartFasting = {},
-            millisDistanceFormatter = hardcoder.dev.formatters.MillisDistanceFormatter(
+            millisDistanceFormatter = MillisDistanceFormatter(
                 context = LocalContext.current,
-                defaultAccuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.DAYS,
+                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
             ),
             fastingFeature = DashboardMockDataProvider.dashboardFastingFeature(),
         )

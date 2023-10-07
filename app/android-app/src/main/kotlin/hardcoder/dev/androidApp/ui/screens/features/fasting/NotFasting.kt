@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
 import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticResolver
 import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticSection
+import hardcoder.dev.formatters.DateTimeFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.mock.dataProviders.features.FastingMockDataProvider
@@ -38,9 +40,9 @@ import kotlin.math.roundToInt
 @Composable
 fun NotFasting(
     fastingStatisticResolver: FastingStatisticResolver,
-    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    dateTimeFormatter: DateTimeFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
     chartData: FastingChartData,
     fastingStatistic: FastingStatistic?,
     lastFastingTracks: List<FastingTrack>,
@@ -89,8 +91,8 @@ fun NotFasting(
 @Composable
 private fun FastingLastTracksSection(
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
-    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    dateTimeFormatter: DateTimeFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
     lastFastingTrackList: List<FastingTrack>,
 ) {
     Title(text = stringResource(id = R.string.fasting_lastFastingTracks_text))
@@ -146,11 +148,11 @@ private fun NotFastingPreview() {
                 NotFasting(
                     onCreateFastingTrack = {},
                     fastingStatisticResolver = FastingStatisticResolver(context = LocalContext.current),
-                    dateTimeFormatter = hardcoder.dev.formatters.DateTimeFormatter(context = LocalContext.current),
+                    dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
                     fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
-                    millisDistanceFormatter = hardcoder.dev.formatters.MillisDistanceFormatter(
+                    millisDistanceFormatter = MillisDistanceFormatter(
                         context = LocalContext.current,
-                        defaultAccuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.DAYS,
+                        defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
                     ),
                     fastingStatistic = FastingMockDataProvider.fastingStatistics(),
                     chartData = FastingMockDataProvider.fastingChartData(),

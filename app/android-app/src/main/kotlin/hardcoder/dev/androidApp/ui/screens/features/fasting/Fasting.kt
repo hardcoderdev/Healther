@@ -19,6 +19,8 @@ import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanRes
 import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticResolver
 import hardcoder.dev.androidApp.ui.screens.features.fasting.statistics.FastingStatisticSection
 import hardcoder.dev.controller.request.RequestController
+import hardcoder.dev.formatters.DateTimeFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.FastingMockDataProvider
@@ -38,9 +40,9 @@ import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun Fasting(
-    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    dateTimeFormatter: DateTimeFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
     state: FastingViewModel.FastingState.Fasting,
     fastingStatistic: FastingStatistic?,
     interruptFastingController: RequestController,
@@ -93,7 +95,7 @@ fun Fasting(
 
 @Composable
 private fun ColumnScope.FastingProgressSection(
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
     state: FastingViewModel.FastingState.Fasting,
 ) {
     Headline(
@@ -109,7 +111,7 @@ private fun ColumnScope.FastingProgressSection(
         percentage = state.fastingProgress,
         innerText = millisDistanceFormatter.formatMillisDistance(
             distanceInMillis = state.timeLeftInMillis.inWholeMilliseconds,
-            accuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.SECONDS,
+            accuracy = MillisDistanceFormatter.Accuracy.SECONDS,
         ),
     )
 }
@@ -117,7 +119,7 @@ private fun ColumnScope.FastingProgressSection(
 @Composable
 private fun FastingInfoSection(
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
-    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    dateTimeFormatter: DateTimeFormatter,
     state: FastingViewModel.FastingState.Fasting,
 ) {
     val formattedDate = dateTimeFormatter.formatTime(state.startTimeInMillis)
@@ -150,12 +152,12 @@ private fun FastingPreview() {
             ),
             content = {
                 Fasting(
-                    dateTimeFormatter = hardcoder.dev.formatters.DateTimeFormatter(context = LocalContext.current),
+                    dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
                     fastingStatisticResolver = FastingStatisticResolver(context = LocalContext.current),
                     fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
-                    millisDistanceFormatter = hardcoder.dev.formatters.MillisDistanceFormatter(
+                    millisDistanceFormatter = MillisDistanceFormatter(
                         context = LocalContext.current,
-                        defaultAccuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.DAYS,
+                        defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
                     ),
                     state = FastingMockDataProvider.fastingState(),
                     interruptFastingController = MockControllersProvider.requestController(),

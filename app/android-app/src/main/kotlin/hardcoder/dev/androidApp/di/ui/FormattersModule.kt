@@ -1,6 +1,9 @@
 package hardcoder.dev.androidApp.di.ui
 
+import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.formatters.DecimalFormatter
+import hardcoder.dev.formatters.LiquidFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -9,22 +12,22 @@ val formattersModule = module {
     singleOf(::DecimalFormatter)
 
     single {
-        hardcoder.dev.formatters.DateTimeFormatter(
+        DateTimeFormatter(
             context = androidContext(),
         )
     }
 
     single {
-        hardcoder.dev.formatters.MillisDistanceFormatter(
+        MillisDistanceFormatter(
             context = androidContext(),
-            defaultAccuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.MINUTES,
+            defaultAccuracy = MillisDistanceFormatter.Accuracy.MINUTES,
         )
     }
 
     single {
-        hardcoder.dev.formatters.LiquidFormatter(
+        LiquidFormatter(
             context = androidContext(),
-            defaultAccuracy = hardcoder.dev.formatters.LiquidFormatter.Accuracy.MILLILITERS,
+            defaultAccuracy = LiquidFormatter.Accuracy.MILLILITERS,
         )
     }
 }

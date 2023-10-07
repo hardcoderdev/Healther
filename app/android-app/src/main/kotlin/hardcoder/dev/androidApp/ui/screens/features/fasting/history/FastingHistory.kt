@@ -22,6 +22,8 @@ import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
+import hardcoder.dev.formatters.DateTimeFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.date.MockDateProvider
@@ -40,8 +42,8 @@ import kotlinx.datetime.Instant
 @Composable
 fun FastingHistory(
     dateTimeProvider: DateTimeProvider,
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
-    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    dateTimeFormatter: DateTimeFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     dateRangeInputController: InputController<ClosedRange<Instant>>,
     fastingTracksLoadingController: LoadingController<List<FastingTrack>>,
@@ -69,8 +71,8 @@ fun FastingHistory(
 
 @Composable
 private fun FastingHistoryContent(
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
-    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    dateTimeFormatter: DateTimeFormatter,
     dateTimeProvider: DateTimeProvider,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     dateRangeInputController: InputController<ClosedRange<Instant>>,
@@ -97,8 +99,8 @@ private fun FastingHistoryContent(
 
 @Composable
 private fun FastingTracksHistory(
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
-    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
+    dateTimeFormatter: DateTimeFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     fastingTracksLoadingController: LoadingController<List<FastingTrack>>,
 ) {
@@ -135,11 +137,11 @@ private fun FastingHistoryPreview() {
     HealtherTheme {
         FastingHistory(
             onGoBack = {},
-            dateTimeFormatter = hardcoder.dev.formatters.DateTimeFormatter(context = LocalContext.current),
+            dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
             dateTimeProvider = DateTimeProvider(dispatchers = DefaultBackgroundBackgroundCoroutineDispatchers),
-            millisDistanceFormatter = hardcoder.dev.formatters.MillisDistanceFormatter(
+            millisDistanceFormatter = MillisDistanceFormatter(
                 context = LocalContext.current,
-                defaultAccuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.DAYS,
+                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
             ),
             fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
             dateRangeInputController = MockControllersProvider.inputController(MockDateProvider.instantRange()),

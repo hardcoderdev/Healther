@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.formatters.LiquidFormatter
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatistic
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.WaterTrackingMockDataProvider
@@ -87,9 +88,9 @@ private fun WaterTrackingAnalyticsPreview() {
             onGoBack = {},
             waterTrackingStatisticResolver = WaterTrackingStatisticResolver(
                 context = LocalContext.current,
-                liquidFormatter = hardcoder.dev.formatters.LiquidFormatter(
+                liquidFormatter = LiquidFormatter(
                     context = LocalContext.current,
-                    defaultAccuracy = hardcoder.dev.formatters.LiquidFormatter.Accuracy.MILLILITERS,
+                    defaultAccuracy = LiquidFormatter.Accuracy.MILLILITERS,
                 ),
             ),
             statisticLoadingController = MockControllersProvider.loadingController(

@@ -12,6 +12,7 @@ import hardcoder.dev.androidApp.ui.navigation.features.moodTracking.moodActiviti
 import hardcoder.dev.androidApp.ui.navigation.features.moodTracking.moodTypes.MoodTypesScreen
 import hardcoder.dev.androidApp.ui.screens.features.moodTracking.update.MoodTrackingUpdate
 import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingUpdateViewModel
 import hardcoder.dev.uikit.components.dialog.DeleteTrackDialog
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
@@ -27,7 +28,7 @@ data class MoodTrackingUpdateScreen(val moodTrackId: Int) : Screen {
         val viewModel = koinViewModel<MoodTrackingUpdateViewModel> {
             parametersOf(moodTrackId)
         }
-        val dateTimeFormatter = koinInject<hardcoder.dev.formatters.DateTimeFormatter>()
+        val dateTimeFormatter = koinInject<DateTimeFormatter>()
         val dateTimeProvider = koinInject<DateTimeProvider>()
 
         LaunchedEffectWhenExecuted(

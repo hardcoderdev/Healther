@@ -23,6 +23,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.request.RequestController
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.FastingMockDataProvider
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
@@ -44,7 +45,7 @@ import hardcoderdev.healther.app.resources.R
 @Composable
 fun FinishFasting(
     state: FastingViewModel.FastingState.Finished,
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
     noteInputController: InputController<String>,
     rewardLoadingController: LoadingController<Float>,
     createRewardController: RequestController,
@@ -103,16 +104,16 @@ fun FinishFasting(
 
 @Composable
 private fun CongratulationsSection(
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
     state: FastingViewModel.FastingState.Finished,
 ) {
     val formattedFastingTime = millisDistanceFormatter.formatMillisDistance(
         distanceInMillis = state.timeLeftInMillis.inWholeMilliseconds,
         usePlurals = true,
         accuracy = if (state.isInterrupted) {
-            hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.MINUTES
+            MillisDistanceFormatter.Accuracy.MINUTES
         } else {
-            hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.HOURS
+            MillisDistanceFormatter.Accuracy.HOURS
         },
     )
 
@@ -165,9 +166,9 @@ private fun FinishFastingPreview() {
             content = {
                 FinishFasting(
                     onClose = {},
-                    millisDistanceFormatter = hardcoder.dev.formatters.MillisDistanceFormatter(
+                    millisDistanceFormatter = MillisDistanceFormatter(
                         context = LocalContext.current,
-                        defaultAccuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.DAYS,
+                        defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
                     ),
                     state = FastingMockDataProvider.finishedState(),
                     collectRewardController = MockControllersProvider.requestController(),

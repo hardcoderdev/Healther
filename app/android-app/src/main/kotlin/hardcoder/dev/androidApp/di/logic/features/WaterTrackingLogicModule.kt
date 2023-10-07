@@ -2,11 +2,9 @@ package hardcoder.dev.androidApp.di.logic.features
 
 import hardcoder.dev.androidApp.ui.screens.features.waterTracking.drinkType.providers.DrinkTypeIconProvider
 import hardcoder.dev.androidApp.ui.screens.features.waterTracking.drinkType.providers.PredefinedDrinkTypeProviderImpl
-import hardcoder.dev.logic.features.waterTracking.resolvers.WaterIntakeResolver
-import hardcoder.dev.logic.features.waterTracking.resolvers.WaterPercentageResolver
+import hardcoder.dev.icons.IconResourceProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackCreator
 import hardcoder.dev.logic.features.waterTracking.WaterTrackDeleter
-import hardcoder.dev.logic.features.waterTracking.validators.WaterTrackMillilitersValidator
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackUpdater
 import hardcoder.dev.logic.features.waterTracking.WaterTrackingDailyRateProvider
@@ -18,7 +16,10 @@ import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeNameValidat
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeUpdater
 import hardcoder.dev.logic.features.waterTracking.drinkType.PredefinedDrinkTypeProvider
+import hardcoder.dev.logic.features.waterTracking.resolvers.WaterIntakeResolver
+import hardcoder.dev.logic.features.waterTracking.resolvers.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatisticProvider
+import hardcoder.dev.logic.features.waterTracking.validators.WaterTrackMillilitersValidator
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -29,7 +30,7 @@ val waterTrackingLogicModule = module {
     singleOf(::WaterTrackMillilitersValidator)
     singleOf(::DrinkTypeNameValidator)
     singleOf(::DrinkTypeNameValidator)
-    singleOf<hardcoder.dev.icons.IconResourceProvider>(::DrinkTypeIconProvider)
+    singleOf<IconResourceProvider>(::DrinkTypeIconProvider)
 
     single {
         WaterTrackingDailyRateProvider(

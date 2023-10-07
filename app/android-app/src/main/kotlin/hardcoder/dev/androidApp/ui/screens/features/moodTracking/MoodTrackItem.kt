@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
@@ -34,7 +35,7 @@ private const val MAX_ACTIVITIES_VISIBLE_IN_ITEM = 4
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MoodTrackItem(
-    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    dateTimeFormatter: DateTimeFormatter,
     activitiesList: List<MoodActivity>,
     moodTrack: MoodTrack,
     onUpdate: (MoodTrack) -> Unit,

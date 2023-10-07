@@ -13,6 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanResourcesProvider
+import hardcoder.dev.formatters.DateTimeFormatter
+import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.logic.features.fasting.track.FastingTrack
 import hardcoder.dev.uikit.components.card.Card
 import hardcoder.dev.uikit.components.card.CardConfig
@@ -22,9 +24,9 @@ import hardcoderdev.healther.app.resources.R
 
 @Composable
 fun FastingItem(
-    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    dateTimeFormatter: DateTimeFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
     fastingTrack: FastingTrack,
 ) {
     Card(
@@ -53,7 +55,7 @@ fun FastingItem(
 
 @Composable
 private fun ProgressSection(
-    millisDistanceFormatter: hardcoder.dev.formatters.MillisDistanceFormatter,
+    millisDistanceFormatter: MillisDistanceFormatter,
     fastingTrack: FastingTrack,
 ) {
     val fastingTimePassedInMillis = fastingTrack.interruptedTime?.let {
@@ -68,14 +70,14 @@ private fun ProgressSection(
         percentage = fastingTrack.fastingProgress,
         innerText = millisDistanceFormatter.formatMillisDistance(
             distanceInMillis = fastingTimePassedInMillis.inWholeMilliseconds,
-            accuracy = hardcoder.dev.formatters.MillisDistanceFormatter.Accuracy.MINUTES,
+            accuracy = MillisDistanceFormatter.Accuracy.MINUTES,
         ),
     )
 }
 
 @Composable
 private fun DateInfoSection(
-    dateTimeFormatter: hardcoder.dev.formatters.DateTimeFormatter,
+    dateTimeFormatter: DateTimeFormatter,
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     fastingTrack: FastingTrack,
 ) {

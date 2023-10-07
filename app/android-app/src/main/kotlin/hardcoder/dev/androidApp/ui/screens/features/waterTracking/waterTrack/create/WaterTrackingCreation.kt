@@ -29,6 +29,7 @@ import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.formatters.RegexHolder
+import hardcoder.dev.icons.IconImpl
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.logic.features.waterTracking.validators.IncorrectMillilitersCount
 import hardcoder.dev.logic.features.waterTracking.validators.ValidatedMillilitersCount
@@ -213,7 +214,7 @@ private fun DrinkTypeManagementButton(onManageDrinkType: () -> Unit) {
             modifier = Modifier.padding(4.dp),
             onClick = { onManageDrinkType() },
             text = stringResource(id = R.string.waterTracking_drinkTypes_title_topBar),
-            iconResId = hardcoder.dev.icons.IconImpl(0, R.drawable.ic_create).resourceId,
+            iconResId = IconImpl(0, R.drawable.ic_create).resourceId,
             shape = RoundedCornerShape(32.dp),
         ),
     )

@@ -16,6 +16,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.androidApp.ui.screens.hero.HeroImageByGenderResolver
+import hardcoder.dev.formatters.DecimalFormatter
 import hardcoder.dev.logic.hero.Hero
 import hardcoder.dev.mock.dataProviders.HeroMockDataProvider
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
@@ -33,7 +34,7 @@ import hardcoderdev.healther.app.resources.R
 @Composable
 fun HeroSectionItem(
     heroImageByGenderResolver: HeroImageByGenderResolver,
-    decimalFormatter: hardcoder.dev.formatters.DecimalFormatter,
+    decimalFormatter: DecimalFormatter,
     hero: Hero,
     healthPointsProgress: Float,
     experiencePointsProgress: Float,
@@ -133,7 +134,7 @@ private fun HealthSection(
 
 @Composable
 private fun ExperienceSection(
-    decimalFormatter: hardcoder.dev.formatters.DecimalFormatter,
+    decimalFormatter: DecimalFormatter,
     currentExperiencePoints: Float,
     experiencePointsToNextLevel: Float,
     experiencePointsProgress: Float,
@@ -164,7 +165,7 @@ private fun ExperienceSection(
 
 @Composable
 private fun CurrencySection(
-    decimalFormatter: hardcoder.dev.formatters.DecimalFormatter,
+    decimalFormatter: DecimalFormatter,
     coinsAmount: Float,
     crystalsAmount: Int,
 ) {
@@ -221,7 +222,7 @@ private fun HeroSectionItemPreview() {
             onGoToShop = {},
             onGoToInventory = {},
             heroImageByGenderResolver = HeroImageByGenderResolver(),
-            decimalFormatter = hardcoder.dev.formatters.DecimalFormatter(),
+            decimalFormatter = DecimalFormatter(),
             healthPointsProgress = 0.3f,
             experiencePointsProgress = 0.5f,
             experiencePointsToNextLevel = 30f,

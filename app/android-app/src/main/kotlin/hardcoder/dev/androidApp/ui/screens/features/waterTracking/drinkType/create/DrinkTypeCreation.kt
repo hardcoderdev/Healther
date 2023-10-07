@@ -18,6 +18,7 @@ import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
+import hardcoder.dev.icons.Icon
 import hardcoder.dev.logic.features.waterTracking.drinkType.IncorrectDrinkTypeName
 import hardcoder.dev.logic.features.waterTracking.drinkType.ValidatedDrinkTypeName
 import hardcoder.dev.mock.controllers.MockControllersProvider
@@ -42,7 +43,7 @@ import hardcoderdev.healther.app.resources.R
 @Composable
 fun DrinkTypeCreation(
     nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
-    iconSelectionController: SingleSelectionController<hardcoder.dev.icons.Icon>,
+    iconSelectionController: SingleSelectionController<Icon>,
     waterPercentageInputController: InputController<Int>,
     creationController: RequestController,
     onGoBack: () -> Unit,
@@ -68,7 +69,7 @@ fun DrinkTypeCreation(
 @Composable
 private fun DrinkTypeCreationContent(
     nameInputController: ValidatedInputController<String, ValidatedDrinkTypeName>,
-    iconSelectionController: SingleSelectionController<hardcoder.dev.icons.Icon>,
+    iconSelectionController: SingleSelectionController<Icon>,
     waterPercentageInputController: InputController<Int>,
     creationController: RequestController,
 ) {

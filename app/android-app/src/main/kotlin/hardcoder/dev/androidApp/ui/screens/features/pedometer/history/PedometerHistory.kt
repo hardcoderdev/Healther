@@ -18,6 +18,7 @@ import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.getEndOfDay
 import hardcoder.dev.datetime.getStartOfDay
+import hardcoder.dev.formatters.DecimalFormatter
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.date.MockDateProvider
@@ -42,7 +43,7 @@ import kotlinx.datetime.Instant
 
 @Composable
 fun PedometerHistory(
-    decimalFormatter: hardcoder.dev.formatters.DecimalFormatter,
+    decimalFormatter: DecimalFormatter,
     dateTimeProvider: DateTimeProvider,
     dateRangeInputController: InputController<ClosedRange<Instant>>,
     statisticLoadingController: LoadingController<PedometerStatistic>,
@@ -70,7 +71,7 @@ fun PedometerHistory(
 
 @Composable
 private fun PedometerHistoryContent(
-    decimalFormatter: hardcoder.dev.formatters.DecimalFormatter,
+    decimalFormatter: DecimalFormatter,
     dateTimeProvider: DateTimeProvider,
     dateRangeInputController: InputController<ClosedRange<Instant>>,
     statisticLoadingController: LoadingController<PedometerStatistic>,
@@ -116,7 +117,7 @@ private fun PedometerHistoryContent(
 
 @Composable
 private fun PedometerTracksHistory(
-    decimalFormatter: hardcoder.dev.formatters.DecimalFormatter,
+    decimalFormatter: DecimalFormatter,
     pedometerStatistic: PedometerStatistic,
 ) {
     Spacer(modifier = Modifier.height(16.dp))
@@ -163,7 +164,7 @@ private fun PedometerHistoryPreview() {
     HealtherTheme {
         PedometerHistory(
             onGoBack = {},
-            decimalFormatter = hardcoder.dev.formatters.DecimalFormatter(),
+            decimalFormatter = DecimalFormatter(),
             dateTimeProvider = DateTimeProvider(dispatchers = DefaultBackgroundBackgroundCoroutineDispatchers),
             dateRangeInputController = MockControllersProvider.inputController(MockDateProvider.instantRange()),
             chartEntriesLoadingController = MockControllersProvider.loadingController(
