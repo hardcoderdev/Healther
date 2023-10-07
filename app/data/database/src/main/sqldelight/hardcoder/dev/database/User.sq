@@ -1,0 +1,21 @@
+import kotlin.Int;
+
+CREATE TABLE IF NOT EXISTS User (
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    weight INTEGER AS Int NOT NULL,
+    exerciseStressTime INTEGER AS Int NOT NULL,
+    genderId INTEGER AS Int NOT NULL
+);
+
+insert:
+INSERT INTO User (id, name, weight, exerciseStressTime, genderId)
+VALUES (?, ?, ?, ?, ?);
+
+update:
+UPDATE User SET name = ?, weight = ?, exerciseStressTime = ?, genderId = ?
+WHERE id = ?;
+
+provideCurrentUser:
+SELECT * FROM User;
+

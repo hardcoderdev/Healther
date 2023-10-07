@@ -21,8 +21,6 @@ class MoodTrackingScreen : Screen {
         MoodTracking(
             dateTimeFormatter = dateTimeFormatter,
             moodWithActivitiesController = viewModel.moodWithActivityLoadingController,
-            rewardLoadingController = viewModel.rewardLoadingController,
-            collectRewardController = viewModel.collectRewardController,
             onGoBack = navigator::pop,
             onCreateMoodTrack = {
                 navigator += MoodTrackingCreationScreen()

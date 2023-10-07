@@ -21,7 +21,5 @@ class AppPreferenceProvider(
 
     private fun AppPreference.toEntity() = AppPreferenceEntity(
         firstLaunchTime = firstLaunchTime,
-        lastAppReviewRequestTime = lastAppReviewRequestTime,
-        lastEntranceDateTime = lastEntranceDateTime,
     )
 }

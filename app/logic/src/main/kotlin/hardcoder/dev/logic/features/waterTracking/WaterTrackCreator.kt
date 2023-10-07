@@ -13,21 +13,16 @@ class WaterTrackCreator(
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
-    suspend fun createWaterTrack(
+    suspend fun create(
         dateTime: Instant,
         millilitersCount: CorrectMillilitersCount,
         drinkTypeId: Int,
-    ): Int {
-        val waterTrackId = idGenerator.nextId()
-        withContext(dispatchers.io) {
-            appDatabase.waterTrackQueries.insert(
-                id = waterTrackId,
-                date = dateTime,
-                millilitersCount = millilitersCount.data,
-                drinkTypeId = drinkTypeId,
-            )
-        }
-
-        return waterTrackId
+    ) = withContext(dispatchers.io) {
+        appDatabase.waterTrackQueries.insert(
+            id = idGenerator.nextId(),
+            date = dateTime,
+            millilitersCount = millilitersCount.data,
+            drinkTypeId = drinkTypeId,
+        )
     }
 }

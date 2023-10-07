@@ -33,8 +33,6 @@ class DiaryScreen : Screen {
             diaryTrackLoadingController = viewModel.diaryTrackLoadingController,
             filteredTrackLoadingController = viewModel.filteredTrackLoadingController,
             tagMultiSelectionController = viewModel.tagMultiSelectionController,
-            rewardLoadingController = viewModel.rewardLoadingController,
-            collectRewardController = viewModel.collectRewardController,
             searchTextInputController = viewModel.searchTextInputController,
             onGoBack = navigator::pop,
             onCreateDiaryTrack = {

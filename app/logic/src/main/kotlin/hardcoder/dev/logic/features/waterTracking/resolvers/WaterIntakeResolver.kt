@@ -1,11 +1,11 @@
 package hardcoder.dev.logic.features.waterTracking.resolvers
 
-import hardcoder.dev.logic.hero.gender.Gender
+import hardcoder.dev.logic.user.gender.Gender
 import kotlin.math.roundToInt
 
 class WaterIntakeResolver {
 
-    fun resolve(weight: Int, stressTime: Int, gender: Gender): Int {
+    fun resolve(weight: Int, exerciseStressTime: Int, gender: Gender): Int {
         val stressTimeMultiplier = if (gender == Gender.MALE) {
             MALE_STRESS_TIME_MULTIPLIER
         } else {
@@ -13,7 +13,7 @@ class WaterIntakeResolver {
         }
 
         val dailyWaterIntakeInLiters =
-            ((weight * WEIGHT_MULTIPLIER) + (stressTime * stressTimeMultiplier)).roundToInt()
+            ((weight * WEIGHT_MULTIPLIER) + (exerciseStressTime * stressTimeMultiplier)).roundToInt()
         return dailyWaterIntakeInLiters * MILLILITERS_MULTIPLIER
     }
 

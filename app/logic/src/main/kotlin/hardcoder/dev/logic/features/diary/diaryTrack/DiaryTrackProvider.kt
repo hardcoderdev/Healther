@@ -4,8 +4,6 @@ import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.DiaryTrack
-import hardcoder.dev.logic.reward.currency.CurrencyProvider
-import hardcoder.dev.logic.features.FeatureType
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,7 +20,6 @@ class DiaryTrackProvider(
     private val appDatabase: AppDatabase,
     private val diaryAttachmentProvider: DiaryAttachmentProvider,
     private val dispatchers: BackgroundCoroutineDispatchers,
-    private val currencyProvider: CurrencyProvider,
 ) {
 
     fun provideAllDiaryTracksByDateRange(
@@ -37,16 +34,9 @@ class DiaryTrackProvider(
             } else {
                 combine(
                     diaryTracks.map { diaryTrack ->
-                        combine(
-                            diaryAttachmentProvider.provideAttachmentOfDiaryTrackById(diaryTrack.id),
-                            currencyProvider.isTrackCollected(
-                                featureType = FeatureType.DIARY,
-                                linkedTrackId = diaryTrack.id,
-                            ),
-                        ) { group, isRewardCollected ->
+                        diaryAttachmentProvider.provideAttachmentOfDiaryTrackById(diaryTrack.id).map {
                             diaryTrack.toDiaryTrackEntity(
-                                diaryAttachmentGroup = group,
-                                isRewardCollected = isRewardCollected,
+                                diaryAttachmentGroup = it,
                             )
                         }
                     },
@@ -62,16 +52,9 @@ class DiaryTrackProvider(
         .map { it.executeAsOneOrNull() }
         .flatMapLatest { diaryTrackDatabase ->
             diaryTrackDatabase?.let {
-                combine(
-                    diaryAttachmentProvider.provideAttachmentOfDiaryTrackById(diaryTrackDatabase.id),
-                    currencyProvider.isTrackCollected(
-                        featureType = FeatureType.DIARY,
-                        linkedTrackId = diaryTrackDatabase.id,
-                    ),
-                ) { group, isRewardCollected ->
+                diaryAttachmentProvider.provideAttachmentOfDiaryTrackById(diaryTrackDatabase.id).map {
                     diaryTrackDatabase.toDiaryTrackEntity(
-                        diaryAttachmentGroup = group,
-                        isRewardCollected = isRewardCollected,
+                        diaryAttachmentGroup = it,
                     )
                 }
             } ?: flowOf(null)
@@ -79,12 +62,10 @@ class DiaryTrackProvider(
 
     private fun DiaryTrack.toDiaryTrackEntity(
         diaryAttachmentGroup: DiaryAttachmentGroup?,
-        isRewardCollected: Boolean,
     ) = DiaryTrackEntity(
         id = id,
         content = content,
         date = date,
         diaryAttachmentGroup = diaryAttachmentGroup,
-        isRewardCollected = isRewardCollected,
     )
 }

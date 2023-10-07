@@ -19,7 +19,6 @@ object WaterTrackingMockDataProvider {
             WaterTrackingItem(
                 id = 0,
                 drinkType = drinkTypesList[0],
-                isCollected = false,
                 millilitersCount = 1200,
                 resolvedMillilitersCount = 1000,
                 timeInMillis = System.currentTimeMillis(),
@@ -27,7 +26,6 @@ object WaterTrackingMockDataProvider {
             WaterTrackingItem(
                 id = 1,
                 drinkType = drinkTypesList[1],
-                isCollected = true,
                 millilitersCount = 800,
                 resolvedMillilitersCount = 600,
                 timeInMillis = System.currentTimeMillis(),
@@ -35,7 +33,6 @@ object WaterTrackingMockDataProvider {
             WaterTrackingItem(
                 id = 2,
                 drinkType = drinkTypesList[2],
-                isCollected = true,
                 millilitersCount = 200,
                 resolvedMillilitersCount = 100,
                 timeInMillis = System.currentTimeMillis(),
@@ -43,7 +40,6 @@ object WaterTrackingMockDataProvider {
             WaterTrackingItem(
                 id = 3,
                 drinkType = drinkTypesList[3],
-                isCollected = true,
                 millilitersCount = 100,
                 resolvedMillilitersCount = 50,
                 timeInMillis = System.currentTimeMillis(),
@@ -51,7 +47,6 @@ object WaterTrackingMockDataProvider {
             WaterTrackingItem(
                 id = 4,
                 drinkType = drinkTypesList[4],
-                isCollected = true,
                 millilitersCount = 150,
                 resolvedMillilitersCount = 100,
                 timeInMillis = System.currentTimeMillis(),
@@ -59,7 +54,6 @@ object WaterTrackingMockDataProvider {
             WaterTrackingItem(
                 id = 5,
                 drinkType = drinkTypesList[5],
-                isCollected = true,
                 millilitersCount = 700,
                 resolvedMillilitersCount = 350,
                 timeInMillis = System.currentTimeMillis(),
@@ -67,7 +61,6 @@ object WaterTrackingMockDataProvider {
             WaterTrackingItem(
                 id = 6,
                 drinkType = drinkTypesList[6],
-                isCollected = true,
                 millilitersCount = 50,
                 resolvedMillilitersCount = 50,
                 timeInMillis = System.currentTimeMillis(),
@@ -75,7 +68,6 @@ object WaterTrackingMockDataProvider {
             WaterTrackingItem(
                 id = 7,
                 drinkType = drinkTypesList[7],
-                isCollected = true,
                 millilitersCount = 200,
                 resolvedMillilitersCount = 200,
                 timeInMillis = System.currentTimeMillis(),

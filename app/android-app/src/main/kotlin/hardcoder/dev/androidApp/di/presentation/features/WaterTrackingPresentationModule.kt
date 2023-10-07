@@ -18,9 +18,6 @@ val waterTrackingPresentationModule = module {
             waterPercentageResolver = get(),
             millilitersDrunkProvider = get(),
             dateTimeProvider = get(),
-            currencyProvider = get(),
-            currencyCollector = get(),
-            experienceCollector = get(),
         )
     }
 
@@ -40,10 +37,6 @@ val waterTrackingPresentationModule = module {
             waterTrackMillilitersValidator = get(),
             dateTimeProvider = get(),
             waterTrackingDailyRateProvider = get(),
-            currencyCreator = get(),
-            currencyCalculator = get(),
-            experienceCreator = get(),
-            experienceCalculator = get()
         )
     }
 

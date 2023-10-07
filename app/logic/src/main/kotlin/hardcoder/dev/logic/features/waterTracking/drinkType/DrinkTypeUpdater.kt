@@ -2,6 +2,7 @@ package hardcoder.dev.logic.features.waterTracking.drinkType
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.icons.Icon
 import kotlinx.coroutines.withContext
 
 class DrinkTypeUpdater(
@@ -12,7 +13,7 @@ class DrinkTypeUpdater(
     suspend fun update(
         id: Int,
         name: CorrectDrinkTypeName,
-        icon: hardcoder.dev.icons.Icon,
+        icon: Icon,
         hydrationIndexPercentage: Int,
     ) = withContext(dispatchers.io) {
         appDatabase.drinkTypeQueries.update(

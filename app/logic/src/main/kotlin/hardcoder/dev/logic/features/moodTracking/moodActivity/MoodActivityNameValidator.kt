@@ -38,7 +38,7 @@ data class IncorrectActivityName(
     val reason: Reason,
 ) : ValidatedActivityName() {
     sealed class Reason {
-        object Empty : Reason()
+        data object Empty : Reason()
         data class MoreThanMaxChars(val maxChars: Int) : Reason()
     }
 }

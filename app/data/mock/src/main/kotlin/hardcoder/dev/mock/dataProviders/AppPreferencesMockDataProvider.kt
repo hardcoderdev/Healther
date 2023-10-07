@@ -7,7 +7,5 @@ object AppPreferencesMockDataProvider {
 
     fun appPreferences() = AppPreference(
         firstLaunchTime = Clock.System.now(),
-        lastEntranceDateTime = Clock.System.now(),
-        lastAppReviewRequestTime = Clock.System.now(),
     )
 }

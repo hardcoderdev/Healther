@@ -7,6 +7,7 @@ import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
+import hardcoder.dev.icons.IconResourceProvider
 import hardcoder.dev.logic.features.diary.diaryTag.CorrectDiaryTagName
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagDeleter
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagNameValidator
@@ -22,7 +23,7 @@ class DiaryTagUpdateViewModel(
     private val diaryTagUpdater: DiaryTagUpdater,
     private val diaryTagProvider: DiaryTagProvider,
     diaryTagNameValidator: DiaryTagNameValidator,
-    iconResourceProvider: hardcoder.dev.icons.IconResourceProvider,
+    iconResourceProvider: IconResourceProvider,
 ) : ViewModel() {
 
     val tagNameInputController = ValidatedInputController(

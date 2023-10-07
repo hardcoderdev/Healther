@@ -32,10 +32,7 @@ fun FastingInitial(
     fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     millisDistanceFormatter: MillisDistanceFormatter,
     noteInputController: InputController<String>,
-    rewardLoadingController: LoadingController<Float>,
     interruptFastingController: RequestController,
-    collectRewardController: RequestController,
-    createRewardController: RequestController,
     fastingStateLoadingController: LoadingController<FastingViewModel.FastingState>,
     fastingStatisticsLoadingController: LoadingController<FastingStatistic?>,
     fastingChartDataLoadingController: LoadingController<FastingChartData>,
@@ -83,10 +80,8 @@ fun FastingInitial(
                                 state = fastingState,
                                 millisDistanceFormatter = millisDistanceFormatter,
                                 noteInputController = noteInputController,
-                                rewardLoadingController = rewardLoadingController,
-                                collectRewardController = collectRewardController,
-                                createRewardController = createRewardController,
                                 onClose = onGoBack,
+                                interruptFastingController = interruptFastingController,
                             )
                         }
                     }
@@ -154,8 +149,6 @@ private fun FastingInitialPreview() {
                 context = LocalContext.current,
                 defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
             ),
-            createRewardController = MockControllersProvider.requestController(),
-            collectRewardController = MockControllersProvider.requestController(),
             interruptFastingController = MockControllersProvider.requestController(),
             noteInputController = MockControllersProvider.inputController(""),
             fastingChartDataLoadingController = MockControllersProvider.loadingController(
@@ -167,7 +160,6 @@ private fun FastingInitialPreview() {
             fastingStatisticsLoadingController = MockControllersProvider.loadingController(
                 data = FastingMockDataProvider.fastingStatistics(),
             ),
-            rewardLoadingController = MockControllersProvider.loadingController(20.0f),
             lastThreeFastingTracksLoadingController = MockControllersProvider.loadingController(
                 data = FastingMockDataProvider.fastingTracksList(),
             ),

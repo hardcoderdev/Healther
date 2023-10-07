@@ -13,13 +13,8 @@ import hardcoder.dev.androidApp.ui.navigation.features.moodTracking.MoodTracking
 import hardcoder.dev.androidApp.ui.navigation.features.pedometer.PedometerScreen
 import hardcoder.dev.androidApp.ui.navigation.features.waterTracking.WaterTrackingCreationScreen
 import hardcoder.dev.androidApp.ui.navigation.features.waterTracking.WaterTrackingScreen
-import hardcoder.dev.androidApp.ui.navigation.hero.HeroDeathScreen
-import hardcoder.dev.androidApp.ui.navigation.hero.HeroInventoryScreen
 import hardcoder.dev.androidApp.ui.navigation.settings.SettingsScreen
-import hardcoder.dev.androidApp.ui.navigation.shop.ShopScreen
 import hardcoder.dev.androidApp.ui.screens.dashboard.Dashboard
-import hardcoder.dev.androidApp.ui.screens.hero.HeroImageByGenderResolver
-import hardcoder.dev.formatters.DecimalFormatter
 import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.presentation.dashboard.DashboardViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -31,18 +26,12 @@ class DashboardScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinViewModel<DashboardViewModel>()
-        val heroImageByGenderResolver = koinInject<HeroImageByGenderResolver>()
-        val decimalFormatter = koinInject<DecimalFormatter>()
         val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
 
         Dashboard(
             millisDistanceFormatter = millisDistanceFormatter,
-            heroImageByGenderResolver = heroImageByGenderResolver,
-            decimalFormatter = decimalFormatter,
             featureItemsLoadingController = viewModel.featuresLoadingController,
-            heroItemsLoadingController = viewModel.heroLoadingController,
             pedometerToggleController = viewModel.pedometerToggleController,
-            healthPointsLoadingController = viewModel.healthPointsLoadingController,
             onGoToWaterTrackingFeature = {
                 navigator += WaterTrackingScreen()
             },
@@ -72,15 +61,6 @@ class DashboardScreen : Screen {
             },
             onGoToSettings = {
                 navigator += SettingsScreen()
-            },
-            onGoToDeathScreen = {
-                navigator replaceAll HeroDeathScreen()
-            },
-            onGoToInventory = {
-                navigator += HeroInventoryScreen()
-            },
-            onGoToShop = {
-                navigator += ShopScreen()
             },
         )
     }

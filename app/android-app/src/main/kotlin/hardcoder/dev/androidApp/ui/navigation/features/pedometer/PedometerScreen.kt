@@ -36,8 +36,6 @@ class PedometerScreen : Screen {
             statisticLoadingController = viewModel.statisticLoadingController,
             pedometerToggleController = viewModel.pedometerToggleController,
             dailyRateProgressController = viewModel.dailyRateProgressController,
-            rewardLoadingController = viewModel.rewardLoadingController,
-            collectRewardController = viewModel.collectRewardController,
             onGoBack = navigator::pop,
             onGoToHistory = {
                 navigator += PedometerHistoryScreen()

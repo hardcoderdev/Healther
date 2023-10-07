@@ -17,13 +17,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
-import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
-import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.section.EmptySection
@@ -40,8 +37,6 @@ import hardcoderdev.healther.app.resources.R
 fun MoodTracking(
     dateTimeFormatter: DateTimeFormatter,
     moodWithActivitiesController: LoadingController<List<MoodWithActivities>>,
-    rewardLoadingController: LoadingController<Double>,
-    collectRewardController: RequestController,
     onCreateMoodTrack: () -> Unit,
     onUpdateMoodTrack: (Int) -> Unit,
     onGoToHistory: () -> Unit,
@@ -54,8 +49,6 @@ fun MoodTracking(
             MoodTrackingContent(
                 dateTimeFormatter = dateTimeFormatter,
                 moodWithActivitiesController = moodWithActivitiesController,
-                rewardLoadingController = rewardLoadingController,
-                collectRewardController = collectRewardController,
                 onUpdateMoodTrack = onUpdateMoodTrack,
             )
         },
@@ -84,28 +77,14 @@ fun MoodTracking(
 private fun MoodTrackingContent(
     dateTimeFormatter: DateTimeFormatter,
     moodWithActivitiesController: LoadingController<List<MoodWithActivities>>,
-    rewardLoadingController: LoadingController<Double>,
-    collectRewardController: RequestController,
     onUpdateMoodTrack: (Int) -> Unit,
 ) {
-    LoadingContainer(
-        controller1 = moodWithActivitiesController,
-        controller2 = rewardLoadingController,
-    ) { moodWithActivitiesList, totalReward ->
+    LoadingContainer(controller = moodWithActivitiesController) { moodWithActivitiesList ->
         Column(
             Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
         ) {
-            RequestButtonWithIcon(
-                requestButtonConfig = RequestButtonConfig.Filled(
-                    labelResId = R.string.currency_collectReward,
-                    formatArgs = listOf(totalReward),
-                    controller = collectRewardController,
-                    iconResId = R.drawable.ic_money,
-                ),
-            )
-            Spacer(modifier = Modifier.height(32.dp))
             if (moodWithActivitiesList.isNotEmpty()) {
                 MoodTrackingDiarySection(
                     dateTimeFormatter = dateTimeFormatter,
@@ -142,11 +121,7 @@ private fun ColumnScope.MoodTrackingDiarySection(
                 moodTrack = moodWithActivityTrack.moodTrack,
                 activitiesList = moodWithActivityTrack.moodActivityList,
                 onUpdate = {
-                    if (moodWithActivityTrack.isRewardCollected) {
-                        // TODO HANDLE CLICK ON ITEM WHEN TRACK ALREADY COLLECTED
-                    } else {
-                        onUpdateTrack(it.id)
-                    }
+                    onUpdateTrack(it.id)
                 },
             )
         }
@@ -164,8 +139,6 @@ private fun MoodTrackingPreview() {
             onUpdateMoodTrack = {},
             onGoBack = {},
             dateTimeFormatter = DateTimeFormatter(LocalContext.current),
-            collectRewardController = MockControllersProvider.requestController(),
-            rewardLoadingController = MockControllersProvider.loadingController(20.0),
             moodWithActivitiesController = MockControllersProvider.loadingController(
                 data = MoodTrackingMockDataProvider.moodWithActivitiesList(
                     context = LocalContext.current,

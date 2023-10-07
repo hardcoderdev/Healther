@@ -4,14 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
-import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.selectedItemsOrEmptySet
-import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.reward.currency.CurrencyCollector
-import hardcoder.dev.logic.reward.currency.CurrencyProvider
-import hardcoder.dev.logic.features.FeatureType
 import hardcoder.dev.logic.features.diary.DateRangeFilterType
 import hardcoder.dev.logic.features.diary.DateRangeFilterTypeMapper
 import hardcoder.dev.logic.features.diary.DateRangeFilterTypeProvider
@@ -19,12 +14,10 @@ import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
-import hardcoder.dev.logic.reward.experience.ExperienceCollector
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -33,10 +26,6 @@ class DiaryViewModel(
     private val diaryTrackProvider: DiaryTrackProvider,
     dateRangeFilterTypeProvider: DateRangeFilterTypeProvider,
     diaryTagProvider: DiaryTagProvider,
-    dateTimeProvider: DateTimeProvider,
-    currencyProvider: CurrencyProvider,
-    currencyCollector: CurrencyCollector,
-    experienceCollector: ExperienceCollector,
 ) : ViewModel() {
 
     val dateRangeFilterTypeSelectionController = SingleSelectionController(
@@ -92,28 +81,6 @@ class DiaryViewModel(
                 } else {
                     it.filterByTags(tags)
                 }
-            }
-        },
-    )
-
-    val collectRewardController = RequestController(
-        coroutineScope = viewModelScope,
-        canBeReset = true,
-        request = {
-            currencyCollector.collect(featureType = FeatureType.DIARY)
-            experienceCollector.collect(featureType = FeatureType.DIARY)
-        },
-    )
-
-    val rewardLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
-        flow = currencyProvider.provideRewardsByDate(
-            isCollected = false,
-            featureType = FeatureType.DIARY,
-            dayRange = dateTimeProvider.currentDateRange(),
-        ).map { rewardList ->
-            rewardList.sumOf { reward ->
-                reward.amount.toDouble()
             }
         },
     )

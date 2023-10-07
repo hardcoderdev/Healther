@@ -9,6 +9,7 @@ import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
+import hardcoder.dev.icons.IconResourceProvider
 import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeDeleter
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
@@ -24,7 +25,7 @@ class MoodTypeUpdateViewModel(
     private val moodTypeProvider: MoodTypeProvider,
     private val moodTypeUpdater: MoodTypeUpdater,
     private val moodTypeDeleter: MoodTypeDeleter,
-    iconResourceProvider: hardcoder.dev.icons.IconResourceProvider,
+    iconResourceProvider: IconResourceProvider,
 ) : ViewModel() {
 
     val moodTypeNameController = ValidatedInputController(

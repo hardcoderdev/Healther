@@ -8,8 +8,6 @@ object AppPreferenceAdapters {
 
     fun createAppPreferenceAdapter() = AppPreference.Adapter(
         firstLaunchTimeAdapter = InstantAdapter,
-        lastAppReviewRequestTimeAdapter = InstantAdapter,
         idAdapter = IntColumnAdapter,
-        lastEntranceDateTimeAdapter = InstantAdapter,
     )
 }

@@ -5,8 +5,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.androidApp.ui.navigation.dashboard.DashboardScreen
-import hardcoder.dev.androidApp.ui.navigation.hero.HeroCreationScreen
-import hardcoder.dev.androidApp.ui.navigation.hero.HeroDeathScreen
+import hardcoder.dev.androidApp.ui.navigation.user.UserCreationScreen
 import hardcoder.dev.androidApp.ui.screens.splash.Splash
 import hardcoder.dev.presentation.splash.SplashViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -20,12 +19,8 @@ class SplashScreen : Screen {
 
         Splash(
             isFirstLaunchLoadingController = viewModel.isFirstLaunchLoadingController,
-            healthPointsLoadingController = viewModel.healthPointsLoadingController,
             onGoToHeroCreation = {
-                navigator replaceAll HeroCreationScreen()
-            },
-            onGoToHeroDeath = {
-                navigator replaceAll HeroDeathScreen()
+                navigator replaceAll UserCreationScreen()
             },
             onGoToDashboard = {
                 navigator replaceAll DashboardScreen()

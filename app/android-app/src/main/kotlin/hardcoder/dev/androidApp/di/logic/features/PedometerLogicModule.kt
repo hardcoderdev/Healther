@@ -2,7 +2,6 @@ package hardcoder.dev.androidApp.di.logic.features
 
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.logic.PedometerManagerImpl
 import hardcoder.dev.logic.features.pedometer.PedometerDailyRateStepsProvider
-import hardcoder.dev.logic.features.pedometer.PedometerPenaltyMaker
 import hardcoder.dev.logic.features.pedometer.PedometerStepHandler
 import hardcoder.dev.logic.features.pedometer.PedometerStepProvider
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
@@ -35,12 +34,6 @@ val pedometerLogicModule = module {
         PedometerStepHandler(
             idGenerator = get(),
             pedometerTrackUpserter = get(),
-            currencyCalculator = get(),
-            currencyCreator = get(),
-            pedometerDailyRateStepsProvider = get(),
-            dateTimeProvider = get(),
-            experienceCreator = get(),
-            experienceCalculator = get(),
         )
     }
 
@@ -56,7 +49,6 @@ val pedometerLogicModule = module {
         PedometerTrackProvider(
             appDatabase = get(),
             dispatchers = get(),
-            currencyProvider = get(),
         )
     }
 
@@ -66,19 +58,6 @@ val pedometerLogicModule = module {
             caloriesResolver = get(),
             pedometerTrackProvider = get(),
             dispatchers = get(),
-        )
-    }
-
-    single {
-        PedometerPenaltyMaker(
-            pedometerTrackProvider = get(),
-            pedometerDailyRateStepsProvider = get(),
-            penaltyCreator = get(),
-            penaltyCalculator = get(),
-            heroHealthPointsManager = get(),
-            dateTimeProvider = get(),
-            dispatchers = get(),
-            lastEntranceManager = get(),
         )
     }
 }

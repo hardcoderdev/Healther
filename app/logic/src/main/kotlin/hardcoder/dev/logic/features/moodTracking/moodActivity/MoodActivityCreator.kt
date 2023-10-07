@@ -3,6 +3,7 @@ package hardcoder.dev.logic.features.moodTracking.moodActivity
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.IdGenerator
+import hardcoder.dev.icons.Icon
 import kotlinx.coroutines.withContext
 
 class MoodActivityCreator(
@@ -13,7 +14,7 @@ class MoodActivityCreator(
 
     suspend fun create(
         name: CorrectActivityName,
-        icon: hardcoder.dev.icons.Icon,
+        icon: Icon,
     ) = withContext(dispatchers.io) {
         appDatabase.moodActivityQueries.insert(
             id = idGenerator.nextId(),

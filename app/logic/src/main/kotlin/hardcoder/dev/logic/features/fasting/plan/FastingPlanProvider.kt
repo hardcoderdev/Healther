@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.flowOf
 
 class FastingPlanProvider {
 
-    fun provideAllPlans() = flowOf(FastingPlan.values().toList())
+    fun provideAllPlans() = flowOf(FastingPlan.entries)
 }

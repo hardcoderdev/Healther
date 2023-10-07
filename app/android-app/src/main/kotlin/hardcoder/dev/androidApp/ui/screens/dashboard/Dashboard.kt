@@ -16,16 +16,12 @@ import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.FastingFeature
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.MoodTrackingFeatureItem
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.PedometerFeatureItem
 import hardcoder.dev.androidApp.ui.screens.dashboard.featureItems.WaterTrackingFeatureItem
-import hardcoder.dev.androidApp.ui.screens.dashboard.heroItems.HeroSectionItem
-import hardcoder.dev.androidApp.ui.screens.hero.HeroImageByGenderResolver
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
-import hardcoder.dev.formatters.DecimalFormatter
 import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.DashboardMockDataProvider
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
-import hardcoder.dev.presentation.dashboard.DashboardHeroItem
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.topBar.Action
@@ -39,12 +35,8 @@ import hardcoderdev.healther.app.resources.R
 @Composable
 fun Dashboard(
     millisDistanceFormatter: MillisDistanceFormatter,
-    heroImageByGenderResolver: HeroImageByGenderResolver,
-    decimalFormatter: DecimalFormatter,
     featureItemsLoadingController: LoadingController<List<DashboardFeatureItem>>,
-    heroItemsLoadingController: LoadingController<DashboardHeroItem.HeroSection>,
     pedometerToggleController: ToggleController,
-    healthPointsLoadingController: LoadingController<Int>,
     onGoToWaterTrackingFeature: () -> Unit,
     onCreateWaterTrack: () -> Unit,
     onGoToPedometerFeature: () -> Unit,
@@ -55,16 +47,11 @@ fun Dashboard(
     onGoToDiary: () -> Unit,
     onCreateDiaryTrack: () -> Unit,
     onGoToSettings: () -> Unit,
-    onGoToDeathScreen: () -> Unit,
-    onGoToInventory: () -> Unit,
-    onGoToShop: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             DashboardContent(
                 millisDistanceFormatter = millisDistanceFormatter,
-                heroImageByGenderResolver = heroImageByGenderResolver,
-                decimalFormatter = decimalFormatter,
                 onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
                 onCreateWaterTrack = onCreateWaterTrack,
                 onGoToPedometerFeature = onGoToPedometerFeature,
@@ -74,13 +61,8 @@ fun Dashboard(
                 onCreateMoodTrack = onCreateMoodTrack,
                 onGoToDiary = onGoToDiary,
                 onCreateDiaryTrack = onCreateDiaryTrack,
-                onGoToDeathScreen = onGoToDeathScreen,
-                onGoToInventory = onGoToInventory,
-                onGoToShop = onGoToShop,
                 featureItemsLoadingController = featureItemsLoadingController,
-                heroItemsLoadingController = heroItemsLoadingController,
                 pedometerToggleController = pedometerToggleController,
-                healthPointsLoadingController = healthPointsLoadingController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -102,8 +84,6 @@ fun Dashboard(
 @Composable
 private fun DashboardContent(
     millisDistanceFormatter: MillisDistanceFormatter,
-    heroImageByGenderResolver: HeroImageByGenderResolver,
-    decimalFormatter: DecimalFormatter,
     onGoToWaterTrackingFeature: () -> Unit,
     onCreateWaterTrack: () -> Unit,
     onGoToPedometerFeature: () -> Unit,
@@ -113,24 +93,10 @@ private fun DashboardContent(
     onCreateMoodTrack: () -> Unit,
     onGoToDiary: () -> Unit,
     onCreateDiaryTrack: () -> Unit,
-    onGoToDeathScreen: () -> Unit,
-    onGoToInventory: () -> Unit,
-    onGoToShop: () -> Unit,
     featureItemsLoadingController: LoadingController<List<DashboardFeatureItem>>,
-    heroItemsLoadingController: LoadingController<DashboardHeroItem.HeroSection>,
     pedometerToggleController: ToggleController,
-    healthPointsLoadingController: LoadingController<Int>,
 ) {
-    LoadingContainer(
-        controller1 = featureItemsLoadingController,
-        controller2 = heroItemsLoadingController,
-        controller3 = healthPointsLoadingController,
-    ) { featureItems, heroItems, healthPoints ->
-        // TODO А ЭТО ТОЧНО ЗДЕСЬ НУЖНО? ОНО ЖЕ ЕСТ НА СПЛЕШЕ
-        if (healthPoints <= 0) {
-            onGoToDeathScreen()
-        }
-
+    LoadingContainer(controller = featureItemsLoadingController) { featureItems ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -138,13 +104,6 @@ private fun DashboardContent(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
         ) {
-            heroCharacterSection(
-                heroImageByGenderResolver = heroImageByGenderResolver,
-                decimalFormatter = decimalFormatter,
-                item = heroItems,
-                onGoToInventory = onGoToInventory,
-                onGoToShop = onGoToShop,
-            )
             featureSection(
                 millisDistanceFormatter = millisDistanceFormatter,
                 items = featureItems,
@@ -160,27 +119,6 @@ private fun DashboardContent(
                 onCreateDiaryTrack = onCreateDiaryTrack,
             )
         }
-    }
-}
-
-private fun LazyListScope.heroCharacterSection(
-    heroImageByGenderResolver: HeroImageByGenderResolver,
-    decimalFormatter: DecimalFormatter,
-    item: DashboardHeroItem.HeroSection,
-    onGoToInventory: () -> Unit,
-    onGoToShop: () -> Unit,
-) {
-    item {
-        HeroSectionItem(
-            heroImageByGenderResolver = heroImageByGenderResolver,
-            decimalFormatter = decimalFormatter,
-            hero = item.hero,
-            healthPointsProgress = item.healthPointsProgress,
-            experiencePointsProgress = item.experiencePointsProgress,
-            experiencePointsToNextLevel = item.experiencePointsToNextLevel,
-            onGoToInventory = onGoToInventory,
-            onGoToShop = onGoToShop,
-        )
     }
 }
 
@@ -252,27 +190,18 @@ private fun DashboardPreview() {
             onCreateDiaryTrack = {},
             onCreateMoodTrack = {},
             onCreateWaterTrack = {},
-            onGoToDeathScreen = {},
             onGoToDiary = {},
             onGoToFastingFeature = {},
-            onGoToInventory = {},
             onGoToMoodTrackingFeature = {},
             onGoToPedometerFeature = {},
             onGoToSettings = {},
-            onGoToShop = {},
             onGoToWaterTrackingFeature = {},
             onStartFasting = {},
-            heroImageByGenderResolver = HeroImageByGenderResolver(),
-            decimalFormatter = DecimalFormatter(),
             millisDistanceFormatter = MillisDistanceFormatter(
                 context = LocalContext.current,
                 defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
             ),
             pedometerToggleController = MockControllersProvider.toggleController(),
-            healthPointsLoadingController = MockControllersProvider.loadingController(50),
-            heroItemsLoadingController = MockControllersProvider.loadingController(
-                data = DashboardMockDataProvider.dashboardHeroSection(),
-            ),
             featureItemsLoadingController = MockControllersProvider.loadingController(
                 data = DashboardMockDataProvider.dashboardFeatureSectionsList(),
             ),
