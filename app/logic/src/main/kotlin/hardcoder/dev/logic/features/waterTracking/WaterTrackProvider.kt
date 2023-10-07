@@ -4,8 +4,6 @@ import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.WaterTrack
-import hardcoder.dev.logic.reward.currency.CurrencyProvider
-import hardcoder.dev.logic.features.FeatureType
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,7 +20,6 @@ class WaterTrackProvider(
     private val appDatabase: AppDatabase,
     private val drinkTypeProvider: DrinkTypeProvider,
     private val dispatchers: BackgroundCoroutineDispatchers,
-    private val currencyProvider: CurrencyProvider,
 ) {
 
     fun provideWaterTracksByDayRange(dayRange: ClosedRange<Instant>) = appDatabase.waterTrackQueries
@@ -36,14 +33,8 @@ class WaterTrackProvider(
             } else {
                 combine(
                     waterTracksList.map { waterTrack ->
-                        combine(
-                            drinkTypeProvider.provideDrinkTypeById(waterTrack.drinkTypeId),
-                            currencyProvider.isTrackCollected(
-                                featureType = FeatureType.WATER_TRACKING,
-                                linkedTrackId = waterTrack.id,
-                            ),
-                        ) { drinkType, isCollected ->
-                            waterTrack.toEntity(drinkType = drinkType!!, isRewardCollected = isCollected)
+                        drinkTypeProvider.provideDrinkTypeById(waterTrack.drinkTypeId).map { drinkType ->
+                            waterTrack.toEntity(drinkType = drinkType!!)
                         }
                     },
                 ) {
@@ -62,25 +53,21 @@ class WaterTrackProvider(
                 flowOf(null)
             } else {
                 combine(
-                    drinkTypeProvider.provideDrinkTypeById(waterTrack.drinkTypeId),
-                    currencyProvider.isTrackCollected(
-                        featureType = FeatureType.WATER_TRACKING,
-                        linkedTrackId = waterTrack.id,
-                    ),
-                ) { drinkType, isCollected ->
-                    waterTrack.toEntity(drinkType = drinkType!!, isRewardCollected = isCollected)
+                    drinkTypeProvider.provideDrinkTypeById(waterTrack.drinkTypeId).map { drinkType ->
+                        waterTrack.toEntity(drinkType = drinkType!!)
+                    },
+                ) {
+                    it[0]
                 }
             }
         }.flowOn(dispatchers.io)
 
     private fun WaterTrack.toEntity(
         drinkType: DrinkType,
-        isRewardCollected: Boolean,
     ) = WaterTrackEntity(
         id = id,
         date = date,
         millilitersCount = millilitersCount,
         drinkType = drinkType,
-        isRewardCollected = isRewardCollected,
     )
 }

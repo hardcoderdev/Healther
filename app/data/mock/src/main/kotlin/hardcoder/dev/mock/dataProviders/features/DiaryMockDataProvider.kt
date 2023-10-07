@@ -17,28 +17,24 @@ object DiaryMockDataProvider {
             content = context.getString(R.string.diary_nowEmpty_text),
             date = MockDateProvider.instant(),
             diaryAttachmentGroup = null,
-            isRewardCollected = true,
         ),
         DiaryTrack(
             id = 1,
             content = context.getString(R.string.diary_nowEmpty_text),
             date = MockDateProvider.instant(),
             diaryAttachmentGroup = diaryAttachmentsMoodTrack(context, false).toDiaryAttachmentGroup(),
-            isRewardCollected = false,
         ),
         DiaryTrack(
             id = 2,
             content = context.getString(R.string.diary_nowEmpty_text),
             date = MockDateProvider.instant(),
             diaryAttachmentGroup = null,
-            isRewardCollected = true,
         ),
         DiaryTrack(
             id = 3,
             content = context.getString(R.string.diary_nowEmpty_text),
             date = MockDateProvider.instant(),
             diaryAttachmentGroup = diaryAttachmentsMoodTrack(context, false).toDiaryAttachmentGroup(),
-            isRewardCollected = false,
         ),
     )
 

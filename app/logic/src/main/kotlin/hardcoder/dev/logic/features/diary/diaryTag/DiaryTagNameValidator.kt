@@ -36,7 +36,7 @@ data class IncorrectDiaryTagName(
     val reason: Reason,
 ) : ValidatedDiaryTagName() {
     sealed class Reason {
-        object Empty : Reason()
+        data object Empty : Reason()
         data class MoreThanMaxChars(val maxChars: Int) : Reason()
     }
 }

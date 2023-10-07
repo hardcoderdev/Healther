@@ -10,7 +10,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.formatters.MillisDistanceFormatter
@@ -29,7 +27,6 @@ import hardcoder.dev.mock.dataProviders.features.FastingMockDataProvider
 import hardcoder.dev.presentation.features.fasting.FastingViewModel
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
-import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.icon.Image
 import hardcoder.dev.uikit.components.text.Description
@@ -47,9 +44,7 @@ fun FinishFasting(
     state: FastingViewModel.FastingState.Finished,
     millisDistanceFormatter: MillisDistanceFormatter,
     noteInputController: InputController<String>,
-    rewardLoadingController: LoadingController<Float>,
-    createRewardController: RequestController,
-    collectRewardController: RequestController,
+    interruptFastingController: RequestController,
     onClose: () -> Unit,
 ) {
     val lifecycleLocal = LocalLifecycleOwner.current.lifecycle
@@ -57,10 +52,6 @@ fun FinishFasting(
         if (event == Lifecycle.Event.ON_STOP || event == Lifecycle.Event.ON_DESTROY) {
             onClose()
         }
-    }
-
-    LaunchedEffect(key1 = Unit) {
-        createRewardController.request()
     }
 
     DisposableEffect(key1 = Unit) {
@@ -75,30 +66,27 @@ fun FinishFasting(
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        LoadingContainer(controller = rewardLoadingController) { totalReward ->
-            Column(
-                Modifier
-                    .weight(2f)
-                    .verticalScroll(rememberScrollState()),
-            ) {
-                CongratulationsSection(
-                    millisDistanceFormatter = millisDistanceFormatter,
-                    state = state,
-                )
-                Spacer(modifier = Modifier.height(32.dp))
-                AddNoteSection(noteInputController = noteInputController)
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            RequestButtonWithIcon(
-                requestButtonConfig = RequestButtonConfig.Filled(
-                    labelResId = R.string.currency_collectReward,
-                    formatArgs = listOf(totalReward),
-                    controller = collectRewardController,
-                    sideEffect = onClose,
-                    iconResId = R.drawable.ic_money,
-                ),
+        Column(
+            Modifier
+                .weight(2f)
+                .verticalScroll(rememberScrollState()),
+        ) {
+            CongratulationsSection(
+                millisDistanceFormatter = millisDistanceFormatter,
+                state = state,
             )
+            Spacer(modifier = Modifier.height(32.dp))
+            AddNoteSection(noteInputController = noteInputController)
         }
+        Spacer(modifier = Modifier.height(16.dp))
+        RequestButtonWithIcon(
+            requestButtonConfig = RequestButtonConfig.Filled(
+                labelResId = R.string.fasting_finish_goNext_buttonText,
+                controller = interruptFastingController,
+                sideEffect = onClose,
+                iconResId = R.drawable.ic_navigate_next,
+            ),
+        )
     }
 }
 
@@ -171,10 +159,8 @@ private fun FinishFastingPreview() {
                         defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
                     ),
                     state = FastingMockDataProvider.finishedState(),
-                    collectRewardController = MockControllersProvider.requestController(),
-                    createRewardController = MockControllersProvider.requestController(),
-                    rewardLoadingController = MockControllersProvider.loadingController(20.0f),
                     noteInputController = MockControllersProvider.inputController(""),
+                    interruptFastingController = MockControllersProvider.requestController(),
                 )
             },
             topBarConfig = TopBarConfig(

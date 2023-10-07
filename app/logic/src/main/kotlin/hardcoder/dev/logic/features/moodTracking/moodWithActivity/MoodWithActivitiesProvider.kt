@@ -3,8 +3,6 @@ package hardcoder.dev.logic.features.moodTracking.moodWithActivity
 import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.logic.reward.currency.CurrencyProvider
-import hardcoder.dev.logic.features.FeatureType
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,7 +20,6 @@ class MoodWithActivitiesProvider(
     private val moodTrackProvider: MoodTrackProvider,
     private val moodActivityProvider: MoodActivityProvider,
     private val dispatchers: BackgroundCoroutineDispatchers,
-    private val currencyProvider: CurrencyProvider,
 ) {
 
     fun provideMoodWithActivityList(dayRange: ClosedRange<Instant>): Flow<List<MoodWithActivities>> {
@@ -40,36 +37,21 @@ class MoodWithActivitiesProvider(
                                 .map { it.executeAsList() }
                                 .flatMapLatest { moodWithActivities ->
                                     if (moodWithActivities.isEmpty()) {
-                                        combine(
-                                            currencyProvider.isTrackCollected(
-                                                featureType = FeatureType.MOOD_TRACKING,
-                                                linkedTrackId = moodTrack.id,
-                                            ),
-                                        ) { isRewardCollected ->
+                                        flowOf(
                                             MoodWithActivities(
                                                 moodTrack = moodTrack,
                                                 moodActivityList = emptyList(),
-                                                isRewardCollected = isRewardCollected[0],
-                                            )
-                                        }
+                                            ),
+                                        )
                                     } else {
                                         combine(
-                                            combine(
-                                                moodWithActivities.map {
-                                                    moodActivityProvider.provideActivityById(it.activityId)
-                                                },
-                                            ) {
-                                                it
+                                            moodWithActivities.map {
+                                                moodActivityProvider.provideActivityById(it.activityId)
                                             },
-                                            currencyProvider.isTrackCollected(
-                                                featureType = FeatureType.MOOD_TRACKING,
-                                                linkedTrackId = moodTrack.id,
-                                            ),
-                                        ) { activities, isRewardCollected ->
+                                        ) { activities ->
                                             MoodWithActivities(
                                                 moodTrack = moodTrack,
                                                 moodActivityList = activities.toList().filterNotNull(),
-                                                isRewardCollected = isRewardCollected,
                                             )
                                         }
                                     }

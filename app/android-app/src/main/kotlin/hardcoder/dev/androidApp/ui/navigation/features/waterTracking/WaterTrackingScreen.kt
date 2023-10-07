@@ -19,8 +19,6 @@ class WaterTrackingScreen : Screen {
             waterTracksLoadingController = viewModel.waterTracksLoadingController,
             millilitersDrunkLoadingController = viewModel.millilitersDrunkLoadingController,
             progressController = viewModel.dailyRateProgressController,
-            rewardLoadingController = viewModel.rewardLoadingController,
-            collectRewardController = viewModel.collectRewardController,
             onGoBack = navigator::pop,
             onCreateWaterTrack = {
                 navigator += WaterTrackingCreationScreen()

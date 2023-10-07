@@ -3,14 +3,12 @@ import kotlin.Int;
 
 CREATE TABLE IF NOT EXISTS AppPreference (
     id INTEGER AS Int NOT NULL PRIMARY KEY,
-    firstLaunchTime INTEGER AS Instant,
-    lastAppReviewRequestTime INTEGER AS Instant,
-    lastEntranceDateTime INTEGER AS Instant NOT NULL
+    firstLaunchTime INTEGER AS Instant
 );
 
 upsert:
-INSERT OR REPLACE INTO AppPreference (id, firstLaunchTime, lastAppReviewRequestTime, lastEntranceDateTime)
-VALUES (?, ?, ?, ?);
+INSERT OR REPLACE INTO AppPreference (id, firstLaunchTime)
+VALUES (?, ?);
 
 providePreferences:
 SELECT * FROM AppPreference;

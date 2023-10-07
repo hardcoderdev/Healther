@@ -38,7 +38,7 @@ data class IncorrectDrinkTypeName(
     val reason: Reason,
 ) : ValidatedDrinkTypeName() {
     sealed class Reason {
-        object Empty : Reason()
+        data object Empty : Reason()
         data class MoreThanMaxChars(val maxChars: Int) : Reason()
     }
 }

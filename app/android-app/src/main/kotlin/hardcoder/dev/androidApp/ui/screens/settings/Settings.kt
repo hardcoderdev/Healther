@@ -13,12 +13,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.logic.appPreferences.AppPreference
-import hardcoder.dev.mock.dataProviders.AppPreferencesMockDataProvider
 import hardcoder.dev.mock.controllers.MockControllersProvider
-import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
-import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
+import hardcoder.dev.mock.dataProviders.AppPreferencesMockDataProvider
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButtonConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
@@ -36,14 +33,12 @@ private const val DEVELOPER_PAGE_LINK =
 @Composable
 fun Settings(
     preferencesLoadingController: LoadingController<AppPreference>,
-    appReviewRequestController: RequestController,
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
         content = {
             SettingsContent(
                 preferencesLoadingController = preferencesLoadingController,
-                appReviewRequestController = appReviewRequestController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -58,7 +53,6 @@ fun Settings(
 @Composable
 private fun SettingsContent(
     preferencesLoadingController: LoadingController<AppPreference>,
-    appReviewRequestController: RequestController,
 ) {
     val context = LocalContext.current
 
@@ -96,16 +90,6 @@ private fun SettingsContent(
                         },
                     ),
                 )
-                if (preferences.lastAppReviewRequestTime == null) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    RequestButtonWithIcon(
-                        requestButtonConfig = RequestButtonConfig.Filled(
-                            controller = appReviewRequestController,
-                            iconResId = R.drawable.ic_rate,
-                            labelResId = R.string.settings_rateApp_text,
-                        ),
-                    )
-                }
             }
         },
     )
@@ -117,7 +101,6 @@ private fun SettingsPreview() {
     HealtherTheme {
         Settings(
             onGoBack = {},
-            appReviewRequestController = MockControllersProvider.requestController(),
             preferencesLoadingController = MockControllersProvider.loadingController(
                 data = AppPreferencesMockDataProvider.appPreferences(),
             ),

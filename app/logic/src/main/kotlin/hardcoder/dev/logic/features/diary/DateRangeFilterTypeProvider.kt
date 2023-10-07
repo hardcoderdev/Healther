@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.flowOf
 
 class DateRangeFilterTypeProvider {
 
-    fun provideAllDateRangeFilters() = flowOf(DateRangeFilterType.values().toList())
+    fun provideAllDateRangeFilters() = flowOf(DateRangeFilterType.entries)
 }

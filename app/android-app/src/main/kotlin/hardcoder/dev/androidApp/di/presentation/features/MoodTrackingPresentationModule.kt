@@ -19,9 +19,6 @@ val moodTrackingPresentationModule = module {
         MoodTrackingViewModel(
             moodWithActivitiesProvider = get(),
             dateTimeProvider = get(),
-            currencyCollector = get(),
-            currencyProvider = get(),
-            experienceCollector = get(),
         )
     }
 
@@ -39,12 +36,6 @@ val moodTrackingPresentationModule = module {
             moodTypeProvider = get(),
             moodActivityProvider = get(),
             dateTimeProvider = get(),
-            currencyCreator = get(),
-            currencyCalculator = get(),
-            moodTrackDailyRateProvider = get(),
-            moodTrackProvider = get(),
-            experienceCreator = get(),
-            experienceCalculator = get(),
         )
     }
 

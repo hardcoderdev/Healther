@@ -11,19 +11,11 @@ import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toInstant
-import hardcoder.dev.logic.reward.currency.CurrencyType
-import hardcoder.dev.logic.reward.currency.CurrencyCalculator
-import hardcoder.dev.logic.reward.currency.CurrencyCreator
-import hardcoder.dev.logic.reward.currency.RewardableAction
-import hardcoder.dev.logic.features.FeatureType
-import hardcoder.dev.logic.features.waterTracking.validators.CorrectMillilitersCount
 import hardcoder.dev.logic.features.waterTracking.WaterTrackCreator
-import hardcoder.dev.logic.features.waterTracking.validators.WaterTrackMillilitersValidator
 import hardcoder.dev.logic.features.waterTracking.WaterTrackingDailyRateProvider
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
-import hardcoder.dev.logic.reward.experience.ExperienceAction
-import hardcoder.dev.logic.reward.experience.ExperienceCalculator
-import hardcoder.dev.logic.reward.experience.ExperienceCreator
+import hardcoder.dev.logic.features.waterTracking.validators.CorrectMillilitersCount
+import hardcoder.dev.logic.features.waterTracking.validators.WaterTrackMillilitersValidator
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -34,10 +26,6 @@ class WaterTrackingCreationViewModel(
     drinkTypeProvider: DrinkTypeProvider,
     dateTimeProvider: DateTimeProvider,
     waterTrackingDailyRateProvider: WaterTrackingDailyRateProvider,
-    currencyCreator: CurrencyCreator,
-    currencyCalculator: CurrencyCalculator,
-    experienceCreator: ExperienceCreator,
-    experienceCalculator: ExperienceCalculator,
 ) : ViewModel() {
 
     private val dailyWaterIntakeState = waterTrackingDailyRateProvider
@@ -76,39 +64,10 @@ class WaterTrackingCreationViewModel(
     val creationController = RequestController(
         coroutineScope = viewModelScope,
         request = {
-            val createdTrackId = waterTrackCreator.createWaterTrack(
+            waterTrackCreator.create(
                 dateTime = dateInputController.getInput().toInstant(timeInputController.getInput()),
                 millilitersCount = millilitersDrunkInputController.validateAndRequire(),
                 drinkTypeId = drinkSelectionController.requireSelectedItem().id,
-            )
-
-            val dailyRateProgress = millilitersDrunkInputController.getInput()
-                .div(dailyWaterIntakeState.value.toFloat())
-                .times(100)
-
-            experienceCreator.create(
-                date = dateTimeProvider.currentInstant(),
-                isCollected = false,
-                featureType = FeatureType.WATER_TRACKING,
-                linkedTrackId = createdTrackId,
-                experiencePointsAmount = experienceCalculator.calculateExperienceFor(
-                    experienceAction = ExperienceAction.DailyRateProgress(
-                        currentProgressInPercentage = dailyRateProgress,
-                    ),
-                ),
-            )
-
-            currencyCreator.create(
-                date = dateTimeProvider.currentInstant(),
-                currencyType = CurrencyType.COINS,
-                isCollected = false,
-                featureType = FeatureType.WATER_TRACKING,
-                linkedTrackId = createdTrackId,
-                currencyAmount = currencyCalculator.calculateRewardFor(
-                    rewardableAction = RewardableAction.DailyRateProgress(
-                        currentProgressInPercentage = dailyRateProgress,
-                    ),
-                ),
             )
         },
         isAllowedFlow = combine(

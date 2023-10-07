@@ -78,7 +78,6 @@ fun WaterTrackingItemPreview() {
             id = 0,
             millilitersCount = 1000,
             resolvedMillilitersCount = 800,
-            isCollected = true,
             timeInMillis = Clock.System.now().toEpochMilliseconds(),
             drinkType = DrinkType(
                 id = 0,

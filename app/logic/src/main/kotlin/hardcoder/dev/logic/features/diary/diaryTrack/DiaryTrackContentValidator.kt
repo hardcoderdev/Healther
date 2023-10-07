@@ -29,6 +29,6 @@ data class IncorrectDiaryTrackContent(
     val reason: Reason,
 ) : ValidatedDiaryTrackContent() {
     sealed class Reason {
-        object Empty : Reason()
+        data object Empty : Reason()
     }
 }

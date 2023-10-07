@@ -19,7 +19,6 @@ object FastingMockDataProvider {
             fastingPlan = FastingPlan.PLAN_14_10,
             interruptedTime = null,
             fastingProgress = 0.5f,
-            isRewardCollected = false,
         ),
         FastingTrack(
             id = 1,
@@ -28,7 +27,6 @@ object FastingMockDataProvider {
             fastingPlan = FastingPlan.PLAN_16_8,
             interruptedTime = null,
             fastingProgress = 0.7f,
-            isRewardCollected = false,
         ),
         FastingTrack(
             id = 2,
@@ -37,7 +35,6 @@ object FastingMockDataProvider {
             fastingPlan = FastingPlan.PLAN_18_6,
             interruptedTime = null,
             fastingProgress = 0.2f,
-            isRewardCollected = false,
         ),
         FastingTrack(
             id = 3,
@@ -46,7 +43,6 @@ object FastingMockDataProvider {
             fastingPlan = FastingPlan.PLAN_20_4,
             interruptedTime = null,
             fastingProgress = 1.0f,
-            isRewardCollected = false,
         ),
     )
 

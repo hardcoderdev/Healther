@@ -23,7 +23,6 @@ import hardcoder.dev.androidApp.ui.permissions.PermissionsSection
 import hardcoder.dev.androidApp.ui.screens.features.pedometer.statistic.PedometerStatisticResolver
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
-import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.formatters.DecimalFormatter
 import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
@@ -33,8 +32,6 @@ import hardcoder.dev.presentation.features.pedometer.PedometerChartData
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButton
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButtonConfig
-import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
-import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.card.Card
 import hardcoder.dev.uikit.components.card.CardConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
@@ -66,8 +63,6 @@ fun Pedometer(
     todayStatisticLoadingController: LoadingController<PedometerStatistic>,
     statisticLoadingController: LoadingController<PedometerStatistic>,
     pedometerToggleController: ToggleController,
-    rewardLoadingController: LoadingController<Double>,
-    collectRewardController: RequestController,
     onGoBack: () -> Unit,
     onGoToHistory: () -> Unit,
 ) {
@@ -85,8 +80,6 @@ fun Pedometer(
                 statisticLoadingController = statisticLoadingController,
                 pedometerToggleController = pedometerToggleController,
                 dailyRateProgressController = dailyRateProgressController,
-                rewardLoadingController = rewardLoadingController,
-                collectRewardController = collectRewardController,
             )
         },
         topBarConfig = TopBarConfig(
@@ -119,8 +112,6 @@ private fun PedometerContent(
     todayStatisticLoadingController: LoadingController<PedometerStatistic>,
     statisticLoadingController: LoadingController<PedometerStatistic>,
     pedometerToggleController: ToggleController,
-    rewardLoadingController: LoadingController<Double>,
-    collectRewardController: RequestController,
 ) {
     LoadingContainer(pedometerAvailabilityLoadingController) { availability ->
         Column(
@@ -140,8 +131,6 @@ private fun PedometerContent(
                     statisticLoadingController = statisticLoadingController,
                     pedometerToggleController = pedometerToggleController,
                     dailyProgressLoadingController = dailyRateProgressController,
-                    rewardLoadingController = rewardLoadingController,
-                    collectRewardController = collectRewardController,
                 )
 
                 is PedometerManager.Availability.NotAvailable -> {
@@ -171,8 +160,6 @@ private fun AvailablePedometerSection(
     todayStatisticLoadingController: LoadingController<PedometerStatistic>,
     statisticLoadingController: LoadingController<PedometerStatistic>,
     pedometerToggleController: ToggleController,
-    rewardLoadingController: LoadingController<Double>,
-    collectRewardController: RequestController,
 ) {
     DailyRateSection(
         todayStatisticLoadingController = todayStatisticLoadingController,
@@ -187,22 +174,12 @@ private fun AvailablePedometerSection(
         controller1 = chartEntriesLoadingController,
         controller2 = todayStatisticLoadingController,
         controller3 = statisticLoadingController,
-        controller4 = rewardLoadingController,
-    ) { chartData, todayStatistics, statistics, totalReward ->
+    ) { chartData, todayStatistics, statistics ->
         if (todayStatistics.totalSteps > 0) {
             PedometerInfoSection(
                 millisDistanceFormatter = millisDistanceFormatter,
                 decimalFormatter = decimalFormatter,
                 statistic = todayStatistics,
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            RequestButtonWithIcon(
-                requestButtonConfig = RequestButtonConfig.Filled(
-                    labelResId = R.string.currency_collectReward,
-                    formatArgs = listOf(totalReward),
-                    controller = collectRewardController,
-                    iconResId = R.drawable.ic_money,
-                ),
             )
             Spacer(modifier = Modifier.height(32.dp))
             StatisticsSection(statisticsDataList = pedometerStatisticResolver.resolve(statistics))
@@ -325,8 +302,6 @@ private fun PedometerPreview() {
                 decimalFormatter = decimalFormatter,
             ),
             pedometerRejectedMapper = PedometerRejectedMapper(),
-            collectRewardController = MockControllersProvider.requestController(),
-            rewardLoadingController = MockControllersProvider.loadingController(20.0),
             dailyRateProgressController = MockControllersProvider.loadingController(40.0f),
             dailyRateStepsLoadingController = MockControllersProvider.loadingController(14_000),
             pedometerToggleController = MockControllersProvider.toggleController(),

@@ -1,6 +1,5 @@
 package hardcoder.dev.androidApp.di.logic.features
 
-import hardcoder.dev.logic.features.fasting.FastingPenaltyMaker
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanDurationResolver
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanIdMapper
 import hardcoder.dev.logic.features.fasting.plan.FastingPlanProvider
@@ -30,7 +29,6 @@ val fastingLogicModule = module {
             appDatabase = get(),
             fastingPlanIdMapper = get(),
             dispatchers = get(),
-            currencyProvider = get(),
         )
     }
 
@@ -44,18 +42,6 @@ val fastingLogicModule = module {
             diaryTrackCreator = get(),
             dispatchers = get(),
             dateTimeProvider = get(),
-        )
-    }
-
-    single {
-        FastingPenaltyMaker(
-            fastingTrackProvider = get(),
-            penaltyCreator = get(),
-            penaltyCalculator = get(),
-            heroHealthPointsManager = get(),
-            dateTimeProvider = get(),
-            dispatchers = get(),
-            lastEntranceManager = get(),
         )
     }
 }

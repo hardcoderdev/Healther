@@ -10,6 +10,7 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -40,7 +41,6 @@ include(
     ":foundation:sqldelight",
     ":foundation:datetime",
     ":foundation:math",
-    ":foundation:inappreview",
     ":foundation:controllers",
     ":foundation:icons",
 )

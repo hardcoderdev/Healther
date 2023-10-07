@@ -118,27 +118,22 @@ object MoodTrackingMockDataProvider {
 
         return listOf(
             MoodWithActivities(
-                isRewardCollected = true,
                 moodTrack = moodTracksList[0],
                 moodActivityList = moodActivitiesList,
             ),
             MoodWithActivities(
-                isRewardCollected = true,
                 moodTrack = moodTracksList[1],
                 moodActivityList = emptyList(),
             ),
             MoodWithActivities(
-                isRewardCollected = true,
                 moodTrack = moodTracksList[2],
                 moodActivityList = moodActivitiesList,
             ),
             MoodWithActivities(
-                isRewardCollected = true,
                 moodTrack = moodTracksList[3],
                 moodActivityList = emptyList(),
             ),
             MoodWithActivities(
-                isRewardCollected = true,
                 moodTrack = moodTracksList[4],
                 moodActivityList = moodActivitiesList,
             ),

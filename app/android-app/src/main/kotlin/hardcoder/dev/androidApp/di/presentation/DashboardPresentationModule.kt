@@ -17,10 +17,6 @@ val dashboardPresentationModule = module {
             moodTrackDailyRateProvider = get(),
             diaryTrackProvider = get(),
             diaryDailyRateProvider = get(),
-            heroHealthPointsResolver = get(),
-            heroProvider = get(),
-            heroExperiencePointsProvider = get(),
-            heroExperiencePointsResolver = get(),
         )
     }
 }

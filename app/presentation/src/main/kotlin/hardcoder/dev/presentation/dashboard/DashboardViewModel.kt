@@ -13,15 +13,10 @@ import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logic.features.pedometer.PedometerDailyRateStepsProvider
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackingMillilitersDrunkProvider
-import hardcoder.dev.logic.hero.health.HeroHealthPointsResolver
-import hardcoder.dev.logic.hero.HeroProvider
-import hardcoder.dev.logic.reward.experience.HeroExperiencePointsProgressResolver
-import hardcoder.dev.logic.reward.experience.HeroExperiencePointsProvider
 import hardcoder.dev.math.safeDiv
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
 import hardcoder.dev.presentation.features.pedometer.toggleTracking
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -37,19 +32,7 @@ class DashboardViewModel(
     private val currentFastingManager: CurrentFastingManager,
     private val diaryTrackProvider: DiaryTrackProvider,
     private val diaryDailyRateProvider: DiaryDailyRateProvider,
-    private val heroHealthPointsResolver: HeroHealthPointsResolver,
-    private val heroExperiencePointsResolver: HeroExperiencePointsProgressResolver,
-    private val heroExperiencePointsProvider: HeroExperiencePointsProvider,
-    heroProvider: HeroProvider,
 ) : ViewModel() {
-
-    // TODO TO USER SECTION VIEW MODEL
-    val healthPointsLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
-        flow = heroProvider.provideHero().filterNotNull().map {
-            it.currentHealthPoints
-        },
-    )
 
     val featuresLoadingController = LoadingController(
         coroutineScope = viewModelScope,
@@ -66,25 +49,6 @@ class DashboardViewModel(
                 fastingItem,
                 moodTrackingItem,
                 diaryItem,
-            )
-        },
-    )
-
-    val heroLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
-        flow = heroProvider.provideHero().filterNotNull().map { hero ->
-            val experiencePointsToNextLevel = heroExperiencePointsProvider.getExperiencePointsToNextLevel(
-                currentLevel = hero.level
-            )
-
-            DashboardHeroItem.HeroSection(
-                hero = hero,
-                healthPointsProgress = heroHealthPointsResolver.resolve(requireNotNull(hero.currentHealthPoints)),
-                experiencePointsToNextLevel = experiencePointsToNextLevel,
-                experiencePointsProgress = heroExperiencePointsResolver.resolve(
-                    currentExperiencePoints = hero.experiencePoints,
-                    experiencePointsNeed = experiencePointsToNextLevel,
-                ),
             )
         },
     )

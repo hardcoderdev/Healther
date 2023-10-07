@@ -7,10 +7,7 @@ import org.koin.dsl.module
 val settingsPresentationModule = module {
     viewModel {
         SettingsViewModel(
-            reviewManager = get(),
             appPreferenceProvider = get(),
-            appPreferenceUpdater = get(),
-            dateTimeProvider = get(),
         )
     }
 }

@@ -16,13 +16,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.logic.features.waterTracking.MillilitersDrunkToDailyRate
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.WaterTrackingMockDataProvider
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
-import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
-import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.progressBar.LinearProgressBar
@@ -42,8 +39,6 @@ fun WaterTracking(
     waterTracksLoadingController: LoadingController<List<WaterTrackingItem>>,
     millilitersDrunkLoadingController: LoadingController<MillilitersDrunkToDailyRate>,
     progressController: LoadingController<Float>,
-    rewardLoadingController: LoadingController<Double>,
-    collectRewardController: RequestController,
     onCreateWaterTrack: () -> Unit,
     onUpdateWaterTrack: (Int) -> Unit,
     onGoToHistory: () -> Unit,
@@ -57,8 +52,6 @@ fun WaterTracking(
                 waterTracksLoadingController = waterTracksLoadingController,
                 millilitersDrunkLoadingController = millilitersDrunkLoadingController,
                 progressController = progressController,
-                rewardLoadingController = rewardLoadingController,
-                collectRewardController = collectRewardController,
             )
         },
         onFabClick = onCreateWaterTrack,
@@ -89,8 +82,6 @@ private fun WaterTrackingContent(
     waterTracksLoadingController: LoadingController<List<WaterTrackingItem>>,
     millilitersDrunkLoadingController: LoadingController<MillilitersDrunkToDailyRate>,
     progressController: LoadingController<Float>,
-    rewardLoadingController: LoadingController<Double>,
-    collectRewardController: RequestController,
 ) {
     Column(
         modifier = Modifier
@@ -101,30 +92,14 @@ private fun WaterTrackingContent(
             controller1 = waterTracksLoadingController,
             controller2 = millilitersDrunkLoadingController,
             controller3 = progressController,
-            controller4 = rewardLoadingController,
-        ) { waterTracks, millilitersDrunk, progress, totalReward ->
+        ) { waterTracks, millilitersDrunk, progress ->
             DailyRateSection(millilitersDrunk, progress)
-            if (totalReward != 0.0) {
-                Spacer(modifier = Modifier.height(32.dp))
-                RequestButtonWithIcon(
-                    requestButtonConfig = RequestButtonConfig.Filled(
-                        labelResId = R.string.currency_collectReward,
-                        formatArgs = listOf(totalReward),
-                        controller = collectRewardController,
-                        iconResId = R.drawable.ic_money,
-                    ),
-                )
-            }
             Spacer(modifier = Modifier.height(32.dp))
             if (waterTracks.isNotEmpty()) {
                 TrackDiarySection(
                     waterTracks = waterTracks,
                     onUpdateWaterTrack = { waterTrack ->
-                        if (waterTrack.isCollected) {
-                            // TODO HANDLE CLICK ON ITEM WHEN TRACK ALREADY COLLECTED
-                        } else {
-                            onUpdateWaterTrack(waterTrack.id)
-                        }
+                        onUpdateWaterTrack(waterTrack.id)
                     },
                 )
             } else {
@@ -185,8 +160,6 @@ private fun WaterTrackingPreview() {
             onGoToHistory = {},
             onCreateWaterTrack = {},
             onUpdateWaterTrack = {},
-            collectRewardController = MockControllersProvider.requestController(),
-            rewardLoadingController = MockControllersProvider.loadingController(20.0),
             progressController = MockControllersProvider.loadingController(0.7f),
             millilitersDrunkLoadingController = MockControllersProvider.loadingController(
                 data = WaterTrackingMockDataProvider.millilitersDrunkToDailyRate(),

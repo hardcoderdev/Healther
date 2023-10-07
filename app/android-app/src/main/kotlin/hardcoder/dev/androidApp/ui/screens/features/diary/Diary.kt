@@ -29,7 +29,6 @@ import hardcoder.dev.androidApp.ui.screens.features.fasting.plans.FastingPlanRes
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.getInput
-import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.formatters.DateTimeFormatter
@@ -42,8 +41,6 @@ import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
 import hardcoder.dev.uikit.components.bottomSheet.BottomSheet
 import hardcoder.dev.uikit.components.bottomSheet.rememberBottomSheetState
-import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
-import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
 import hardcoder.dev.uikit.components.chip.content.ChipIconDefaultContent
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
@@ -73,8 +70,6 @@ fun Diary(
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     diaryTrackLoadingController: LoadingController<List<DiaryTrack>>,
     filteredTrackLoadingController: LoadingController<List<DiaryTrack>>,
-    rewardLoadingController: LoadingController<Double>,
-    collectRewardController: RequestController,
     searchTextInputController: InputController<String>,
     dateRangeFilterTypeSelectionController: SingleSelectionController<DateRangeFilterType>,
     onGoBack: () -> Unit,
@@ -109,8 +104,6 @@ fun Diary(
                     diaryTrackLoadingController = diaryTrackLoadingController,
                     filteredTrackLoadingController = filteredTrackLoadingController,
                     tagMultiSelectionController = tagMultiSelectionController,
-                    rewardLoadingController = rewardLoadingController,
-                    collectRewardController = collectRewardController,
                     searchText = searchTextInputController.getInput(),
                     onUpdateDiaryTrack = onUpdateDiaryTrack,
                 )
@@ -147,8 +140,6 @@ private fun DiaryContent(
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     diaryTrackLoadingController: LoadingController<List<DiaryTrack>>,
     filteredTrackLoadingController: LoadingController<List<DiaryTrack>>,
-    rewardLoadingController: LoadingController<Double>,
-    collectRewardController: RequestController,
     searchText: String,
     onUpdateDiaryTrack: (Int) -> Unit,
 ) {
@@ -160,19 +151,8 @@ private fun DiaryContent(
         LoadingContainer(
             controller1 = diaryTrackLoadingController,
             controller2 = filteredTrackLoadingController,
-            controller3 = rewardLoadingController,
-            loadedContent = { diaryItemsList, filteredDiaryTrackList, totalReward ->
+            loadedContent = { diaryItemsList, filteredDiaryTrackList ->
                 val tagMultiSelectionControllerState = tagMultiSelectionController.state.collectAsState()
-
-                RequestButtonWithIcon(
-                    requestButtonConfig = RequestButtonConfig.Filled(
-                        labelResId = R.string.currency_collectReward,
-                        formatArgs = listOf(totalReward),
-                        controller = collectRewardController,
-                        iconResId = R.drawable.ic_money,
-                    ),
-                )
-                Spacer(modifier = Modifier.height(32.dp))
 
                 when {
                     diaryItemsList.isEmpty() -> {
@@ -187,11 +167,7 @@ private fun DiaryContent(
                             fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                             items = diaryItemsList,
                             onUpdateTrack = { diaryTrack ->
-                                if (diaryTrack.isRewardCollected) {
-                                    // TODO HANDLE CLICK ON ITEM WHEN TRACK ALREADY COLLECTED
-                                } else {
-                                    onUpdateDiaryTrack(diaryTrack.id)
-                                }
+                                onUpdateDiaryTrack(diaryTrack.id)
                             },
                         )
                     }
@@ -212,11 +188,7 @@ private fun DiaryContent(
                             fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                             items = filteredDiaryTrackList,
                             onUpdateTrack = { diaryTrack ->
-                                if (diaryTrack.isRewardCollected) {
-                                    // TODO HANDLE CLICK ON ITEM WHEN TRACK ALREADY COLLECTED
-                                } else {
-                                    onUpdateDiaryTrack(diaryTrack.id)
-                                }
+                                onUpdateDiaryTrack(diaryTrack.id)
                             },
                         )
                     }
@@ -352,12 +324,10 @@ private fun DiaryPreview() {
             dateRangeFilterTypeSelectionController = MockControllersProvider.singleSelectionController(
                 dataList = DateRangeFilterType.entries,
             ),
-            collectRewardController = MockControllersProvider.requestController(),
             searchTextInputController = MockControllersProvider.inputController(""),
             filteredTrackLoadingController = MockControllersProvider.loadingController(
                 data = emptyList(),
             ),
-            rewardLoadingController = MockControllersProvider.loadingController(20.0),
             diaryTrackLoadingController = MockControllersProvider.loadingController(
                 data = DiaryMockDataProvider.diaryTracksList(
                     context = LocalContext.current,

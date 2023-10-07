@@ -13,13 +13,6 @@ val fastingPresentationModule = module {
             fastingTrackProvider = get(),
             statisticProvider = get(),
             currentFastingManager = get(),
-            currencyCreator = get(),
-            currencyCalculator = get(),
-            currencyProvider = get(),
-            currencyCollector = get(),
-            experienceCalculator = get(),
-            experienceCreator = get(),
-            experienceCollector = get(),
         )
     }
 

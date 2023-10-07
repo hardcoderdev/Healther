@@ -9,6 +9,7 @@ import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
+import hardcoder.dev.icons.IconResourceProvider
 import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeCreator
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.map
 class MoodTypeCreationViewModel(
     moodTypeCreator: MoodTypeCreator,
     moodTypeNameValidator: MoodTypeNameValidator,
-    iconResourceProvider: hardcoder.dev.icons.IconResourceProvider,
+    iconResourceProvider: IconResourceProvider,
 ) : ViewModel() {
 
     val moodTypeNameController = ValidatedInputController(

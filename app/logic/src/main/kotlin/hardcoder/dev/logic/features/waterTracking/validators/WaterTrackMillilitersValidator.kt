@@ -15,8 +15,8 @@ class WaterTrackMillilitersValidator {
 
     private fun Int.incorrectReason(dailyWaterIntakeInMillisCount: Int): IncorrectMillilitersCount.Reason? {
         return when {
-            this > dailyWaterIntakeInMillisCount -> IncorrectMillilitersCount.Reason.MoreThanDailyWaterIntake()
-            this == 0 -> IncorrectMillilitersCount.Reason.Empty()
+            this > dailyWaterIntakeInMillisCount -> IncorrectMillilitersCount.Reason.MoreThanDailyWaterIntake
+            this == 0 -> IncorrectMillilitersCount.Reason.Empty
             else -> null
         }
     }
@@ -35,7 +35,7 @@ data class IncorrectMillilitersCount(
     val reason: Reason,
 ) : ValidatedMillilitersCount() {
     sealed class Reason {
-        class Empty : Reason()
-        class MoreThanDailyWaterIntake : Reason()
+        data object Empty : Reason()
+        data object MoreThanDailyWaterIntake : Reason()
     }
 }

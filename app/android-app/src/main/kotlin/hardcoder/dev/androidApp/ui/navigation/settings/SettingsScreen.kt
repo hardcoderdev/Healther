@@ -17,7 +17,6 @@ class SettingsScreen : Screen {
 
         Settings(
             preferencesLoadingController = viewModel.preferencesLoadingController,
-            appReviewRequestController = viewModel.appReviewRequestController,
             onGoBack = navigator::pop,
         )
     }

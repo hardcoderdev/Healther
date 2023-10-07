@@ -8,5 +8,4 @@ data class DiaryTrack(
     val content: String,
     val date: Instant,
     val diaryAttachmentGroup: DiaryAttachmentGroup?,
-    val isRewardCollected: Boolean,
 )

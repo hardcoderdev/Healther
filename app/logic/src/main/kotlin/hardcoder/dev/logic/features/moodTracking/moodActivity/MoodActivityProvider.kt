@@ -4,6 +4,7 @@ import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.MoodActivity
+import hardcoder.dev.icons.IconResourceProvider
 import hardcoder.dev.sqldelight.asFlowOfList
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -11,7 +12,7 @@ import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity as Mo
 
 class MoodActivityProvider(
     private val appDatabase: AppDatabase,
-    private val iconResourceProvider: hardcoder.dev.icons.IconResourceProvider,
+    private val iconResourceProvider: IconResourceProvider,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 

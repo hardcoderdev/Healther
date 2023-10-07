@@ -7,5 +7,4 @@ dependencies {
     api(projects.foundation.icons)
     api(projects.foundation.datetime)
     api(projects.foundation.math)
-    api(projects.foundation.inappreview)
 }
