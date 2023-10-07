@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.app.logic)
+    api(projects.app.domain.logics)
     api(projects.foundation.permissions)
     api(projects.foundation.controllers)
     api(libs.lifecycle.viewmodelCompose)

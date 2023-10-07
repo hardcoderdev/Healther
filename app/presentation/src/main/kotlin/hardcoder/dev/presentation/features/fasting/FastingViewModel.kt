@@ -7,10 +7,9 @@ import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toLocalDateTime
-import hardcoder.dev.logic.features.fasting.plan.FastingPlan
-import hardcoder.dev.logic.features.fasting.statistic.FastingStatisticProvider
-import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
-import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
+import hardcoder.dev.logic.features.fasting.CurrentFastingManager
+import hardcoder.dev.logic.features.fasting.FastingStatisticProvider
+import hardcoder.dev.logic.features.fasting.FastingTrackProvider
 import hardcoder.dev.math.safeDiv
 import kotlin.time.Duration
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -133,7 +132,7 @@ class FastingViewModel(
         data object NotFasting : FastingState()
 
         data class Fasting(
-            val selectedPlan: FastingPlan,
+            val selectedPlan: hardcoder.dev.entities.features.fasting.FastingPlan,
             val startTimeInMillis: Instant,
             val durationInMillis: Duration,
             val timeLeftInMillis: Duration,
@@ -143,7 +142,7 @@ class FastingViewModel(
         data class Finished(
             val timeLeftInMillis: Duration,
             val isInterrupted: Boolean,
-            val fastingPlan: FastingPlan,
+            val fastingPlan: hardcoder.dev.entities.features.fasting.FastingPlan,
         ) : FastingState()
     }
 }

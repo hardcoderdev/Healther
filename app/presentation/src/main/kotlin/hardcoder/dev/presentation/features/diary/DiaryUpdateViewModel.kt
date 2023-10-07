@@ -10,17 +10,16 @@ import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItems
 import hardcoder.dev.controller.selection.selectedItemsOrEmptySet
 import hardcoder.dev.coroutines.firstNotNull
-import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
-import hardcoder.dev.logic.features.diary.diaryTag.DiaryTag
+import hardcoder.dev.entities.features.diary.DiaryTag
+import hardcoder.dev.entities.features.diary.DiaryTrack
+import hardcoder.dev.entities.features.fasting.FastingTrack
+import hardcoder.dev.entities.features.moodTracking.MoodTrack
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.CorrectDiaryTrackContent
-import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrack
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackContentValidator
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackDeleter
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackUpdater
-import hardcoder.dev.logic.features.fasting.track.FastingTrack
-import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -77,7 +76,7 @@ class DiaryUpdateViewModel(
                 content = contentInputController.validateAndRequire(),
                 diaryAttachmentGroup = initialDiaryTrack.firstNotNull().diaryAttachmentGroup?.copy(
                     tags = tagMultiSelectionController.requireSelectedItems(),
-                ) ?: DiaryAttachmentGroup(
+                ) ?: hardcoder.dev.entities.features.diary.DiaryAttachmentGroup(
                     tags = tagMultiSelectionController.selectedItemsOrEmptySet().first(),
                 ),
             )

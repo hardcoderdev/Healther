@@ -8,21 +8,20 @@ import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.appPreferences.AppPreference
 import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
-import hardcoder.dev.logic.user.CorrectUserExerciseStressTime
-import hardcoder.dev.logic.user.CorrectUserName
-import hardcoder.dev.logic.user.CorrectUserWeight
 import hardcoder.dev.logic.user.UserCreator
-import hardcoder.dev.logic.user.UserExerciseStressValidator
-import hardcoder.dev.logic.user.UserNameValidator
-import hardcoder.dev.logic.user.UserWeightValidator
-import hardcoder.dev.logic.user.gender.GenderProvider
+import hardcoder.dev.logic.user.UserGenderProvider
+import hardcoder.dev.validators.user.CorrectUserExerciseStressTime
+import hardcoder.dev.validators.user.CorrectUserName
+import hardcoder.dev.validators.user.CorrectUserWeight
+import hardcoder.dev.validators.user.UserExerciseStressValidator
+import hardcoder.dev.validators.user.UserNameValidator
+import hardcoder.dev.validators.user.UserWeightValidator
 import kotlinx.coroutines.flow.combine
 
 class UserCreationViewModel(
     appPreferenceUpdater: AppPreferenceUpdater,
-    genderProvider: GenderProvider,
+    userGenderProvider: UserGenderProvider,
     userNameValidator: UserNameValidator,
     userWeightValidator: UserWeightValidator,
     userExerciseStressValidator: UserExerciseStressValidator,
@@ -32,7 +31,7 @@ class UserCreationViewModel(
 
     val genderSelectionController = SingleSelectionController(
         coroutineScope = viewModelScope,
-        itemsFlow = genderProvider.provideAllGenders(),
+        itemsFlow = userGenderProvider.provideAllGenders(),
     )
 
     val nameInputController = ValidatedInputController(
@@ -64,7 +63,7 @@ class UserCreationViewModel(
             )
 
             appPreferenceUpdater.update(
-                AppPreference(
+                hardcoder.dev.entities.appPreferences.AppPreference(
                     firstLaunchTime = dateTimeProvider.currentInstant(),
                 ),
             )

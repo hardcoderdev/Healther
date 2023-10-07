@@ -1,0 +1,7 @@
+package hardcoder.dev.logic.features.waterTracking.drinkType
+
+import hardcoder.dev.entities.features.waterTracking.DrinkTypePredefined
+
+interface PredefinedDrinkTypeProvider {
+    fun providePredefined(): List<DrinkTypePredefined>
+}

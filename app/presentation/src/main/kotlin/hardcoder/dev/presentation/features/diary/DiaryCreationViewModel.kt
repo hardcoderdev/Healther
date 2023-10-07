@@ -8,7 +8,6 @@ import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItems
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.CorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackContentValidator
@@ -39,7 +38,7 @@ class DiaryCreationViewModel(
             diaryTrackCreator.create(
                 content = contentController.validateAndRequire<CorrectDiaryTrackContent>().data,
                 date = dateTimeProvider.currentInstant(),
-                diaryAttachmentGroup = DiaryAttachmentGroup(
+                diaryAttachmentGroup = hardcoder.dev.entities.features.diary.DiaryAttachmentGroup(
                     tags = if (tagMultiSelectionController.state.value is MultiSelectionController.State.Empty) {
                         emptySet()
                     } else {

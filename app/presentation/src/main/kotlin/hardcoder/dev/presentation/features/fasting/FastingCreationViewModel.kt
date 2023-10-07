@@ -8,13 +8,12 @@ import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.features.fasting.plan.FastingPlanDurationResolver
-import hardcoder.dev.logic.features.fasting.plan.FastingPlanProvider
-import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
+import hardcoder.dev.logic.features.fasting.CurrentFastingManager
+import hardcoder.dev.logic.features.fasting.FastingPlanProvider
 
 class FastingCreationViewModel(
     private val currentFastingManager: CurrentFastingManager,
-    private val fastingPlanDurationMapper: FastingPlanDurationResolver,
+    private val fastingPlanDurationMapper: hardcoder.dev.resolvers.features.fasting.FastingPlanDurationResolver,
     fastingPlanProvider: FastingPlanProvider,
     dateTimeProvider: DateTimeProvider,
 ) : ViewModel() {

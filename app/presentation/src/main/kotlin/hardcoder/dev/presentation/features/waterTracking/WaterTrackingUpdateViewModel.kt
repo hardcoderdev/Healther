@@ -12,10 +12,8 @@ import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toInstant
 import hardcoder.dev.datetime.toLocalDateTime
-import hardcoder.dev.logic.features.waterTracking.validators.CorrectMillilitersCount
-import hardcoder.dev.logic.features.waterTracking.WaterTrack
+import hardcoder.dev.entities.features.waterTracking.WaterTrack
 import hardcoder.dev.logic.features.waterTracking.WaterTrackDeleter
-import hardcoder.dev.logic.features.waterTracking.validators.WaterTrackMillilitersValidator
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackUpdater
 import hardcoder.dev.logic.features.waterTracking.WaterTrackingDailyRateProvider
@@ -32,7 +30,7 @@ class WaterTrackingUpdateViewModel(
     private val waterTrackDeleter: WaterTrackDeleter,
     private val waterTrackUpdater: WaterTrackUpdater,
     private val waterTrackProvider: WaterTrackProvider,
-    private val waterTrackMillilitersValidator: WaterTrackMillilitersValidator,
+    private val waterTrackMillilitersValidator: hardcoder.dev.validators.features.waterTracking.WaterTrackMillilitersValidator,
     dateTimeProvider: DateTimeProvider,
     drinkTypeProvider: DrinkTypeProvider,
     waterTrackingDailyRateProvider: WaterTrackingDailyRateProvider,
@@ -87,7 +85,7 @@ class WaterTrackingUpdateViewModel(
             drinkSelectionController.state,
             millilitersDrunkInputController.state,
         ) { drinkState, millilitersCountState ->
-            millilitersCountState.validationResult is CorrectMillilitersCount &&
+            millilitersCountState.validationResult is hardcoder.dev.validators.features.waterTracking.CorrectMillilitersCount &&
                 drinkState is SingleSelectionController.State.Loaded
         },
     )

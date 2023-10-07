@@ -6,9 +6,8 @@ import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.coroutines.mapItems
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.millisToLocalDateTime
-import hardcoder.dev.logic.features.waterTracking.resolvers.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
-import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatisticProvider
+import hardcoder.dev.logic.features.waterTracking.WaterTrackingStatisticProvider
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
@@ -16,7 +15,7 @@ class WaterTrackingAnalyticsViewModel(
     waterTrackingStatisticProvider: WaterTrackingStatisticProvider,
     waterTrackProvider: WaterTrackProvider,
     dateTimeProvider: DateTimeProvider,
-    waterPercentageResolver: WaterPercentageResolver,
+    waterPercentageResolver: hardcoder.dev.resolvers.features.waterTracking.WaterPercentageResolver,
 ) : ViewModel() {
 
     private val waterTracksLoadingController = LoadingController(

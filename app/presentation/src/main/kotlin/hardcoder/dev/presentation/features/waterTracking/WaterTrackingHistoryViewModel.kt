@@ -6,7 +6,6 @@ import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.coroutines.mapItems
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.features.waterTracking.resolvers.WaterPercentageResolver
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
@@ -14,7 +13,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 @OptIn(ExperimentalCoroutinesApi::class)
 class WaterTrackingHistoryViewModel(
     waterTrackProvider: WaterTrackProvider,
-    waterPercentageResolver: WaterPercentageResolver,
+    waterPercentageResolver: hardcoder.dev.resolvers.features.waterTracking.WaterPercentageResolver,
     dateTimeProvider: DateTimeProvider,
 ) : ViewModel() {
 

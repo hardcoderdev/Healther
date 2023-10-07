@@ -1,14 +1,14 @@
 package hardcoder.dev.mock.dataProviders.features
 
 import android.content.Context
+import hardcoder.dev.entities.features.waterTracking.DrinkType
+import hardcoder.dev.entities.features.waterTracking.MillilitersDrunkToDailyRate
+import hardcoder.dev.entities.features.waterTracking.WaterTrackingStatistics
 import hardcoder.dev.icons.IconImpl
-import hardcoder.dev.logic.features.waterTracking.MillilitersDrunkToDailyRate
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
-import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatistic
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingChartData
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingChartEntry
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
-import hardcoderdev.healther.app.resources.R
+import hardcoderdev.healther.app.ui.resources.R
 
 object WaterTrackingMockDataProvider {
 
@@ -133,7 +133,7 @@ object WaterTrackingMockDataProvider {
         dailyWaterIntake = 3000,
     )
 
-    fun waterTrackingStatistics(context: Context) = WaterTrackingStatistic(
+    fun waterTrackingStatistics(context: Context) = WaterTrackingStatistics(
         totalMilliliters = 12_000,
         averageHydrationIndex = 50,
         averageWaterIntakes = 3,

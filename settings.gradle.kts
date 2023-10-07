@@ -26,16 +26,25 @@ dependencyResolutionManagement {
 
 rootProject.name = "Healther"
 include(
-    ":app:android-app",
-    ":app:resources",
-    ":app:formatters",
+    ":android-app",
+    ":app:ui:navigation",
+    ":app:ui:screens",
+    ":app:ui:resources",
+    ":app:ui:formatters",
+    ":app:ui:statistics-resolvers",
+    ":app:di",
+    ":app:presentation",
     ":app:data:database",
     ":app:data:mock",
-    ":app:logic",
-    ":app:presentation",
+    ":app:domain:logics",
+    ":app:domain:mappers",
+    ":app:domain:resolvers",
+    ":app:domain:validators",
+    ":app:domain:entities",
 )
 include(
     ":foundation:coroutines",
+    ":foundation:datastore",
     ":foundation:uikit",
     ":foundation:permissions",
     ":foundation:sqldelight",

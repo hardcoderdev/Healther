@@ -1,7 +1,6 @@
 package hardcoder.dev.database
 
 import android.content.Context
-
 import androidx.core.content.edit
 
 class IdGenerator(context: Context) {

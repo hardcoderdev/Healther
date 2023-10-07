@@ -7,13 +7,12 @@ import hardcoder.dev.coroutines.mapItems
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackingMillilitersDrunkProvider
-import hardcoder.dev.logic.features.waterTracking.resolvers.WaterPercentageResolver
 import hardcoder.dev.math.safeDiv
 import kotlinx.coroutines.flow.map
 
 class WaterTrackingViewModel(
     waterTrackProvider: WaterTrackProvider,
-    waterPercentageResolver: WaterPercentageResolver,
+    waterPercentageResolver: hardcoder.dev.resolvers.features.waterTracking.WaterPercentageResolver,
     millilitersDrunkProvider: WaterTrackingMillilitersDrunkProvider,
     dateTimeProvider: DateTimeProvider,
 ) : ViewModel() {

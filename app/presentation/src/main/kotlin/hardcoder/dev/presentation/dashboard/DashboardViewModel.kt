@@ -3,19 +3,16 @@ package hardcoder.dev.presentation.dashboard
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.logic.features.diary.DiaryDailyRateProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
-import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
+import hardcoder.dev.logic.features.fasting.CurrentFastingManager
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDailyRateProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logic.features.pedometer.PedometerDailyRateStepsProvider
 import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
 import hardcoder.dev.logic.features.waterTracking.WaterTrackingMillilitersDrunkProvider
 import hardcoder.dev.math.safeDiv
-import hardcoder.dev.presentation.features.pedometer.PedometerManager
-import hardcoder.dev.presentation.features.pedometer.toggleTracking
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.TimeZone
@@ -23,7 +20,7 @@ import kotlinx.datetime.toInstant
 
 class DashboardViewModel(
     private val pedometerDailyRateStepsProvider: PedometerDailyRateStepsProvider,
-    private val pedometerManager: PedometerManager,
+    //private val pedometerManager: PedometerManager, TODO UNCOMMENT
     private val dateTimeProvider: DateTimeProvider,
     private val waterTrackingMillilitersDrunkProvider: WaterTrackingMillilitersDrunkProvider,
     private val pedometerTrackProvider: PedometerTrackProvider,
@@ -39,13 +36,19 @@ class DashboardViewModel(
         flow = combine(
             diaryItem(),
             waterTrackingItem(),
-            pedometerItem(),
+            //pedometerItem(), TODO UNCOMMENT
             fastingItem(),
             moodTrackingItemFlow(),
-        ) { waterTrackingItem, pedometerItem, fastingItem, moodTrackingItem, diaryItem ->
+        ) {
+                waterTrackingItem,
+                // pedometerItem, TODO UNCOMMENT AND ONE-LINE
+                fastingItem,
+                moodTrackingItem,
+                diaryItem,
+            ->
             listOf(
                 waterTrackingItem,
-                pedometerItem,
+                //pedometerItem,
                 fastingItem,
                 moodTrackingItem,
                 diaryItem,
@@ -53,11 +56,12 @@ class DashboardViewModel(
         },
     )
 
-    val pedometerToggleController = ToggleController(
-        coroutineScope = viewModelScope,
-        toggle = pedometerManager::toggleTracking,
-        isActiveFlow = pedometerManager.isTracking,
-    )
+//    TODO UNCOMMENT
+//    val pedometerToggleController = ToggleController(
+//        coroutineScope = viewModelScope,
+//        toggle = pedometerManager::toggleTracking,
+//        isActiveFlow = pedometerManager.isTracking,
+//    )
 
     private fun waterTrackingItem() = waterTrackingMillilitersDrunkProvider
         .provideMillilitersDrunkToDailyRateToday(
@@ -72,15 +76,15 @@ class DashboardViewModel(
     private fun pedometerItem() = combine(
         pedometerTrackProvider.providePedometerTracksByRange(dateTimeProvider.currentDateRange()),
         pedometerDailyRateStepsProvider.resolve(),
-        pedometerManager.isTracking,
-        pedometerManager.availability,
-    ) { pedometerTrackList, dailyRateInSteps, isPedometerRunning, availability ->
+//        pedometerManager.isTracking,
+//        pedometerManager.availability, TODO UNCOMMENT
+    ) { pedometerTrackList, dailyRateInSteps -> //isPedometerRunning, availability -> TODO UNCOMMENT
         val stepsWalked = pedometerTrackList.sumOf { it.stepsCount }
         DashboardFeatureItem.PedometerFeature(
             stepsWalked = stepsWalked,
             dailyRateInSteps = dailyRateInSteps,
-            isPedometerRunning = isPedometerRunning,
-            isPermissionsGranted = availability is PedometerManager.Availability.Available,
+            isPedometerRunning = false, // isPedometerRunning, TODO UNCOMMENT
+            isPermissionsGranted = true, //availability is PedometerManager.Availability.Available, TODO UNCOMMENT
             progress = stepsWalked safeDiv dailyRateInSteps,
         )
     }

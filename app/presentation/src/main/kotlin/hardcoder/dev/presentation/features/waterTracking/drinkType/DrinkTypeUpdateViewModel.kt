@@ -9,11 +9,9 @@ import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
+import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.icons.IconResourceProvider
-import hardcoder.dev.logic.features.waterTracking.drinkType.CorrectDrinkTypeName
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkType
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeDeleter
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeNameValidator
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeUpdater
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class DrinkTypeUpdateViewModel(
     drinkTypeId: Int,
-    drinkTypeNameValidator: DrinkTypeNameValidator,
+    drinkTypeNameValidator: hardcoder.dev.validators.features.waterTracking.DrinkTypeNameValidator,
     drinkTypeProvider: DrinkTypeProvider,
     drinkTypeUpdater: DrinkTypeUpdater,
     drinkTypeDeleter: DrinkTypeDeleter,
@@ -59,7 +57,7 @@ class DrinkTypeUpdateViewModel(
             )
         },
         isAllowedFlow = nameInputController.state.map {
-            it.validationResult == null || it.validationResult is CorrectDrinkTypeName
+            it.validationResult == null || it.validationResult is hardcoder.dev.validators.features.waterTracking.CorrectDrinkTypeName
         },
     )
 

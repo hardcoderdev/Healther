@@ -10,7 +10,7 @@ import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.date.MockDateProvider
 import hardcoder.dev.uikit.components.picker.TimeNumberPicker
 import hardcoder.dev.uikit.values.HealtherTheme
-import hardcoderdev.healther.app.resources.R
+import hardcoderdev.healther.app.ui.resources.R
 import kotlinx.datetime.LocalTime
 
 @Composable

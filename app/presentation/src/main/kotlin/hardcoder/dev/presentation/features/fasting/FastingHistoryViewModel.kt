@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.features.fasting.track.FastingTrackProvider
+import hardcoder.dev.logic.features.fasting.FastingTrackProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
 

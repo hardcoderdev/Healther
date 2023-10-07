@@ -13,7 +13,6 @@ import hardcoder.dev.coroutines.firstNotNull
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toInstant
 import hardcoder.dev.datetime.toLocalDateTime
-import hardcoder.dev.logic.features.diary.AttachmentType
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityProvider
@@ -102,7 +101,7 @@ class MoodTrackingUpdateViewModel(
             )
 
             diaryAttachmentProvider.provideAttachmentByEntityId(
-                attachmentType = AttachmentType.MOOD_TRACKING_ENTITY,
+                attachmentType = hardcoder.dev.entities.features.diary.AttachmentType.MOOD_TRACKING_ENTITY,
                 entityId = moodTrackId,
             ).firstOrNull()?.let { attachment ->
                 diaryTrackProvider.provideDiaryTrackById(

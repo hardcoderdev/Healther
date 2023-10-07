@@ -14,15 +14,13 @@ import hardcoder.dev.datetime.toInstant
 import hardcoder.dev.logic.features.waterTracking.WaterTrackCreator
 import hardcoder.dev.logic.features.waterTracking.WaterTrackingDailyRateProvider
 import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
-import hardcoder.dev.logic.features.waterTracking.validators.CorrectMillilitersCount
-import hardcoder.dev.logic.features.waterTracking.validators.WaterTrackMillilitersValidator
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 class WaterTrackingCreationViewModel(
     waterTrackCreator: WaterTrackCreator,
-    waterTrackMillilitersValidator: WaterTrackMillilitersValidator,
+    waterTrackMillilitersValidator: hardcoder.dev.validators.features.waterTracking.WaterTrackMillilitersValidator,
     drinkTypeProvider: DrinkTypeProvider,
     dateTimeProvider: DateTimeProvider,
     waterTrackingDailyRateProvider: WaterTrackingDailyRateProvider,
@@ -74,7 +72,7 @@ class WaterTrackingCreationViewModel(
             drinkSelectionController.state,
             millilitersDrunkInputController.state,
         ) { drinkState, millilitersCountState ->
-            millilitersCountState.validationResult is CorrectMillilitersCount &&
+            millilitersCountState.validationResult is hardcoder.dev.validators.features.waterTracking.CorrectMillilitersCount &&
                 drinkState is SingleSelectionController.State.Loaded
         },
     )

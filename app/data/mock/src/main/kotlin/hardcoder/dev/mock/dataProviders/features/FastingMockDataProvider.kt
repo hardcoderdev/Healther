@@ -1,9 +1,9 @@
 package hardcoder.dev.mock.dataProviders.features
 
-import hardcoder.dev.logic.features.fasting.plan.FastingPlan
-import hardcoder.dev.logic.features.fasting.statistic.FastingDurationStatistic
-import hardcoder.dev.logic.features.fasting.statistic.FastingStatistic
-import hardcoder.dev.logic.features.fasting.track.FastingTrack
+import hardcoder.dev.entities.features.fasting.FastingDurationStatistics
+import hardcoder.dev.entities.features.fasting.FastingPlan
+import hardcoder.dev.entities.features.fasting.FastingStatistics
+import hardcoder.dev.entities.features.fasting.FastingTrack
 import hardcoder.dev.mock.dataProviders.date.MockDateProvider
 import hardcoder.dev.presentation.features.fasting.FastingChartData
 import hardcoder.dev.presentation.features.fasting.FastingChartEntry
@@ -47,7 +47,7 @@ object FastingMockDataProvider {
     )
 
     fun fastingState() = FastingViewModel.FastingState.Fasting(
-        selectedPlan = FastingPlan.PLAN_16_8,
+        selectedPlan = hardcoder.dev.entities.features.fasting.FastingPlan.PLAN_16_8,
         fastingProgress = 0.5f,
         startTimeInMillis = MockDateProvider.instant(),
         timeLeftInMillis = MockDateProvider.duration(),
@@ -55,14 +55,14 @@ object FastingMockDataProvider {
     )
 
     fun finishedState() = FastingViewModel.FastingState.Finished(
-        fastingPlan = FastingPlan.PLAN_16_8,
+        fastingPlan = hardcoder.dev.entities.features.fasting.FastingPlan.PLAN_16_8,
         timeLeftInMillis = MockDateProvider.duration(),
         isInterrupted = true,
     )
 
-    fun fastingStatistics() = FastingStatistic(
+    fun fastingStatistics() = FastingStatistics(
         favouritePlan = FastingPlan.PLAN_14_10,
-        duration = FastingDurationStatistic(
+        duration = FastingDurationStatistics(
             maximumDurationInHours = 4,
             minimumDurationInHours = 2,
             averageDurationInHours = 3,
