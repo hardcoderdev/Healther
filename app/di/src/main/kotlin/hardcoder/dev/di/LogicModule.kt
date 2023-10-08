@@ -3,7 +3,6 @@ package hardcoder.dev.di
 import hardcoder.dev.di.logic.appPreferencesLogicModule
 import hardcoder.dev.di.logic.dateTimeLogicModule
 import hardcoder.dev.di.logic.features.diaryLogicModule
-import hardcoder.dev.di.logic.features.fastingLogicModule
 import hardcoder.dev.di.logic.features.featuresLogicModule
 import hardcoder.dev.di.logic.features.moodTrackingLogicModule
 import hardcoder.dev.di.logic.features.pedometerLogicModule
@@ -25,7 +24,6 @@ val logicModule = module {
         userLogicModule,
         waterTrackingLogicModule,
         pedometerLogicModule,
-        fastingLogicModule,
         moodTrackingLogicModule,
         diaryLogicModule,
         featuresLogicModule,

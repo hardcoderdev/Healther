@@ -6,7 +6,6 @@ import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.logic.features.diary.DiaryDailyRateProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
-import hardcoder.dev.logic.features.fasting.CurrentFastingManager
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDailyRateProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logic.features.pedometer.PedometerDailyRateStepsProvider
@@ -15,8 +14,6 @@ import hardcoder.dev.logic.features.waterTracking.WaterTrackingMillilitersDrunkP
 import hardcoder.dev.math.safeDiv
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 
 class DashboardViewModel(
     private val pedometerDailyRateStepsProvider: PedometerDailyRateStepsProvider,
@@ -26,7 +23,6 @@ class DashboardViewModel(
     private val pedometerTrackProvider: PedometerTrackProvider,
     private val moodTrackProvider: MoodTrackProvider,
     private val moodTrackDailyRateProvider: MoodTrackDailyRateProvider,
-    private val currentFastingManager: CurrentFastingManager,
     private val diaryTrackProvider: DiaryTrackProvider,
     private val diaryDailyRateProvider: DiaryDailyRateProvider,
 ) : ViewModel() {
@@ -37,19 +33,14 @@ class DashboardViewModel(
             diaryItem(),
             waterTrackingItem(),
             //pedometerItem(), TODO UNCOMMENT
-            fastingItem(),
             moodTrackingItemFlow(),
         ) {
-                waterTrackingItem,
-                // pedometerItem, TODO UNCOMMENT AND ONE-LINE
-                fastingItem,
-                moodTrackingItem,
-                diaryItem,
+                waterTrackingItem, // pedometerItem, TODO UNCOMMENT AND ONE-LINE
+                moodTrackingItem, diaryItem,
             ->
             listOf(
                 waterTrackingItem,
                 //pedometerItem,
-                fastingItem,
                 moodTrackingItem,
                 diaryItem,
             )
@@ -86,29 +77,6 @@ class DashboardViewModel(
             isPedometerRunning = false, // isPedometerRunning, TODO UNCOMMENT
             isPermissionsGranted = true, //availability is PedometerManager.Availability.Available, TODO UNCOMMENT
             progress = stepsWalked safeDiv dailyRateInSteps,
-        )
-    }
-
-    private fun fastingItem() = combine(
-        dateTimeProvider.currentTimeFlow(),
-        currentFastingManager.provideCurrentFastingTrack(),
-    ) { currentTime, currentFastingTrack ->
-        currentFastingTrack?.let {
-            val timeLeftInMillis = currentTime.toInstant(
-                TimeZone.currentSystemDefault(),
-            ) - currentFastingTrack.startTime
-
-            DashboardFeatureItem.FastingFeature(
-                timeLeftDuration = timeLeftInMillis,
-                planDuration = currentFastingTrack.duration,
-                progress = timeLeftInMillis.inWholeMilliseconds safeDiv requireNotNull(
-                    currentFastingTrack.duration,
-                ).inWholeMilliseconds,
-            )
-        } ?: DashboardFeatureItem.FastingFeature(
-            timeLeftDuration = null,
-            planDuration = null,
-            progress = 0.0f,
         )
     }
 

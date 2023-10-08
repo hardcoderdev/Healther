@@ -1,7 +1,6 @@
 package hardcoder.dev.di.logic.features
 
 import hardcoder.dev.logic.features.diary.DiaryDailyRateProvider
-import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentManager
 import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentProvider
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagCreator
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagDeleter
@@ -13,6 +12,7 @@ import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackCreator
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackDeleter
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackUpdater
+import hardcoder.dev.logics.features.diary.diaryAttachment.DiaryAttachmentManager
 import hardcoder.dev.mappers.features.diary.AttachmentTypeIdMapper
 import hardcoder.dev.resources.features.diary.DiaryTagIconProvider
 import org.koin.core.module.dsl.singleOf
@@ -70,7 +70,6 @@ internal val diaryLogicModule = module {
         DiaryAttachmentProvider(
             appDatabase = get(),
             attachmentTypeIdMapper = get(),
-            fastingTrackProvider = get(),
             moodTrackProvider = get(),
             diaryTagProvider = get(),
             dispatchers = get(),

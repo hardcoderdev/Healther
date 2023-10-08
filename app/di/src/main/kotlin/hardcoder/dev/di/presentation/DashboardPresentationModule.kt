@@ -12,7 +12,6 @@ internal val dashboardPresentationModule = module {
             dateTimeProvider = get(),
             waterTrackingMillilitersDrunkProvider = get(),
             pedometerTrackProvider = get(),
-            currentFastingManager = get(),
             moodTrackProvider = get(),
             moodTrackDailyRateProvider = get(),
             diaryTrackProvider = get(),

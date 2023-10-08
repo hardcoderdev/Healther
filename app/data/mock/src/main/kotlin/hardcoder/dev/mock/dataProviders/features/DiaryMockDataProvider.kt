@@ -1,6 +1,7 @@
 package hardcoder.dev.mock.dataProviders.features
 
 import android.content.Context
+import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup
 import hardcoder.dev.entities.features.diary.DiaryTag
 import hardcoder.dev.entities.features.diary.DiaryTrack
 import hardcoder.dev.mock.dataProviders.IconsMockDataProvider
@@ -78,14 +79,12 @@ object DiaryMockDataProvider {
         context: Context,
         isWithTags: Boolean = true,
     ) = DiaryUpdateViewModel.ReadOnlyDiaryAttachments(
-        fastingTracks = emptyList(),
         moodTracks = MoodTrackingMockDataProvider.moodTracksList(context),
         tags = if (isWithTags) diaryTagsList(context).toSet() else emptySet(),
     )
 
     private fun DiaryUpdateViewModel.ReadOnlyDiaryAttachments.toDiaryAttachmentGroup() =
-        hardcoder.dev.entities.features.diary.DiaryAttachmentGroup(
-            fastingTracks = fastingTracks,
+        DiaryAttachmentGroup(
             moodTracks = moodTracks,
             tags = tags,
         )

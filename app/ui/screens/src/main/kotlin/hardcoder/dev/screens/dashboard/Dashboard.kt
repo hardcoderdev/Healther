@@ -9,16 +9,13 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
-import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.DashboardMockDataProvider
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.DiaryFeatureItem
-import hardcoder.dev.screens.dashboard.featureItems.FastingFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.MoodTrackingFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.PedometerFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.WaterTrackingFeatureItem
@@ -34,14 +31,11 @@ import hardcoderdev.healther.app.ui.resources.R
 
 @Composable
 fun Dashboard(
-    millisDistanceFormatter: MillisDistanceFormatter,
     featureItemsLoadingController: LoadingController<List<DashboardFeatureItem>>,
     pedometerToggleController: ToggleController,
     onGoToWaterTrackingFeature: () -> Unit,
     onCreateWaterTrack: () -> Unit,
     onGoToPedometerFeature: () -> Unit,
-    onGoToFastingFeature: () -> Unit,
-    onStartFasting: () -> Unit,
     onGoToMoodTrackingFeature: () -> Unit,
     onCreateMoodTrack: () -> Unit,
     onGoToDiary: () -> Unit,
@@ -51,12 +45,9 @@ fun Dashboard(
     ScaffoldWrapper(
         content = {
             DashboardContent(
-                millisDistanceFormatter = millisDistanceFormatter,
                 onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
                 onCreateWaterTrack = onCreateWaterTrack,
                 onGoToPedometerFeature = onGoToPedometerFeature,
-                onGoToFastingFeature = onGoToFastingFeature,
-                onStartFasting = onStartFasting,
                 onGoToMoodTrackingFeature = onGoToMoodTrackingFeature,
                 onCreateMoodTrack = onCreateMoodTrack,
                 onGoToDiary = onGoToDiary,
@@ -83,12 +74,9 @@ fun Dashboard(
 
 @Composable
 private fun DashboardContent(
-    millisDistanceFormatter: MillisDistanceFormatter,
     onGoToWaterTrackingFeature: () -> Unit,
     onCreateWaterTrack: () -> Unit,
     onGoToPedometerFeature: () -> Unit,
-    onGoToFastingFeature: () -> Unit,
-    onStartFasting: () -> Unit,
     onGoToMoodTrackingFeature: () -> Unit,
     onCreateMoodTrack: () -> Unit,
     onGoToDiary: () -> Unit,
@@ -105,17 +93,14 @@ private fun DashboardContent(
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
         ) {
             featureSection(
-                millisDistanceFormatter = millisDistanceFormatter,
                 items = featureItems,
-                onGoToDiary = onGoToDiary,
                 onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
                 onCreateWaterTrack = onCreateWaterTrack,
                 onGoToPedometerFeature = onGoToPedometerFeature,
                 onTogglePedometerTrackingService = pedometerToggleController::toggle,
-                onGoToFastingFeature = onGoToFastingFeature,
-                onStartFasting = onStartFasting,
                 onGoToMoodTrackingFeature = onGoToMoodTrackingFeature,
                 onCreateMoodTrack = onCreateMoodTrack,
+                onGoToDiary = onGoToDiary,
                 onCreateDiaryTrack = onCreateDiaryTrack,
             )
         }
@@ -123,14 +108,11 @@ private fun DashboardContent(
 }
 
 private fun LazyListScope.featureSection(
-    millisDistanceFormatter: MillisDistanceFormatter,
     items: List<DashboardFeatureItem>,
     onGoToWaterTrackingFeature: () -> Unit,
     onCreateWaterTrack: () -> Unit,
     onGoToPedometerFeature: () -> Unit,
     onTogglePedometerTrackingService: () -> Unit,
-    onGoToFastingFeature: () -> Unit,
-    onStartFasting: () -> Unit,
     onGoToMoodTrackingFeature: () -> Unit,
     onCreateMoodTrack: () -> Unit,
     onGoToDiary: () -> Unit,
@@ -151,15 +133,6 @@ private fun LazyListScope.featureSection(
                     pedometerFeature = feature,
                     onGoToFeature = onGoToPedometerFeature,
                     onTogglePedometerTrackingService = onTogglePedometerTrackingService,
-                )
-            }
-
-            is DashboardFeatureItem.FastingFeature -> {
-                FastingFeatureItem(
-                    millisDistanceFormatter = millisDistanceFormatter,
-                    fastingFeature = feature,
-                    onGoToFeature = onGoToFastingFeature,
-                    onStartFasting = onStartFasting,
                 )
             }
 
@@ -187,24 +160,17 @@ private fun LazyListScope.featureSection(
 private fun DashboardPreview() {
     HealtherTheme {
         Dashboard(
-            onCreateDiaryTrack = {},
-            onCreateMoodTrack = {},
-            onCreateWaterTrack = {},
-            onGoToDiary = {},
-            onGoToFastingFeature = {},
-            onGoToMoodTrackingFeature = {},
-            onGoToPedometerFeature = {},
-            onGoToSettings = {},
-            onGoToWaterTrackingFeature = {},
-            onStartFasting = {},
-            millisDistanceFormatter = MillisDistanceFormatter(
-                context = LocalContext.current,
-                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
-            ),
-            pedometerToggleController = MockControllersProvider.toggleController(),
             featureItemsLoadingController = MockControllersProvider.loadingController(
                 data = DashboardMockDataProvider.dashboardFeatureSectionsList(),
             ),
-        )
+            pedometerToggleController = MockControllersProvider.toggleController(),
+            onGoToWaterTrackingFeature = {},
+            onCreateWaterTrack = {},
+            onGoToPedometerFeature = {},
+            onGoToMoodTrackingFeature = {},
+            onCreateMoodTrack = {},
+            onGoToDiary = {},
+            onCreateDiaryTrack = {},
+        ) {}
     }
 }

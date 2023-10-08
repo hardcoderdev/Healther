@@ -33,12 +33,10 @@ import hardcoder.dev.entities.features.diary.DateRangeFilterType
 import hardcoder.dev.entities.features.diary.DiaryTag
 import hardcoder.dev.entities.features.diary.DiaryTrack
 import hardcoder.dev.formatters.DateTimeFormatter
-import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.icons.resourceId
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
 import hardcoder.dev.resources.features.diary.DateRangeFilterTypeResourcesProvider
-import hardcoder.dev.resources.features.fasting.FastingPlanResourcesProvider
 import hardcoder.dev.screens.features.diary.items.DiaryItem
 import hardcoder.dev.uikit.components.bottomSheet.BottomSheet
 import hardcoder.dev.uikit.components.bottomSheet.rememberBottomSheetState
@@ -65,14 +63,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun Diary(
     dateTimeFormatter: DateTimeFormatter,
-    millisDistanceFormatter: MillisDistanceFormatter,
-    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     dateRangeFilterTypeResourcesProvider: DateRangeFilterTypeResourcesProvider,
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     diaryTrackLoadingController: LoadingController<List<DiaryTrack>>,
     filteredTrackLoadingController: LoadingController<List<DiaryTrack>>,
     searchTextInputController: InputController<String>,
-    dateRangeFilterTypeSelectionController: SingleSelectionController<hardcoder.dev.entities.features.diary.DateRangeFilterType>,
+    dateRangeFilterTypeSelectionController: SingleSelectionController<DateRangeFilterType>,
     onGoBack: () -> Unit,
     onCreateDiaryTrack: () -> Unit,
     onUpdateDiaryTrack: (Int) -> Unit,
@@ -100,8 +96,6 @@ fun Diary(
             content = {
                 DiaryContent(
                     dateTimeFormatter = dateTimeFormatter,
-                    millisDistanceFormatter = millisDistanceFormatter,
-                    fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                     diaryTrackLoadingController = diaryTrackLoadingController,
                     filteredTrackLoadingController = filteredTrackLoadingController,
                     tagMultiSelectionController = tagMultiSelectionController,
@@ -136,8 +130,6 @@ fun Diary(
 @Composable
 private fun DiaryContent(
     dateTimeFormatter: DateTimeFormatter,
-    millisDistanceFormatter: MillisDistanceFormatter,
-    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     diaryTrackLoadingController: LoadingController<List<DiaryTrack>>,
     filteredTrackLoadingController: LoadingController<List<DiaryTrack>>,
@@ -164,8 +156,6 @@ private fun DiaryContent(
                     searchText.isEmpty() && tagMultiSelectionControllerState.value is MultiSelectionController.State.Empty -> {
                         DiaryTrackListSection(
                             dateTimeFormatter = dateTimeFormatter,
-                            millisDistanceFormatter = millisDistanceFormatter,
-                            fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                             items = diaryItemsList,
                             onUpdateTrack = { diaryTrack ->
                                 onUpdateDiaryTrack(diaryTrack.id)
@@ -185,8 +175,6 @@ private fun DiaryContent(
                     else -> {
                         DiaryTrackListSection(
                             dateTimeFormatter = dateTimeFormatter,
-                            millisDistanceFormatter = millisDistanceFormatter,
-                            fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                             items = filteredDiaryTrackList,
                             onUpdateTrack = { diaryTrack ->
                                 onUpdateDiaryTrack(diaryTrack.id)
@@ -202,8 +190,6 @@ private fun DiaryContent(
 @Composable
 private fun ColumnScope.DiaryTrackListSection(
     dateTimeFormatter: DateTimeFormatter,
-    millisDistanceFormatter: MillisDistanceFormatter,
-    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     items: List<DiaryTrack>,
     onUpdateTrack: (DiaryTrack) -> Unit,
 ) {
@@ -217,8 +203,6 @@ private fun ColumnScope.DiaryTrackListSection(
         items(items) { diaryTrack ->
             DiaryItem(
                 dateTimeFormatter = dateTimeFormatter,
-                millisDistanceFormatter = millisDistanceFormatter,
-                fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                 diaryTrack = diaryTrack,
                 onUpdate = onUpdateTrack,
             )
@@ -230,7 +214,7 @@ private fun ColumnScope.DiaryTrackListSection(
 private fun FilterBottomSheetContent(
     dateRangeFilterTypeResourcesProvider: DateRangeFilterTypeResourcesProvider,
     modifier: Modifier = Modifier,
-    dateRangeFilterTypeSelectionController: SingleSelectionController<hardcoder.dev.entities.features.diary.DateRangeFilterType>,
+    dateRangeFilterTypeSelectionController: SingleSelectionController<DateRangeFilterType>,
     tagMultiSelectionController: MultiSelectionController<DiaryTag>,
     onClose: () -> Unit,
 ) {
@@ -265,7 +249,7 @@ private fun FilterBottomSheetContent(
 @Composable
 private fun DateRangeSection(
     dateRangeFilterTypeResourcesProvider: DateRangeFilterTypeResourcesProvider,
-    dateRangeFilterTypeSelectionController: SingleSelectionController<hardcoder.dev.entities.features.diary.DateRangeFilterType>,
+    dateRangeFilterTypeSelectionController: SingleSelectionController<DateRangeFilterType>,
 ) {
     Description(text = stringResource(R.string.diary_selectDateRange_subtitle_bottomSheet_text))
     SingleSelectionChipFlowRow(
@@ -316,11 +300,6 @@ private fun DiaryPreview() {
             onCreateDiaryTrack = {},
             onUpdateDiaryTrack = {},
             dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
-            millisDistanceFormatter = MillisDistanceFormatter(
-                context = LocalContext.current,
-                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
-            ),
-            fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
             dateRangeFilterTypeResourcesProvider = DateRangeFilterTypeResourcesProvider(),
             dateRangeFilterTypeSelectionController = MockControllersProvider.singleSelectionController(
                 dataList = DateRangeFilterType.entries,

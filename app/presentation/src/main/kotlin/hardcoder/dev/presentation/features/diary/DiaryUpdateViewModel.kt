@@ -12,7 +12,6 @@ import hardcoder.dev.controller.selection.selectedItemsOrEmptySet
 import hardcoder.dev.coroutines.firstNotNull
 import hardcoder.dev.entities.features.diary.DiaryTag
 import hardcoder.dev.entities.features.diary.DiaryTrack
-import hardcoder.dev.entities.features.fasting.FastingTrack
 import hardcoder.dev.entities.features.moodTracking.MoodTrack
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.CorrectDiaryTrackContent
@@ -42,7 +41,6 @@ class DiaryUpdateViewModel(
         flow = initialDiaryTrack.filterNotNull().map { diaryTrack ->
             diaryTrack.diaryAttachmentGroup?.let { diaryAttachmentGroup ->
                 ReadOnlyDiaryAttachments(
-                    fastingTracks = diaryAttachmentGroup.fastingTracks,
                     moodTracks = diaryAttachmentGroup.moodTracks,
                     tags = diaryAttachmentGroup.tags,
                 )
@@ -96,10 +94,9 @@ class DiaryUpdateViewModel(
     }
 
     data class ReadOnlyDiaryAttachments(
-        val fastingTracks: List<FastingTrack> = emptyList(),
         val moodTracks: List<MoodTrack> = emptyList(),
         val tags: Set<DiaryTag> = emptySet(),
     ) {
-        val isEmpty = fastingTracks.isEmpty() && moodTracks.isEmpty()
+        val isEmpty = moodTracks.isEmpty()
     }
 }

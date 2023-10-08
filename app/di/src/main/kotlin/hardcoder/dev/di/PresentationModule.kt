@@ -2,7 +2,6 @@ package hardcoder.dev.di
 
 import hardcoder.dev.di.presentation.dashboardPresentationModule
 import hardcoder.dev.di.presentation.features.diaryPresentationModule
-import hardcoder.dev.di.presentation.features.fastingPresentationModule
 import hardcoder.dev.di.presentation.features.moodTrackingPresentationModule
 import hardcoder.dev.di.presentation.features.pedometerPresentationModule
 import hardcoder.dev.di.presentation.features.waterTrackingPresentationModule
@@ -17,7 +16,6 @@ val presentationModule = module {
         settingsPresentationModule,
         waterTrackingPresentationModule,
         pedometerPresentationModule,
-        fastingPresentationModule,
         moodTrackingPresentationModule,
         diaryPresentationModule,
     )

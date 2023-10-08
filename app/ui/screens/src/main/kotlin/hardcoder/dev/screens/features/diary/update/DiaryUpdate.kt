@@ -24,15 +24,12 @@ import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.entities.features.diary.DiaryTag
 import hardcoder.dev.formatters.DateTimeFormatter
-import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.icons.resourceId
 import hardcoder.dev.logic.features.diary.diaryTrack.IncorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.ValidatedDiaryTrackContent
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
 import hardcoder.dev.presentation.features.diary.DiaryUpdateViewModel
-import hardcoder.dev.resources.features.fasting.FastingPlanResourcesProvider
-import hardcoder.dev.screens.features.fasting.FastingItem
 import hardcoder.dev.screens.features.moodTracking.MoodTrackItem
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
@@ -56,8 +53,6 @@ import hardcoderdev.healther.app.ui.resources.R
 
 @Composable
 fun DiaryUpdate(
-    millisDistanceFormatter: MillisDistanceFormatter,
-    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     dateTimeFormatter: DateTimeFormatter,
     diaryAttachmentsLoadingController: LoadingController<DiaryUpdateViewModel.ReadOnlyDiaryAttachments>,
     contentInputController: ValidatedInputController<String, ValidatedDiaryTrackContent>,
@@ -70,8 +65,6 @@ fun DiaryUpdate(
     ScaffoldWrapper(
         content = {
             DiaryUpdateContent(
-                millisDistanceFormatter = millisDistanceFormatter,
-                fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                 dateTimeFormatter = dateTimeFormatter,
                 contentInputController = contentInputController,
                 tagMultiSelectionController = tagMultiSelectionController,
@@ -99,8 +92,6 @@ fun DiaryUpdate(
 
 @Composable
 private fun DiaryUpdateContent(
-    millisDistanceFormatter: MillisDistanceFormatter,
-    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     dateTimeFormatter: DateTimeFormatter,
     diaryAttachmentsLoadingController: LoadingController<DiaryUpdateViewModel.ReadOnlyDiaryAttachments>,
     contentInputController: ValidatedInputController<String, ValidatedDiaryTrackContent>,
@@ -125,8 +116,6 @@ private fun DiaryUpdateContent(
                     if (!readOnlyAttachments.isEmpty) {
                         Spacer(modifier = Modifier.height(32.dp))
                         AttachedEntitySection(
-                            millisDistanceFormatter = millisDistanceFormatter,
-                            fastingPlanResourcesProvider = fastingPlanResourcesProvider,
                             dateTimeFormatter = dateTimeFormatter,
                             readOnlyDiaryAttachments = readOnlyAttachments,
                         )
@@ -186,21 +175,11 @@ private fun EnterBasicInfoSection(
 
 @Composable
 private fun AttachedEntitySection(
-    millisDistanceFormatter: MillisDistanceFormatter,
     dateTimeFormatter: DateTimeFormatter,
-    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     readOnlyDiaryAttachments: DiaryUpdateViewModel.ReadOnlyDiaryAttachments,
 ) {
     Title(text = stringResource(id = R.string.diary_update_attachedEntity_text))
     Spacer(modifier = Modifier.height(16.dp))
-    readOnlyDiaryAttachments.fastingTracks.forEach { fastingTrack ->
-        FastingItem(
-            dateTimeFormatter = dateTimeFormatter,
-            millisDistanceFormatter = millisDistanceFormatter,
-            fastingPlanResourcesProvider = fastingPlanResourcesProvider,
-            fastingTrack = fastingTrack,
-        )
-    }
     readOnlyDiaryAttachments.moodTracks.forEach { moodTrack ->
         MoodTrackItem(
             dateTimeFormatter = dateTimeFormatter,
@@ -260,11 +239,6 @@ private fun DiaryUpdatePreview() {
             onGoBack = {},
             onManageTags = {},
             dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
-            fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
-            millisDistanceFormatter = MillisDistanceFormatter(
-                context = LocalContext.current,
-                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
-            ),
             updateController = MockControllersProvider.requestController(),
             deleteController = MockControllersProvider.requestController(),
             contentInputController = MockControllersProvider.validatedInputController(""),

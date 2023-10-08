@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.diary.diaryAttachment
+package hardcoder.dev.logics.features.diary.diaryAttachment
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
@@ -27,15 +27,6 @@ class DiaryAttachmentManager(
                 diaryTrackId = diaryTrackId,
                 targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.MOOD_TRACKING_ENTITY),
                 targetId = moodTrack.id,
-            )
-        }
-
-        attachmentGroup.fastingTracks.forEach { fastingTrack ->
-            appDatabase.diaryAttachmentQueries.insert(
-                id = idGenerator.nextId(),
-                diaryTrackId = diaryTrackId,
-                targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.FASTING_ENTITY),
-                targetId = fastingTrack.id,
             )
         }
 

@@ -17,10 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.entities.features.diary.DiaryTrack
 import hardcoder.dev.formatters.DateTimeFormatter
-import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.icons.resourceId
 import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
-import hardcoder.dev.resources.features.fasting.FastingPlanResourcesProvider
 import hardcoder.dev.uikit.components.card.Card
 import hardcoder.dev.uikit.components.card.CardConfig
 import hardcoder.dev.uikit.components.chip.Chip
@@ -36,8 +34,6 @@ private const val MAX_TAGS_VISIBLE_IN_ITEM = 4
 @Composable
 fun DiaryItem(
     dateTimeFormatter: DateTimeFormatter,
-    millisDistanceFormatter: MillisDistanceFormatter,
-    fastingPlanResourcesProvider: FastingPlanResourcesProvider,
     diaryTrack: DiaryTrack,
     onUpdate: (DiaryTrack) -> Unit,
 ) {
@@ -78,15 +74,6 @@ fun DiaryItem(
                             }
                         }
                     }
-                    diaryTrack.diaryAttachmentGroup?.fastingTracks?.forEach {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        DiaryFastingItem(
-                            dateTimeFormatter = dateTimeFormatter,
-                            millisDistanceFormatter = millisDistanceFormatter,
-                            fastingPlanResourcesProvider = fastingPlanResourcesProvider,
-                            fastingTrack = it,
-                        )
-                    }
                     diaryTrack.diaryAttachmentGroup?.moodTracks?.forEach {
                         Spacer(modifier = Modifier.height(8.dp))
                         DiaryMoodItem(
@@ -122,12 +109,7 @@ private fun DiaryItemPreview() {
     HealtherTheme {
         DiaryItem(
             onUpdate = {},
-            fastingPlanResourcesProvider = FastingPlanResourcesProvider(),
             dateTimeFormatter = DateTimeFormatter(context = LocalContext.current),
-            millisDistanceFormatter = MillisDistanceFormatter(
-                context = LocalContext.current,
-                defaultAccuracy = MillisDistanceFormatter.Accuracy.DAYS,
-            ),
             diaryTrack = DiaryMockDataProvider.diaryTracksList(
                 context = LocalContext.current,
             ).first(),

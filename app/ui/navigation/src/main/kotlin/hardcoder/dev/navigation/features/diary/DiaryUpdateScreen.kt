@@ -6,9 +6,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.androidApp.ui.navigation.features.diary.tags.DiaryTagsScreen
 import hardcoder.dev.formatters.DateTimeFormatter
-import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.presentation.features.diary.DiaryUpdateViewModel
-import hardcoder.dev.resources.features.fasting.FastingPlanResourcesProvider
 import hardcoder.dev.screens.features.diary.update.DiaryUpdate
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
 import org.koin.androidx.compose.koinViewModel
@@ -24,8 +22,6 @@ data class DiaryUpdateScreen(val diaryTrackId: Int) : Screen {
             parametersOf(diaryTrackId)
         }
         val dateTimeFormatter = koinInject<DateTimeFormatter>()
-        val millisDistanceFormatter = koinInject<MillisDistanceFormatter>()
-        val fastingPlanResourcesProvider = koinInject<FastingPlanResourcesProvider>()
 
         LaunchedEffectWhenExecuted(
             controller = viewModel.updateController,
@@ -38,8 +34,6 @@ data class DiaryUpdateScreen(val diaryTrackId: Int) : Screen {
 
         DiaryUpdate(
             dateTimeFormatter = dateTimeFormatter,
-            millisDistanceFormatter = millisDistanceFormatter,
-            fastingPlanResourcesProvider = fastingPlanResourcesProvider,
             contentInputController = viewModel.contentInputController,
             tagMultiSelectionController = viewModel.tagMultiSelectionController,
             updateController = viewModel.updateController,

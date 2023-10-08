@@ -6,10 +6,8 @@ import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.DiaryAttachment
 import hardcoder.dev.entities.features.diary.AttachmentType
 import hardcoder.dev.entities.features.diary.DiaryTag
-import hardcoder.dev.entities.features.fasting.FastingTrack
 import hardcoder.dev.entities.features.moodTracking.MoodTrack
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
-import hardcoder.dev.logic.features.fasting.FastingTrackProvider
 import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.mappers.features.diary.AttachmentTypeIdMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,7 +24,6 @@ import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup as AttachmentE
 class DiaryAttachmentProvider(
     private val appDatabase: AppDatabase,
     private val attachmentTypeIdMapper: AttachmentTypeIdMapper,
-    private val fastingTrackProvider: FastingTrackProvider,
     private val moodTrackProvider: MoodTrackProvider,
     private val diaryTagProvider: DiaryTagProvider,
     private val dispatchers: BackgroundCoroutineDispatchers,
@@ -64,7 +61,6 @@ class DiaryAttachmentProvider(
                     },
                 ) { targetEntityArray ->
                     AttachmentEntity(
-                        fastingTracks = targetEntityArray.filterIsInstance<FastingTrack>(),
                         moodTracks = targetEntityArray.filterIsInstance<MoodTrack>(),
                         tags = targetEntityArray.filterIsInstance<DiaryTag>().toSet(),
                     )
@@ -74,10 +70,6 @@ class DiaryAttachmentProvider(
 
     private fun provideTargetEntity(attachment: DiaryAttachment): Flow<Any?> {
         return when (attachmentTypeIdMapper.mapToAttachmentType(attachment.targetTypeId)) {
-            AttachmentType.FASTING_ENTITY -> {
-                fastingTrackProvider.provideFastingTrackById(attachment.targetId)
-            }
-
             AttachmentType.MOOD_TRACKING_ENTITY -> {
                 moodTrackProvider.provideById(attachment.targetId)
             }
