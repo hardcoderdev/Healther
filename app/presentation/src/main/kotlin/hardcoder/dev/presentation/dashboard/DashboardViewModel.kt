@@ -1,17 +1,16 @@
 package hardcoder.dev.presentation.dashboard
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.features.diary.DiaryDailyRateProvider
-import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
-import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDailyRateProvider
-import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
-import hardcoder.dev.logic.features.pedometer.PedometerDailyRateStepsProvider
-import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
-import hardcoder.dev.logic.features.waterTracking.WaterTrackingMillilitersDrunkProvider
+import hardcoder.dev.logics.features.diary.DiaryDailyRateProvider
+import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackProvider
+import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackDailyRateProvider
+import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackProvider
+import hardcoder.dev.logics.features.pedometer.PedometerDailyRateStepsProvider
+import hardcoder.dev.logics.features.pedometer.PedometerTrackProvider
+import hardcoder.dev.logics.features.waterTracking.WaterTrackingMillilitersDrunkProvider
 import hardcoder.dev.math.safeDiv
+import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 

@@ -6,13 +6,13 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val heroPresentationModule = module {
-    viewModel {
+    single {
         SplashViewModel(
             appPreferenceProvider = get(),
         )
     }
 
-    viewModel {
+    single {
         UserCreationViewModel(
             userCreator = get(),
             appPreferenceUpdater = get(),

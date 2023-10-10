@@ -1,11 +1,11 @@
-package hardcoder.dev.logic.features.moodTracking.moodTrack
+package hardcoder.dev.logics.features.moodTracking.moodTrack
 
 import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.MoodTrack
 import hardcoder.dev.entities.features.moodTracking.MoodType
-import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
+import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest

@@ -1,9 +1,10 @@
-package hardcoder.dev.logic.features.moodTracking.moodActivity
+package hardcoder.dev.logics.features.moodTracking.moodActivity
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.IdGenerator
+import hardcoder.dev.identification.IdGenerator
 import hardcoder.dev.icons.Icon
+import hardcoder.dev.logic.features.moodTracking.moodActivity.CorrectActivityName
 import kotlinx.coroutines.withContext
 
 class MoodActivityCreator(

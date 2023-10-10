@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.diary.diaryTag
+package hardcoder.dev.logics.features.diary.diaryTag
 
 import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers

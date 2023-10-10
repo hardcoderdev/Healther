@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.pedometer
+package hardcoder.dev.logics.features.pedometer
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf

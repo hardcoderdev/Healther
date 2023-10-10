@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.user
+package hardcoder.dev.logics.user
 
 import hardcoder.dev.entities.user.Gender
 import kotlinx.coroutines.flow.flowOf

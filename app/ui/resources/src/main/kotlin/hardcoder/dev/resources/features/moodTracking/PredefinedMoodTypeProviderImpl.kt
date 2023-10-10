@@ -3,7 +3,7 @@ package hardcoder.dev.resources.features.moodTracking
 import android.content.Context
 
 import hardcoder.dev.entities.features.moodTracking.MoodTypePredefined
-import hardcoder.dev.logic.features.moodTracking.moodType.PredefinedMoodTypeProvider
+import hardcoder.dev.logics.features.moodTracking.moodType.PredefinedMoodTypeProvider
 import hardcoderdev.healther.app.ui.resources.R
 
 class PredefinedMoodTypeProviderImpl(

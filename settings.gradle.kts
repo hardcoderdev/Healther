@@ -44,7 +44,6 @@ include(
 )
 include(
     ":foundation:coroutines",
-    ":foundation:datastore",
     ":foundation:uikit",
     ":foundation:permissions",
     ":foundation:sqldelight",
@@ -52,4 +51,6 @@ include(
     ":foundation:math",
     ":foundation:controllers",
     ":foundation:icons",
+    ":foundation:viewmodel",
+    ":foundation:identification",
 )

@@ -10,7 +10,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val diaryPresentationModule = module {
-    viewModel {
+    single {
         DiaryViewModel(
             dateRangeFilterTypeMapper = get(),
             dateRangeFilterTypeProvider = get(),
@@ -21,7 +21,7 @@ internal val diaryPresentationModule = module {
         )
     }
 
-    viewModel {
+    single {
         DiaryCreationViewModel(
             diaryTrackCreator = get(),
             diaryTrackContentValidator = get(),
@@ -30,7 +30,7 @@ internal val diaryPresentationModule = module {
         )
     }
 
-    viewModel { parameters ->
+    single { parameters ->
         DiaryUpdateViewModel(
             diaryTrackId = parameters.get(),
             diaryTrackUpdater = get(),
@@ -41,13 +41,13 @@ internal val diaryPresentationModule = module {
         )
     }
 
-    viewModel {
+    single {
         DiaryTagsViewModel(
             diaryTagProvider = get(),
         )
     }
 
-    viewModel {
+    single {
         DiaryTagCreationViewModel(
             diaryTagCreator = get(),
             diaryTagNameValidator = get(),
@@ -55,7 +55,7 @@ internal val diaryPresentationModule = module {
         )
     }
 
-    viewModel { parameters ->
+    single { parameters ->
         DiaryTagUpdateViewModel(
             tagId = parameters.get(),
             diaryTagNameValidator = get(),

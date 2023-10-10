@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(libs.data.store)
+    api(projects.foundation.coroutines)
 }

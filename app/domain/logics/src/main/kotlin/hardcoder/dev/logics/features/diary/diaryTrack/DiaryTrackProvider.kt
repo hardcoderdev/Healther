@@ -1,11 +1,11 @@
-package hardcoder.dev.logic.features.diary.diaryTrack
+package hardcoder.dev.logics.features.diary.diaryTrack
 
 import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.DiaryTrack
 import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup
-import hardcoder.dev.logic.features.diary.diaryAttachment.DiaryAttachmentProvider
+import hardcoder.dev.logics.features.diary.diaryAttachment.DiaryAttachmentProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest

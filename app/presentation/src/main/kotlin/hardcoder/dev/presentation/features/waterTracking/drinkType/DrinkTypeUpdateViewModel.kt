@@ -1,7 +1,5 @@
 package hardcoder.dev.presentation.features.waterTracking.drinkType
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
@@ -11,9 +9,11 @@ import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.icons.IconResourceProvider
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeDeleter
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeUpdater
+import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeDeleter
+import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeProvider
+import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeUpdater
+import hardcoder.dev.validators.features.waterTracking.DrinkTypeNameValidator
+import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class DrinkTypeUpdateViewModel(
     drinkTypeId: Int,
-    drinkTypeNameValidator: hardcoder.dev.validators.features.waterTracking.DrinkTypeNameValidator,
+    drinkTypeNameValidator: DrinkTypeNameValidator,
     drinkTypeProvider: DrinkTypeProvider,
     drinkTypeUpdater: DrinkTypeUpdater,
     drinkTypeDeleter: DrinkTypeDeleter,

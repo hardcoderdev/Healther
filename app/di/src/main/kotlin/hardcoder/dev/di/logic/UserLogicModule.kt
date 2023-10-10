@@ -1,9 +1,9 @@
 package hardcoder.dev.di.logic
 
-import hardcoder.dev.logic.user.UserCreator
-import hardcoder.dev.logic.user.UserGenderProvider
-import hardcoder.dev.logic.user.UserProvider
-import hardcoder.dev.logic.user.UserUpdater
+import hardcoder.dev.logics.user.UserCreator
+import hardcoder.dev.logics.user.UserGenderProvider
+import hardcoder.dev.logics.user.UserProvider
+import hardcoder.dev.logics.user.UserUpdater
 import hardcoder.dev.mappers.user.GenderIdMapper
 import hardcoder.dev.validators.user.UserExerciseStressValidator
 import hardcoder.dev.validators.user.UserNameValidator

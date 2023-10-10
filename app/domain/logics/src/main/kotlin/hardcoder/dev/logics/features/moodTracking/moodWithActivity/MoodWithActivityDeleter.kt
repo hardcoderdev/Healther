@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.moodTracking.moodWithActivity
+package hardcoder.dev.logics.features.moodTracking.moodWithActivity
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase

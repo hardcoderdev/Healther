@@ -1,16 +1,18 @@
-package hardcoder.dev.logic.features.pedometer.statistic
+package hardcoder.dev.logics.features.pedometer.statistic
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.entities.features.pedometer.PedometerStatistics
-import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
+import hardcoder.dev.logics.features.pedometer.PedometerTrackProvider
+import hardcoder.dev.resolvers.features.pedometer.CaloriesResolver
+import hardcoder.dev.resolvers.features.pedometer.KilometersResolver
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 
 class PedometerStatisticProvider(
-    private val kilometersResolver: hardcoder.dev.resolvers.features.pedometer.KilometersResolver,
-    private val caloriesResolver: hardcoder.dev.resolvers.features.pedometer.CaloriesResolver,
+    private val kilometersResolver: KilometersResolver,
+    private val caloriesResolver: CaloriesResolver,
     private val pedometerTrackProvider: PedometerTrackProvider,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {

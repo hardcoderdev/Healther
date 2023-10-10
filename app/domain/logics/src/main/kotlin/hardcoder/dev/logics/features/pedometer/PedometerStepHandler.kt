@@ -1,6 +1,6 @@
-package hardcoder.dev.logic.features.pedometer
+package hardcoder.dev.logics.features.pedometer
 
-import hardcoder.dev.database.IdGenerator
+import hardcoder.dev.identification.IdGenerator
 import java.time.LocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
 

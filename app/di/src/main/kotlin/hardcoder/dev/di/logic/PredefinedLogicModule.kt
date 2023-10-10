@@ -1,6 +1,6 @@
 package hardcoder.dev.di.logic
 
-import hardcoder.dev.logic.appPreferences.PredefinedTracksManager
+import hardcoder.dev.logics.appPreferences.PredefinedTracksManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

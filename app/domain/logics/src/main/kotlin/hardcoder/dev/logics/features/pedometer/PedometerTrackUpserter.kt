@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.pedometer
+package hardcoder.dev.logics.features.pedometer
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase

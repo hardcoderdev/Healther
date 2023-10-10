@@ -1,6 +1,6 @@
 package hardcoder.dev.di.logic.foundation
 
-import hardcoder.dev.database.IdGenerator
+import hardcoder.dev.identification.IdGenerator
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 

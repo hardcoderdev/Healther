@@ -7,7 +7,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import hardcoder.dev.logic.features.pedometer.PedometerStepHandler
+import hardcoder.dev.logics.features.pedometer.PedometerStepHandler
 import hardcoder.dev.screens.features.pedometer.PedometerNotificationManager.Companion.NOTIFICATION_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

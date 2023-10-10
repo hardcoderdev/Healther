@@ -1,9 +1,8 @@
 package hardcoder.dev.presentation.features.moodTracking.activity
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityProvider
+import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityProvider
+import hardcoder.dev.viewmodel.ViewModel
 
 class MoodActivitiesViewModel(moodActivityProvider: MoodActivityProvider) : ViewModel() {
 

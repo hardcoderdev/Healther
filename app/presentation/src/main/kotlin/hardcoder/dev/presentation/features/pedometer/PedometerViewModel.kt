@@ -1,15 +1,14 @@
 package hardcoder.dev.presentation.features.pedometer
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toLocalDateTime
-import hardcoder.dev.logic.features.pedometer.PedometerDailyRateStepsProvider
-import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
-import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatisticProvider
+import hardcoder.dev.logics.features.pedometer.PedometerDailyRateStepsProvider
+import hardcoder.dev.logics.features.pedometer.PedometerTrackProvider
+import hardcoder.dev.logics.features.pedometer.statistic.PedometerStatisticProvider
 import hardcoder.dev.math.safeDiv
+import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 

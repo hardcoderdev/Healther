@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.appPreferences
+package hardcoder.dev.logics.appPreferences
 
 import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers

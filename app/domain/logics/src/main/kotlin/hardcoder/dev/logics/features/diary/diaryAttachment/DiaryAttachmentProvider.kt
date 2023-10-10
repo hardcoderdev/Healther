@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.diary.diaryAttachment
+package hardcoder.dev.logics.features.diary.diaryAttachment
 
 import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
@@ -7,8 +7,8 @@ import hardcoder.dev.database.DiaryAttachment
 import hardcoder.dev.entities.features.diary.AttachmentType
 import hardcoder.dev.entities.features.diary.DiaryTag
 import hardcoder.dev.entities.features.moodTracking.MoodTrack
-import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
-import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
+import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagProvider
+import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.mappers.features.diary.AttachmentTypeIdMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

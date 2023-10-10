@@ -1,8 +1,9 @@
-package hardcoder.dev.logic.features.moodTracking.moodType
+package hardcoder.dev.logics.features.moodTracking.moodType
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.icons.Icon
+import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
 import kotlinx.coroutines.withContext
 
 class MoodTypeUpdater(

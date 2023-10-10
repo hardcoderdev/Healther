@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.moodTracking.moodTrack
+package hardcoder.dev.logics.features.moodTracking.moodTrack
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
@@ -6,9 +6,9 @@ import hardcoder.dev.entities.features.diary.AttachmentType
 import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup
 import hardcoder.dev.entities.features.moodTracking.MoodActivity
 import hardcoder.dev.entities.features.moodTracking.MoodTrack
-import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackCreator
-import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityCreator
-import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivityDeleter
+import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackCreator
+import hardcoder.dev.logics.features.moodTracking.moodWithActivity.MoodWithActivityCreator
+import hardcoder.dev.logics.features.moodTracking.moodWithActivity.MoodWithActivityDeleter
 import hardcoder.dev.mappers.features.diary.AttachmentTypeIdMapper
 import kotlinx.coroutines.withContext
 

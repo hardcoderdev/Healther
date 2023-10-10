@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.waterTracking.drinkType
+package hardcoder.dev.logics.features.waterTracking.drinkType
 
 import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers

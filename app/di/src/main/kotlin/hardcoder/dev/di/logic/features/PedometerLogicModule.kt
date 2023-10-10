@@ -1,11 +1,11 @@
 package hardcoder.dev.di.logic.features
 
-import hardcoder.dev.logic.features.pedometer.PedometerDailyRateStepsProvider
-import hardcoder.dev.logic.features.pedometer.PedometerStepHandler
-import hardcoder.dev.logic.features.pedometer.PedometerStepProvider
-import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
-import hardcoder.dev.logic.features.pedometer.PedometerTrackUpserter
-import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatisticProvider
+import hardcoder.dev.logics.features.pedometer.PedometerDailyRateStepsProvider
+import hardcoder.dev.logics.features.pedometer.PedometerStepHandler
+import hardcoder.dev.logics.features.pedometer.PedometerStepProvider
+import hardcoder.dev.logics.features.pedometer.PedometerTrackProvider
+import hardcoder.dev.logics.features.pedometer.PedometerTrackUpserter
+import hardcoder.dev.logics.features.pedometer.statistic.PedometerStatisticProvider
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 

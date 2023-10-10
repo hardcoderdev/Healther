@@ -1,19 +1,20 @@
 package hardcoder.dev.presentation.features.diary
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.selectedItemsOrEmptySet
 import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.entities.features.diary.DateRangeFilterType
 import hardcoder.dev.entities.features.diary.DiaryTag
 import hardcoder.dev.entities.features.diary.DiaryTrack
-import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
-import hardcoder.dev.logic.features.diary.DateRangeFilterTypeProvider
-import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
-import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
+import hardcoder.dev.logics.appPreferences.AppPreferenceProvider
+import hardcoder.dev.logics.features.diary.DateRangeFilterTypeProvider
+import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagProvider
+import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackProvider
+import hardcoder.dev.mappers.features.diary.DateRangeFilterTypeMapper
+import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -24,7 +25,7 @@ import kotlinx.coroutines.flow.stateIn
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DiaryViewModel(
-    private val dateRangeFilterTypeMapper: hardcoder.dev.mappers.features.diary.DateRangeFilterTypeMapper,
+    private val dateRangeFilterTypeMapper: DateRangeFilterTypeMapper,
     private val diaryTrackProvider: DiaryTrackProvider,
     dateRangeFilterTypeProvider: DateRangeFilterTypeProvider,
     diaryTagProvider: DiaryTagProvider,
@@ -51,7 +52,7 @@ class DiaryViewModel(
             diaryTrackProvider.provideAllDiaryTracksByDateRange(
                 dateRangeFilterTypeMapper.map(
                     firstLaunchTime = firstLaunchTime.first(),
-                    dateRangeFilterType = range ?: hardcoder.dev.entities.features.diary.DateRangeFilterType.BY_DAY,
+                    dateRangeFilterType = range ?: DateRangeFilterType.BY_DAY,
                 ),
             )
         }.stateIn(

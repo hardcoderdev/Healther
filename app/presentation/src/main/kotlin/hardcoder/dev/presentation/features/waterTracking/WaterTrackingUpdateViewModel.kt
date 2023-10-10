@@ -1,7 +1,5 @@
 package hardcoder.dev.presentation.features.waterTracking
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
@@ -13,11 +11,13 @@ import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toInstant
 import hardcoder.dev.datetime.toLocalDateTime
 import hardcoder.dev.entities.features.waterTracking.WaterTrack
-import hardcoder.dev.logic.features.waterTracking.WaterTrackDeleter
-import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
-import hardcoder.dev.logic.features.waterTracking.WaterTrackUpdater
-import hardcoder.dev.logic.features.waterTracking.WaterTrackingDailyRateProvider
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
+import hardcoder.dev.logics.features.waterTracking.WaterTrackDeleter
+import hardcoder.dev.logics.features.waterTracking.WaterTrackProvider
+import hardcoder.dev.logics.features.waterTracking.WaterTrackUpdater
+import hardcoder.dev.logics.features.waterTracking.WaterTrackingDailyRateProvider
+import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeProvider
+import hardcoder.dev.validators.features.waterTracking.WaterTrackMillilitersValidator
+import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -30,7 +30,7 @@ class WaterTrackingUpdateViewModel(
     private val waterTrackDeleter: WaterTrackDeleter,
     private val waterTrackUpdater: WaterTrackUpdater,
     private val waterTrackProvider: WaterTrackProvider,
-    private val waterTrackMillilitersValidator: hardcoder.dev.validators.features.waterTracking.WaterTrackMillilitersValidator,
+    private val waterTrackMillilitersValidator: WaterTrackMillilitersValidator,
     dateTimeProvider: DateTimeProvider,
     drinkTypeProvider: DrinkTypeProvider,
     waterTrackingDailyRateProvider: WaterTrackingDailyRateProvider,

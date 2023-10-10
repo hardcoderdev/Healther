@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.waterTracking
+package hardcoder.dev.logics.features.waterTracking
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase

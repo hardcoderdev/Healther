@@ -1,17 +1,16 @@
 package hardcoder.dev.presentation.features.diary
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItems
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
+import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.CorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackContentValidator
-import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackCreator
+import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackCreator
+import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.map
 
 class DiaryCreationViewModel(

@@ -1,7 +1,5 @@
 package hardcoder.dev.presentation.features.waterTracking
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
@@ -11,16 +9,18 @@ import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toInstant
-import hardcoder.dev.logic.features.waterTracking.WaterTrackCreator
-import hardcoder.dev.logic.features.waterTracking.WaterTrackingDailyRateProvider
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
+import hardcoder.dev.logics.features.waterTracking.WaterTrackCreator
+import hardcoder.dev.logics.features.waterTracking.WaterTrackingDailyRateProvider
+import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeProvider
+import hardcoder.dev.validators.features.waterTracking.WaterTrackMillilitersValidator
+import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 class WaterTrackingCreationViewModel(
     waterTrackCreator: WaterTrackCreator,
-    waterTrackMillilitersValidator: hardcoder.dev.validators.features.waterTracking.WaterTrackMillilitersValidator,
+    waterTrackMillilitersValidator: WaterTrackMillilitersValidator,
     drinkTypeProvider: DrinkTypeProvider,
     dateTimeProvider: DateTimeProvider,
     waterTrackingDailyRateProvider: WaterTrackingDailyRateProvider,

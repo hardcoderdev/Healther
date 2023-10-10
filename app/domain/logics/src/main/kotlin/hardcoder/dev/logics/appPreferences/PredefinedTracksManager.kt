@@ -1,14 +1,9 @@
-package hardcoder.dev.logic.appPreferences
+package hardcoder.dev.logics.appPreferences
 
 import android.content.Context
-
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeCreator
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeCreator
-import healtherDataStore
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import androidx.core.content.edit
+import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeCreator
+import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeCreator
 
 class PredefinedTracksManager(
     private val context: Context,
@@ -16,32 +11,26 @@ class PredefinedTracksManager(
     private val moodTypeCreator: MoodTypeCreator,
 ) {
 
-    private val isDrinkTypeSavedPreferenceKey = booleanPreferencesKey(IS_DRINK_TYPES_SAVED)
-    private val isMoodTypesSavedPreferenceKey = booleanPreferencesKey(IS_MOOD_TYPES_SAVED)
-
-    private val isMoodTypesSaved = context.healtherDataStore.data.map {
-        it[isMoodTypesSavedPreferenceKey] ?: false
-    }
-    private val isDrinkTypeSaved = context.healtherDataStore.data.map {
-        it[isDrinkTypeSavedPreferenceKey] ?: false
-    }
+    private val sharedPreferences by lazy { context.getSharedPreferences("MAIN_PREFS", 0) }
+    private val isDrinkTypeSaved by lazy { sharedPreferences.getBoolean(IS_DRINK_TYPES_SAVED, false) }
+    private val isMoodTypesSaved by lazy { sharedPreferences.getBoolean(IS_MOOD_TYPES_SAVED, false) }
 
     suspend fun createPredefinedTracksIfNeeded() {
-        if (!isDrinkTypeSaved.first()) createPredefinedDrinkTypes()
-        if (!isMoodTypesSaved.first()) createPredefinedMoodTypes()
+        if (!isDrinkTypeSaved) createPredefinedDrinkTypes()
+        if (!isMoodTypesSaved) createPredefinedMoodTypes()
     }
 
     private suspend fun createPredefinedDrinkTypes() {
         drinkTypeCreator.createPredefined()
-        context.healtherDataStore.edit { predefinedData ->
-            predefinedData[isDrinkTypeSavedPreferenceKey] = true
+        sharedPreferences.edit {
+            putBoolean(IS_DRINK_TYPES_SAVED, true)
         }
     }
 
     private suspend fun createPredefinedMoodTypes() {
         moodTypeCreator.createPredefined()
-        context.healtherDataStore.edit { predefinedData ->
-            predefinedData[isMoodTypesSavedPreferenceKey] = true
+        sharedPreferences.edit {
+            putBoolean(IS_MOOD_TYPES_SAVED, true)
         }
     }
 

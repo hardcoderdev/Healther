@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.user
+package hardcoder.dev.logics.user
 
 import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers

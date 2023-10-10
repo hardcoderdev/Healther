@@ -12,7 +12,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val waterTrackingPresentationModule = module {
-    viewModel {
+    single {
         WaterTrackingViewModel(
             waterTrackProvider = get(),
             waterPercentageResolver = get(),
@@ -21,7 +21,7 @@ internal val waterTrackingPresentationModule = module {
         )
     }
 
-    viewModel {
+    single {
         WaterTrackingAnalyticsViewModel(
             waterTrackingStatisticProvider = get(),
             waterTrackProvider = get(),
@@ -30,7 +30,7 @@ internal val waterTrackingPresentationModule = module {
         )
     }
 
-    viewModel {
+    single {
         WaterTrackingCreationViewModel(
             waterTrackCreator = get(),
             drinkTypeProvider = get(),
@@ -40,7 +40,7 @@ internal val waterTrackingPresentationModule = module {
         )
     }
 
-    viewModel { parameters ->
+    single { parameters ->
         WaterTrackingUpdateViewModel(
             waterTrackId = parameters.get(),
             waterTrackUpdater = get(),
@@ -53,7 +53,7 @@ internal val waterTrackingPresentationModule = module {
         )
     }
 
-    viewModel {
+    single {
         WaterTrackingHistoryViewModel(
             waterTrackProvider = get(),
             waterPercentageResolver = get(),
@@ -61,13 +61,13 @@ internal val waterTrackingPresentationModule = module {
         )
     }
 
-    viewModel {
+    single {
         DrinkTypesViewModel(
             drinkTypeProvider = get(),
         )
     }
 
-    viewModel {
+    single {
         DrinkTypeCreationViewModel(
             iconResourceProvider = get(),
             drinkTypeCreator = get(),
@@ -75,7 +75,7 @@ internal val waterTrackingPresentationModule = module {
         )
     }
 
-    viewModel { parameters ->
+    single { parameters ->
         DrinkTypeUpdateViewModel(
             drinkTypeId = parameters.get(),
             drinkTypeUpdater = get(),

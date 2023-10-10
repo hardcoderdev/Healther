@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.waterTracking.drinkType
+package hardcoder.dev.logics.features.waterTracking.drinkType
 
 import hardcoder.dev.entities.features.waterTracking.DrinkTypePredefined
 

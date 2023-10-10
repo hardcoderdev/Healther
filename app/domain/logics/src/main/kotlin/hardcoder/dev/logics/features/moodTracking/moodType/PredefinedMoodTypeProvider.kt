@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.moodTracking.moodType
+package hardcoder.dev.logics.features.moodTracking.moodType
 
 import hardcoder.dev.entities.features.moodTracking.MoodTypePredefined
 

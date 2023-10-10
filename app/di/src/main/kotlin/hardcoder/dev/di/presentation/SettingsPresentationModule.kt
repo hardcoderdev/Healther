@@ -5,7 +5,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val settingsPresentationModule = module {
-    viewModel {
+    single {
         SettingsViewModel(
             appPreferenceProvider = get(),
         )

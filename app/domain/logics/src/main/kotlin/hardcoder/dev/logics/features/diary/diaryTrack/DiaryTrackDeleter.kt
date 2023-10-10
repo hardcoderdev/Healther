@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.diary.diaryTrack
+package hardcoder.dev.logics.features.diary.diaryTrack
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase

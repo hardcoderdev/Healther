@@ -14,6 +14,4 @@ sqldelight {
 dependencies {
     api(projects.foundation.sqldelight)
     api(projects.foundation.datetime)
-    api(projects.foundation.datastore)
-    api(libs.preferences.ktx)
 }

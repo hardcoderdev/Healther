@@ -7,7 +7,7 @@ import hardcoder.dev.di.foundationModule
 import hardcoder.dev.di.logicModule
 import hardcoder.dev.di.presentationModule
 import hardcoder.dev.di.uiModule
-import hardcoder.dev.logic.appPreferences.PredefinedTracksManager
+import hardcoder.dev.logics.appPreferences.PredefinedTracksManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get

@@ -1,11 +1,10 @@
 package hardcoder.dev.presentation.features.moodTracking
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
+import hardcoder.dev.logics.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
+import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
 

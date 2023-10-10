@@ -7,5 +7,6 @@ dependencies {
     api(projects.app.domain.validators)
     api(projects.app.domain.resolvers)
     api(projects.app.domain.mappers)
+    api(projects.foundation.identification)
     api(projects.foundation.icons)
 }

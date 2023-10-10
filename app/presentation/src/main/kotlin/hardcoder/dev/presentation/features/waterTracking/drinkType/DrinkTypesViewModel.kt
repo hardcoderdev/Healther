@@ -1,9 +1,8 @@
 package hardcoder.dev.presentation.features.waterTracking.drinkType
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
+import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeProvider
+import hardcoder.dev.viewmodel.ViewModel
 
 class DrinkTypesViewModel(drinkTypeProvider: DrinkTypeProvider) : ViewModel() {
 

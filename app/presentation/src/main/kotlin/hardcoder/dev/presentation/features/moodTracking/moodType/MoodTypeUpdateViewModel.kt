@@ -1,7 +1,5 @@
 package hardcoder.dev.presentation.features.moodTracking.moodType
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
@@ -11,10 +9,11 @@ import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.icons.IconResourceProvider
 import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
-import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeDeleter
+import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeDeleter
 import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
-import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
-import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeUpdater
+import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeProvider
+import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeUpdater
+import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch

@@ -1,7 +1,5 @@
 package hardcoder.dev.presentation.features.diary
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
@@ -13,12 +11,13 @@ import hardcoder.dev.coroutines.firstNotNull
 import hardcoder.dev.entities.features.diary.DiaryTag
 import hardcoder.dev.entities.features.diary.DiaryTrack
 import hardcoder.dev.entities.features.moodTracking.MoodTrack
-import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
+import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.CorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackContentValidator
-import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackDeleter
-import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
-import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackUpdater
+import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackDeleter
+import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackProvider
+import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackUpdater
+import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first

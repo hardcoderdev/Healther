@@ -1,11 +1,11 @@
-package hardcoder.dev.logic.features.waterTracking
+package hardcoder.dev.logics.features.waterTracking
 
 import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.WaterTrack
 import hardcoder.dev.entities.features.waterTracking.DrinkType
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeProvider
+import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest

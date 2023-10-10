@@ -1,9 +1,10 @@
-package hardcoder.dev.logic.features.waterTracking.drinkType
+package hardcoder.dev.logics.features.waterTracking.drinkType
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.IdGenerator
 import hardcoder.dev.icons.Icon
+import hardcoder.dev.identification.IdGenerator
+import hardcoder.dev.validators.features.waterTracking.CorrectDrinkTypeName
 import kotlinx.coroutines.withContext
 
 class DrinkTypeCreator(
@@ -14,7 +15,7 @@ class DrinkTypeCreator(
 ) {
 
     suspend fun create(
-        name: hardcoder.dev.validators.features.waterTracking.CorrectDrinkTypeName,
+        name: CorrectDrinkTypeName,
         icon: Icon,
         hydrationIndexPercentage: Int,
     ) = withContext(dispatchers.io) {

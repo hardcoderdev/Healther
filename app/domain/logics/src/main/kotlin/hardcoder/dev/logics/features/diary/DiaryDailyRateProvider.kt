@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.diary
+package hardcoder.dev.logics.features.diary
 
 import kotlinx.coroutines.flow.flowOf
 

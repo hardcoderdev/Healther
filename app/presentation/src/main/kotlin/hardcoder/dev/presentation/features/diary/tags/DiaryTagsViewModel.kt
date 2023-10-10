@@ -1,9 +1,8 @@
 package hardcoder.dev.presentation.features.diary.tags
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagProvider
+import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagProvider
+import hardcoder.dev.viewmodel.ViewModel
 
 class DiaryTagsViewModel(diaryTagProvider: DiaryTagProvider) : ViewModel() {
 

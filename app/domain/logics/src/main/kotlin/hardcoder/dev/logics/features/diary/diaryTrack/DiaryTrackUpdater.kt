@@ -1,8 +1,9 @@
-package hardcoder.dev.logic.features.diary.diaryTrack
+package hardcoder.dev.logics.features.diary.diaryTrack
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup
+import hardcoder.dev.logic.features.diary.diaryTrack.CorrectDiaryTrackContent
 import hardcoder.dev.logics.features.diary.diaryAttachment.DiaryAttachmentManager
 import kotlinx.coroutines.withContext
 

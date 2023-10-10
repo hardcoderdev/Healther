@@ -1,8 +1,9 @@
-package hardcoder.dev.logic.features.waterTracking
+package hardcoder.dev.logics.features.waterTracking
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.IdGenerator
+import hardcoder.dev.identification.IdGenerator
+import hardcoder.dev.validators.features.waterTracking.CorrectMillilitersCount
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 
@@ -14,7 +15,7 @@ class WaterTrackCreator(
 
     suspend fun create(
         dateTime: Instant,
-        millilitersCount: hardcoder.dev.validators.features.waterTracking.CorrectMillilitersCount,
+        millilitersCount: CorrectMillilitersCount,
         drinkTypeId: Int,
     ) = withContext(dispatchers.io) {
         appDatabase.waterTrackQueries.insert(

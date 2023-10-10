@@ -6,7 +6,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val pedometerPresentationModule = module {
-    viewModel {
+    single {
         PedometerViewModel(
             pedometerManager = get(),
             pedometerTrackProvider = get(),
@@ -16,7 +16,7 @@ internal val pedometerPresentationModule = module {
         )
     }
 
-    viewModel {
+    single {
         PedometerHistoryViewModel(
             pedometerTrackProvider = get(),
             pedometerStatisticProvider = get(),

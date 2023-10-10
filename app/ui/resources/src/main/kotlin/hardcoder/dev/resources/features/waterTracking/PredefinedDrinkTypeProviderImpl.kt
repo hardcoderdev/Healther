@@ -3,7 +3,7 @@ package hardcoder.dev.resources.features.waterTracking
 import android.content.Context
 import hardcoder.dev.entities.features.waterTracking.DrinkTypePredefined
 import hardcoder.dev.icons.IconResourceProvider
-import hardcoder.dev.logic.features.waterTracking.drinkType.PredefinedDrinkTypeProvider
+import hardcoder.dev.logics.features.waterTracking.drinkType.PredefinedDrinkTypeProvider
 import hardcoderdev.healther.app.ui.resources.R
 
 class PredefinedDrinkTypeProviderImpl(

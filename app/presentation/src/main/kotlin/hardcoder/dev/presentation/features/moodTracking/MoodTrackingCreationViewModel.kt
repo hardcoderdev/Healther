@@ -1,7 +1,5 @@
 package hardcoder.dev.presentation.features.moodTracking
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.controller.request.RequestController
@@ -11,9 +9,10 @@ import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.controller.selection.selectedItemsOrEmptySet
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toInstant
-import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityProvider
-import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackCreator
-import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
+import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityProvider
+import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackCreator
+import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeProvider
+import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.first
 
 class MoodTrackingCreationViewModel(

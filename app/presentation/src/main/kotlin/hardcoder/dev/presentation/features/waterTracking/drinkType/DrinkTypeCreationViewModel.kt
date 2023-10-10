@@ -1,7 +1,5 @@
 package hardcoder.dev.presentation.features.waterTracking.drinkType
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
@@ -10,12 +8,14 @@ import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.icons.IconResourceProvider
-import hardcoder.dev.logic.features.waterTracking.drinkType.DrinkTypeCreator
+import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeCreator
+import hardcoder.dev.validators.features.waterTracking.DrinkTypeNameValidator
+import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.map
 
 class DrinkTypeCreationViewModel(
     drinkTypeCreator: DrinkTypeCreator,
-    drinkTypeNameValidator: hardcoder.dev.validators.features.waterTracking.DrinkTypeNameValidator,
+    drinkTypeNameValidator: DrinkTypeNameValidator,
     iconResourceProvider: IconResourceProvider,
 ) : ViewModel() {
 

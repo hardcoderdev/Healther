@@ -10,7 +10,6 @@ activity-compose = "1.8.0"
 kotlin-coroutines = "1.7.3"
 kotlin-datetime = "0.4.1"
 kotlin-serialization = "1.5.1"
-data-store = "1.0.0"
 sqlDelight = "2.0.0"
 ktor-client = "2.3.3"
 coil-compose = "2.2.2"
@@ -34,12 +33,10 @@ kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ve
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity-ktx" }
 play-core = { module = "com.google.android.play:core", version.ref = "play-core" }
-lifecycle-viewmodelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-viewmodelCompose"}
 kotlin-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 kotlin-coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization" }
-data-store = { module = "androidx.datastore:datastore-preferences", version.ref = "data-store" }
 sqlDelight-primitiveAdapters = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqlDelight" }
 sqlDelight-coroutinesExt = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
 sqlDelight-androidDriver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }

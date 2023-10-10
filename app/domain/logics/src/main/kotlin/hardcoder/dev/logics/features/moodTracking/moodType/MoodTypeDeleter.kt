@@ -1,8 +1,8 @@
-package hardcoder.dev.logic.features.moodTracking.moodType
+package hardcoder.dev.logics.features.moodTracking.moodType
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDeleter
+import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackDeleter
 import kotlinx.coroutines.withContext
 
 class MoodTypeDeleter(

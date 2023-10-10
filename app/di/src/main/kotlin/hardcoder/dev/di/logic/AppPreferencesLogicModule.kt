@@ -1,7 +1,7 @@
 package hardcoder.dev.di.logic
 
-import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
-import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
+import hardcoder.dev.logics.appPreferences.AppPreferenceProvider
+import hardcoder.dev.logics.appPreferences.AppPreferenceUpdater
 import org.koin.dsl.module
 
 internal val appPreferencesLogicModule = module {

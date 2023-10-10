@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.moodTracking.moodActivity
+package hardcoder.dev.logics.features.moodTracking.moodActivity
 
 import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers

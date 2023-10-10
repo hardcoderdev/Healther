@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.diary
+package hardcoder.dev.logics.features.diary
 
 import hardcoder.dev.entities.features.diary.DateRangeFilterType
 import kotlinx.coroutines.flow.flowOf
