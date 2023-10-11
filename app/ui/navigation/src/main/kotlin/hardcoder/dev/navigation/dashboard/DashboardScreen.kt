@@ -7,6 +7,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.navigation.features.diary.DiaryCreationScreen
 import hardcoder.dev.navigation.features.diary.DiaryScreen
+import hardcoder.dev.navigation.features.foodTracking.foodTracks.FoodTrackingCreationScreen
+import hardcoder.dev.navigation.features.foodTracking.foodTracks.FoodTrackingScreen
 import hardcoder.dev.navigation.features.moodTracking.MoodTrackingCreationScreen
 import hardcoder.dev.navigation.features.moodTracking.MoodTrackingScreen
 import hardcoder.dev.navigation.features.pedometer.PedometerScreen
@@ -32,14 +34,20 @@ class DashboardScreen : Screen {
             onCreateWaterTrack = {
                 navigator += WaterTrackingCreationScreen()
             },
-            onGoToPedometerFeature = {
-                navigator += PedometerScreen()
+            onGoToFoodTrackingFeature = {
+                navigator += FoodTrackingScreen()
+            },
+            onCreateFoodTrack = {
+                navigator += FoodTrackingCreationScreen()
             },
             onGoToMoodTrackingFeature = {
                 navigator += MoodTrackingScreen()
             },
             onCreateMoodTrack = {
                 navigator += MoodTrackingCreationScreen()
+            },
+            onGoToPedometerFeature = {
+                navigator += PedometerScreen()
             },
             onGoToDiary = {
                 navigator += DiaryScreen()

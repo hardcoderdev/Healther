@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="foodTracking_foodTypes_topBar_title">Your dishes:</string>
+    <string name="foodTracking_creation_enterDrinkType_text">Choose a dish…</string>
+    <string name="foodTracking_foodTypes_title_topBar">Dishes management</string>
+    <string name="foodTracking_creation_foodTypeNotSelected_text">Create and choose a dish!</string>
+    <string name="foodTracking_foodTypes_creation_title_topBar">Creating a dish</string>
+    <string name="foodTracking_foodTypes_creation_selectIcon_text">Select a dish icon:</string>
+    <string name="foodTracking_foodTypes_creation_enterName_text">E.g: lobsters</string>
+    <string name="foodTracking_foodTypes_creation_enterMainInfo_text">Enter the name of the dish</string>
+    <string name="foodTracking_foodTypes_creation_enterCaloriesCount_text">Number of calories…</string>
+    <string name="foodTracking_foodTypes_nowEmpty_text">Now it\'s empty. In order to add a dish, it appears in the right corner!</string>
+    <string name="foodTracking_creation_enterCalories_text">Enter the calorie content of the dish:</string>
+    <string name="foodTracking_fasting_format">It\'s been: %s since last meal</string>
+    <string name="foodTracking_fasting_title">Fasting</string>
+    <string name="foodTracking_fasting_not_started">You haven\'t added meals yet!</string>
+    <string name="foodTracking_title_topBar">Food and nutrition</string>
+    <string name="fasting_foodTracksList_text">Meals list:</string>
+</resources>

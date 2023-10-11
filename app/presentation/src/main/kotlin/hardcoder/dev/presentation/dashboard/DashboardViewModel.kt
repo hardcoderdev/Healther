@@ -16,6 +16,7 @@ import hardcoder.dev.math.safeDiv
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
 import hardcoder.dev.presentation.features.pedometer.toggleTracking
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 class DashboardViewModel(
@@ -33,15 +34,17 @@ class DashboardViewModel(
     val featuresLoadingController = LoadingController(
         coroutineScope = coroutineScope,
         flow = combine(
-            diaryItem(),
             waterTrackingItem(),
-            pedometerItem(),
+            foodTrackingItem(),
             moodTrackingItemFlow(),
-        ) { waterTrackingItem, pedometerItem, moodTrackingItem, diaryItem ->
+            pedometerItem(),
+            diaryItem(),
+        ) { waterTrackingItem, foodTrackingItem, moodTrackingItem, pedometerItem, diaryItem ->
             listOf(
                 waterTrackingItem,
-                pedometerItem,
+                foodTrackingItem,
                 moodTrackingItem,
+                pedometerItem,
                 diaryItem,
             )
         },
@@ -93,6 +96,8 @@ class DashboardViewModel(
             progress = moodTracksCount safeDiv dailyRate,
         )
     }
+
+    private fun foodTrackingItem() = flowOf(DashboardFeatureItem.FoodTrackingFeature)
 
     private fun diaryItem() = combine(
         diaryTrackProvider.provideAllDiaryTracksByDateRange(dateRange = dateTimeProvider.currentDateRange()),

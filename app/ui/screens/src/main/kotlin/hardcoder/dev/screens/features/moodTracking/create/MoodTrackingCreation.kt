@@ -50,6 +50,7 @@ import hardcoder.dev.uikit.components.text.ErrorText
 import hardcoder.dev.uikit.components.text.Label
 import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.components.text.textField.TextField
+import hardcoder.dev.uikit.components.text.textField.TextInputAdapter
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
 import hardcoder.dev.uikit.components.topBar.TopBarType
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
@@ -263,6 +264,7 @@ private fun EnterNoteSection(noteInputController: InputController<String>) {
             label = R.string.moodTracking_creation_enterNote_textField,
             multiline = true,
             maxLines = 5,
+            inputAdapter = TextInputAdapter,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done,

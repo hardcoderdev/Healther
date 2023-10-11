@@ -26,6 +26,7 @@ fun Card(cardConfig: CardConfig) {
         )
 
         is CardConfig.Static -> StaticCard(
+            modifier = cardConfig.modifier,
             cardContent = cardConfig.cardContent,
         )
     }

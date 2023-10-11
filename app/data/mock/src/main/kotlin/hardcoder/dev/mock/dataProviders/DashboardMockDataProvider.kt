@@ -10,18 +10,20 @@ object DashboardMockDataProvider {
         millilitersDrunk = WaterTrackingMockDataProvider.millilitersDrunkToDailyRate(),
     )
 
+    fun dashboardFoodTrackingFeature() = DashboardFeatureItem.FoodTrackingFeature
+
+    fun dashboardMoodTrackingFeature() = DashboardFeatureItem.MoodTrackingFeature(
+        tracksCount = 19,
+        tracksDailyRate = 20,
+        progress = 0.9f,
+    )
+
     fun dashboardPedometerFeature() = DashboardFeatureItem.PedometerFeature(
         progress = 0.5f,
         stepsWalked = 5000,
         dailyRateInSteps = 10_000,
         isPedometerRunning = true,
         isPermissionsGranted = true,
-    )
-
-    fun dashboardMoodTrackingFeature() = DashboardFeatureItem.MoodTrackingFeature(
-        tracksCount = 19,
-        tracksDailyRate = 20,
-        progress = 0.9f,
     )
 
     fun dashboardDiaryFeature() = DashboardFeatureItem.DiaryFeature(
@@ -32,8 +34,9 @@ object DashboardMockDataProvider {
 
     fun dashboardFeatureSectionsList() = listOf(
         dashboardWaterTrackingFeature(),
-        dashboardPedometerFeature(),
+        dashboardFoodTrackingFeature(),
         dashboardMoodTrackingFeature(),
+        dashboardPedometerFeature(),
         dashboardDiaryFeature(),
     )
 }

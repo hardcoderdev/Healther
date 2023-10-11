@@ -22,6 +22,8 @@ sealed class DashboardFeatureItem {
         val progress: Float,
     ) : DashboardFeatureItem()
 
+    data object FoodTrackingFeature : DashboardFeatureItem()
+
     data class DiaryFeature(
         val tracksCount: Int,
         val tracksDailyRate: Int,

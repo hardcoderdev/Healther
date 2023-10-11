@@ -26,4 +26,5 @@
     <string name="dashboard_mood_tracking_not_specified">Вы не указали настроение сегодня.</string>
     <string name="dashboard_fasting_completed">Голодание завершено.</string>
     <string name="dashboard_finish_fasting">Сохранить голодание</string>
+    <string name="dashboard_food_tracking_feature">Еда и питание</string>
 </resources>
