@@ -25,11 +25,11 @@ import hardcoder.dev.formatters.DecimalFormatter
 import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.PedometerMockDataProvider
+import hardcoder.dev.pedometer_manager.permissions.Initial
+import hardcoder.dev.pedometer_manager.permissions.PedometerRejectedMapper
 import hardcoder.dev.presentation.features.pedometer.PedometerChartData
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
 import hardcoder.dev.resolvers.features.pedometer.PedometerStatisticResolver
-import hardcoder.dev.screens.features.pedometer.permissions.Initial
-import hardcoder.dev.screens.features.pedometer.permissions.PermissionsSection
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButton
 import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButtonConfig
 import hardcoder.dev.uikit.components.card.Card

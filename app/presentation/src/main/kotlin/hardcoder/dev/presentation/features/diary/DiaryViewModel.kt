@@ -1,5 +1,7 @@
 package hardcoder.dev.presentation.features.diary
 
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.selection.MultiSelectionController
@@ -14,7 +16,6 @@ import hardcoder.dev.logics.features.diary.DateRangeFilterTypeProvider
 import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackProvider
 import hardcoder.dev.mappers.features.diary.DateRangeFilterTypeMapper
-import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -31,17 +32,17 @@ class DiaryViewModel(
     diaryTagProvider: DiaryTagProvider,
     dateTimeProvider: DateTimeProvider,
     appPreferenceProvider: AppPreferenceProvider,
-) : ViewModel() {
+) : ScreenModel {
 
     val dateRangeFilterTypeSelectionController = SingleSelectionController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         itemsFlow = dateRangeFilterTypeProvider.provideAllDateRangeFilters(),
     )
 
     private val firstLaunchTime = appPreferenceProvider.provideAppPreference().map {
         requireNotNull(it!!.firstLaunchTime)
     }.stateIn(
-        scope = viewModelScope,
+        scope = coroutineScope,
         started = SharingStarted.Eagerly,
         initialValue = dateTimeProvider.currentInstant(),
     )
@@ -56,28 +57,28 @@ class DiaryViewModel(
                 ),
             )
         }.stateIn(
-            scope = viewModelScope,
+            scope = coroutineScope,
             started = SharingStarted.Eagerly,
             initialValue = emptyList(),
         )
 
     val tagMultiSelectionController = MultiSelectionController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         itemsFlow = diaryTagProvider.provideAllDiaryTags(),
     )
 
     val searchTextInputController = InputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = "",
     )
 
     val diaryTrackLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = diaryTrackList,
     )
 
     val filteredTrackLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = combine(
             diaryTrackList,
             searchTextInputController.state,

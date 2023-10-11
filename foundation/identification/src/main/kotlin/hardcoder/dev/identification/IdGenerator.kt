@@ -1,28 +1,32 @@
 package hardcoder.dev.identification
 
 import android.content.Context
-import androidx.core.content.edit
+import com.russhwolf.settings.Settings
+import com.russhwolf.settings.SharedPreferencesSettings
+import com.russhwolf.settings.int
 
-class IdGenerator(context: Context) {
+class IdGenerator(
+    context: Context,
+    settings: Settings = SharedPreferencesSettings(
+        // TODO KMM
+        delegate = context.getSharedPreferences("MAIN_PREFS", 0),
+    ),
+) {
 
-    private val sharedPreferences = context.getSharedPreferences(
-        SHARED_PREFERENCES_NAME,
-        Context.MODE_PRIVATE,
-    )
+    private var lastId by settings.int(LAST_ID_KEY, 0)
 
     fun nextId(): Int {
-        val lastId = sharedPreferences.getInt(LAST_ID_KEY, 0)
+        Settings
         val newId = lastId + 1
-        setLastId(newId)
+        lastId = newId
         return newId
     }
 
-    private fun setLastId(lastId: Int) {
-        sharedPreferences.edit { putInt(LAST_ID_KEY, lastId) }
+    fun forceLastId(lastId: Int) {
+        this.lastId = lastId
     }
 
     companion object {
-        private const val SHARED_PREFERENCES_NAME = "IdGenerator"
         private const val LAST_ID_KEY = "lastGeneratedId"
     }
 }

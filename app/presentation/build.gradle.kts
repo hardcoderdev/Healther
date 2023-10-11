@@ -5,6 +5,6 @@ plugins {
 dependencies {
     api(projects.app.domain.logics)
     api(projects.foundation.permissions)
-    api(projects.foundation.viewmodel)
+    api(libs.voyager.koin)
     api(projects.foundation.controllers)
 }

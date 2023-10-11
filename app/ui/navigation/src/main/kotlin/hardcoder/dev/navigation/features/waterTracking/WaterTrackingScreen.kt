@@ -1,19 +1,19 @@
-package hardcoder.dev.androidApp.ui.navigation.features.waterTracking
+package hardcoder.dev.navigation.features.waterTracking
 
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingViewModel
 import hardcoder.dev.screens.features.waterTracking.waterTrack.WaterTracking
-import org.koin.androidx.compose.koinViewModel
 
 class WaterTrackingScreen : Screen {
 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinViewModel<WaterTrackingViewModel>()
+        val viewModel = getScreenModel<WaterTrackingViewModel>()
 
         WaterTracking(
             waterTracksLoadingController = viewModel.waterTracksLoadingController,

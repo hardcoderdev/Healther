@@ -28,7 +28,6 @@ internal val waterTrackingLogicModule = module {
     singleOf(::WaterIntakeResolver)
     singleOf(::WaterTrackMillilitersValidator)
     singleOf(::DrinkTypeNameValidator)
-    singleOf(::DrinkTypeNameValidator)
     singleOf<IconResourceProvider>(::DrinkTypeIconProvider)
 
     single {

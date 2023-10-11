@@ -1,16 +1,17 @@
 package hardcoder.dev.presentation.features.diary
 
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItems
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logic.features.diary.diaryTrack.CorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackContentValidator
+import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackCreator
-import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.map
 
 class DiaryCreationViewModel(
@@ -18,21 +19,21 @@ class DiaryCreationViewModel(
     private val dateTimeProvider: DateTimeProvider,
     diaryTagProvider: DiaryTagProvider,
     diaryTrackContentValidator: DiaryTrackContentValidator,
-) : ViewModel() {
+) : ScreenModel {
 
     val contentController = ValidatedInputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = "",
         validation = diaryTrackContentValidator::validate,
     )
 
     val tagMultiSelectionController = MultiSelectionController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         itemsFlow = diaryTagProvider.provideAllDiaryTags(),
     )
 
     val creationController = RequestController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         request = {
             diaryTrackCreator.create(
                 content = contentController.validateAndRequire<CorrectDiaryTrackContent>().data,

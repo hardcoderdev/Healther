@@ -1,7 +1,6 @@
-package hardcoder.dev.screens.features.pedometer
+package hardcoder.dev.pedometer_manager.permissions
 
 import hardcoder.dev.presentation.features.pedometer.RejectReason
-import hardcoder.dev.screens.features.pedometer.permissions.Rejected
 import hardcoderdev.healther.app.ui.resources.R
 
 class PedometerRejectedMapper {

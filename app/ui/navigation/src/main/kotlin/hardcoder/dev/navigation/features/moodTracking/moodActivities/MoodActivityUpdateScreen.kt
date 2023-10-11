@@ -1,13 +1,13 @@
-package hardcoder.dev.androidApp.ui.navigation.features.moodTracking.moodActivities
+package hardcoder.dev.navigation.features.moodTracking.moodActivities
 
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.presentation.features.moodTracking.activity.MoodActivityUpdateViewModel
 import hardcoder.dev.screens.features.moodTracking.activity.update.MoodActivityUpdate
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
-import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 data class MoodActivityUpdateScreen(val moodActivityId: Int) : Screen {
@@ -15,7 +15,7 @@ data class MoodActivityUpdateScreen(val moodActivityId: Int) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinViewModel<MoodActivityUpdateViewModel> {
+        val viewModel = getScreenModel<MoodActivityUpdateViewModel> {
             parametersOf(moodActivityId)
         }
 

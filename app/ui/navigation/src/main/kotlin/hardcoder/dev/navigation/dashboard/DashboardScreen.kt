@@ -2,32 +2,30 @@ package hardcoder.dev.navigation.dashboard
 
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import hardcoder.dev.androidApp.ui.navigation.features.diary.DiaryCreationScreen
-import hardcoder.dev.androidApp.ui.navigation.features.diary.DiaryScreen
-import hardcoder.dev.androidApp.ui.navigation.features.moodTracking.MoodTrackingCreationScreen
-import hardcoder.dev.androidApp.ui.navigation.features.moodTracking.MoodTrackingScreen
-import hardcoder.dev.androidApp.ui.navigation.features.pedometer.PedometerScreen
-import hardcoder.dev.androidApp.ui.navigation.features.waterTracking.WaterTrackingCreationScreen
-import hardcoder.dev.androidApp.ui.navigation.features.waterTracking.WaterTrackingScreen
-import hardcoder.dev.androidApp.ui.navigation.settings.SettingsScreen
-import hardcoder.dev.mock.controllers.MockControllersProvider
+import hardcoder.dev.navigation.features.diary.DiaryCreationScreen
+import hardcoder.dev.navigation.features.diary.DiaryScreen
+import hardcoder.dev.navigation.features.moodTracking.MoodTrackingCreationScreen
+import hardcoder.dev.navigation.features.moodTracking.MoodTrackingScreen
+import hardcoder.dev.navigation.features.pedometer.PedometerScreen
+import hardcoder.dev.navigation.features.waterTracking.WaterTrackingCreationScreen
+import hardcoder.dev.navigation.features.waterTracking.WaterTrackingScreen
+import hardcoder.dev.navigation.settings.SettingsScreen
 import hardcoder.dev.presentation.dashboard.DashboardViewModel
 import hardcoder.dev.screens.dashboard.Dashboard
-import org.koin.androidx.compose.koinViewModel
 
 class DashboardScreen : Screen {
 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinViewModel<DashboardViewModel>()
+        val viewModel = getScreenModel<DashboardViewModel>()
 
         Dashboard(
             featureItemsLoadingController = viewModel.featuresLoadingController,
-            //pedometerToggleController = viewModel.pedometerToggleController, TODO UNCOMMENT
-            pedometerToggleController = MockControllersProvider.toggleController(),
+            pedometerToggleController = viewModel.pedometerToggleController,
             onGoToWaterTrackingFeature = {
                 navigator += WaterTrackingScreen()
             },

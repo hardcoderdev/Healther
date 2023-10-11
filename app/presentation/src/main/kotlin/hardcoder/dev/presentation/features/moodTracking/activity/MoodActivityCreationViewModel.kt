@@ -1,5 +1,7 @@
 package hardcoder.dev.presentation.features.moodTracking.activity
 
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
@@ -7,30 +9,29 @@ import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.icons.IconResourceProvider
 import hardcoder.dev.logic.features.moodTracking.moodActivity.CorrectActivityName
-import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityCreator
 import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityNameValidator
-import hardcoder.dev.viewmodel.ViewModel
+import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityCreator
 import kotlinx.coroutines.flow.map
 
 class MoodActivityCreationViewModel(
     private val moodActivityCreator: MoodActivityCreator,
     moodActivityNameValidator: MoodActivityNameValidator,
     iconResourceProvider: IconResourceProvider,
-) : ViewModel() {
+) : ScreenModel {
 
     val activityNameController = ValidatedInputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = "",
         validation = moodActivityNameValidator::validate,
     )
 
     val iconSelectionController = SingleSelectionController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         items = iconResourceProvider.getIcons(),
     )
 
     val creationController = RequestController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         request = {
             moodActivityCreator.create(
                 name = activityNameController.validateAndRequire(),

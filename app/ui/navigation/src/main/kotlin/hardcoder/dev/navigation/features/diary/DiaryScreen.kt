@@ -1,14 +1,14 @@
-package hardcoder.dev.androidApp.ui.navigation.features.diary
+package hardcoder.dev.navigation.features.diary
 
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.presentation.features.diary.DiaryViewModel
 import hardcoder.dev.resources.features.diary.DateRangeFilterTypeResourcesProvider
 import hardcoder.dev.screens.features.diary.Diary
-import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 class DiaryScreen : Screen {
@@ -16,7 +16,7 @@ class DiaryScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinViewModel<DiaryViewModel>()
+        val viewModel = getScreenModel<DiaryViewModel>()
         val dateRangeFilterTypeResourcesProvider = koinInject<DateRangeFilterTypeResourcesProvider>()
         val dateTimeFormatter = koinInject<DateTimeFormatter>()
 

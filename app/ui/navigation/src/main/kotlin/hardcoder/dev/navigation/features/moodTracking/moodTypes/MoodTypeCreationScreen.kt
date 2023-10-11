@@ -1,20 +1,20 @@
-package hardcoder.dev.androidApp.ui.navigation.features.moodTracking.moodTypes
+package hardcoder.dev.navigation.features.moodTracking.moodTypes
 
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeCreationViewModel
 import hardcoder.dev.screens.features.moodTracking.moodType.create.MoodTypeCreation
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
-import org.koin.androidx.compose.koinViewModel
 
 class MoodTypeCreationScreen : Screen {
 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinViewModel<MoodTypeCreationViewModel>()
+        val viewModel = getScreenModel<MoodTypeCreationViewModel>()
 
         LaunchedEffectWhenExecuted(
             controller = viewModel.creationController,

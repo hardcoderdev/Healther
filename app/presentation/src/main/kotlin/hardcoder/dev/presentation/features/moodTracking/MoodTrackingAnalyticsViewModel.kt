@@ -1,5 +1,7 @@
 package hardcoder.dev.presentation.features.moodTracking
 
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toLocalDateTime
@@ -7,7 +9,6 @@ import hardcoder.dev.entities.features.moodTracking.MoodTrackingChartData
 import hardcoder.dev.entities.features.moodTracking.MoodTrackingChartEntry
 import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logics.features.moodTracking.statistic.MoodTrackingStatisticProvider
-import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -21,7 +22,7 @@ class MoodTrackingAnalyticsViewModel(
     moodTrackProvider: MoodTrackProvider,
     moodTrackingStatisticProvider: MoodTrackingStatisticProvider,
     dateTimeProvider: DateTimeProvider,
-) : ViewModel() {
+) : ScreenModel {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val moodTracksForTheLastMonth =
@@ -33,18 +34,18 @@ class MoodTrackingAnalyticsViewModel(
         }.distinctUntilChanged().flatMapLatest { range ->
             moodTrackProvider.provideAllMoodTracksByDayRange(range)
         }.stateIn(
-            scope = viewModelScope,
+            scope = coroutineScope,
             started = SharingStarted.Eagerly,
             initialValue = emptyList(),
         )
 
     val statisticLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = moodTrackingStatisticProvider.provideMoodTrackingStatistic(),
     )
 
     val chartEntriesLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = moodTracksForTheLastMonth.map { fastingTrackList ->
             MoodTrackingChartData(
                 entriesList = fastingTrackList.groupBy {

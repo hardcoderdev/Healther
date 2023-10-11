@@ -1,5 +1,7 @@
 package hardcoder.dev.presentation.features.moodTracking
 
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.controller.request.RequestController
@@ -19,7 +21,6 @@ import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackUpdater
 import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeProvider
 import hardcoder.dev.logics.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
-import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -35,35 +36,35 @@ class MoodTrackingUpdateViewModel(
     moodWithActivityProvider: MoodWithActivitiesProvider,
     moodActivityProvider: MoodActivityProvider,
     moodTypeProvider: MoodTypeProvider,
-) : ViewModel() {
+) : ScreenModel {
 
     val dateController = InputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = dateTimeProvider.currentDate(),
     )
 
     val timeInputController = InputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = dateTimeProvider.currentTime().time,
     )
 
     val moodTypeSelectionController = SingleSelectionController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         itemsFlow = moodTypeProvider.provideAllMoodTypes(),
     )
 
     val noteInputController = InputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = "",
     )
 
     val activitiesMultiSelectionController = MultiSelectionController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         itemsFlow = moodActivityProvider.provideAllActivities(),
     )
 
     val updateController = RequestController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         request = {
             val selectedActivities = activitiesMultiSelectionController.selectedItemsOrEmptySet()
 
@@ -83,12 +84,12 @@ class MoodTrackingUpdateViewModel(
     )
 
     val deleteController = RequestController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         request = { moodTrackDeleter.deleteById(moodTrackId) },
     )
 
     init {
-        viewModelScope.launch {
+        coroutineScope.launch {
             val moodTrack = moodTrackProvider.provideById(moodTrackId).firstNotNull()
             val moodTrackLocalDateTime = moodTrack.date.toLocalDateTime()
 

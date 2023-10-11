@@ -1,4 +1,4 @@
-package hardcoder.dev.androidApp.ui.navigation.features.waterTracking.drinkTypes
+package hardcoder.dev.navigation.features.waterTracking.drinkTypes
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -6,13 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeUpdateViewModel
 import hardcoder.dev.screens.features.waterTracking.drinkType.update.DrinkTypeUpdate
 import hardcoder.dev.uikit.components.dialog.DeleteTrackDialog
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
-import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 data class DrinkTypeUpdateScreen(val drinkTypeId: Int) : Screen {
@@ -20,7 +20,7 @@ data class DrinkTypeUpdateScreen(val drinkTypeId: Int) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinViewModel<DrinkTypeUpdateViewModel> {
+        val viewModel = getScreenModel<DrinkTypeUpdateViewModel> {
             parametersOf(drinkTypeId)
         }
 

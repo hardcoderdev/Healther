@@ -52,7 +52,7 @@ private val LightColors = lightColorScheme(
 
 @Composable
 fun HealtherTheme(
-    dynamicColor: Boolean = false, // TODO WHEN I WILL MAKE GAMIFICATION
+    dynamicColor: Boolean = false, // TODO SET IN APP SETTINGS
     content: @Composable () -> Unit,
 ) {
     val colorScheme = when {

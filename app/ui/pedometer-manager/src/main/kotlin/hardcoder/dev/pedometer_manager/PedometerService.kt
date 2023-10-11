@@ -1,4 +1,4 @@
-package hardcoder.dev.screens.features.pedometer
+package hardcoder.dev.pedometer_manager
 
 import android.app.Service
 import android.content.Context
@@ -8,7 +8,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import hardcoder.dev.logics.features.pedometer.PedometerStepHandler
-import hardcoder.dev.screens.features.pedometer.PedometerNotificationManager.Companion.NOTIFICATION_ID
+import hardcoder.dev.pedometer_manager.PedometerNotificationManager.Companion.NOTIFICATION_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

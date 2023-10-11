@@ -11,18 +11,17 @@ import hardcoder.dev.presentation.features.moodTracking.activity.MoodActivityUpd
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeCreationViewModel
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypeUpdateViewModel
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypesViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val moodTrackingPresentationModule = module {
-    single {
+    factory {
         MoodTrackingViewModel(
             moodWithActivitiesProvider = get(),
             dateTimeProvider = get(),
         )
     }
 
-    single {
+    factory {
         MoodTrackingAnalyticsViewModel(
             moodTrackProvider = get(),
             moodTrackingStatisticProvider = get(),
@@ -30,7 +29,7 @@ internal val moodTrackingPresentationModule = module {
         )
     }
 
-    single {
+    factory {
         MoodTrackingCreationViewModel(
             moodTrackCreator = get(),
             moodTypeProvider = get(),
@@ -39,7 +38,7 @@ internal val moodTrackingPresentationModule = module {
         )
     }
 
-    single { parameters ->
+    factory { parameters ->
         MoodTrackingUpdateViewModel(
             moodTrackId = parameters.get(),
             moodTrackUpdater = get(),
@@ -54,20 +53,20 @@ internal val moodTrackingPresentationModule = module {
         )
     }
 
-    single {
+    factory {
         MoodTrackingHistoryViewModel(
             moodWithActivitiesProvider = get(),
             dateTimeProvider = get(),
         )
     }
 
-    single {
+    factory {
         MoodTypesViewModel(
             moodTypeProvider = get(),
         )
     }
 
-    single {
+    factory {
         MoodTypeCreationViewModel(
             moodTypeCreator = get(),
             moodTypeNameValidator = get(),
@@ -75,7 +74,7 @@ internal val moodTrackingPresentationModule = module {
         )
     }
 
-    single { parameters ->
+    factory { parameters ->
         MoodTypeUpdateViewModel(
             moodTypeId = parameters.get(),
             iconResourceProvider = get(),
@@ -86,13 +85,13 @@ internal val moodTrackingPresentationModule = module {
         )
     }
 
-    single {
+    factory {
         MoodActivitiesViewModel(
             moodActivityProvider = get(),
         )
     }
 
-    single {
+    factory {
         MoodActivityCreationViewModel(
             moodActivityCreator = get(),
             moodActivityNameValidator = get(),
@@ -100,7 +99,7 @@ internal val moodTrackingPresentationModule = module {
         )
     }
 
-    single { parameters ->
+    factory { parameters ->
         MoodActivityUpdateViewModel(
             activityId = parameters.get(),
             moodActivityNameValidator = get(),

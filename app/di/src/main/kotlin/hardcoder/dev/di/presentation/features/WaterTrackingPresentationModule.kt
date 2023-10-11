@@ -8,11 +8,10 @@ import hardcoder.dev.presentation.features.waterTracking.WaterTrackingViewModel
 import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeCreationViewModel
 import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypeUpdateViewModel
 import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypesViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val waterTrackingPresentationModule = module {
-    single {
+    factory {
         WaterTrackingViewModel(
             waterTrackProvider = get(),
             waterPercentageResolver = get(),
@@ -21,7 +20,7 @@ internal val waterTrackingPresentationModule = module {
         )
     }
 
-    single {
+    factory {
         WaterTrackingAnalyticsViewModel(
             waterTrackingStatisticProvider = get(),
             waterTrackProvider = get(),
@@ -30,7 +29,7 @@ internal val waterTrackingPresentationModule = module {
         )
     }
 
-    single {
+    factory {
         WaterTrackingCreationViewModel(
             waterTrackCreator = get(),
             drinkTypeProvider = get(),
@@ -40,7 +39,7 @@ internal val waterTrackingPresentationModule = module {
         )
     }
 
-    single { parameters ->
+    factory { parameters ->
         WaterTrackingUpdateViewModel(
             waterTrackId = parameters.get(),
             waterTrackUpdater = get(),
@@ -53,7 +52,7 @@ internal val waterTrackingPresentationModule = module {
         )
     }
 
-    single {
+    factory {
         WaterTrackingHistoryViewModel(
             waterTrackProvider = get(),
             waterPercentageResolver = get(),
@@ -61,13 +60,13 @@ internal val waterTrackingPresentationModule = module {
         )
     }
 
-    single {
+    factory {
         DrinkTypesViewModel(
             drinkTypeProvider = get(),
         )
     }
 
-    single {
+    factory {
         DrinkTypeCreationViewModel(
             iconResourceProvider = get(),
             drinkTypeCreator = get(),
@@ -75,7 +74,7 @@ internal val waterTrackingPresentationModule = module {
         )
     }
 
-    single { parameters ->
+    factory { parameters ->
         DrinkTypeUpdateViewModel(
             drinkTypeId = parameters.get(),
             drinkTypeUpdater = get(),

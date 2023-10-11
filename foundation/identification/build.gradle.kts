@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(libs.preferences.ktx)
+    api(libs.russhwolf.settings)
 }

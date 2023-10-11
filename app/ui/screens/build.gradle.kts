@@ -6,6 +6,7 @@ plugins {
 dependencies {
     api(libs.bundles.koinDi)
     api(projects.app.presentation)
+    api(projects.app.ui.pedometerManager)
     api(projects.foundation.uikit)
     api(projects.app.ui.statisticsResolvers)
     api(libs.moko.resourcesCompose)

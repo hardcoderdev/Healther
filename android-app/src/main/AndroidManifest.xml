@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name="hardcoder.dev.screens.features.pedometer.PedometerService"
+            android:name="hardcoder.dev.pedometer_manager.PedometerService"
             android:exported="false" />
 
     </application>

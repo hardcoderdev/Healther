@@ -1,5 +1,7 @@
 package hardcoder.dev.presentation.features.diary.tags
 
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
@@ -7,11 +9,10 @@ import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.icons.IconResourceProvider
 import hardcoder.dev.logic.features.diary.diaryTag.CorrectDiaryTagName
-import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagDeleter
 import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagNameValidator
+import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagDeleter
 import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagUpdater
-import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -23,21 +24,21 @@ class DiaryTagUpdateViewModel(
     private val diaryTagProvider: DiaryTagProvider,
     diaryTagNameValidator: DiaryTagNameValidator,
     iconResourceProvider: IconResourceProvider,
-) : ViewModel() {
+) : ScreenModel {
 
     val tagNameInputController = ValidatedInputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = "",
         validation = diaryTagNameValidator::validate,
     )
 
     val iconSelectionController = SingleSelectionController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         items = iconResourceProvider.getIcons(),
     )
 
     val updateController = RequestController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         request = {
             diaryTagUpdater.update(
                 id = tagId,
@@ -51,14 +52,14 @@ class DiaryTagUpdateViewModel(
     )
 
     val deleteController = RequestController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         request = {
             diaryTagDeleter.deleteById(tagId)
         },
     )
 
     init {
-        viewModelScope.launch {
+        coroutineScope.launch {
             diaryTagProvider.provideDiaryTagById(tagId).firstOrNull()?.let { tag ->
                 tagNameInputController.changeInput(tag.name)
                 iconSelectionController.select(tag.icon)

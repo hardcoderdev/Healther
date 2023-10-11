@@ -1,4 +1,4 @@
-package hardcoder.dev.screens.features.pedometer.permissions
+package hardcoder.dev.screens.features.pedometer
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
@@ -31,8 +31,8 @@ fun ColumnScope.PermissionsSection(
     modifier: Modifier = Modifier,
     animationRepeatTimes: Int = LottieConstants.IterateForever,
     animationHeight: Dp = 400.dp,
-    initial: Initial,
-    rejected: Rejected?,
+    initial: hardcoder.dev.pedometer_manager.permissions.Initial,
+    rejected: hardcoder.dev.pedometer_manager.permissions.Rejected?,
     onGrant: () -> Unit,
 ) {
     Column(Modifier.weight(2f)) {

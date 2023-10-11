@@ -1,4 +1,4 @@
-package hardcoder.dev.screens.features.pedometer
+package hardcoder.dev.pedometer_manager
 
 import android.Manifest
 import android.content.Context

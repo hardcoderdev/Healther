@@ -4,10 +4,10 @@ import hardcoder.dev.presentation.dashboard.DashboardViewModel
 import org.koin.dsl.module
 
 internal val dashboardPresentationModule = module {
-    single {
+    factory {
         DashboardViewModel(
             pedometerDailyRateStepsProvider = get(),
-            //pedometerManager = get(), TODO UNCOMMENT
+            pedometerManager = get(),
             dateTimeProvider = get(),
             waterTrackingMillilitersDrunkProvider = get(),
             pedometerTrackProvider = get(),

@@ -1,4 +1,4 @@
-package hardcoder.dev.screens.features.pedometer
+package hardcoder.dev.pedometer_manager
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
-
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
 import hardcoderdev.healther.app.ui.resources.R

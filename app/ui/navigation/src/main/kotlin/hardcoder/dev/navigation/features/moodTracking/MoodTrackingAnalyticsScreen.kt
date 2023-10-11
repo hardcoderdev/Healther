@@ -1,7 +1,8 @@
-package hardcoder.dev.androidApp.ui.navigation.features.moodTracking
+package hardcoder.dev.navigation.features.moodTracking
 
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.presentation.features.moodTracking.MoodTrackingAnalyticsViewModel
@@ -14,7 +15,7 @@ class MoodTrackingAnalyticsScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinInject<MoodTrackingAnalyticsViewModel>()
+        val viewModel = getScreenModel<MoodTrackingAnalyticsViewModel>()
         val moodTrackingStatisticResolver = koinInject<MoodTrackingStatisticResolver>()
 
         MoodTrackingAnalytics(

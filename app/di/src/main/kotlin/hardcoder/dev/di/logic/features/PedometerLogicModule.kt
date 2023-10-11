@@ -6,19 +6,22 @@ import hardcoder.dev.logics.features.pedometer.PedometerStepProvider
 import hardcoder.dev.logics.features.pedometer.PedometerTrackProvider
 import hardcoder.dev.logics.features.pedometer.PedometerTrackUpserter
 import hardcoder.dev.logics.features.pedometer.statistic.PedometerStatisticProvider
+import hardcoder.dev.pedometer_manager.PedometerManagerImpl
+import hardcoder.dev.presentation.features.pedometer.PedometerManager
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 internal val pedometerLogicModule = module {
     singleOf(::PedometerDailyRateStepsProvider)
 
-//    single<PedometerManager> {
-//        PedometerManagerImpl(
-//            context = androidContext(),
-//            permissionsController = get(),
-//            batteryRequirementsController = get(),
-//        )
-//    }
+    single<PedometerManager> {
+        PedometerManagerImpl(
+            context = androidContext(),
+            permissionsController = get(),
+            batteryRequirementsController = get(),
+        )
+    }
 
     single {
         PedometerTrackUpserter(

@@ -1,5 +1,7 @@
 package hardcoder.dev.presentation.user
 
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
@@ -15,7 +17,6 @@ import hardcoder.dev.validators.user.CorrectUserWeight
 import hardcoder.dev.validators.user.UserExerciseStressValidator
 import hardcoder.dev.validators.user.UserNameValidator
 import hardcoder.dev.validators.user.UserWeightValidator
-import hardcoder.dev.viewmodel.ViewModel
 import kotlinx.coroutines.flow.combine
 
 class UserCreationViewModel(
@@ -26,33 +27,33 @@ class UserCreationViewModel(
     userExerciseStressValidator: UserExerciseStressValidator,
     dateTimeProvider: DateTimeProvider,
     userCreator: UserCreator,
-) : ViewModel() {
+) : ScreenModel {
 
     val genderSelectionController = SingleSelectionController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         itemsFlow = userGenderProvider.provideAllGenders(),
     )
 
     val nameInputController = ValidatedInputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = "",
         validation = userNameValidator::validate,
     )
 
     val weightInputController = ValidatedInputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = "",
         validation = userWeightValidator::validate,
     )
 
     val exerciseStressTimeInputController = ValidatedInputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = "",
         validation = userExerciseStressValidator::validate,
     )
 
     val userCreationController = RequestController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         request = {
             userCreator.create(
                 gender = genderSelectionController.requireSelectedItem(),
