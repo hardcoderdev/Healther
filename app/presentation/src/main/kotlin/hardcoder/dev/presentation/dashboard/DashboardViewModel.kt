@@ -1,25 +1,22 @@
 package hardcoder.dev.presentation.dashboard
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.features.diary.DiaryDailyRateProvider
-import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackProvider
-import hardcoder.dev.logic.features.fasting.track.CurrentFastingManager
-import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackDailyRateProvider
-import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrackProvider
-import hardcoder.dev.logic.features.pedometer.PedometerDailyRateStepsProvider
-import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
-import hardcoder.dev.logic.features.waterTracking.WaterTrackingMillilitersDrunkProvider
+import hardcoder.dev.logics.features.diary.DiaryDailyRateProvider
+import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackProvider
+import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackDailyRateProvider
+import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackProvider
+import hardcoder.dev.logics.features.pedometer.PedometerDailyRateStepsProvider
+import hardcoder.dev.logics.features.pedometer.PedometerTrackProvider
+import hardcoder.dev.logics.features.waterTracking.WaterTrackingMillilitersDrunkProvider
 import hardcoder.dev.math.safeDiv
 import hardcoder.dev.presentation.features.pedometer.PedometerManager
 import hardcoder.dev.presentation.features.pedometer.toggleTracking
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 
 class DashboardViewModel(
     private val pedometerDailyRateStepsProvider: PedometerDailyRateStepsProvider,
@@ -29,24 +26,21 @@ class DashboardViewModel(
     private val pedometerTrackProvider: PedometerTrackProvider,
     private val moodTrackProvider: MoodTrackProvider,
     private val moodTrackDailyRateProvider: MoodTrackDailyRateProvider,
-    private val currentFastingManager: CurrentFastingManager,
     private val diaryTrackProvider: DiaryTrackProvider,
     private val diaryDailyRateProvider: DiaryDailyRateProvider,
-) : ViewModel() {
+) : ScreenModel {
 
     val featuresLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = combine(
             diaryItem(),
             waterTrackingItem(),
             pedometerItem(),
-            fastingItem(),
             moodTrackingItemFlow(),
-        ) { waterTrackingItem, pedometerItem, fastingItem, moodTrackingItem, diaryItem ->
+        ) { waterTrackingItem, pedometerItem, moodTrackingItem, diaryItem ->
             listOf(
                 waterTrackingItem,
                 pedometerItem,
-                fastingItem,
                 moodTrackingItem,
                 diaryItem,
             )
@@ -54,7 +48,7 @@ class DashboardViewModel(
     )
 
     val pedometerToggleController = ToggleController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         toggle = pedometerManager::toggleTracking,
         isActiveFlow = pedometerManager.isTracking,
     )
@@ -82,29 +76,6 @@ class DashboardViewModel(
             isPedometerRunning = isPedometerRunning,
             isPermissionsGranted = availability is PedometerManager.Availability.Available,
             progress = stepsWalked safeDiv dailyRateInSteps,
-        )
-    }
-
-    private fun fastingItem() = combine(
-        dateTimeProvider.currentTimeFlow(),
-        currentFastingManager.provideCurrentFastingTrack(),
-    ) { currentTime, currentFastingTrack ->
-        currentFastingTrack?.let {
-            val timeLeftInMillis = currentTime.toInstant(
-                TimeZone.currentSystemDefault(),
-            ) - currentFastingTrack.startTime
-
-            DashboardFeatureItem.FastingFeature(
-                timeLeftDuration = timeLeftInMillis,
-                planDuration = currentFastingTrack.duration,
-                progress = timeLeftInMillis.inWholeMilliseconds safeDiv requireNotNull(
-                    currentFastingTrack.duration,
-                ).inWholeMilliseconds,
-            )
-        } ?: DashboardFeatureItem.FastingFeature(
-            timeLeftDuration = null,
-            planDuration = null,
-            progress = 0.0f,
         )
     }
 

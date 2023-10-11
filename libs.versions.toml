@@ -1,26 +1,24 @@
 [versions]
-android-gradle-plugin = "8.3.0-alpha05"
+android-gradle-plugin = "8.3.0-alpha07"
 kotlin = "1.9.10"
 core-ktx = "1.12.0"
 play-core = "1.10.3"
-activity-ktx = "1.8.0-rc01"
-compose-bom = "2023.09.02"
+activity-ktx = "1.8.0"
+compose-bom = "2023.10.00"
 lifecycle-viewmodelCompose = "2.6.2"
-activity-compose = "1.7.2"
+activity-compose = "1.8.0"
 kotlin-coroutines = "1.7.3"
 kotlin-datetime = "0.4.1"
 kotlin-serialization = "1.5.1"
-data-store = "1.0.0"
-sqlDelight = "2.0.0-rc01"
+sqlDelight = "2.0.0"
 ktor-client = "2.3.3"
-coil-compose = "2.2.2"
+coil-compose = "2.4.0"
 lottie-compose = "6.0.0"
-voyager = "1.0.0-rc06"
+voyager = "1.0.0-rc07"
 compose-charts = "1.6.4"
 compose-calendar = "1.0.5"
 compose-numberPicker = "1.0.3"
 composeAccompanist = "0.29.1-alpha"
-preferences-ktx = "1.2.1"
 koin-compose="3.4.5"
 koin-di = "3.4.2"
 moko-resources = "0.23.0"
@@ -34,17 +32,14 @@ kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ve
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity-ktx" }
 play-core = { module = "com.google.android.play:core", version.ref = "play-core" }
-lifecycle-viewmodelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-viewmodelCompose"}
 kotlin-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 kotlin-coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization" }
-data-store = { module = "androidx.datastore:datastore-preferences", version.ref = "data-store" }
 sqlDelight-primitiveAdapters = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqlDelight" }
 sqlDelight-coroutinesExt = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
 sqlDelight-androidDriver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
 sqlDelight-nativeDriver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
-preferences-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferences-ktx" }
 ktorClient-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
 ktorClient-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor-client" }
 ktorClient-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-client" }

@@ -1,13 +1,13 @@
 package hardcoder.dev.presentation.features.pedometer
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toLocalDateTime
-import hardcoder.dev.logic.features.pedometer.PedometerTrackProvider
-import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatisticProvider
+import hardcoder.dev.logics.features.pedometer.PedometerTrackProvider
+import hardcoder.dev.logics.features.pedometer.statistic.PedometerStatisticProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -17,22 +17,22 @@ class PedometerHistoryViewModel(
     private val pedometerTrackProvider: PedometerTrackProvider,
     private val pedometerStatisticProvider: PedometerStatisticProvider,
     dateTimeProvider: DateTimeProvider,
-) : ViewModel() {
+) : ScreenModel {
 
     val dateRangeInputController = InputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = dateTimeProvider.currentDateRange(),
     )
 
     val statisticLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = dateRangeInputController.state.flatMapLatest { range ->
             pedometerStatisticProvider.providePedometerStatistic(range.input)
         },
     )
 
     val chartEntriesLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = dateRangeInputController.state.flatMapLatest { range ->
             pedometerTrackProvider.providePedometerTracksByRange(range.input)
         }.map { pedometerTracks ->
@@ -42,9 +42,9 @@ class PedometerHistoryViewModel(
                 }.map { entry ->
                     PedometerChartEntry(
                         from = entry.key,
-                        to = entry.value.sumOf { it.stepsCount }
+                        to = entry.value.sumOf { it.stepsCount },
                     )
-                }
+                },
             )
         },
     )

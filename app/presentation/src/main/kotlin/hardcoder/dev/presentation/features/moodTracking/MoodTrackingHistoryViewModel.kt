@@ -1,11 +1,11 @@
 package hardcoder.dev.presentation.features.moodTracking
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
+import hardcoder.dev.logics.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
 
@@ -13,15 +13,15 @@ import kotlinx.coroutines.flow.flatMapLatest
 class MoodTrackingHistoryViewModel(
     private val moodWithActivitiesProvider: MoodWithActivitiesProvider,
     dateTimeProvider: DateTimeProvider,
-) : ViewModel() {
+) : ScreenModel {
 
     val dateRangeInputController = InputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = dateTimeProvider.currentDateRange(),
     )
 
     val moodWithActivityLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = dateRangeInputController.state.flatMapLatest { range ->
             moodWithActivitiesProvider.provideMoodWithActivityList(range.input)
         },

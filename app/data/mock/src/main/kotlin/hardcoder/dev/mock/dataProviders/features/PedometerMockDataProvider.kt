@@ -1,13 +1,13 @@
 package hardcoder.dev.mock.dataProviders.features
 
-import hardcoder.dev.logic.features.pedometer.statistic.PedometerStatistic
+import hardcoder.dev.entities.features.pedometer.PedometerStatistics
 import hardcoder.dev.mock.dataProviders.date.MockDateProvider
 import hardcoder.dev.presentation.features.pedometer.PedometerChartData
 import hardcoder.dev.presentation.features.pedometer.PedometerChartEntry
 
 object PedometerMockDataProvider {
 
-    fun pedometerStatistics() = PedometerStatistic(
+    fun pedometerStatistics() = PedometerStatistics(
         totalSteps = 14000,
         totalKilometers = 14f,
         totalDuration = MockDateProvider.duration(),

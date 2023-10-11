@@ -1,6 +1,6 @@
 package hardcoder.dev.presentation.features.waterTracking
 
-import hardcoder.dev.logic.features.waterTracking.WaterTrack
+import hardcoder.dev.entities.features.waterTracking.WaterTrack
 
 fun WaterTrack.toItem(resolvedMillilitersCount: Int) = WaterTrackingItem(
     id = id,

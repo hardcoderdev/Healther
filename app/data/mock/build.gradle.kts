@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     implementation(projects.app.presentation)
-    implementation(projects.app.resources)
+    implementation(projects.app.ui.resources)
 }

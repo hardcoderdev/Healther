@@ -7,7 +7,7 @@ import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.uikit.components.text.Label
 import hardcoder.dev.uikit.values.HealtherTheme
-import hardcoderdev.healther.app.resources.R
+import hardcoderdev.healther.app.ui.resources.R
 
 @Composable
 fun DeleteTrackDialog(

@@ -1,14 +1,14 @@
 package hardcoder.dev.presentation.features.waterTracking
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.coroutines.mapItems
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.millisToLocalDateTime
-import hardcoder.dev.logic.features.waterTracking.resolvers.WaterPercentageResolver
-import hardcoder.dev.logic.features.waterTracking.WaterTrackProvider
-import hardcoder.dev.logic.features.waterTracking.statistic.WaterTrackingStatisticProvider
+import hardcoder.dev.logics.features.waterTracking.WaterTrackProvider
+import hardcoder.dev.logics.features.waterTracking.WaterTrackingStatisticProvider
+import hardcoder.dev.resolvers.features.waterTracking.WaterPercentageResolver
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
@@ -17,10 +17,10 @@ class WaterTrackingAnalyticsViewModel(
     waterTrackProvider: WaterTrackProvider,
     dateTimeProvider: DateTimeProvider,
     waterPercentageResolver: WaterPercentageResolver,
-) : ViewModel() {
+) : ScreenModel {
 
     private val waterTracksLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = waterTrackProvider.provideWaterTracksByDayRange(
             dateTimeProvider.currentDateRange(),
         ).mapItems { waterTrack ->
@@ -34,12 +34,12 @@ class WaterTrackingAnalyticsViewModel(
     )
 
     val statisticLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = waterTrackingStatisticProvider.provideWaterTrackingStatistic(),
     )
 
     val chartEntriesLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = waterTracksLoadingController.state.map {
             (it as? LoadingController.State.Loaded)?.data
         }.filterNotNull().map { waterTrackList ->

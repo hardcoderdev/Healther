@@ -1,7 +1,7 @@
 package hardcoder.dev.mock.dataProviders
 
 import hardcoder.dev.icons.IconImpl
-import hardcoderdev.healther.app.resources.R
+import hardcoderdev.healther.app.ui.resources.R
 
 object IconsMockDataProvider {
 

@@ -1,14 +1,14 @@
 package hardcoder.dev.presentation.features.moodTracking.moodType
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeProvider
+import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeProvider
 
-class MoodTypesViewModel(moodTypeProvider: MoodTypeProvider) : ViewModel() {
+class MoodTypesViewModel(moodTypeProvider: MoodTypeProvider) : ScreenModel {
 
     val moodTypesLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = moodTypeProvider.provideAllMoodTypes(),
     )
 }

@@ -1,15 +1,15 @@
 package hardcoder.dev.mock.dataProviders.features
 
 import android.content.Context
+import hardcoder.dev.entities.features.moodTracking.MoodActivity
+import hardcoder.dev.entities.features.moodTracking.MoodTrack
+import hardcoder.dev.entities.features.moodTracking.MoodTrackingChartData
+import hardcoder.dev.entities.features.moodTracking.MoodTrackingChartEntry
+import hardcoder.dev.entities.features.moodTracking.MoodTrackingStatistics
+import hardcoder.dev.entities.features.moodTracking.MoodType
+import hardcoder.dev.entities.features.moodTracking.MoodWithActivities
 import hardcoder.dev.icons.IconImpl
-import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivity
-import hardcoder.dev.logic.features.moodTracking.moodTrack.MoodTrack
-import hardcoder.dev.logic.features.moodTracking.moodType.MoodType
-import hardcoder.dev.logic.features.moodTracking.moodWithActivity.MoodWithActivities
-import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingChartData
-import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingChartEntry
-import hardcoder.dev.logic.features.moodTracking.statistic.MoodTrackingStatistic
-import hardcoderdev.healther.app.resources.R
+import hardcoderdev.healther.app.ui.resources.R
 import kotlinx.datetime.Clock
 
 object MoodTrackingMockDataProvider {
@@ -140,7 +140,7 @@ object MoodTrackingMockDataProvider {
         )
     }
 
-    fun moodTrackingStatistics(context: Context) = MoodTrackingStatistic(
+    fun moodTrackingStatistics(context: Context) = MoodTrackingStatistics(
         happyMoodCount = 4,
         neutralMoodCount = 3,
         notWellMoodCount = 3,

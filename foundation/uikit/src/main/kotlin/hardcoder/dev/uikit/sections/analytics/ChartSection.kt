@@ -13,7 +13,7 @@ import hardcoder.dev.uikit.components.chart.MINIMUM_ENTRIES_FOR_SHOWING_CHART
 import hardcoder.dev.uikit.components.text.Description
 import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.values.HealtherThemePreview
-import hardcoderdev.healther.app.resources.R
+import hardcoderdev.healther.app.ui.resources.R
 import kotlin.math.roundToInt
 
 @Composable

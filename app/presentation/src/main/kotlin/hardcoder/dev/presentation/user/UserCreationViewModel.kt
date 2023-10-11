@@ -1,60 +1,59 @@
 package hardcoder.dev.presentation.user
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.datetime.DateTimeProvider
-import hardcoder.dev.logic.appPreferences.AppPreference
-import hardcoder.dev.logic.appPreferences.AppPreferenceUpdater
-import hardcoder.dev.logic.user.CorrectUserExerciseStressTime
-import hardcoder.dev.logic.user.CorrectUserName
-import hardcoder.dev.logic.user.CorrectUserWeight
-import hardcoder.dev.logic.user.UserCreator
-import hardcoder.dev.logic.user.UserExerciseStressValidator
-import hardcoder.dev.logic.user.UserNameValidator
-import hardcoder.dev.logic.user.UserWeightValidator
-import hardcoder.dev.logic.user.gender.GenderProvider
+import hardcoder.dev.logics.appPreferences.AppPreferenceUpdater
+import hardcoder.dev.logics.user.UserCreator
+import hardcoder.dev.logics.user.UserGenderProvider
+import hardcoder.dev.validators.user.CorrectUserExerciseStressTime
+import hardcoder.dev.validators.user.CorrectUserName
+import hardcoder.dev.validators.user.CorrectUserWeight
+import hardcoder.dev.validators.user.UserExerciseStressValidator
+import hardcoder.dev.validators.user.UserNameValidator
+import hardcoder.dev.validators.user.UserWeightValidator
 import kotlinx.coroutines.flow.combine
 
 class UserCreationViewModel(
     appPreferenceUpdater: AppPreferenceUpdater,
-    genderProvider: GenderProvider,
+    userGenderProvider: UserGenderProvider,
     userNameValidator: UserNameValidator,
     userWeightValidator: UserWeightValidator,
     userExerciseStressValidator: UserExerciseStressValidator,
     dateTimeProvider: DateTimeProvider,
     userCreator: UserCreator,
-) : ViewModel() {
+) : ScreenModel {
 
     val genderSelectionController = SingleSelectionController(
-        coroutineScope = viewModelScope,
-        itemsFlow = genderProvider.provideAllGenders(),
+        coroutineScope = coroutineScope,
+        itemsFlow = userGenderProvider.provideAllGenders(),
     )
 
     val nameInputController = ValidatedInputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = "",
         validation = userNameValidator::validate,
     )
 
     val weightInputController = ValidatedInputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = "",
         validation = userWeightValidator::validate,
     )
 
     val exerciseStressTimeInputController = ValidatedInputController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         initialInput = "",
         validation = userExerciseStressValidator::validate,
     )
 
     val userCreationController = RequestController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         request = {
             userCreator.create(
                 gender = genderSelectionController.requireSelectedItem(),
@@ -64,7 +63,7 @@ class UserCreationViewModel(
             )
 
             appPreferenceUpdater.update(
-                AppPreference(
+                hardcoder.dev.entities.appPreferences.AppPreference(
                     firstLaunchTime = dateTimeProvider.currentInstant(),
                 ),
             )

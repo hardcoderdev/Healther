@@ -1,17 +1,17 @@
 package hardcoder.dev.presentation.settings
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import hardcoder.dev.controller.LoadingController
-import hardcoder.dev.logic.appPreferences.AppPreferenceProvider
+import hardcoder.dev.logics.appPreferences.AppPreferenceProvider
 import kotlinx.coroutines.flow.filterNotNull
 
 class SettingsViewModel(
     appPreferenceProvider: AppPreferenceProvider,
-) : ViewModel() {
+) : ScreenModel {
 
     val preferencesLoadingController = LoadingController(
-        coroutineScope = viewModelScope,
+        coroutineScope = coroutineScope,
         flow = appPreferenceProvider.provideAppPreference()
             .filterNotNull(),
     )

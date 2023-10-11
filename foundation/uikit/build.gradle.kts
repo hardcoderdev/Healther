@@ -5,11 +5,11 @@ plugins {
 
 dependencies {
     api(projects.foundation.controllers)
-    api(projects.app.resources)
     api(projects.foundation.icons)
-    api(projects.app.formatters)
+    api(projects.app.ui.resources)
+    api(projects.app.ui.formatters)
     api(projects.app.data.mock)
-    implementation(platform(libs.compose.bom))
+    api(platform(libs.compose.bom))
     api(projects.foundation.datetime)
     implementation(libs.compose.activity)
     implementation(libs.compose.material)

@@ -1,6 +1,5 @@
 package hardcoder.dev.mock.dataProviders
 
-import hardcoder.dev.mock.dataProviders.date.MockDateProvider
 import hardcoder.dev.mock.dataProviders.features.WaterTrackingMockDataProvider
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
 
@@ -19,12 +18,6 @@ object DashboardMockDataProvider {
         isPermissionsGranted = true,
     )
 
-    fun dashboardFastingFeature() = DashboardFeatureItem.FastingFeature(
-        timeLeftDuration = MockDateProvider.duration(),
-        planDuration = MockDateProvider.duration(),
-        progress = 0.7f,
-    )
-
     fun dashboardMoodTrackingFeature() = DashboardFeatureItem.MoodTrackingFeature(
         tracksCount = 19,
         tracksDailyRate = 20,
@@ -40,7 +33,6 @@ object DashboardMockDataProvider {
     fun dashboardFeatureSectionsList() = listOf(
         dashboardWaterTrackingFeature(),
         dashboardPedometerFeature(),
-        dashboardFastingFeature(),
         dashboardMoodTrackingFeature(),
         dashboardDiaryFeature(),
     )
