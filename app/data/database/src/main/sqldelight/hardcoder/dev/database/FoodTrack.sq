@@ -1,0 +1,32 @@
+import kotlinx.datetime.Instant;
+import kotlin.Int;
+
+CREATE TABLE IF NOT EXISTS FoodTrack(
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    creationInstant INTEGER AS Instant NOT NULL,
+    calories INTEGER AS Int NOT NULL,
+    foodTypeId INTEGER AS Int NOT NULL
+);
+
+insert:
+INSERT INTO FoodTrack (id, creationInstant, foodTypeId, calories)
+VALUES (?, ?, ?, ?);
+
+update:
+UPDATE FoodTrack SET creationInstant = ?, foodTypeId = ?, calories = ?
+WHERE id = ?;
+
+deleteById:
+DELETE FROM FoodTrack WHERE id = ?;
+
+deleteAllTracksByFoodTypeId:
+DELETE FROM FoodTrack WHERE foodTypeId = ?;
+
+provideFoodTrackById:
+SELECT * FROM FoodTrack WHERE id = ?;
+
+provideFoodTracksByDayRange:
+SELECT * FROM FoodTrack WHERE creationInstant BETWEEN ? AND ?;
+
+provideLastFoodTrack:
+SELECT * FROM FoodTrack ORDER BY id DESC LIMIT 1;

@@ -4,6 +4,7 @@ import android.content.Context
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import hardcoder.dev.database.appAdapters.AppPreferenceAdapters
 import hardcoder.dev.database.appAdapters.DiaryAdapters
+import hardcoder.dev.database.appAdapters.FoodTrackingAdapters
 import hardcoder.dev.database.appAdapters.MoodTrackingAdapters
 import hardcoder.dev.database.appAdapters.PedometerAdapters
 import hardcoder.dev.database.appAdapters.UserAdapters
@@ -22,6 +23,8 @@ object AppDatabaseFactory {
         MoodTypeAdapter = MoodTrackingAdapters.createMoodTypeAdapter(),
         MoodActivityAdapter = MoodTrackingAdapters.createMoodActivityAdapter(),
         MoodTrackAdapter = MoodTrackingAdapters.createMoodTrackAdapter(),
+        FoodTrackAdapter = FoodTrackingAdapters.createFoodTrackAdapter(),
+        FoodTypeAdapter = FoodTrackingAdapters.createFoodTypeAdapter(),
         DiaryTagAdapter = DiaryAdapters.createDiaryTagAdapter(),
         DiaryAttachmentAdapter = DiaryAdapters.createDiaryAttachmentAdapter(),
         DiaryTrackAdapter = DiaryAdapters.createDiaryTrackAdapter(),

@@ -16,6 +16,7 @@ import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.DashboardMockDataProvider
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.DiaryFeatureItem
+import hardcoder.dev.screens.dashboard.featureItems.FoodTrackingFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.MoodTrackingFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.PedometerFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.WaterTrackingFeatureItem
@@ -35,9 +36,11 @@ fun Dashboard(
     pedometerToggleController: ToggleController,
     onGoToWaterTrackingFeature: () -> Unit,
     onCreateWaterTrack: () -> Unit,
-    onGoToPedometerFeature: () -> Unit,
+    onGoToFoodTrackingFeature: () -> Unit,
+    onCreateFoodTrack: () -> Unit,
     onGoToMoodTrackingFeature: () -> Unit,
     onCreateMoodTrack: () -> Unit,
+    onGoToPedometerFeature: () -> Unit,
     onGoToDiary: () -> Unit,
     onCreateDiaryTrack: () -> Unit,
     onGoToSettings: () -> Unit,
@@ -47,9 +50,11 @@ fun Dashboard(
             DashboardContent(
                 onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
                 onCreateWaterTrack = onCreateWaterTrack,
-                onGoToPedometerFeature = onGoToPedometerFeature,
+                onGoToFoodTrackingFeature = onGoToFoodTrackingFeature,
+                onCreateFoodTrack = onCreateFoodTrack,
                 onGoToMoodTrackingFeature = onGoToMoodTrackingFeature,
                 onCreateMoodTrack = onCreateMoodTrack,
+                onGoToPedometerFeature = onGoToPedometerFeature,
                 onGoToDiary = onGoToDiary,
                 onCreateDiaryTrack = onCreateDiaryTrack,
                 featureItemsLoadingController = featureItemsLoadingController,
@@ -76,9 +81,11 @@ fun Dashboard(
 private fun DashboardContent(
     onGoToWaterTrackingFeature: () -> Unit,
     onCreateWaterTrack: () -> Unit,
-    onGoToPedometerFeature: () -> Unit,
+    onGoToFoodTrackingFeature: () -> Unit,
+    onCreateFoodTrack: () -> Unit,
     onGoToMoodTrackingFeature: () -> Unit,
     onCreateMoodTrack: () -> Unit,
+    onGoToPedometerFeature: () -> Unit,
     onGoToDiary: () -> Unit,
     onCreateDiaryTrack: () -> Unit,
     featureItemsLoadingController: LoadingController<List<DashboardFeatureItem>>,
@@ -96,6 +103,8 @@ private fun DashboardContent(
                 items = featureItems,
                 onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
                 onCreateWaterTrack = onCreateWaterTrack,
+                onGoToFoodTrackingFeature = onGoToFoodTrackingFeature,
+                onCreateFoodTrack = onCreateFoodTrack,
                 onGoToPedometerFeature = onGoToPedometerFeature,
                 onTogglePedometerTrackingService = pedometerToggleController::toggle,
                 onGoToMoodTrackingFeature = onGoToMoodTrackingFeature,
@@ -111,10 +120,12 @@ private fun LazyListScope.featureSection(
     items: List<DashboardFeatureItem>,
     onGoToWaterTrackingFeature: () -> Unit,
     onCreateWaterTrack: () -> Unit,
-    onGoToPedometerFeature: () -> Unit,
-    onTogglePedometerTrackingService: () -> Unit,
+    onGoToFoodTrackingFeature: () -> Unit,
+    onCreateFoodTrack: () -> Unit,
     onGoToMoodTrackingFeature: () -> Unit,
     onCreateMoodTrack: () -> Unit,
+    onGoToPedometerFeature: () -> Unit,
+    onTogglePedometerTrackingService: () -> Unit,
     onGoToDiary: () -> Unit,
     onCreateDiaryTrack: () -> Unit,
 ) {
@@ -128,11 +139,11 @@ private fun LazyListScope.featureSection(
                 )
             }
 
-            is DashboardFeatureItem.PedometerFeature -> {
-                PedometerFeatureItem(
-                    pedometerFeature = feature,
-                    onGoToFeature = onGoToPedometerFeature,
-                    onTogglePedometerTrackingService = onTogglePedometerTrackingService,
+            is DashboardFeatureItem.FoodTrackingFeature -> {
+                FoodTrackingFeatureItem(
+                    foodTrackingFeature = feature,
+                    onGoToFeature = onGoToFoodTrackingFeature,
+                    onCreateFoodTrack = onCreateFoodTrack,
                 )
             }
 
@@ -141,6 +152,14 @@ private fun LazyListScope.featureSection(
                     moodTrackingFeature = feature,
                     onGoToFeature = onGoToMoodTrackingFeature,
                     onCreateMoodTrack = onCreateMoodTrack,
+                )
+            }
+
+            is DashboardFeatureItem.PedometerFeature -> {
+                PedometerFeatureItem(
+                    pedometerFeature = feature,
+                    onGoToFeature = onGoToPedometerFeature,
+                    onTogglePedometerTrackingService = onTogglePedometerTrackingService,
                 )
             }
 
@@ -160,17 +179,20 @@ private fun LazyListScope.featureSection(
 private fun DashboardPreview() {
     HealtherTheme {
         Dashboard(
+            onGoToSettings = {},
+            onGoToWaterTrackingFeature = {},
+            onCreateWaterTrack = {},
+            onGoToFoodTrackingFeature = {},
+            onCreateFoodTrack = {},
+            onGoToMoodTrackingFeature = {},
+            onCreateMoodTrack = {},
+            onGoToPedometerFeature = {},
+            onGoToDiary = {},
+            onCreateDiaryTrack = {},
+            pedometerToggleController = MockControllersProvider.toggleController(),
             featureItemsLoadingController = MockControllersProvider.loadingController(
                 data = DashboardMockDataProvider.dashboardFeatureSectionsList(),
             ),
-            pedometerToggleController = MockControllersProvider.toggleController(),
-            onGoToWaterTrackingFeature = {},
-            onCreateWaterTrack = {},
-            onGoToPedometerFeature = {},
-            onGoToMoodTrackingFeature = {},
-            onCreateMoodTrack = {},
-            onGoToDiary = {},
-            onCreateDiaryTrack = {},
-        ) {}
+        )
     }
 }

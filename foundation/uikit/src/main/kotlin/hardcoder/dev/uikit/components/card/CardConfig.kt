@@ -18,6 +18,7 @@ sealed class CardConfig {
     ) : CardConfig()
 
     data class Static(
+        val modifier: Modifier = Modifier,
         val cardContent: @Composable () -> Unit,
     ) : CardConfig()
 }

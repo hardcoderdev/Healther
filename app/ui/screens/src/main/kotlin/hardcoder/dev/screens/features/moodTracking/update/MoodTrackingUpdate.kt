@@ -50,6 +50,7 @@ import hardcoder.dev.uikit.components.text.ErrorText
 import hardcoder.dev.uikit.components.text.Label
 import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.components.text.textField.TextField
+import hardcoder.dev.uikit.components.text.textField.TextInputAdapter
 import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
@@ -280,6 +281,7 @@ private fun EnterNoteSection(noteInputController: InputController<String>) {
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done,
             ),
+            inputAdapter = TextInputAdapter,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(120.dp),

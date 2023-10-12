@@ -70,6 +70,11 @@ object TextInputAdapter : TextFieldInputAdapter<String> {
     override fun encodeInput(input: String) = input
 }
 
+object NumberInputAdapter : TextFieldInputAdapter<Int> {
+    override fun decodeInput(input: Int) = input.toString()
+    override fun encodeInput(input: String) = input.toIntOrNull() ?: 0
+}
+
 enum class TextFieldStyle {
     FILLED, OUTLINED
 }
@@ -130,9 +135,10 @@ fun <INPUT, VALIDATION_RESULT> ValidatedTextField(
 }
 
 @Composable
-fun TextField(
+fun <INPUT> TextField(
     modifier: Modifier = Modifier,
-    controller: InputController<String>,
+    controller: InputController<INPUT>,
+    inputAdapter: TextFieldInputAdapter<INPUT>,
     textFieldStyle: TextFieldStyle = TextFieldStyle.FILLED,
     textStyle: TextStyle = TextStyle.Default,
     @StringRes label: Int? = null,
@@ -150,7 +156,7 @@ fun TextField(
     InputField(
         textFieldStyle = textFieldStyle,
         controller = controller,
-        inputAdapter = TextInputAdapter,
+        inputAdapter = inputAdapter,
         modifier = modifier,
         textStyle = textStyle,
         label = label,

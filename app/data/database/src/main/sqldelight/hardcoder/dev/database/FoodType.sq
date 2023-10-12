@@ -1,0 +1,23 @@
+import kotlin.Int;
+
+CREATE TABLE IF NOT EXISTS FoodType(
+    id INTEGER AS Int NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    iconId INTEGER AS Int NOT NULL
+);
+
+insert:
+INSERT INTO FoodType (id, name, iconId)
+VALUES (?, ?, ?);
+
+update:
+UPDATE FoodType SET name = ?, iconId = ? WHERE id = ?;
+
+deleteById:
+DELETE FROM FoodType WHERE id = ?;
+
+provideFoodTypeById:
+SELECT * FROM FoodType WHERE id = ?;
+
+provideAllFoodTypes:
+SELECT * FROM FoodType;

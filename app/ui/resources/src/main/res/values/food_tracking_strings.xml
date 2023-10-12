@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="foodTracking_foodTypes_topBar_title">Ваши блюда:</string>
+    <string name="foodTracking_creation_enterDrinkType_text">Выберите блюдо…</string>
+    <string name="foodTracking_foodTypes_title_topBar">Управление блюдами</string>
+    <string name="foodTracking_creation_foodTypeNotSelected_text">Создайте и выберите блюдо!</string>
+    <string name="foodTracking_foodTypes_creation_title_topBar">Создание блюда</string>
+    <string name="foodTracking_foodTypes_creation_selectIcon_text">Выберите иконку блюда:</string>
+    <string name="foodTracking_foodTypes_creation_enterName_text">Например: лобстеры</string>
+    <string name="foodTracking_foodTypes_creation_enterMainInfo_text">Введите название блюда</string>
+    <string name="foodTracking_foodTypes_creation_enterCaloriesCount_text">Кол-во калорий…</string>
+    <string name="foodTracking_foodTypes_nowEmpty_text">Сейчас здесь пусто. Для того, чтобы добавить блюдо воспользуйтесь кнопкой в правом нижнем углу!</string>
+    <string name="foodTracking_creation_enterCalories_text">Введите калорийность блюда:</string>
+    <string name="foodTracking_fasting_format">С последнего приема пищи прошло: %s</string>
+    <string name="foodTracking_fasting_title">Голодание</string>
+    <string name="foodTracking_fasting_not_started">Вы еще не добавляли приемы пищи!</string>
+    <string name="foodTracking_title_topBar">Еда и питание</string>
+    <string name="fasting_foodTracksList_text">Приемы пищи:</string>
+</resources>
