@@ -18,6 +18,8 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import hardcoder.dev.pedometer_manager.permissions.Initial
+import hardcoder.dev.pedometer_manager.permissions.Rejected
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
 import hardcoder.dev.uikit.components.button.textIconButton.TextIconButtonConfig
 import hardcoder.dev.uikit.components.card.Card
@@ -31,8 +33,8 @@ fun ColumnScope.PermissionsSection(
     modifier: Modifier = Modifier,
     animationRepeatTimes: Int = LottieConstants.IterateForever,
     animationHeight: Dp = 400.dp,
-    initial: hardcoder.dev.pedometer_manager.permissions.Initial,
-    rejected: hardcoder.dev.pedometer_manager.permissions.Rejected?,
+    initial: Initial,
+    rejected: Rejected?,
     onGrant: () -> Unit,
 ) {
     Column(Modifier.weight(2f)) {

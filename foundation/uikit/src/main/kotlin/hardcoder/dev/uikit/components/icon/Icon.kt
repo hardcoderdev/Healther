@@ -29,7 +29,7 @@ fun Icon(
 private fun IconPreview() {
     HealtherThemePreview {
         Icon(
-            iconResId = R.drawable.ic_fab_add,
+            iconResId = R.drawable.ic_add,
         )
     }
 }

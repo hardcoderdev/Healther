@@ -2,7 +2,6 @@
 <resources>
     <string name="moodTracking_title_topBar">Трекер эмоций</string>
     <string name="moodTracking_diaryNowEmpty_text">Сейчас здесь пусто. Чтобы добавить новую  запись, нажмите на кнопку справа внизу.</string>
-    <string name="moodTracking_diary_text">Дневник эмоций:</string>
     <string name="moodTracking_nowEmpty_text">\nСейчас здесь пусто. Чтобы добавить новую запись, нажмите на кнопку справа внизу. Статистика и график появятся спустя пару часов использования фичи.</string>
 
     <string name="moodTracking_statistic_happyMoodCount_text">Вы были счастливы</string>

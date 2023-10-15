@@ -32,20 +32,24 @@ fun EmptySection(
     animationRepeatTimes: Int = LottieConstants.IterateForever,
     animationHeight: Dp = 400.dp,
 ) {
-    Title(text = stringResource(id = emptyTitleResId))
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(lottieAnimationResId))
-    val progress by animateLottieCompositionAsState(
-        composition = composition,
-        iterations = animationRepeatTimes,
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    LottieAnimation(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(animationHeight),
-        composition = composition,
-        progress = { progress },
-    )
+    Column(
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Title(text = stringResource(id = emptyTitleResId))
+        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(lottieAnimationResId))
+        val progress by animateLottieCompositionAsState(
+            composition = composition,
+            iterations = animationRepeatTimes,
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        LottieAnimation(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(animationHeight),
+            composition = composition,
+            progress = { progress },
+        )
+    }
 }
 
 @Composable

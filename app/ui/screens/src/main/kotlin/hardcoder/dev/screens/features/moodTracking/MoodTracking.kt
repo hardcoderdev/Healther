@@ -4,27 +4,24 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.entities.features.moodTracking.MoodWithActivities
 import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
+import hardcoder.dev.uikit.components.container.FabConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.section.EmptySection
-import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.components.topBar.Action
 import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.TopBarConfig
@@ -44,7 +41,6 @@ fun MoodTracking(
     onGoBack: () -> Unit,
 ) {
     ScaffoldWrapper(
-        onFabClick = onCreateMoodTrack,
         content = {
             MoodTrackingContent(
                 dateTimeFormatter = dateTimeFormatter,
@@ -52,6 +48,7 @@ fun MoodTracking(
                 onUpdateMoodTrack = onUpdateMoodTrack,
             )
         },
+        fabConfig = FabConfig(onFabClick = onCreateMoodTrack),
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
                 titleResId = R.string.moodTracking_title_topBar,
@@ -106,8 +103,6 @@ private fun ColumnScope.MoodTrackingDiarySection(
     moodWithActivitiesList: List<MoodWithActivities>,
     onUpdateTrack: (Int) -> Unit,
 ) {
-    Title(text = stringResource(id = R.string.moodTracking_diary_text))
-    Spacer(modifier = Modifier.height(16.dp))
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

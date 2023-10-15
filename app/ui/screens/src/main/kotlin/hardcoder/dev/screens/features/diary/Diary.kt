@@ -41,6 +41,7 @@ import hardcoder.dev.screens.features.diary.items.DiaryItem
 import hardcoder.dev.uikit.components.bottomSheet.BottomSheet
 import hardcoder.dev.uikit.components.bottomSheet.rememberBottomSheetState
 import hardcoder.dev.uikit.components.chip.content.ChipIconDefaultContent
+import hardcoder.dev.uikit.components.container.FabConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.icon.Icon
@@ -92,7 +93,6 @@ fun Diary(
         },
     ) {
         ScaffoldWrapper(
-            onFabClick = onCreateDiaryTrack,
             content = {
                 DiaryContent(
                     dateTimeFormatter = dateTimeFormatter,
@@ -103,6 +103,7 @@ fun Diary(
                     onUpdateDiaryTrack = onUpdateDiaryTrack,
                 )
             },
+            fabConfig = FabConfig(onFabClick = onCreateDiaryTrack),
             topBarConfig = TopBarConfig(
                 type = TopBarType.SearchTopBarController(
                     controller = searchTextInputController,

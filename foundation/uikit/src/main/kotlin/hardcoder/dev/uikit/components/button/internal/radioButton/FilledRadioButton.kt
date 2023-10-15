@@ -25,7 +25,7 @@ import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 
 @Composable
-fun FilledRadioButton(
+internal fun FilledRadioButton(
     modifier: Modifier = Modifier,
     @StringRes labelResId: Int,
     onClick: () -> Unit,

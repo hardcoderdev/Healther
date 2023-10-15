@@ -39,6 +39,7 @@ import hardcoder.dev.uikit.components.topBar.TopBarType
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
 import hardcoder.dev.uikit.sections.creation.SelectIconSection
 import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoder.dev.validators.features.waterTracking.IncorrectDrinkTypeName
 import hardcoder.dev.validators.features.waterTracking.ValidatedDrinkTypeName
 import hardcoderdev.healther.app.ui.resources.R
 
@@ -131,15 +132,15 @@ private fun EnterDrinkTypeNameSection(
         label = R.string.waterTracking_drinkTypes_creation_enterName_textField,
         inputAdapter = TextInputAdapter,
         validationAdapter = TextFieldValidationAdapter {
-            if (it !is hardcoder.dev.validators.features.waterTracking.IncorrectDrinkTypeName) {
+            if (it !is IncorrectDrinkTypeName) {
                 null
             } else {
                 when (val reason = it.reason) {
-                    is hardcoder.dev.validators.features.waterTracking.IncorrectDrinkTypeName.Reason.Empty -> {
+                    is IncorrectDrinkTypeName.Reason.Empty -> {
                         context.getString(R.string.errors_fieldCantBeEmptyError)
                     }
 
-                    is hardcoder.dev.validators.features.waterTracking.IncorrectDrinkTypeName.Reason.MoreThanMaxChars -> {
+                    is IncorrectDrinkTypeName.Reason.MoreThanMaxChars -> {
                         context.getString(
                             R.string.errors_moreThanMaxCharsError,
                             reason.maxChars,

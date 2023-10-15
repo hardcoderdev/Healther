@@ -48,7 +48,7 @@ internal fun FilledRequestButtonWithIconPreview() {
     HealtherThemePreview {
         FilledRequestButtonWithIcon(
             labelResId = R.string.placeholder_label,
-            iconResId = R.drawable.ic_fab_add,
+            iconResId = R.drawable.ic_add,
             controller = RequestController(
                 coroutineScope = GlobalScope,
                 request = {},

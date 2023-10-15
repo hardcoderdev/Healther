@@ -18,7 +18,7 @@ import hardcoder.dev.uikit.components.topBar.ActionConfig
 import hardcoder.dev.uikit.components.topBar.DropdownConfig
 import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
-import hardcoderdev.healther.foundation.uikit.R
+import hardcoderdev.healther.app.ui.resources.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +38,7 @@ internal fun GoBackTopBar(
             CircleIconButton(
                 circleIconButtonConfig = CircleIconButtonConfig.Filled(
                     onClick = onGoBack,
-                    iconResId = R.drawable.ic_top_bar_back,
+                    iconResId = R.drawable.ic_back,
                 ),
             )
         },
@@ -93,7 +93,7 @@ internal fun GoBackTopBar(
 internal fun GoBackTopBarPreview() {
     HealtherThemePreview {
         GoBackTopBar(
-            titleResId = R.string.default_nowEmpty_text,
+            titleResId = hardcoderdev.healther.foundation.uikit.R.string.default_nowEmpty_text,
             onGoBack = { /* no-op */ },
         )
     }

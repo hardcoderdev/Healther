@@ -15,6 +15,7 @@ import hardcoder.dev.formatters.LiquidFormatter
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.WaterTrackingMockDataProvider
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingChartData
+import hardcoder.dev.resolvers.features.waterTracking.WaterTrackingStatisticResolver
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.section.EmptySection
@@ -28,7 +29,7 @@ import hardcoderdev.healther.app.ui.resources.R
 
 @Composable
 fun WaterTrackingAnalytics(
-    waterTrackingStatisticResolver: hardcoder.dev.resolvers.features.waterTracking.WaterTrackingStatisticResolver,
+    waterTrackingStatisticResolver: WaterTrackingStatisticResolver,
     statisticLoadingController: LoadingController<WaterTrackingStatistics?>,
     chartEntriesLoadingController: LoadingController<WaterTrackingChartData>,
     onGoBack: () -> Unit,
@@ -52,7 +53,7 @@ fun WaterTrackingAnalytics(
 
 @Composable
 private fun WaterTrackingAnalyticsContent(
-    waterTrackingStatisticResolver: hardcoder.dev.resolvers.features.waterTracking.WaterTrackingStatisticResolver,
+    waterTrackingStatisticResolver: WaterTrackingStatisticResolver,
     chartEntriesLoadingController: LoadingController<WaterTrackingChartData>,
     statisticLoadingController: LoadingController<WaterTrackingStatistics?>,
 ) {
@@ -86,7 +87,7 @@ private fun WaterTrackingAnalyticsPreview() {
     HealtherTheme {
         WaterTrackingAnalytics(
             onGoBack = {},
-            waterTrackingStatisticResolver = hardcoder.dev.resolvers.features.waterTracking.WaterTrackingStatisticResolver(
+            waterTrackingStatisticResolver = WaterTrackingStatisticResolver(
                 context = LocalContext.current,
                 liquidFormatter = LiquidFormatter(
                     context = LocalContext.current,

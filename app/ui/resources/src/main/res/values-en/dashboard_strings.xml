@@ -25,4 +25,6 @@
     <string name="dashboard_fasting_completed">Fasting completed.</string>
     <string name="dashboard_finish_fasting">Save fasting</string>
     <string name="dashboard_food_tracking_feature">Еда и питание</string>
+    <string name="dashboard_your_features">Your features:</string>
+    <string name="dashboard_customize_features_cd">Настройка фичей</string>
 </resources>

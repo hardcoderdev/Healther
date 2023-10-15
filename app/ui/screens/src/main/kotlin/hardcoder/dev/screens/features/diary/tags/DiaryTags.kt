@@ -18,6 +18,7 @@ import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
 import hardcoder.dev.uikit.components.chip.Chip
 import hardcoder.dev.uikit.components.chip.ChipConfig
+import hardcoder.dev.uikit.components.container.FabConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.section.EmptySection
@@ -41,7 +42,7 @@ fun DiaryTags(
                 onUpdateDiaryTag = onUpdateDiaryTag,
             )
         },
-        onFabClick = onCreateDiaryTag,
+        fabConfig = FabConfig(onFabClick = onCreateDiaryTag),
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
                 titleResId = R.string.diary_tags_title_topBar,

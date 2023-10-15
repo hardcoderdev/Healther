@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -31,10 +30,10 @@ import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
 import hardcoder.dev.presentation.features.diary.DiaryUpdateViewModel
 import hardcoder.dev.screens.features.moodTracking.MoodTrackItem
+import hardcoder.dev.uikit.components.button.managementButton.ManagementButton
+import hardcoder.dev.uikit.components.button.managementButton.ManagementButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
-import hardcoder.dev.uikit.components.chip.Chip
-import hardcoder.dev.uikit.components.chip.ChipConfig
 import hardcoder.dev.uikit.components.chip.content.ChipIconDefaultContent
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
@@ -207,27 +206,30 @@ private fun SelectTagsSection(
         itemModifier = Modifier.padding(top = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.Center,
-        actionButton = { ManagementTagsButton(onManageTags = onManageTags) },
-        emptyContent = { ManagementTagsButton(onManageTags = onManageTags) },
+        actionButton = {
+            ManagementButton(
+                managementButtonConfig = ManagementButtonConfig.Chip(
+                    titleResId = R.string.diary_tags_title_topBar,
+                    iconResId = R.drawable.ic_create,
+                    onClick = onManageTags,
+                ),
+            )
+        },
+        emptyContent = {
+            ManagementButton(
+                managementButtonConfig = ManagementButtonConfig.Chip(
+                    titleResId = R.string.diary_tags_title_topBar,
+                    iconResId = R.drawable.ic_create,
+                    onClick = onManageTags,
+                ),
+            )
+        },
         itemContent = { tag, _ ->
             ChipIconDefaultContent(
                 iconResId = tag.icon.resourceId,
                 name = tag.name,
             )
         },
-    )
-}
-
-@Composable
-private fun ManagementTagsButton(onManageTags: () -> Unit) {
-    Chip(
-        chipConfig = ChipConfig.Action(
-            modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.diary_tags_title_topBar),
-            iconResId = R.drawable.ic_create,
-            shape = RoundedCornerShape(32.dp),
-            onClick = onManageTags,
-        ),
     )
 }
 

@@ -71,7 +71,7 @@ internal fun StaticChipPreview() {
             text = stringResource(id = R.string.placeholder_label),
             modifier = Modifier,
             padding = PaddingValues(16.dp),
-            iconResId = R.drawable.ic_fab_add,
+            iconResId = R.drawable.ic_add,
             overflow = TextOverflow.Ellipsis,
             shape = RoundedCornerShape(16.dp),
         )

@@ -52,7 +52,7 @@ internal fun SimpleTopBarPreview() {
             actionConfig = ActionConfig(
                 actions = listOf(
                     Action(
-                        iconResId = R.drawable.ic_fab_add,
+                        iconResId = R.drawable.ic_add,
                         onActionClick = {},
                     ),
                 ),
