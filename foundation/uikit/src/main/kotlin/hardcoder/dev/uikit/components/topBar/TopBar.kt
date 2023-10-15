@@ -42,9 +42,15 @@ data class DropdownItem(
     val onDropdownItemClick: () -> Unit,
 )
 
-data class DropdownConfig(val actionToggle: Action, val dropdownItems: List<DropdownItem>)
+data class DropdownConfig(
+    val actionToggle: Action,
+    val dropdownItems: List<DropdownItem>,
+)
 
-data class Action(@DrawableRes val iconResId: Int, val onActionClick: () -> Unit)
+data class Action(
+    @DrawableRes val iconResId: Int,
+    val onActionClick: () -> Unit,
+)
 
 data class ActionConfig(val actions: List<Action>)
 

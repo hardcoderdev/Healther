@@ -12,6 +12,7 @@ import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.entities.features.foodTracking.FoodType
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.FoodTrackingMockDataProvider
+import hardcoder.dev.uikit.components.container.FabConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.section.EmptySection
@@ -35,7 +36,7 @@ fun FoodTypes(
                 foodTypesLoadingController = foodTypesLoadingController,
             )
         },
-        onFabClick = onCreateFoodType,
+        fabConfig = FabConfig(onFabClick = onCreateFoodType),
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
                 titleResId = R.string.foodTracking_foodTypes_title_topBar,

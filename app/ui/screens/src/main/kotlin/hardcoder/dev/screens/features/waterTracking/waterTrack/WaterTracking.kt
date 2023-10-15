@@ -20,6 +20,7 @@ import hardcoder.dev.entities.features.waterTracking.MillilitersDrunkToDailyRate
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.WaterTrackingMockDataProvider
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
+import hardcoder.dev.uikit.components.container.FabConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.progressBar.LinearProgressBar
@@ -54,7 +55,7 @@ fun WaterTracking(
                 progressController = progressController,
             )
         },
-        onFabClick = onCreateWaterTrack,
+        fabConfig = FabConfig(onFabClick = onCreateWaterTrack),
         actionConfig = ActionConfig(
             actions = listOf(
                 Action(

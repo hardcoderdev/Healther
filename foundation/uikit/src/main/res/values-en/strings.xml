@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="tooltip_fab_creation">Adding an entry</string>
     <string name="placeholder_label">Some text</string>
     <string name="default_nowEmpty_text">>Now it\'s empty.</string>
     <string name="default_grantPermission_buttonText">Give permissions</string>

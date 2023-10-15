@@ -13,6 +13,7 @@ import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.WaterTrackingMockDataProvider
+import hardcoder.dev.uikit.components.container.FabConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.section.EmptySection
@@ -36,7 +37,7 @@ fun DrinkTypes(
                 drinkTypesLoadingController = drinkTypesLoadingController,
             )
         },
-        onFabClick = onCreateDrinkType,
+        fabConfig = FabConfig(onFabClick = onCreateDrinkType),
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
                 titleResId = R.string.waterTracking_drinkTypes_title_topBar,

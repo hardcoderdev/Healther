@@ -23,7 +23,7 @@ import hardcoder.dev.uikit.components.icon.Icon
 import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
-import hardcoderdev.healther.foundation.uikit.R
+import hardcoderdev.healther.app.ui.resources.R
 import java.time.Month
 import java.time.format.TextStyle
 import java.util.Locale
@@ -43,7 +43,7 @@ fun CustomMonthHeader(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            iconResId = R.drawable.ic_top_bar_back,
+            iconResId = R.drawable.ic_back,
             modifier = Modifier
                 .padding(end = 32.dp)
                 .clickable {
@@ -61,7 +61,7 @@ fun CustomMonthHeader(
         Spacer(modifier = Modifier.width(8.dp))
         Title(text = month.year.toString())
         Icon(
-            iconResId = R.drawable.ic_top_bar_back,
+            iconResId = R.drawable.ic_back,
             modifier = Modifier
                 .padding(start = 32.dp)
                 .rotate(-180f)

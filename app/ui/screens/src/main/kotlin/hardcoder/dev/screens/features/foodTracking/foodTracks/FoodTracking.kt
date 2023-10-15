@@ -20,6 +20,7 @@ import hardcoder.dev.entities.features.foodTracking.FoodTrack
 import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.FoodTrackingMockDataProvider
+import hardcoder.dev.uikit.components.container.FabConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.section.EmptySection
@@ -48,7 +49,7 @@ fun FoodTracking(
                 foodTracksLoadingController = foodTracksLoadingController,
             )
         },
-        onFabClick = onCreateFoodTrack,
+        fabConfig = FabConfig(onFabClick = onCreateFoodTrack),
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
                 titleResId = R.string.foodTracking_title_topBar,

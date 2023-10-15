@@ -50,6 +50,7 @@ import hardcoder.dev.uikit.preview.elements.HealtherUiKitPreview
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.foundation.uikit.R
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchTopBar(
     controller: InputController<String>,
@@ -154,7 +155,7 @@ fun SearchTopBar(
                 CircleIconButton(
                     circleIconButtonConfig = CircleIconButtonConfig.Filled(
                         onClick = onGoBack,
-                        iconResId = R.drawable.ic_top_bar_back,
+                        iconResId = R.drawable.ic_back,
                     ),
                 )
             }
@@ -294,7 +295,7 @@ fun SearchTopBar(
                 CircleIconButton(
                     circleIconButtonConfig = CircleIconButtonConfig.Filled(
                         onClick = onGoBack,
-                        iconResId = R.drawable.ic_top_bar_back,
+                        iconResId = R.drawable.ic_back,
                     ),
                 )
             }
@@ -348,7 +349,7 @@ internal fun SearchTopBarPreview() {
             actionConfig = ActionConfig(
                 actions = listOf(
                     Action(
-                        iconResId = R.drawable.ic_fab_add,
+                        iconResId = R.drawable.ic_add,
                         onActionClick = {},
                     ),
                 ),

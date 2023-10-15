@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="tooltip_fab_creation">Добавление записи</string>
     <string name="placeholder_label">Какой-то текст</string>
     <string name="default_nowEmpty_text">Сейчас здесь пусто.</string>
     <string name="default_grantPermission_buttonText">Выдать доступ</string>

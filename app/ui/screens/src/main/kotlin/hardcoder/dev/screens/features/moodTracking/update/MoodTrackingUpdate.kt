@@ -1,6 +1,5 @@
 package hardcoder.dev.screens.features.moodTracking.update
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,16 +7,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -36,18 +31,15 @@ import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.date.MockDateProvider
 import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
 import hardcoder.dev.screens.features.moodTracking.moodType.MoodItem
+import hardcoder.dev.uikit.components.button.managementButton.ManagementButton
+import hardcoder.dev.uikit.components.button.managementButton.ManagementButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
-import hardcoder.dev.uikit.components.card.Card
-import hardcoder.dev.uikit.components.card.CardConfig
-import hardcoder.dev.uikit.components.chip.Chip
-import hardcoder.dev.uikit.components.chip.ChipConfig
 import hardcoder.dev.uikit.components.chip.content.ChipIconDefaultContent
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.list.flowRow.MultiSelectionChipFlowRow
 import hardcoder.dev.uikit.components.list.tabRow.SingleCardSelectionScrollableTabRow
 import hardcoder.dev.uikit.components.text.ErrorText
-import hardcoder.dev.uikit.components.text.Label
 import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.components.text.textField.TextField
 import hardcoder.dev.uikit.components.text.textField.TextInputAdapter
@@ -174,9 +166,23 @@ private fun SelectMoodSection(
         Spacer(modifier = Modifier.height(16.dp))
         SingleCardSelectionScrollableTabRow(
             controller = moodTypeSelectionController,
-            actionButton = { MoodTypeManagementButton(onManageMoodTypes = onManageMoodTypes) },
+            actionButton = {
+                ManagementButton(
+                    managementButtonConfig = ManagementButtonConfig.Card(
+                        titleResId = R.string.moodTracking_moodType_creation_manageMoodTypes_buttonText,
+                        iconResId = R.drawable.ic_create,
+                        onClick = onManageMoodTypes,
+                    ),
+                )
+            },
             emptyContent = {
-                MoodTypeManagementButton(onManageMoodTypes = onManageMoodTypes)
+                ManagementButton(
+                    managementButtonConfig = ManagementButtonConfig.Card(
+                        titleResId = R.string.moodTracking_moodType_creation_manageMoodTypes_buttonText,
+                        iconResId = R.drawable.ic_create,
+                        onClick = onManageMoodTypes,
+                    ),
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 ErrorText(text = stringResource(id = R.string.moodTracking_creation_moodTypeNotSelected_text))
             },
@@ -196,38 +202,6 @@ private fun SelectMoodSection(
 }
 
 @Composable
-private fun MoodTypeManagementButton(onManageMoodTypes: () -> Unit) {
-    Card(
-        cardConfig = CardConfig.Action(
-            onClick = onManageMoodTypes,
-            modifier = Modifier.padding(
-                start = 4.dp,
-                end = 16.dp,
-                top = 16.dp,
-                bottom = 16.dp,
-            ),
-            cardContent = {
-                Column(
-                    modifier = Modifier
-                        .width(130.dp)
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(
-                        modifier = Modifier.height(60.dp),
-                        painter = painterResource(id = R.drawable.ic_create),
-                        contentDescription = stringResource(id = R.string.moodTracking_moodType_update_manageMoodTypes_buttonText),
-                        alignment = Alignment.Center,
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Label(text = stringResource(id = R.string.moodTracking_moodType_update_manageMoodTypes_buttonText))
-                }
-            },
-        ),
-    )
-}
-
-@Composable
 private fun SelectActivitiesSection(
     multiSelectionController: MultiSelectionController<MoodActivity>,
     onManageActivities: () -> Unit,
@@ -243,27 +217,30 @@ private fun SelectActivitiesSection(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.Center,
         itemModifier = Modifier.padding(top = 8.dp),
-        emptyContent = { ManagementActivitiesButton(onManageActivities = onManageActivities) },
-        actionButton = { ManagementActivitiesButton(onManageActivities = onManageActivities) },
+        emptyContent = {
+            ManagementButton(
+                managementButtonConfig = ManagementButtonConfig.Chip(
+                    titleResId = R.string.moodTracking_creation_manageActivities_buttonText,
+                    iconResId = R.drawable.ic_create,
+                    onClick = onManageActivities,
+                ),
+            )
+        },
+        actionButton = {
+            ManagementButton(
+                managementButtonConfig = ManagementButtonConfig.Chip(
+                    titleResId = R.string.moodTracking_creation_manageActivities_buttonText,
+                    iconResId = R.drawable.ic_create,
+                    onClick = onManageActivities,
+                ),
+            )
+        },
         itemContent = { activity, _ ->
             ChipIconDefaultContent(
                 iconResId = activity.icon.resourceId,
                 name = activity.name,
             )
         },
-    )
-}
-
-@Composable
-private fun ManagementActivitiesButton(onManageActivities: () -> Unit) {
-    Chip(
-        chipConfig = ChipConfig.Action(
-            modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.moodTracking_creation_manageActivities_buttonText),
-            iconResId = R.drawable.ic_create,
-            shape = RoundedCornerShape(32.dp),
-            onClick = onManageActivities,
-        ),
     )
 }
 

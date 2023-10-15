@@ -106,9 +106,7 @@ private fun MoodTracksHistory(
                             dateTimeFormatter = dateTimeFormatter,
                             moodTrack = moodWithActivityTrack.moodTrack,
                             activitiesList = moodWithActivityTrack.moodActivityList,
-                            onUpdate = {
-                                /* no-op because money for track has already been collected */
-                            },
+                            onUpdate = {},
                         )
                     }
                 }

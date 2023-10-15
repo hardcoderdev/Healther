@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -29,15 +28,14 @@ import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.formatters.RegexHolder
-import hardcoder.dev.icons.IconImpl
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.date.MockDateProvider
 import hardcoder.dev.mock.dataProviders.features.WaterTrackingMockDataProvider
 import hardcoder.dev.screens.features.waterTracking.drinkType.DrinkTypeItem
+import hardcoder.dev.uikit.components.button.managementButton.ManagementButton
+import hardcoder.dev.uikit.components.button.managementButton.ManagementButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
-import hardcoder.dev.uikit.components.chip.Chip
-import hardcoder.dev.uikit.components.chip.ChipConfig
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.text.ErrorText
 import hardcoder.dev.uikit.components.text.Title
@@ -51,6 +49,8 @@ import hardcoder.dev.uikit.components.topBar.TopBarType
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
 import hardcoder.dev.uikit.sections.dateTime.DateTimeSection
 import hardcoder.dev.uikit.values.HealtherTheme
+import hardcoder.dev.validators.features.waterTracking.IncorrectMillilitersCount
+import hardcoder.dev.validators.features.waterTracking.ValidatedMillilitersCount
 import hardcoderdev.healther.app.ui.resources.R
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
@@ -62,7 +62,7 @@ fun WaterTrackingUpdate(
     dateInputController: InputController<LocalDate>,
     timeInputController: InputController<LocalTime>,
     drinkSelectionController: SingleSelectionController<DrinkType>,
-    millilitersDrunkInputController: ValidatedInputController<Int, hardcoder.dev.validators.features.waterTracking.ValidatedMillilitersCount>,
+    millilitersDrunkInputController: ValidatedInputController<Int, ValidatedMillilitersCount>,
     updateController: RequestController,
     onManageDrinkTypes: () -> Unit,
     onGoBack: () -> Unit,
@@ -108,7 +108,7 @@ private fun WaterTrackingUpdateContent(
     dateInputController: InputController<LocalDate>,
     timeInputController: InputController<LocalTime>,
     drinkSelectionController: SingleSelectionController<DrinkType>,
-    millilitersDrunkInputController: ValidatedInputController<Int, hardcoder.dev.validators.features.waterTracking.ValidatedMillilitersCount>,
+    millilitersDrunkInputController: ValidatedInputController<Int, ValidatedMillilitersCount>,
     updatingController: RequestController,
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -144,7 +144,7 @@ private fun WaterTrackingUpdateContent(
 
 @Composable
 private fun EnterDrunkMillilitersSection(
-    millilitersDrunkInputController: ValidatedInputController<Int, hardcoder.dev.validators.features.waterTracking.ValidatedMillilitersCount>,
+    millilitersDrunkInputController: ValidatedInputController<Int, ValidatedMillilitersCount>,
 ) {
     Title(text = stringResource(id = R.string.waterTracking_creation_enterMillilitersCount_text))
     Spacer(modifier = Modifier.height(16.dp))
@@ -156,15 +156,15 @@ private fun EnterDrunkMillilitersSection(
             encodeInput = { it.toIntOrNull() ?: 0 },
         ),
         validationAdapter = textFieldValidationResourcesAdapter {
-            if (it !is hardcoder.dev.validators.features.waterTracking.IncorrectMillilitersCount) {
+            if (it !is IncorrectMillilitersCount) {
                 null
             } else {
                 when (it.reason) {
-                    is hardcoder.dev.validators.features.waterTracking.IncorrectMillilitersCount.Reason.Empty -> {
+                    is IncorrectMillilitersCount.Reason.Empty -> {
                         R.string.errors_fieldCantBeEmptyError
                     }
 
-                    is hardcoder.dev.validators.features.waterTracking.IncorrectMillilitersCount.Reason.MoreThanDailyWaterIntake -> {
+                    is IncorrectMillilitersCount.Reason.MoreThanDailyWaterIntake -> {
                         R.string.waterTracking_creation_millilitersMoreThanDailyWaterIntake_text
                     }
                 }
@@ -196,7 +196,13 @@ private fun SelectDrinkTypeSection(
                     .horizontalScroll(rememberScrollState()),
                 maxItemsInEachRow = 8,
             ) {
-                DrinkTypeManagementButton(onManageDrinkTypes = onManageDrinkTypes)
+                ManagementButton(
+                    managementButtonConfig = ManagementButtonConfig.Chip(
+                        titleResId = R.string.waterTracking_drinkTypes_title_topBar,
+                        iconResId = R.drawable.ic_create,
+                        onClick = onManageDrinkTypes,
+                    ),
+                )
                 state.items.forEach { drink ->
                     DrinkTypeItem(
                         modifier = Modifier.padding(4.dp),
@@ -209,26 +215,19 @@ private fun SelectDrinkTypeSection(
         }
 
         SingleSelectionController.State.Empty -> {
-            DrinkTypeManagementButton(onManageDrinkTypes = onManageDrinkTypes)
+            ManagementButton(
+                managementButtonConfig = ManagementButtonConfig.Chip(
+                    titleResId = R.string.waterTracking_drinkTypes_title_topBar,
+                    iconResId = R.drawable.ic_create,
+                    onClick = onManageDrinkTypes,
+                ),
+            )
             Spacer(modifier = Modifier.height(8.dp))
             ErrorText(text = stringResource(id = R.string.waterTracking_creation_drinkTypeNotSelected_text))
         }
 
         SingleSelectionController.State.Loading -> {}
     }
-}
-
-@Composable
-private fun DrinkTypeManagementButton(onManageDrinkTypes: () -> Unit) {
-    Chip(
-        chipConfig = ChipConfig.Action(
-            modifier = Modifier.padding(4.dp),
-            onClick = { onManageDrinkTypes() },
-            text = stringResource(id = R.string.waterTracking_drinkTypes_title_topBar),
-            iconResId = IconImpl(0, R.drawable.ic_create).resourceId,
-            shape = RoundedCornerShape(32.dp),
-        ),
-    )
 }
 
 @HealtherScreenPhonePreviews

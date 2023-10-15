@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -15,11 +13,7 @@ import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.DashboardMockDataProvider
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
-import hardcoder.dev.screens.dashboard.featureItems.DiaryFeatureItem
-import hardcoder.dev.screens.dashboard.featureItems.FoodTrackingFeatureItem
-import hardcoder.dev.screens.dashboard.featureItems.MoodTrackingFeatureItem
-import hardcoder.dev.screens.dashboard.featureItems.PedometerFeatureItem
-import hardcoder.dev.screens.dashboard.featureItems.WaterTrackingFeatureItem
+import hardcoder.dev.screens.dashboard.sections.dashboardFeaturesSection
 import hardcoder.dev.uikit.components.container.LoadingContainer
 import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.topBar.Action
@@ -97,10 +91,11 @@ private fun DashboardContent(
                 .fillMaxWidth()
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
+            contentPadding = PaddingValues(vertical = 16.dp),
         ) {
-            featureSection(
+            dashboardFeaturesSection(
                 items = featureItems,
+                onCustomizeFeatures = {},
                 onGoToWaterTrackingFeature = onGoToWaterTrackingFeature,
                 onCreateWaterTrack = onCreateWaterTrack,
                 onGoToFoodTrackingFeature = onGoToFoodTrackingFeature,
@@ -112,64 +107,6 @@ private fun DashboardContent(
                 onGoToDiary = onGoToDiary,
                 onCreateDiaryTrack = onCreateDiaryTrack,
             )
-        }
-    }
-}
-
-private fun LazyListScope.featureSection(
-    items: List<DashboardFeatureItem>,
-    onGoToWaterTrackingFeature: () -> Unit,
-    onCreateWaterTrack: () -> Unit,
-    onGoToFoodTrackingFeature: () -> Unit,
-    onCreateFoodTrack: () -> Unit,
-    onGoToMoodTrackingFeature: () -> Unit,
-    onCreateMoodTrack: () -> Unit,
-    onGoToPedometerFeature: () -> Unit,
-    onTogglePedometerTrackingService: () -> Unit,
-    onGoToDiary: () -> Unit,
-    onCreateDiaryTrack: () -> Unit,
-) {
-    items(items) { feature ->
-        when (feature) {
-            is DashboardFeatureItem.WaterTrackingFeature -> {
-                WaterTrackingFeatureItem(
-                    waterTrackingFeature = feature,
-                    onGoToFeature = onGoToWaterTrackingFeature,
-                    onCreateWaterTrack = onCreateWaterTrack,
-                )
-            }
-
-            is DashboardFeatureItem.FoodTrackingFeature -> {
-                FoodTrackingFeatureItem(
-                    foodTrackingFeature = feature,
-                    onGoToFeature = onGoToFoodTrackingFeature,
-                    onCreateFoodTrack = onCreateFoodTrack,
-                )
-            }
-
-            is DashboardFeatureItem.MoodTrackingFeature -> {
-                MoodTrackingFeatureItem(
-                    moodTrackingFeature = feature,
-                    onGoToFeature = onGoToMoodTrackingFeature,
-                    onCreateMoodTrack = onCreateMoodTrack,
-                )
-            }
-
-            is DashboardFeatureItem.PedometerFeature -> {
-                PedometerFeatureItem(
-                    pedometerFeature = feature,
-                    onGoToFeature = onGoToPedometerFeature,
-                    onTogglePedometerTrackingService = onTogglePedometerTrackingService,
-                )
-            }
-
-            is DashboardFeatureItem.DiaryFeature -> {
-                DiaryFeatureItem(
-                    diaryFeature = feature,
-                    onGoToFeature = onGoToDiary,
-                    onCreateDiaryTrack = onCreateDiaryTrack,
-                )
-            }
         }
     }
 }
