@@ -9,7 +9,6 @@ dependencies {
     api(projects.app.ui.pedometerManager)
     api(projects.foundation.uikit)
     api(projects.app.ui.statisticsResolvers)
-    api(libs.moko.resourcesCompose)
     api(platform(libs.compose.bom))
     api(libs.compose.activity)
     api(libs.compose.graphics)

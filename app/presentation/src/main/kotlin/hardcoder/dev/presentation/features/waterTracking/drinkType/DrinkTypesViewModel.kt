@@ -1,14 +1,14 @@
 package hardcoder.dev.presentation.features.waterTracking.drinkType
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeProvider
 
-class DrinkTypesViewModel(drinkTypeProvider: DrinkTypeProvider) : ScreenModel {
+class DrinkTypesViewModel(drinkTypeProvider: DrinkTypeProvider) : ViewModel() {
 
     val drinkTypesLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = drinkTypeProvider.provideAllDrinkTypes(),
     )
 }

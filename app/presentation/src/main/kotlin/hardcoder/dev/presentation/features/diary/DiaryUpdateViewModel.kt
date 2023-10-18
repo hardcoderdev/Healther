@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.diary
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
@@ -10,6 +10,7 @@ import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItems
 import hardcoder.dev.controller.selection.selectedItemsOrEmptySet
 import hardcoder.dev.coroutines.firstNotNull
+import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup
 import hardcoder.dev.entities.features.diary.DiaryTag
 import hardcoder.dev.entities.features.diary.DiaryTrack
 import hardcoder.dev.entities.features.moodTracking.MoodTrack
@@ -32,12 +33,12 @@ class DiaryUpdateViewModel(
     private val diaryTrackDeleter: DiaryTrackDeleter,
     diaryTagProvider: DiaryTagProvider,
     diaryTrackContentValidator: DiaryTrackContentValidator,
-) : ScreenModel {
+) : ViewModel() {
 
     private val initialDiaryTrack = MutableStateFlow<DiaryTrack?>(null)
 
     val diaryAttachmentsLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = initialDiaryTrack.filterNotNull().map { diaryTrack ->
             diaryTrack.diaryAttachmentGroup?.let { diaryAttachmentGroup ->
                 ReadOnlyDiaryAttachments(
@@ -49,32 +50,32 @@ class DiaryUpdateViewModel(
     )
 
     val contentInputController = ValidatedInputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = "",
         validation = diaryTrackContentValidator::validate,
     )
 
     val tagMultiSelectionController = MultiSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         itemsFlow = diaryTagProvider.provideAllDiaryTags(),
     )
 
     val deleteController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             diaryTrackDeleter.deleteById(diaryTrackId)
         },
     )
 
     val updateController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             diaryTrackUpdater.update(
                 id = diaryTrackId,
                 content = contentInputController.validateAndRequire(),
                 diaryAttachmentGroup = initialDiaryTrack.firstNotNull().diaryAttachmentGroup?.copy(
                     tags = tagMultiSelectionController.requireSelectedItems(),
-                ) ?: hardcoder.dev.entities.features.diary.DiaryAttachmentGroup(
+                ) ?: DiaryAttachmentGroup(
                     tags = tagMultiSelectionController.selectedItemsOrEmptySet().first(),
                 ),
             )
@@ -85,7 +86,7 @@ class DiaryUpdateViewModel(
     )
 
     init {
-        coroutineScope.launch {
+        viewModelScope.launch {
             val diaryTrack = diaryTrackProvider.provideDiaryTrackById(diaryTrackId).first()!!
             initialDiaryTrack.value = diaryTrack
             tagMultiSelectionController.toggleItems(diaryTrack.diaryAttachmentGroup?.tags?.toList() ?: emptyList())

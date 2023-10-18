@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.pedometer
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.datetime.DateTimeProvider
@@ -17,22 +17,22 @@ class PedometerHistoryViewModel(
     private val pedometerTrackProvider: PedometerTrackProvider,
     private val pedometerStatisticProvider: PedometerStatisticProvider,
     dateTimeProvider: DateTimeProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val dateRangeInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = dateTimeProvider.currentDateRange(),
     )
 
     val statisticLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = dateRangeInputController.state.flatMapLatest { range ->
             pedometerStatisticProvider.providePedometerStatistic(range.input)
         },
     )
 
     val chartEntriesLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = dateRangeInputController.state.flatMapLatest { range ->
             pedometerTrackProvider.providePedometerTracksByRange(range.input)
         }.map { pedometerTracks ->

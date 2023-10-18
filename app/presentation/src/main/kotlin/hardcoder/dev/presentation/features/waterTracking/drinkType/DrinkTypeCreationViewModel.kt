@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.waterTracking.drinkType
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
@@ -18,26 +18,26 @@ class DrinkTypeCreationViewModel(
     drinkTypeCreator: DrinkTypeCreator,
     drinkTypeNameValidator: DrinkTypeNameValidator,
     iconResourceProvider: IconResourceProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val nameInputController = ValidatedInputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = "",
         validation = drinkTypeNameValidator::validate,
     )
 
     val iconSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         items = iconResourceProvider.getIcons(),
     )
 
     val waterPercentageInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = DEFAULT_WATER_PERCENTAGE,
     )
 
     val creationController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             drinkTypeCreator.create(
                 name = nameInputController.validateAndRequire(),

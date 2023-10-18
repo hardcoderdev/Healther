@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.diary.tags
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
@@ -17,21 +17,21 @@ class DiaryTagCreationViewModel(
     private val diaryTagCreator: DiaryTagCreator,
     private val diaryTagNameValidator: DiaryTagNameValidator,
     iconResourceProvider: IconResourceProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val iconSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         items = iconResourceProvider.getIcons(),
     )
 
     val nameInputController = ValidatedInputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = "",
         validation = diaryTagNameValidator::validate,
     )
 
     val creationController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             diaryTagCreator.create(
                 name = nameInputController.validateAndRequire(),

@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.waterTracking
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.coroutines.mapItems
@@ -16,15 +16,15 @@ class WaterTrackingHistoryViewModel(
     waterTrackProvider: WaterTrackProvider,
     waterPercentageResolver: WaterPercentageResolver,
     dateTimeProvider: DateTimeProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val dateRangeInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = dateTimeProvider.currentDateRange(),
     )
 
     val waterTracksLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = dateRangeInputController.state.flatMapLatest { range ->
             waterTrackProvider.provideWaterTracksByDayRange(range.input)
         }.mapItems {

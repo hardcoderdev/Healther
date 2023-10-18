@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.moodTracking.activity
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
@@ -24,21 +24,21 @@ class MoodActivityUpdateViewModel(
     private val moodActivityUpdater: MoodActivityUpdater,
     private val moodActivityProvider: MoodActivityProvider,
     iconResourceProvider: IconResourceProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val activityNameController = ValidatedInputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = "",
         validation = moodActivityNameValidator::validate,
     )
 
     val iconSingleSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         items = iconResourceProvider.getIcons(),
     )
 
     val updateController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             moodActivityUpdater.update(
                 id = activityId,
@@ -52,14 +52,14 @@ class MoodActivityUpdateViewModel(
     )
 
     val deleteController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             moodActivityDeleter.deleteById(activityId)
         },
     )
 
     init {
-        coroutineScope.launch {
+        viewModelScope.launch {
             moodActivityProvider.provideActivityById(activityId).firstOrNull()?.let { activity ->
                 activityNameController.changeInput(activity.name)
                 iconSingleSelectionController.select(activity.icon)

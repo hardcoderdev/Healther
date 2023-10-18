@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.moodTracking.moodType
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
@@ -26,26 +26,26 @@ class MoodTypeUpdateViewModel(
     private val moodTypeUpdater: MoodTypeUpdater,
     private val moodTypeDeleter: MoodTypeDeleter,
     iconResourceProvider: IconResourceProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val moodTypeNameController = ValidatedInputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = "",
         validation = moodTypeNameValidator::validate,
     )
 
     val iconSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         items = iconResourceProvider.getIcons(),
     )
 
     val positiveIndexController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = 0,
     )
 
     val updateController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             moodTypeUpdater.update(
                 id = moodTypeId,
@@ -60,14 +60,14 @@ class MoodTypeUpdateViewModel(
     )
 
     val deleteController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             moodTypeDeleter.deleteById(moodTypeId)
         },
     )
 
     init {
-        coroutineScope.launch {
+        viewModelScope.launch {
             moodTypeProvider.provideMoodTypeByTrackId(moodTypeId).firstOrNull()?.let { moodType ->
                 moodTypeNameController.changeInput(moodType.name)
                 iconSelectionController.select(moodType.icon)

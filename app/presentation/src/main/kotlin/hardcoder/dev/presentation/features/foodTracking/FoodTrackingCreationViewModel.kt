@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.foodTracking
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.controller.request.RequestController
@@ -17,30 +17,30 @@ class FoodTrackingCreationViewModel(
     foodTrackCreator: FoodTrackCreator,
     foodTypeProvider: FoodTypeProvider,
     dateTimeProvider: DateTimeProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val foodSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         itemsFlow = foodTypeProvider.provideAllFoodTypes(),
     )
 
     val caloriesInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = 0,
     )
 
     val dateInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = dateTimeProvider.currentTime().date,
     )
 
     val timeInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = dateTimeProvider.currentTime().time,
     )
 
     val creationController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             foodTrackCreator.create(
                 creationInstant = dateInputController.getInput().toInstant(timeInputController.getInput()),

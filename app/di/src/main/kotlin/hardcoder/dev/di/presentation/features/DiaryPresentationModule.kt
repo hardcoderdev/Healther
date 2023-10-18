@@ -6,10 +6,11 @@ import hardcoder.dev.presentation.features.diary.DiaryViewModel
 import hardcoder.dev.presentation.features.diary.tags.DiaryTagCreationViewModel
 import hardcoder.dev.presentation.features.diary.tags.DiaryTagUpdateViewModel
 import hardcoder.dev.presentation.features.diary.tags.DiaryTagsViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val diaryPresentationModule = module {
-    factory {
+    viewModel {
         DiaryViewModel(
             dateRangeFilterTypeMapper = get(),
             dateRangeFilterTypeProvider = get(),
@@ -20,7 +21,7 @@ internal val diaryPresentationModule = module {
         )
     }
 
-    factory {
+    viewModel {
         DiaryCreationViewModel(
             diaryTrackCreator = get(),
             diaryTrackContentValidator = get(),
@@ -29,7 +30,7 @@ internal val diaryPresentationModule = module {
         )
     }
 
-    factory { parameters ->
+    viewModel { parameters ->
         DiaryUpdateViewModel(
             diaryTrackId = parameters.get(),
             diaryTrackUpdater = get(),
@@ -40,13 +41,13 @@ internal val diaryPresentationModule = module {
         )
     }
 
-    factory {
+    viewModel {
         DiaryTagsViewModel(
             diaryTagProvider = get(),
         )
     }
 
-    factory {
+    viewModel {
         DiaryTagCreationViewModel(
             diaryTagCreator = get(),
             diaryTagNameValidator = get(),
@@ -54,7 +55,7 @@ internal val diaryPresentationModule = module {
         )
     }
 
-    factory { parameters ->
+    viewModel { parameters ->
         DiaryTagUpdateViewModel(
             tagId = parameters.get(),
             diaryTagNameValidator = get(),

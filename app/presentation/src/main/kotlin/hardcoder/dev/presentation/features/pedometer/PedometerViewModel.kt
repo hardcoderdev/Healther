@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.pedometer
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.datetime.DateTimeProvider
@@ -19,10 +19,10 @@ class PedometerViewModel(
     pedometerStatisticProvider: PedometerStatisticProvider,
     pedometerDailyRateStepsProvider: PedometerDailyRateStepsProvider,
     dateTimeProvider: DateTimeProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val dailyRateProgressController = LoadingController<Float>(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = combine(
             pedometerStatisticProvider.providePedometerStatistic(
                 range = dateTimeProvider.currentDateRange(),
@@ -34,24 +34,24 @@ class PedometerViewModel(
     )
 
     val dailyRateStepsLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = pedometerDailyRateStepsProvider.resolve(),
     )
 
     val statisticLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = pedometerStatisticProvider.providePedometerStatistic(),
     )
 
     val todayStatisticLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = pedometerStatisticProvider.providePedometerStatistic(
             range = dateTimeProvider.currentDateRange(),
         ),
     )
 
     val chartEntriesLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = pedometerTrackProvider.providePedometerTracksByRange(
             dateTimeProvider.currentDateRange(),
         ).map { pedometerTracks ->
@@ -69,12 +69,12 @@ class PedometerViewModel(
     )
 
     val pedometerAvailabilityLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = pedometerManager.availability,
     )
 
     val pedometerToggleController = ToggleController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         isActiveFlow = pedometerManager.isTracking,
         toggle = {
             pedometerManager.requestBattery()

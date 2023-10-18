@@ -1,14 +1,14 @@
 package hardcoder.dev.presentation.features.diary.tags
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagProvider
 
-class DiaryTagsViewModel(diaryTagProvider: DiaryTagProvider) : ScreenModel {
+class DiaryTagsViewModel(diaryTagProvider: DiaryTagProvider) : ViewModel() {
 
     val diaryTagsLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = diaryTagProvider.provideAllDiaryTags(),
     )
 }

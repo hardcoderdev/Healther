@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.foodTracking.foodType
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
@@ -17,21 +17,21 @@ class FoodTypeCreationViewModel(
     foodTypeCreator: FoodTypeCreator,
     foodTypeNameValidator: FoodTypeNameValidator,
     iconResourceProvider: IconResourceProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val nameInputController = ValidatedInputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = "",
         validation = foodTypeNameValidator::validate,
     )
 
     val iconSingleSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         items = iconResourceProvider.getIcons(),
     )
 
     val creationController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             foodTypeCreator.create(
                 name = nameInputController.validateAndRequire(),

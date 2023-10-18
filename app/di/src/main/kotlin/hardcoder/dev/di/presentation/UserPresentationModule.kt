@@ -2,16 +2,17 @@ package hardcoder.dev.di.presentation
 
 import hardcoder.dev.presentation.splash.SplashViewModel
 import hardcoder.dev.presentation.user.UserCreationViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val heroPresentationModule = module {
-    factory {
+    viewModel {
         SplashViewModel(
             appPreferenceProvider = get(),
         )
     }
 
-    factory {
+    viewModel {
         UserCreationViewModel(
             userCreator = get(),
             appPreferenceUpdater = get(),

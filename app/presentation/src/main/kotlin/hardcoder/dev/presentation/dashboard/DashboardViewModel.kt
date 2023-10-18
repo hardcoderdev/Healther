@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.dashboard
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.datetime.DateTimeProvider
@@ -29,10 +29,10 @@ class DashboardViewModel(
     private val moodTrackDailyRateProvider: MoodTrackDailyRateProvider,
     private val diaryTrackProvider: DiaryTrackProvider,
     private val diaryDailyRateProvider: DiaryDailyRateProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val featuresLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = combine(
             waterTrackingItem(),
             foodTrackingItem(),
@@ -51,7 +51,7 @@ class DashboardViewModel(
     )
 
     val pedometerToggleController = ToggleController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         toggle = pedometerManager::toggleTracking,
         isActiveFlow = pedometerManager.isTracking,
     )
