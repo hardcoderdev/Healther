@@ -3,7 +3,7 @@ package hardcoder.dev.androidApp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import hardcoder.dev.androidApp.ui.navigation.RootScreen
+import hardcoder.dev.navigation.screens.RootScreen
 import hardcoder.dev.pedometer_manager.BatteryRequirementsController
 import hardcoder.dev.permissions.PermissionsController
 import hardcoder.dev.uikit.values.HealtherTheme

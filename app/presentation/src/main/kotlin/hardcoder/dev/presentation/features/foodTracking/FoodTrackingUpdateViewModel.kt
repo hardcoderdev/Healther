@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.foodTracking
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.controller.request.RequestController
@@ -27,32 +27,32 @@ class FoodTrackingUpdateViewModel(
     foodTypeProvider: FoodTypeProvider,
     foodTrackProvider: FoodTrackProvider,
     dateTimeProvider: DateTimeProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     private val initialFoodTrack = MutableStateFlow<FoodTrack?>(null)
 
     val foodSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         itemsFlow = foodTypeProvider.provideAllFoodTypes(),
     )
 
     val caloriesInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = 0,
     )
 
     val dateInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = dateTimeProvider.currentTime().date,
     )
 
     val timeInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = dateTimeProvider.currentTime().time,
     )
 
     val updateController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             foodTrackUpdater.update(
                 id = foodTrackId,
@@ -67,14 +67,14 @@ class FoodTrackingUpdateViewModel(
     )
 
     val deletionController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             foodTrackDeleter.deleteById(foodTrackId)
         },
     )
 
     init {
-        coroutineScope.launch {
+        viewModelScope.launch {
             val foodTrack = foodTrackProvider.provideFoodTrackById(foodTrackId).first()!!
             val foodTrackDateTime = foodTrack.creationInstant.toLocalDateTime()
             initialFoodTrack.value = foodTrack

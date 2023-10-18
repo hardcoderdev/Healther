@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.waterTracking.drinkType
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
@@ -27,28 +27,28 @@ class DrinkTypeUpdateViewModel(
     drinkTypeUpdater: DrinkTypeUpdater,
     drinkTypeDeleter: DrinkTypeDeleter,
     iconResourceProvider: IconResourceProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     private val initialDrinkType = MutableStateFlow<DrinkType?>(null)
 
     val nameInputController = ValidatedInputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = "",
         validation = drinkTypeNameValidator::validate,
     )
 
     val iconSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         items = iconResourceProvider.getIcons(),
     )
 
     val waterPercentageInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = 0,
     )
 
     val updateController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             drinkTypeUpdater.update(
                 id = drinkTypeId,
@@ -63,14 +63,14 @@ class DrinkTypeUpdateViewModel(
     )
 
     val deletionController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             drinkTypeDeleter.deleteById(drinkTypeId)
         },
     )
 
     init {
-        coroutineScope.launch {
+        viewModelScope.launch {
             val drinkType = drinkTypeProvider.provideDrinkTypeById(drinkTypeId).first()!!
             initialDrinkType.value = drinkType
             nameInputController.changeInput(drinkType.name)

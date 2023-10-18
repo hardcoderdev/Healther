@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.waterTracking
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
@@ -14,6 +14,7 @@ import hardcoder.dev.datetime.toInstant
 import hardcoder.dev.logics.features.waterTracking.WaterTrackCreator
 import hardcoder.dev.logics.features.waterTracking.WaterTrackingDailyRateProvider
 import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeProvider
+import hardcoder.dev.validators.features.waterTracking.CorrectMillilitersCount
 import hardcoder.dev.validators.features.waterTracking.WaterTrackMillilitersValidator
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -25,32 +26,32 @@ class WaterTrackingCreationViewModel(
     drinkTypeProvider: DrinkTypeProvider,
     dateTimeProvider: DateTimeProvider,
     waterTrackingDailyRateProvider: WaterTrackingDailyRateProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     private val dailyWaterIntakeState = waterTrackingDailyRateProvider
         .provideDailyRateInMilliliters().stateIn(
-            scope = coroutineScope,
+            scope = viewModelScope,
             started = SharingStarted.Eagerly,
             initialValue = 0,
         )
 
     val drinkSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         itemsFlow = drinkTypeProvider.provideAllDrinkTypes(),
     )
 
     val dateInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = dateTimeProvider.currentTime().date,
     )
 
     val timeInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = dateTimeProvider.currentTime().time,
     )
 
     val millilitersDrunkInputController = ValidatedInputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = 0,
         validation = {
             waterTrackMillilitersValidator.validate(
@@ -61,7 +62,7 @@ class WaterTrackingCreationViewModel(
     )
 
     val creationController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             waterTrackCreator.create(
                 dateTime = dateInputController.getInput().toInstant(timeInputController.getInput()),
@@ -73,7 +74,7 @@ class WaterTrackingCreationViewModel(
             drinkSelectionController.state,
             millilitersDrunkInputController.state,
         ) { drinkState, millilitersCountState ->
-            millilitersCountState.validationResult is hardcoder.dev.validators.features.waterTracking.CorrectMillilitersCount &&
+            millilitersCountState.validationResult is CorrectMillilitersCount &&
                 drinkState is SingleSelectionController.State.Loaded
         },
     )

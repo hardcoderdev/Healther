@@ -1,16 +1,16 @@
 package hardcoder.dev.presentation.features.foodTracking.foodType
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.logics.features.foodTracking.foodType.FoodTypeProvider
 
 class FoodTypesViewModel(
     foodTypeProvider: FoodTypeProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val foodTypesLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = foodTypeProvider.provideAllFoodTypes(),
     )
 }

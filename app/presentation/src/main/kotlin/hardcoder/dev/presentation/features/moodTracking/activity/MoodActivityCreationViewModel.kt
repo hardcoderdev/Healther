@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.moodTracking.activity
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
@@ -17,21 +17,21 @@ class MoodActivityCreationViewModel(
     private val moodActivityCreator: MoodActivityCreator,
     moodActivityNameValidator: MoodActivityNameValidator,
     iconResourceProvider: IconResourceProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val activityNameController = ValidatedInputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = "",
         validation = moodActivityNameValidator::validate,
     )
 
     val iconSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         items = iconResourceProvider.getIcons(),
     )
 
     val creationController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             moodActivityCreator.create(
                 name = activityNameController.validateAndRequire(),

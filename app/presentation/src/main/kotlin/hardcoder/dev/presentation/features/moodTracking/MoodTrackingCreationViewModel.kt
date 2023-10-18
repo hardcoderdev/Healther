@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.moodTracking
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.controller.request.RequestController
@@ -21,35 +21,35 @@ class MoodTrackingCreationViewModel(
     dateTimeProvider: DateTimeProvider,
     moodTypeProvider: MoodTypeProvider,
     moodActivityProvider: MoodActivityProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val dateController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = dateTimeProvider.currentDate(),
     )
 
     val timeInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = dateTimeProvider.currentTime().time,
     )
 
     val moodTypeSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         itemsFlow = moodTypeProvider.provideAllMoodTypes(),
     )
 
     val noteInputController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = "",
     )
 
     val activitiesMultiSelectionController = MultiSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         itemsFlow = moodActivityProvider.provideAllActivities(),
     )
 
     val creationController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             moodTrackCreator.create(
                 note = noteInputController.state.value.input.ifEmpty { null },

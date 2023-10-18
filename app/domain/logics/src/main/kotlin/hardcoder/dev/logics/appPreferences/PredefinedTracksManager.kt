@@ -1,24 +1,26 @@
 package hardcoder.dev.logics.appPreferences
 
 import android.content.Context
-import com.russhwolf.settings.Settings
-import com.russhwolf.settings.SharedPreferencesSettings
-import com.russhwolf.settings.boolean
+import androidx.core.content.edit
 import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeCreator
 import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeCreator
 
 class PredefinedTracksManager(
     private val context: Context,
-    private val settings: Settings = SharedPreferencesSettings(
-        // TODO KMM
-        delegate = context.getSharedPreferences("MAIN_PREFS", 0),
-    ),
     private val drinkTypeCreator: DrinkTypeCreator,
     private val moodTypeCreator: MoodTypeCreator,
 ) {
 
-    private val isDrinkTypeSaved by settings.boolean(IS_DRINK_TYPES_SAVED, false)
-    private val isMoodTypesSaved by settings.boolean(IS_MOOD_TYPES_SAVED, false)
+    private val sharedPreferences by lazy {
+        context.getSharedPreferences("MAIN_PREFS", 0)
+    }
+
+    private val isDrinkTypeSaved by lazy {
+        sharedPreferences.getBoolean(IS_DRINK_TYPES_SAVED, false)
+    }
+    private val isMoodTypesSaved by lazy {
+        sharedPreferences.getBoolean(IS_MOOD_TYPES_SAVED, false)
+    }
 
     suspend fun createPredefinedTracksIfNeeded() {
         if (!isDrinkTypeSaved) createPredefinedDrinkTypes()
@@ -27,12 +29,12 @@ class PredefinedTracksManager(
 
     private suspend fun createPredefinedDrinkTypes() {
         drinkTypeCreator.createPredefined()
-        settings.putBoolean(IS_DRINK_TYPES_SAVED, true)
+        sharedPreferences.edit { putBoolean(IS_DRINK_TYPES_SAVED, true) }
     }
 
     private suspend fun createPredefinedMoodTypes() {
         moodTypeCreator.createPredefined()
-        settings.putBoolean(IS_MOOD_TYPES_SAVED, true)
+        sharedPreferences.edit { putBoolean(IS_MOOD_TYPES_SAVED, true) }
     }
 
     private companion object {

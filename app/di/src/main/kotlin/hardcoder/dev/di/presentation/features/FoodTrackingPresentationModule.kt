@@ -7,17 +7,18 @@ import hardcoder.dev.presentation.features.foodTracking.FoodTrackingViewModel
 import hardcoder.dev.presentation.features.foodTracking.foodType.FoodTypeCreationViewModel
 import hardcoder.dev.presentation.features.foodTracking.foodType.FoodTypeUpdateViewModel
 import hardcoder.dev.presentation.features.foodTracking.foodType.FoodTypesViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val foodTrackingPresentationModule = module {
-    factory {
+    viewModel {
         FoodTrackingViewModel(
             foodTrackProvider = get(),
             dateTimeProvider = get(),
         )
     }
 
-    factory {
+    viewModel {
         FoodTrackingCreationViewModel(
             foodTrackCreator = get(),
             foodTypeProvider = get(),
@@ -25,7 +26,7 @@ internal val foodTrackingPresentationModule = module {
         )
     }
 
-    factory { parameters ->
+    viewModel { parameters ->
         FoodTrackingUpdateViewModel(
             foodTrackId = parameters.get(),
             foodTypeProvider = get(),
@@ -36,13 +37,13 @@ internal val foodTrackingPresentationModule = module {
         )
     }
 
-    factory {
+    viewModel {
         FoodTypesViewModel(
             foodTypeProvider = get(),
         )
     }
 
-    factory {
+    viewModel {
         FoodTypeCreationViewModel(
             foodTypeCreator = get(),
             foodTypeNameValidator = get(),
@@ -50,7 +51,7 @@ internal val foodTrackingPresentationModule = module {
         )
     }
 
-    factory { parameters ->
+    viewModel { parameters ->
         FoodTypeUpdateViewModel(
             foodTypeId = parameters.get(),
             foodTypeNameValidator = get(),
@@ -61,7 +62,7 @@ internal val foodTrackingPresentationModule = module {
         )
     }
 
-    factory {
+    viewModel {
         FoodTrackingHistoryViewModel(
             dateTimeProvider = get(),
             foodTrackProvider = get(),

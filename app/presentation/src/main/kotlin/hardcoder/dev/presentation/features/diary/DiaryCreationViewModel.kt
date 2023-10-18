@@ -1,13 +1,14 @@
 package hardcoder.dev.presentation.features.diary
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.MultiSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItems
 import hardcoder.dev.datetime.DateTimeProvider
+import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup
 import hardcoder.dev.logic.features.diary.diaryTrack.CorrectDiaryTrackContent
 import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackContentValidator
 import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagProvider
@@ -19,26 +20,26 @@ class DiaryCreationViewModel(
     private val dateTimeProvider: DateTimeProvider,
     diaryTagProvider: DiaryTagProvider,
     diaryTrackContentValidator: DiaryTrackContentValidator,
-) : ScreenModel {
+) : ViewModel() {
 
     val contentController = ValidatedInputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = "",
         validation = diaryTrackContentValidator::validate,
     )
 
     val tagMultiSelectionController = MultiSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         itemsFlow = diaryTagProvider.provideAllDiaryTags(),
     )
 
     val creationController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             diaryTrackCreator.create(
                 content = contentController.validateAndRequire<CorrectDiaryTrackContent>().data,
                 date = dateTimeProvider.currentInstant(),
-                diaryAttachmentGroup = hardcoder.dev.entities.features.diary.DiaryAttachmentGroup(
+                diaryAttachmentGroup = DiaryAttachmentGroup(
                     tags = if (tagMultiSelectionController.state.value is MultiSelectionController.State.Empty) {
                         emptySet()
                     } else {

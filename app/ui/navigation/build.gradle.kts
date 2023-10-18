@@ -5,6 +5,6 @@ plugins {
 
 dependencies {
     api(projects.app.ui.screens)
+    api(libs.compose.navigation)
     api(libs.bundles.koinDi)
-    api(libs.bundles.voyager.navigation)
 }

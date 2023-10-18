@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.foodTracking.foodType
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
@@ -26,23 +26,23 @@ class FoodTypeUpdateViewModel(
     foodTypeUpdater: FoodTypeUpdater,
     foodTypeDeleter: FoodTypeDeleter,
     iconResourceProvider: IconResourceProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     private val initialFoodType = MutableStateFlow<FoodType?>(null)
 
     val nameInputController = ValidatedInputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = "",
         validation = foodTypeNameValidator::validate,
     )
 
     val iconSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         items = iconResourceProvider.getIcons(),
     )
 
     val updateController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             foodTypeUpdater.update(
                 id = foodTypeId,
@@ -56,14 +56,14 @@ class FoodTypeUpdateViewModel(
     )
 
     val deletionController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             foodTypeDeleter.deleteById(foodTypeId)
         },
     )
 
     init {
-        coroutineScope.launch {
+        viewModelScope.launch {
             val foodType = foodTypeProvider.provideFoodTypeById(foodTypeId).first()!!
             initialFoodType.value = foodType
             nameInputController.changeInput(foodType.name)

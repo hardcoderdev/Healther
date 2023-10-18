@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.moodTracking
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toLocalDateTime
@@ -22,7 +22,7 @@ class MoodTrackingAnalyticsViewModel(
     moodTrackProvider: MoodTrackProvider,
     moodTrackingStatisticProvider: MoodTrackingStatisticProvider,
     dateTimeProvider: DateTimeProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val moodTracksForTheLastMonth =
@@ -34,18 +34,18 @@ class MoodTrackingAnalyticsViewModel(
         }.distinctUntilChanged().flatMapLatest { range ->
             moodTrackProvider.provideAllMoodTracksByDayRange(range)
         }.stateIn(
-            scope = coroutineScope,
+            scope = viewModelScope,
             started = SharingStarted.Eagerly,
             initialValue = emptyList(),
         )
 
     val statisticLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = moodTrackingStatisticProvider.provideMoodTrackingStatistic(),
     )
 
     val chartEntriesLoadingController = LoadingController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         flow = moodTracksForTheLastMonth.map { fastingTrackList ->
             MoodTrackingChartData(
                 entriesList = fastingTrackList.groupBy {

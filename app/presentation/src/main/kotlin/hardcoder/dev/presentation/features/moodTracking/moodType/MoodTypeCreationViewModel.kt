@@ -1,7 +1,7 @@
 package hardcoder.dev.presentation.features.moodTracking.moodType
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.getInput
@@ -19,26 +19,26 @@ class MoodTypeCreationViewModel(
     moodTypeCreator: MoodTypeCreator,
     moodTypeNameValidator: MoodTypeNameValidator,
     iconResourceProvider: IconResourceProvider,
-) : ScreenModel {
+) : ViewModel() {
 
     val moodTypeNameController = ValidatedInputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = "",
         validation = moodTypeNameValidator::validate,
     )
 
     val iconSelectionController = SingleSelectionController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         items = iconResourceProvider.getIcons(),
     )
 
     val positiveIndexController = InputController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         initialInput = DEFAULT_POSITIVE_PERCENTAGE,
     )
 
     val creationController = RequestController(
-        coroutineScope = coroutineScope,
+        coroutineScope = viewModelScope,
         request = {
             moodTypeCreator.create(
                 name = moodTypeNameController.validateAndRequire(),
