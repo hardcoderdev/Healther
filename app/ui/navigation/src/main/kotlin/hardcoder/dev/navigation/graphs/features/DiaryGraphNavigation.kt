@@ -26,7 +26,10 @@ internal fun NavGraphBuilder.diaryGraph(
         composable(route = Screen.DiaryTracksCreate.route) {
             DiaryTracksCreateScreen(navController = navController)
         }
-        composable(route = Screen.DiaryTracksUpdate.route) {
+        composable(
+            route = Screen.DiaryTracksUpdate.route,
+            arguments = Screen.DiaryTracksUpdate.arguments,
+        ) {
             DiaryTracksUpdateScreen(
                 diaryTrackId = Screen.DiaryTracksUpdate.getDiaryTrackId(it.arguments),
                 navController = navController,
@@ -40,7 +43,10 @@ internal fun NavGraphBuilder.diaryGraph(
         composable(route = Screen.DiaryTagsCreate.route) {
             DiaryTagsCreationScreen(navController = navController)
         }
-        composable(route = Screen.DiaryTagsUpdate.route) {
+        composable(
+            route = Screen.DiaryTagsUpdate.route,
+            arguments = Screen.DiaryTagsUpdate.arguments,
+        ) {
             DiaryTagsUpdateScreen(
                 diaryTagId = Screen.DiaryTagsUpdate.getDiaryTagIdId(it.arguments),
                 navController = navController,

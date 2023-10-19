@@ -31,7 +31,10 @@ internal fun NavGraphBuilder.moodTrackingGraph(
         composable(route = Screen.MoodTracksCreate.route) {
             MoodTracksCreateScreen(navController = navController)
         }
-        composable(route = Screen.MoodTracksUpdate.route) {
+        composable(
+            route = Screen.MoodTracksUpdate.route,
+            arguments = Screen.MoodTracksUpdate.arguments,
+        ) {
             MoodTracksUpdateScreen(
                 moodTrackId = Screen.MoodTracksUpdate.getMoodTrackId(it.arguments),
                 navController = navController,
@@ -51,7 +54,10 @@ internal fun NavGraphBuilder.moodTrackingGraph(
         composable(route = Screen.MoodTypesCreate.route) {
             MoodTypesCreateScreen(navController = navController)
         }
-        composable(route = Screen.MoodTypesUpdate.route) {
+        composable(
+            route = Screen.MoodTypesUpdate.route,
+            arguments = Screen.MoodTypesUpdate.arguments,
+        ) {
             MoodTypesUpdateScreen(
                 moodTypeId = Screen.MoodTypesUpdate.getMoodTypeId(it.arguments),
                 navController = navController,
@@ -65,7 +71,10 @@ internal fun NavGraphBuilder.moodTrackingGraph(
         composable(route = Screen.MoodActivitiesCreate.route) {
             MoodActivitiesCreateScreen(navController = navController)
         }
-        composable(route = Screen.MoodActivitiesUpdate.route) {
+        composable(
+            route = Screen.MoodActivitiesUpdate.route,
+            arguments = Screen.MoodActivitiesUpdate.arguments,
+        ) {
             MoodActivitiesUpdateScreen(
                 moodActivityId = Screen.MoodActivitiesUpdate.getMoodActivityId(it.arguments),
                 navController = navController,

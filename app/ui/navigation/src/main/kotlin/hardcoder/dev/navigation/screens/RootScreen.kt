@@ -1,5 +1,7 @@
 package hardcoder.dev.navigation.screens
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -19,6 +21,10 @@ fun RootScreen() {
         navController = navController,
         route = NavGraph.AppGraph.route,
         startDestination = NavGraph.MainGraph.route,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None },
     ) {
         mainGraph(navController = navController)
         waterTrackingGraph(navController = navController)

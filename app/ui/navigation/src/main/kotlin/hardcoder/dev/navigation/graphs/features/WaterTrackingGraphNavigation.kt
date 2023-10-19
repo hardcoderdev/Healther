@@ -28,7 +28,10 @@ internal fun NavGraphBuilder.waterTrackingGraph(
         composable(route = Screen.WaterTracksCreate.route) {
             WaterTracksCreateScreen(navController = navController)
         }
-        composable(route = Screen.WaterTracksUpdate.route) {
+        composable(
+            route = Screen.WaterTracksUpdate.route,
+            arguments = Screen.WaterTracksUpdate.arguments,
+        ) {
             WaterTracksUpdateScreen(
                 waterTrackId = Screen.WaterTracksUpdate.getWaterTrackId(it.arguments),
                 navController = navController,
@@ -48,7 +51,10 @@ internal fun NavGraphBuilder.waterTrackingGraph(
         composable(route = Screen.DrinkTypesCreate.route) {
             DrinkTypesCreateScreen(navController = navController)
         }
-        composable(route = Screen.DrinkTypesUpdate.route) {
+        composable(
+            route = Screen.DrinkTypesUpdate.route,
+            arguments = Screen.DrinkTypesUpdate.arguments,
+        ) {
             DrinkTypesUpdate(
                 drinkTypeId = Screen.DrinkTypesUpdate.getDrinkTypeId(it.arguments),
                 navController = navController,

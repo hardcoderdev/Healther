@@ -52,12 +52,8 @@ class WaterTrackProvider(
             if (waterTrack == null) {
                 flowOf(null)
             } else {
-                combine(
-                    drinkTypeProvider.provideDrinkTypeById(waterTrack.drinkTypeId).map { drinkType ->
-                        waterTrack.toEntity(drinkType = drinkType!!)
-                    },
-                ) {
-                    it[0]
+                drinkTypeProvider.provideDrinkTypeById(waterTrack.drinkTypeId).map { drinkType ->
+                    waterTrack.toEntity(drinkType!!)
                 }
             }
         }.flowOn(dispatchers.io)

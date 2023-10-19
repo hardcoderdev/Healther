@@ -26,7 +26,10 @@ internal fun NavGraphBuilder.foodTrackingGraph(
         composable(route = Screen.FoodTracksCreate.route) {
             FoodTracksCreateScreen(navController = navController)
         }
-        composable(route = Screen.FoodTracksUpdate.route) {
+        composable(
+            route = Screen.FoodTracksUpdate.route,
+            arguments = Screen.FoodTracksUpdate.arguments,
+        ) {
             FoodTracksUpdateScreen(
                 foodTrackId = Screen.FoodTracksUpdate.getFoodTrackIdId(it.arguments),
                 navController = navController,
@@ -40,7 +43,10 @@ internal fun NavGraphBuilder.foodTrackingGraph(
         composable(route = Screen.FoodTypesCreate.route) {
             FoodTypesCreateScreen(navController = navController)
         }
-        composable(route = Screen.FoodTypesUpdate.route) {
+        composable(
+            route = Screen.FoodTypesUpdate.route,
+            arguments = Screen.FoodTypesUpdate.arguments,
+        ) {
             FoodTypesUpdateScreen(
                 foodTypeId = Screen.FoodTypesUpdate.getFoodTypeId(it.arguments),
                 navController = navController,
