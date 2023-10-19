@@ -1,8 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":app:ui:pedometer-manager")
-
-
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -35,7 +32,7 @@ include(
     ":app:ui:resources",
     ":app:ui:formatters",
     ":app:ui:statistics-resolvers",
-    //"app:ui:pedometer-manager",
+    ":app:ui:pedometer-manager",
     ":app:di",
     ":app:presentation",
     ":app:data:database",
@@ -50,7 +47,6 @@ include(
     ":foundation:coroutines",
     ":foundation:uikit",
     ":foundation:permissions",
-    ":foundation:sqldelight",
     ":foundation:datetime",
     ":foundation:math",
     ":foundation:controllers",

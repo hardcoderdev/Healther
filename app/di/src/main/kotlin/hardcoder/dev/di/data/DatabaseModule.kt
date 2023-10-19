@@ -1,6 +1,5 @@
 package hardcoder.dev.di.data
 
-import hardcoder.dev.database.AppDatabaseFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

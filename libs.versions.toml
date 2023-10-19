@@ -11,7 +11,7 @@ compose-navigation = "2.7.4"
 kotlin-coroutines = "1.7.3"
 kotlin-datetime = "0.4.1"
 kotlin-serialization = "1.5.1"
-sqlDelight = "2.0.0"
+room = "2.6.0"
 ktor-client = "2.3.3"
 coil-compose = "2.4.0"
 lottie-compose = "6.0.0"
@@ -35,11 +35,11 @@ play-core = { module = "com.google.android.play:core", version.ref = "play-core"
 kotlin-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 kotlin-coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
-kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization" }
-sqlDelight-primitiveAdapters = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqlDelight" }
-sqlDelight-coroutinesExt = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
-sqlDelight-androidDriver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
-sqlDelight-nativeDriver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
+kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 ktorClient-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
 ktorClient-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor-client" }
 ktorClient-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-client" }
@@ -75,7 +75,6 @@ com-android-library = { id = "com.android.library", version.ref = "android-gradl
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-sql-delight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 
 [bundles]
