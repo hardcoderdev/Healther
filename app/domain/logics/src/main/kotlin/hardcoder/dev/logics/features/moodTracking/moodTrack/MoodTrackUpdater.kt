@@ -12,7 +12,9 @@ import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackCreator
 import hardcoder.dev.logics.features.moodTracking.moodWithActivity.MoodWithActivityCreator
 import hardcoder.dev.logics.features.moodTracking.moodWithActivity.MoodWithActivityDeleter
 import hardcoder.dev.mappers.features.diary.AttachmentTypeIdMapper
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
+import hardcoder.dev.entities.features.moodTracking.MoodTrack as MoodTrackEntity
 
 class MoodTrackUpdater(
     private val moodTrackDao: MoodTrackDao,
@@ -27,13 +29,13 @@ class MoodTrackUpdater(
 
     suspend fun update(
         note: String?,
-        moodTrack: MoodTrack,
+        moodTrack: MoodTrackEntity,
         selectedActivities: Set<MoodActivity>,
     ) = withContext(dispatchers.io) {
         moodTrackDao.update(
             MoodTrack(
                 id = moodTrack.id,
-                moodTypeId = moodTrack.moodTypeId,
+                moodTypeId = moodTrack.moodType.id,
                 creationDate = moodTrack.creationDate,
             ),
         )
@@ -41,8 +43,10 @@ class MoodTrackUpdater(
         diaryAttachmentDao.provideDiaryAttachmentsByTargetId(
             targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.MOOD_TRACKING_ENTITY),
             targetId = moodTrack.id,
-        ).executeAsList().forEach {
-            diaryTrackDao.deleteById(it.diaryTrackId)
+        ).onEach { diaryAttachmentList ->
+            diaryAttachmentList.forEach {
+                diaryTrackDao.deleteById(it.diaryTrackId)
+            }
         }
 
         diaryAttachmentDao.deleteDiaryAttachmentsByTargetId(
@@ -53,7 +57,7 @@ class MoodTrackUpdater(
         if (note != null) {
             diaryTrackCreator.create(
                 content = note,
-                date = moodTrack.date,
+                date = moodTrack.creationDate,
                 diaryAttachmentGroup = DiaryAttachmentGroup(
                     moodTracks = listOf(moodTrack),
                 ),

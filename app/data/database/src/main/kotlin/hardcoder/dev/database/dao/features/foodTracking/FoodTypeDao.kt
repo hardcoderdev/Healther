@@ -24,5 +24,5 @@ interface FoodTypeDao {
     fun provideAllFoodTypes(): Flow<List<FoodType>>
 
     @Query("SELECT * FROM food_types WHERE id = :foodTypeId")
-    fun provideFoodTypeById(foodTypeId: Int): Flow<FoodType>
+    fun provideFoodTypeById(foodTypeId: Int): Flow<FoodType?>
 }

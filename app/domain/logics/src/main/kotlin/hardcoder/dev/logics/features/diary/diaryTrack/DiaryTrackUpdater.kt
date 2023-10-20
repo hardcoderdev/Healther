@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 
 class DiaryTrackUpdater(
-    private val diaryTrackDao: DiaryTrackDao
+    private val diaryTrackDao: DiaryTrackDao,
     private val diaryAttachmentManager: DiaryAttachmentManager,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {

@@ -70,43 +70,43 @@ object MoodTrackingMockDataProvider {
         return listOf(
             MoodTrack(
                 id = 0,
-                date = Clock.System.now(),
+                creationDate = Clock.System.now(),
                 moodType = moodTypesList[0],
             ),
             MoodTrack(
                 id = 1,
-                date = Clock.System.now(),
+                creationDate = Clock.System.now(),
                 moodType = moodTypesList[1],
             ),
             MoodTrack(
                 id = 2,
-                date = Clock.System.now(),
+                creationDate = Clock.System.now(),
                 moodType = moodTypesList[2],
             ),
             MoodTrack(
                 id = 3,
-                date = Clock.System.now(),
+                creationDate = Clock.System.now(),
                 moodType = moodTypesList[3],
             ),
 
             MoodTrack(
                 id = 4,
-                date = Clock.System.now(),
+                creationDate = Clock.System.now(),
                 moodType = moodTypesList[0],
             ),
             MoodTrack(
                 id = 5,
-                date = Clock.System.now(),
+                creationDate = Clock.System.now(),
                 moodType = moodTypesList[1],
             ),
             MoodTrack(
                 id = 6,
-                date = Clock.System.now(),
+                creationDate = Clock.System.now(),
                 moodType = moodTypesList[2],
             ),
             MoodTrack(
                 id = 7,
-                date = Clock.System.now(),
+                creationDate = Clock.System.now(),
                 moodType = moodTypesList[3],
             ),
         )

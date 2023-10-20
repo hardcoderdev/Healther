@@ -22,7 +22,7 @@ interface DiaryTrackDao {
     suspend fun deleteById(diaryTrackId: Int)
 
     @Query("SELECT * FROM diary_tracks WHERE diary_track_id = :diaryTrackId")
-    fun provideDiaryTrackById(diaryTrackId: Int): Flow<List<DiaryTrack>>
+    fun provideDiaryTrackById(diaryTrackId: Int): Flow<DiaryTrack?>
 
     @Query("SELECT * FROM diary_tracks WHERE creationInstant BETWEEN :startTime AND :endTime")
     fun provideAllDiaryTracksByDateRange(

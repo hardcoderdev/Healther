@@ -24,5 +24,5 @@ interface DiaryTagDao {
     fun provideAllDiaryTags(): Flow<List<DiaryTag>>
 
     @Query("SELECT * FROM diary_tags WHERE diary_tag_id = :diaryTagId")
-    fun provideDiaryTagById(diaryTagId: Int): Flow<DiaryTag>
+    fun provideDiaryTagById(diaryTagId: Int): Flow<DiaryTag?>
 }

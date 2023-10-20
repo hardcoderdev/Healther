@@ -1,10 +1,10 @@
 package hardcoder.dev.logics.features.foodTracking.foodType
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
+import hardcoder.dev.coroutines.mapItems
 import hardcoder.dev.database.dao.features.foodTracking.FoodTypeDao
 import hardcoder.dev.database.entities.features.foodTracking.FoodType
 import hardcoder.dev.icons.IconResourceProvider
-import hardcoder.dev.sqldelight.asFlowOfList
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import hardcoder.dev.entities.features.foodTracking.FoodType as FoodTypeEntity
@@ -17,13 +17,12 @@ class FoodTypeProvider(
 
     fun provideAllFoodTypes() = foodTypeDao
         .provideAllFoodTypes()
-        .asFlowOfList(dispatchers.io) { foodTypeDatabase ->
-            foodTypeDatabase.toEntity()
-        }
+        .mapItems { it.toEntity() }
+        .flowOn(dispatchers.io)
 
     fun provideFoodTypeById(id: Int) = foodTypeDao
         .provideFoodTypeById(id)
-        .map { it.executeAsOneOrNull()?.toEntity() }
+        .map { it?.toEntity() }
         .flowOn(dispatchers.io)
 
     private fun FoodType.toEntity() = FoodTypeEntity(

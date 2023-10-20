@@ -24,5 +24,5 @@ interface MoodTypeDao {
     fun provideAllMoodTypes(): Flow<List<MoodType>>
 
     @Query("SELECT * FROM mood_types WHERE mood_type_id = :moodTypeId")
-    fun provideMoodTypeById(moodTypeId: Int): Flow<MoodType>
+    fun provideMoodTypeById(moodTypeId: Int): Flow<MoodType?>
 }

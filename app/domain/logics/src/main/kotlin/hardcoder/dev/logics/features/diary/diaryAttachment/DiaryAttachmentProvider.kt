@@ -1,6 +1,7 @@
 package hardcoder.dev.logics.features.diary.diaryAttachment
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
+import hardcoder.dev.coroutines.mapItems
 import hardcoder.dev.database.dao.features.diary.DiaryAttachmentDao
 import hardcoder.dev.database.entities.features.diary.DiaryAttachment
 import hardcoder.dev.entities.features.diary.AttachmentType
@@ -15,7 +16,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import hardcoder.dev.entities.features.diary.DiaryAttachment as DiaryAttachmentEntity
 import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup as AttachmentEntity
 
@@ -29,25 +29,20 @@ class DiaryAttachmentProvider(
 ) {
 
     fun provideAttachmentByEntityId(attachmentType: AttachmentType, entityId: Int) =
-        diaryAttachmentDao
-            .provideDiaryAttachmentsByTargetId(
-                targetTypeId = attachmentTypeIdMapper.mapToId(attachmentType),
-                targetId = entityId,
+        diaryAttachmentDao.provideDiaryAttachmentsByTargetId(
+            targetTypeId = attachmentTypeIdMapper.mapToId(attachmentType),
+            targetId = entityId,
+        ).mapItems { attachment ->
+            DiaryAttachmentEntity(
+                id = attachment.id,
+                diaryTrackId = attachment.diaryTrackId,
+                targetType = attachmentType,
+                targetId = attachment.targetId,
             )
-            .map {
-                it.executeAsOneOrNull()?.let { attachment ->
-                    DiaryAttachmentEntity(
-                        id = attachment.id,
-                        diaryTrackId = attachment.diaryTrackId,
-                        targetType = attachmentType,
-                        targetId = attachment.targetId,
-                    )
-                }
-            }.flowOn(dispatchers.io)
+        }.flowOn(dispatchers.io)
 
     fun provideAttachmentOfDiaryTrackById(id: Int) = diaryAttachmentDao
         .provideDiaryAttachmentsByDiaryTrackId(id)
-        .map { it.executeAsList() }
         .flatMapLatest { attachments ->
             if (attachments.isEmpty()) {
                 flowOf(null)

@@ -7,6 +7,7 @@ import androidx.room.Upsert
 import hardcoder.dev.database.entities.features.moodTracking.MoodActivityCrossRef
 import hardcoder.dev.database.entities.features.moodTracking.MoodTrackWithActivities
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.Instant
 
 @Dao
 interface MoodWithActivityDao {
@@ -15,6 +16,11 @@ interface MoodWithActivityDao {
     suspend fun upsert(moodActivityCrossRef: MoodActivityCrossRef)
 
     @Transaction
-    @Query("SELECT * FROM mood_tracks")
-    fun getMoodTracksWithActivities(): Flow<List<MoodTrackWithActivities>>
+    @Query("SELECT * FROM mood_tracks WHERE creationDate BETWEEN :startTime AND :endTime")
+    fun provideMoodTracksWithActivitiesByDayRange(
+        startTime: Instant,
+        endTime: Instant,
+    ): Flow<List<MoodTrackWithActivities>>
+
+    @Query("SELECT * FROM moodactivitycrossref ")
 }

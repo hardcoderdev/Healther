@@ -25,7 +25,7 @@ interface FoodTrackDao {
     suspend fun deleteAllTracksByFoodTypeId(foodTypeId: Int)
 
     @Query("SELECT * FROM food_tracks WHERE id = :foodTrackId")
-    fun provideFoodTrackById(foodTrackId: Int): Flow<FoodTrack>
+    fun provideFoodTrackById(foodTrackId: Int): Flow<FoodTrack?>
 
     @Query("SELECT * FROM food_tracks WHERE creationInstant BETWEEN :startTime AND :endTime")
     fun provideFoodTracksByDayRange(
@@ -34,5 +34,5 @@ interface FoodTrackDao {
     ): Flow<List<FoodTrack>>
 
     @Query("SELECT * FROM food_tracks ORDER BY id DESC LIMIT 1")
-    fun provideLastFoodTrack(): Flow<FoodTrack>
+    fun provideLastFoodTrack(): Flow<FoodTrack?>
 }

@@ -25,10 +25,10 @@ interface MoodTrackDao {
     suspend fun deleteAllTracksByMoodTypeId(moodTypeId: Int)
 
     @Query("SELECT * FROM mood_tracks")
-    fun provideAllMoodTracks(): Flow<MoodTrack>
+    fun provideAllMoodTracks(): Flow<List<MoodTrack>>
 
     @Query("SELECT * FROM mood_tracks WHERE mood_track_id = :moodTrackId")
-    fun provideMoodTrackById(moodTrackId: Int): Flow<MoodTrack>
+    fun provideMoodTrackById(moodTrackId: Int): Flow<MoodTrack?>
 
     @Query("SELECT * FROM mood_tracks WHERE creationDate BETWEEN :startTime AND :endTime")
     fun provideMoodTracksByDayRange(

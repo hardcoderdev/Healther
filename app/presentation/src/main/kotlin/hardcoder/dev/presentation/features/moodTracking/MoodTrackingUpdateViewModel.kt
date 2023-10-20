@@ -17,7 +17,6 @@ import hardcoder.dev.logics.features.diary.diaryAttachment.DiaryAttachmentProvid
 import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackProvider
 import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityProvider
 import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackDeleter
-import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackUpdater
 import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeProvider
 import hardcoder.dev.logics.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
@@ -30,7 +29,7 @@ class MoodTrackingUpdateViewModel(
     private val moodTrackUpdater: MoodTrackUpdater,
     private val moodTrackDeleter: MoodTrackDeleter,
     private val diaryTrackProvider: DiaryTrackProvider,
-    private val moodTrackProvider: MoodTrackProvider,
+    private val moodTrackWithActivitiesProvider: MoodWithActivitiesProvider,
     private val diaryAttachmentProvider: DiaryAttachmentProvider,
     dateTimeProvider: DateTimeProvider,
     moodWithActivityProvider: MoodWithActivitiesProvider,
@@ -71,7 +70,7 @@ class MoodTrackingUpdateViewModel(
             moodTrackProvider.provideById(moodTrackId).firstOrNull()?.let {
                 val moodTrack = it.copy(
                     moodType = moodTypeSelectionController.requireSelectedItem(),
-                    date = dateController.getInput().toInstant(timeInputController.getInput()),
+                    creationDate = dateController.getInput().toInstant(timeInputController.getInput()),
                 )
 
                 moodTrackUpdater.update(
@@ -90,8 +89,8 @@ class MoodTrackingUpdateViewModel(
 
     init {
         viewModelScope.launch {
-            val moodTrack = moodTrackProvider.provideById(moodTrackId).firstNotNull()
-            val moodTrackLocalDateTime = moodTrack.date.toLocalDateTime()
+            val moodTrackWithActivities = moodTrackWithActivitiesProvider.provideMoodWithActivityList(moodTrackId).firstNotNull()
+            val moodTrackLocalDateTime = moodTrack.creationDate.toLocalDateTime()
 
             moodTypeSelectionController.select(moodTrack.moodType)
             dateController.changeInput(moodTrackLocalDateTime.date)

@@ -1,10 +1,8 @@
 package hardcoder.dev.logics.features.moodTracking.statistic
 
-import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.MoodTrack
 import hardcoder.dev.database.dao.features.moodTracking.MoodTrackDao
+import hardcoder.dev.database.entities.features.moodTracking.MoodTrack
 import hardcoder.dev.entities.features.moodTracking.MoodTrackingStatistics
 import hardcoder.dev.entities.features.moodTracking.MoodType
 import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeProvider
@@ -26,7 +24,6 @@ class MoodTrackingStatisticProvider(
 
     fun provideMoodTrackingStatistic() = moodTrackDao
         .provideAllMoodTracks()
-        .map { it.executeAsList() }
         .flatMapLatest { moodTracksListDatabase ->
             if (moodTracksListDatabase.isEmpty()) {
                 flowOf(null)
@@ -80,6 +77,6 @@ class MoodTrackingStatisticProvider(
     private fun MoodTrack.toEntity(moodType: MoodType) = MoodTrackEntity(
         id = id,
         moodType = moodType,
-        date = date,
+        creationDate = creationDate,
     )
 }

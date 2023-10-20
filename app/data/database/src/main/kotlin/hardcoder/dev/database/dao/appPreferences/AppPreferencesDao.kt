@@ -13,5 +13,5 @@ interface AppPreferencesDao {
     suspend fun upsert(appPreferences: AppPreferences)
 
     @Query("SELECT * FROM app_preferences")
-    fun providePreferences(): Flow<AppPreferences>
+    fun providePreferences(): Flow<AppPreferences?>
 }

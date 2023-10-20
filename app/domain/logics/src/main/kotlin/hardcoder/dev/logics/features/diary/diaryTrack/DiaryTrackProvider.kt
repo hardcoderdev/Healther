@@ -25,7 +25,6 @@ class DiaryTrackProvider(
         dateRange: ClosedRange<Instant>,
     ) = diaryTrackDao
         .provideAllDiaryTracksByDateRange(dateRange.start, dateRange.endInclusive)
-        .map { it.executeAsList() }
         .flatMapLatest { diaryTracks ->
             if (diaryTracks.isEmpty()) {
                 flowOf(emptyList())
@@ -46,7 +45,6 @@ class DiaryTrackProvider(
 
     fun provideDiaryTrackById(id: Int) = diaryTrackDao
         .provideDiaryTrackById(id)
-        .map { it.executeAsOneOrNull() }
         .flatMapLatest { diaryTrackDatabase ->
             diaryTrackDatabase?.let {
                 diaryAttachmentProvider.provideAttachmentOfDiaryTrackById(diaryTrackDatabase.id).map {

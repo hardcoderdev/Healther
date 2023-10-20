@@ -14,7 +14,7 @@ class AppPreferenceProvider(
 
     fun provideAppPreference() = appPreferencesDao
         .providePreferences()
-        .map(AppPreferences::toEntity)
+        .map { it?.toEntity() }
         .flowOn(dispatchers.io)
 }
 

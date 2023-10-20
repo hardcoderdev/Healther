@@ -1,9 +1,6 @@
 package hardcoder.dev.logics.features.moodTracking.moodTrack
 
-import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.MoodTrack
 import hardcoder.dev.database.dao.features.moodTracking.MoodTrackDao
 import hardcoder.dev.database.entities.features.moodTracking.MoodTrack
 import hardcoder.dev.entities.features.moodTracking.MoodType
@@ -25,11 +22,8 @@ class MoodTrackProvider(
 ) {
 
     fun provideAllMoodTracksByDayRange(dayRange: ClosedRange<Instant>) =
-        moodTrackDao
-            .provideMoodTracksByDayRange(dayRange.start, dayRange.endInclusive)
-            .map {
-                it.executeAsList()
-            }.flatMapLatest { moodTracksList ->
+        moodTrackDao.provideMoodTracksByDayRange(dayRange.start, dayRange.endInclusive)
+            .flatMapLatest { moodTracksList ->
                 if (moodTracksList.isEmpty()) {
                     flowOf(emptyList())
                 } else {
@@ -48,9 +42,7 @@ class MoodTrackProvider(
 
     fun provideById(id: Int) = moodTrackDao
         .provideMoodTrackById(id)
-        .map {
-            it.executeAsOneOrNull()
-        }.flatMapLatest { moodTrack ->
+        .flatMapLatest { moodTrack ->
             if (moodTrack == null) {
                 flowOf(null)
             } else {
@@ -63,6 +55,6 @@ class MoodTrackProvider(
     private fun MoodTrack.toEntity(moodType: MoodType) = MoodTrackEntity(
         id = id,
         moodType = moodType,
-        date = date,
+        creationDate = creationDate,
     )
 }

@@ -1,9 +1,6 @@
 package hardcoder.dev.logics.features.foodTracking
 
-import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.FoodTrack
 import hardcoder.dev.database.dao.features.foodTracking.FoodTrackDao
 import hardcoder.dev.database.entities.features.foodTracking.FoodTrack
 import hardcoder.dev.entities.features.foodTracking.FoodType
@@ -24,11 +21,11 @@ class FoodTrackProvider(
     private val foodTypeProvider: FoodTypeProvider,
 ) {
 
-    fun provideFoodTracksByDayRange(dayRange: ClosedRange<Instant>) = foodTrackDao
-        .provideFoodTracksByDayRange(dayRange.start, dayRange.endInclusive)
-        .map {
-            it.executeAsList()
-        }.flatMapLatest { foodTracksList ->
+    fun provideFoodTracksByDayRange(dayRange: ClosedRange<Instant>) =
+        foodTrackDao.provideFoodTracksByDayRange(
+            startTime = dayRange.start,
+            endTime = dayRange.endInclusive,
+        ).flatMapLatest { foodTracksList ->
             if (foodTracksList.isEmpty()) {
                 flowOf(emptyList())
             } else {
@@ -46,7 +43,6 @@ class FoodTrackProvider(
 
     fun provideFoodTrackById(id: Int) = foodTrackDao
         .provideFoodTrackById(id)
-        .map { it.executeAsOneOrNull() }
         .flatMapLatest { foodTrack ->
             if (foodTrack == null) {
                 flowOf(null)
@@ -63,7 +59,6 @@ class FoodTrackProvider(
 
     fun provideLastFoodTrack() = foodTrackDao
         .provideLastFoodTrack()
-        .map { it.executeAsOneOrNull() }
         .flatMapLatest { foodTrack ->
             if (foodTrack == null) {
                 flowOf(null)

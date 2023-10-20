@@ -49,7 +49,7 @@ class MoodTrackingAnalyticsViewModel(
         flow = moodTracksForTheLastMonth.map { fastingTrackList ->
             MoodTrackingChartData(
                 entriesList = fastingTrackList.groupBy {
-                    it.date.toLocalDateTime().dayOfMonth
+                    it.creationDate.toLocalDateTime().dayOfMonth
                 }.map { entry ->
                     MoodTrackingChartEntry(
                         from = entry.key,

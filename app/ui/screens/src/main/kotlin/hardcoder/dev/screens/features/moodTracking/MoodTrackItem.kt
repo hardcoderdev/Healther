@@ -61,7 +61,7 @@ fun MoodTrackItem(
                                 id = R.string.moodTracking_item_feel_formatText,
                                 formatArgs = arrayOf(
                                     moodTrack.moodType.name.lowercase(),
-                                    dateTimeFormatter.formatTime(moodTrack.date),
+                                    dateTimeFormatter.formatTime(moodTrack.creationDate),
                                 ),
                             ),
                         )

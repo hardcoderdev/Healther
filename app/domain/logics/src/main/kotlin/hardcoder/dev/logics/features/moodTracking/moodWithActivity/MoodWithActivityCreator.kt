@@ -1,23 +1,24 @@
 package hardcoder.dev.logics.features.moodTracking.moodWithActivity
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.database.dao.features.moodTracking.MoodWithActivityDao
+import hardcoder.dev.database.entities.features.moodTracking.MoodActivityCrossRef
 import kotlinx.coroutines.withContext
 
 class MoodWithActivityCreator(
-    private val appDatabase: AppDatabase,
+    private val moodWithActivityDao: MoodWithActivityDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun create(
-        id: Int? = null,
         moodTrackId: Int,
         activityId: Int,
     ) = withContext(dispatchers.io) {
-        appDatabase.moodWithActivityQueries.upsert(
-            id = id,
-            activityId = activityId,
-            moodTrackId = moodTrackId,
+        moodWithActivityDao.upsert(
+            MoodActivityCrossRef(
+                moodActivityId = activityId,
+                moodTrackId = moodTrackId,
+            ),
         )
     }
 }
