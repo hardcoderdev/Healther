@@ -4,6 +4,7 @@ import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.MoodTrack
+import hardcoder.dev.database.dao.features.moodTracking.MoodTrackDao
 import hardcoder.dev.entities.features.moodTracking.MoodTrackingStatistics
 import hardcoder.dev.entities.features.moodTracking.MoodType
 import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeProvider
@@ -18,14 +19,13 @@ import hardcoder.dev.entities.features.moodTracking.MoodTrack as MoodTrackEntity
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MoodTrackingStatisticProvider(
-    private val appDatabase: AppDatabase,
+    private val moodTrackDao: MoodTrackDao,
     private val moodTypeProvider: MoodTypeProvider,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
-    fun provideMoodTrackingStatistic() = appDatabase.moodTrackQueries
+    fun provideMoodTrackingStatistic() = moodTrackDao
         .provideAllMoodTracks()
-        .asFlow()
         .map { it.executeAsList() }
         .flatMapLatest { moodTracksListDatabase ->
             if (moodTracksListDatabase.isEmpty()) {

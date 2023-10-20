@@ -1,12 +1,13 @@
 package hardcoder.dev.logics.features.foodTracking
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.database.dao.features.foodTracking.FoodTrackDao
+import hardcoder.dev.database.entities.features.foodTracking.FoodTrack
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 
 class FoodTrackUpdater(
-    private val appDatabase: AppDatabase,
+    private val foodTrackDao: FoodTrackDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
@@ -16,11 +17,13 @@ class FoodTrackUpdater(
         foodTypeId: Int,
         calories: Int,
     ) = withContext(dispatchers.io) {
-        appDatabase.foodTrackQueries.update(
-            id = id,
-            creationInstant = creationInstant,
-            foodTypeId = foodTypeId,
-            calories = calories,
+        foodTrackDao.update(
+            FoodTrack(
+                id = id,
+                creationInstant = creationInstant,
+                foodTypeId = foodTypeId,
+                calories = calories,
+            ),
         )
     }
 }

@@ -8,8 +8,8 @@ import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.icons.IconResourceProvider
-import hardcoder.dev.logic.features.moodTracking.moodActivity.CorrectActivityName
-import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityNameValidator
+import hardcoder.dev.validators.features.moodTracking.CorrectActivityName
+import hardcoder.dev.validators.features.moodTracking.MoodActivityNameValidator
 import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityDeleter
 import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityProvider
 import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityUpdater

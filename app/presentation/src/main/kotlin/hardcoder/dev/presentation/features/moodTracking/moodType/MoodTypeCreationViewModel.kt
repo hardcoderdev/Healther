@@ -10,8 +10,8 @@ import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.controller.selection.requireSelectedItem
 import hardcoder.dev.icons.IconResourceProvider
-import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
-import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
+import hardcoder.dev.validators.features.moodTracking.CorrectMoodTypeName
+import hardcoder.dev.validators.features.moodTracking.MoodTypeNameValidator
 import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeCreator
 import kotlinx.coroutines.flow.map
 

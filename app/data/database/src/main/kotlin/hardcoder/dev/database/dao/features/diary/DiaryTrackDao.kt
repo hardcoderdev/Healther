@@ -13,7 +13,7 @@ import kotlinx.datetime.Instant
 interface DiaryTrackDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(diaryTrack: DiaryTrack)
+    suspend fun insert(diaryTrack: DiaryTrack): Long
 
     @Update
     suspend fun update(diaryTrack: DiaryTrack)

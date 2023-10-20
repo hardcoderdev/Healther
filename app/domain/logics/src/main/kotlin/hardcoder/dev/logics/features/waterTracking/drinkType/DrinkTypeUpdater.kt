@@ -1,13 +1,14 @@
 package hardcoder.dev.logics.features.waterTracking.drinkType
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.database.dao.features.waterTracking.DrinkTypeDao
+import hardcoder.dev.database.entities.features.waterTracking.DrinkType
 import hardcoder.dev.icons.Icon
 import hardcoder.dev.validators.features.waterTracking.CorrectDrinkTypeName
 import kotlinx.coroutines.withContext
 
 class DrinkTypeUpdater(
-    private val appDatabase: AppDatabase,
+    private val drinkTypeDao: DrinkTypeDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
@@ -15,13 +16,15 @@ class DrinkTypeUpdater(
         id: Int,
         name: CorrectDrinkTypeName,
         icon: Icon,
-        hydrationIndexPercentage: Int,
+        hydrationIndexInPercentage: Int,
     ) = withContext(dispatchers.io) {
-        appDatabase.drinkTypeQueries.update(
-            id = id,
-            name = name.data,
-            iconId = icon.id,
-            hydrationIndexPercentage = hydrationIndexPercentage,
+        drinkTypeDao.update(
+            DrinkType(
+                id = id,
+                name = name.data,
+                iconId = icon.id,
+                hydrationIndexInPercentage = hydrationIndexInPercentage,
+            )
         )
     }
 }

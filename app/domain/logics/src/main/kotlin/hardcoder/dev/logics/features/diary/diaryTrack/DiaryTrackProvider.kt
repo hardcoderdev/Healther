@@ -1,9 +1,8 @@
 package hardcoder.dev.logics.features.diary.diaryTrack
 
-import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.DiaryTrack
+import hardcoder.dev.database.dao.features.diary.DiaryTrackDao
+import hardcoder.dev.database.entities.features.diary.DiaryTrack
 import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup
 import hardcoder.dev.logics.features.diary.diaryAttachment.DiaryAttachmentProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,16 +16,15 @@ import hardcoder.dev.entities.features.diary.DiaryTrack as DiaryTrackEntity
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DiaryTrackProvider(
-    private val appDatabase: AppDatabase,
+    private val diaryTrackDao: DiaryTrackDao,
     private val diaryAttachmentProvider: DiaryAttachmentProvider,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideAllDiaryTracksByDateRange(
         dateRange: ClosedRange<Instant>,
-    ) = appDatabase.diaryTrackQueries
+    ) = diaryTrackDao
         .provideAllDiaryTracksByDateRange(dateRange.start, dateRange.endInclusive)
-        .asFlow()
         .map { it.executeAsList() }
         .flatMapLatest { diaryTracks ->
             if (diaryTracks.isEmpty()) {
@@ -46,9 +44,8 @@ class DiaryTrackProvider(
             }
         }.flowOn(dispatchers.io)
 
-    fun provideDiaryTrackById(id: Int) = appDatabase.diaryTrackQueries
+    fun provideDiaryTrackById(id: Int) = diaryTrackDao
         .provideDiaryTrackById(id)
-        .asFlow()
         .map { it.executeAsOneOrNull() }
         .flatMapLatest { diaryTrackDatabase ->
             diaryTrackDatabase?.let {
@@ -65,7 +62,7 @@ class DiaryTrackProvider(
     ) = DiaryTrackEntity(
         id = id,
         content = content,
-        date = date,
+        creationInstant = creationInstant,
         diaryAttachmentGroup = diaryAttachmentGroup,
     )
 }

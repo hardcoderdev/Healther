@@ -1,4 +1,4 @@
-package hardcoder.dev.logic.features.moodTracking.moodActivity
+package hardcoder.dev.validators.features.moodTracking
 
 class MoodActivityNameValidator {
 

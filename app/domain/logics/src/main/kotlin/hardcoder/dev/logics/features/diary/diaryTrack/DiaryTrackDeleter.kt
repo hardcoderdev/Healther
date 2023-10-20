@@ -1,16 +1,18 @@
 package hardcoder.dev.logics.features.diary.diaryTrack
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.database.dao.features.diary.DiaryAttachmentDao
+import hardcoder.dev.database.dao.features.diary.DiaryTrackDao
 import kotlinx.coroutines.withContext
 
 class DiaryTrackDeleter(
-    private val appDatabase: AppDatabase,
+    private val diaryTrackDao: DiaryTrackDao,
+    private val diaryAttachmentDao: DiaryAttachmentDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     suspend fun deleteById(id: Int) = withContext(dispatchers.io) {
-        appDatabase.diaryTrackQueries.delete(id)
-        appDatabase.diaryAttachmentQueries.deleteByDiaryTrackId(id)
+        diaryTrackDao.deleteById(id)
+        diaryAttachmentDao.deleteDiaryAttachmentsByDiaryTrackId(id)
     }
 }

@@ -20,16 +20,15 @@ internal val userLogicModule = module {
 
     single {
         UserCreator(
-            appDatabase = get(),
+            userDao = get(),
             genderIdMapper = get(),
             dispatchers = get(),
-            idGenerator = get(),
         )
     }
 
     single {
         UserUpdater(
-            appDatabase = get(),
+            userDao = get(),
             genderIdMapper = get(),
             dispatchers = get(),
         )
@@ -37,7 +36,7 @@ internal val userLogicModule = module {
 
     single {
         UserProvider(
-            appDatabase = get(),
+            userDao = get(),
             genderIdMapper = get(),
             dispatchers = get(),
         )

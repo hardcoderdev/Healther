@@ -1,9 +1,8 @@
 package hardcoder.dev.logics.features.diary.diaryAttachment
 
-import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.DiaryAttachment
+import hardcoder.dev.database.dao.features.diary.DiaryAttachmentDao
+import hardcoder.dev.database.entities.features.diary.DiaryAttachment
 import hardcoder.dev.entities.features.diary.AttachmentType
 import hardcoder.dev.entities.features.diary.DiaryTag
 import hardcoder.dev.entities.features.moodTracking.MoodTrack
@@ -22,7 +21,7 @@ import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup as AttachmentE
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DiaryAttachmentProvider(
-    private val appDatabase: AppDatabase,
+    private val diaryAttachmentDao: DiaryAttachmentDao,
     private val attachmentTypeIdMapper: AttachmentTypeIdMapper,
     private val moodTrackProvider: MoodTrackProvider,
     private val diaryTagProvider: DiaryTagProvider,
@@ -30,12 +29,11 @@ class DiaryAttachmentProvider(
 ) {
 
     fun provideAttachmentByEntityId(attachmentType: AttachmentType, entityId: Int) =
-        appDatabase.diaryAttachmentQueries
-            .selectByTarget(
+        diaryAttachmentDao
+            .provideDiaryAttachmentsByTargetId(
                 targetTypeId = attachmentTypeIdMapper.mapToId(attachmentType),
                 targetId = entityId,
             )
-            .asFlow()
             .map {
                 it.executeAsOneOrNull()?.let { attachment ->
                     DiaryAttachmentEntity(
@@ -47,9 +45,8 @@ class DiaryAttachmentProvider(
                 }
             }.flowOn(dispatchers.io)
 
-    fun provideAttachmentOfDiaryTrackById(id: Int) = appDatabase.diaryAttachmentQueries
-        .selectByDiaryTrackId(id)
-        .asFlow()
+    fun provideAttachmentOfDiaryTrackById(id: Int) = diaryAttachmentDao
+        .provideDiaryAttachmentsByDiaryTrackId(id)
         .map { it.executeAsList() }
         .flatMapLatest { attachments ->
             if (attachments.isEmpty()) {

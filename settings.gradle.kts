@@ -51,5 +51,4 @@ include(
     ":foundation:math",
     ":foundation:controllers",
     ":foundation:icons",
-    ":foundation:identification",
 )

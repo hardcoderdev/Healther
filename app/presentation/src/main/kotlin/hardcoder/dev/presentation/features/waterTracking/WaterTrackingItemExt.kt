@@ -4,7 +4,7 @@ import hardcoder.dev.entities.features.waterTracking.WaterTrack
 
 fun WaterTrack.toItem(resolvedMillilitersCount: Int) = WaterTrackingItem(
     id = id,
-    timeInMillis = date.toEpochMilliseconds(),
+    timeInMillis = creationInstant.toEpochMilliseconds(),
     drinkType = drinkType,
     millilitersCount = millilitersCount,
     resolvedMillilitersCount = resolvedMillilitersCount,

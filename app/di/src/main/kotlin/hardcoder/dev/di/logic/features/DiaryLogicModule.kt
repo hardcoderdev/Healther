@@ -1,18 +1,18 @@
 package hardcoder.dev.di.logic.features
 
+import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagNameValidator
+import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackContentValidator
 import hardcoder.dev.logics.features.diary.DiaryDailyRateProvider
+import hardcoder.dev.logics.features.diary.diaryAttachment.DiaryAttachmentManager
 import hardcoder.dev.logics.features.diary.diaryAttachment.DiaryAttachmentProvider
 import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagCreator
 import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagDeleter
-import hardcoder.dev.logic.features.diary.diaryTag.DiaryTagNameValidator
 import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagProvider
 import hardcoder.dev.logics.features.diary.diaryTag.DiaryTagUpdater
-import hardcoder.dev.logic.features.diary.diaryTrack.DiaryTrackContentValidator
 import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackCreator
 import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackDeleter
 import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackProvider
 import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackUpdater
-import hardcoder.dev.logics.features.diary.diaryAttachment.DiaryAttachmentManager
 import hardcoder.dev.mappers.features.diary.AttachmentTypeIdMapper
 import hardcoder.dev.resources.features.diary.DiaryTagIconProvider
 import org.koin.core.module.dsl.singleOf
@@ -27,8 +27,7 @@ internal val diaryLogicModule = module {
 
     single {
         DiaryTrackCreator(
-            idGenerator = get(),
-            appDatabase = get(),
+            diaryTrackDao = get(),
             diaryAttachmentManager = get(),
             dispatchers = get(),
         )
@@ -36,7 +35,7 @@ internal val diaryLogicModule = module {
 
     single {
         DiaryTrackUpdater(
-            appDatabase = get(),
+            diaryTrackDao = get(),
             diaryAttachmentManager = get(),
             dispatchers = get(),
         )
@@ -44,14 +43,15 @@ internal val diaryLogicModule = module {
 
     single {
         DiaryTrackDeleter(
-            appDatabase = get(),
+            diaryTrackDao = get(),
+            diaryAttachmentDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         DiaryTrackProvider(
-            appDatabase = get(),
+            diaryTrackDao = get(),
             diaryAttachmentProvider = get(),
             dispatchers = get(),
         )
@@ -59,8 +59,7 @@ internal val diaryLogicModule = module {
 
     single {
         DiaryAttachmentManager(
-            idGenerator = get(),
-            appDatabase = get(),
+            diaryAttachmentDao = get(),
             attachmentTypeIdMapper = get(),
             dispatchers = get(),
         )
@@ -68,7 +67,7 @@ internal val diaryLogicModule = module {
 
     single {
         DiaryAttachmentProvider(
-            appDatabase = get(),
+            diaryAttachmentDao = get(),
             attachmentTypeIdMapper = get(),
             moodTrackProvider = get(),
             diaryTagProvider = get(),
@@ -78,29 +77,28 @@ internal val diaryLogicModule = module {
 
     single {
         DiaryTagCreator(
-            idGenerator = get(),
-            appDatabase = get(),
+            diaryTagDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         DiaryTagUpdater(
-            appDatabase = get(),
+            diaryTagDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         DiaryTagDeleter(
-            appDatabase = get(),
+            diaryTagDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         DiaryTagProvider(
-            appDatabase = get(),
+            diaryTagDao = get(),
             iconResourceProvider = get(),
             dispatchers = get(),
         )

@@ -3,14 +3,12 @@ package hardcoder.dev.logics.features.waterTracking
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.dao.features.waterTracking.WaterTrackDao
 import hardcoder.dev.database.entities.features.waterTracking.WaterTrack
-import hardcoder.dev.identification.IdGenerator
 import hardcoder.dev.validators.features.waterTracking.CorrectMillilitersCount
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 
 class WaterTrackCreator(
-    private val idGenerator: IdGenerator,
-    private val waterTrackDao: WaterTrackDao
+    private val waterTrackDao: WaterTrackDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
@@ -21,7 +19,6 @@ class WaterTrackCreator(
     ) = withContext(dispatchers.io) {
         waterTrackDao.insert(
             waterTrack = WaterTrack(
-                id = idGenerator.nextId(),
                 creationInstant = dateTime,
                 millilitersCount = millilitersCount.data,
                 drinkTypeId = drinkTypeId,

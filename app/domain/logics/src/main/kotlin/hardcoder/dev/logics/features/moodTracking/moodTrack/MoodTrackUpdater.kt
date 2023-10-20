@@ -1,11 +1,13 @@
 package hardcoder.dev.logics.features.moodTracking.moodTrack
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.database.dao.features.diary.DiaryAttachmentDao
+import hardcoder.dev.database.dao.features.diary.DiaryTrackDao
+import hardcoder.dev.database.dao.features.moodTracking.MoodTrackDao
+import hardcoder.dev.database.entities.features.moodTracking.MoodTrack
 import hardcoder.dev.entities.features.diary.AttachmentType
 import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup
 import hardcoder.dev.entities.features.moodTracking.MoodActivity
-import hardcoder.dev.entities.features.moodTracking.MoodTrack
 import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackCreator
 import hardcoder.dev.logics.features.moodTracking.moodWithActivity.MoodWithActivityCreator
 import hardcoder.dev.logics.features.moodTracking.moodWithActivity.MoodWithActivityDeleter
@@ -13,7 +15,9 @@ import hardcoder.dev.mappers.features.diary.AttachmentTypeIdMapper
 import kotlinx.coroutines.withContext
 
 class MoodTrackUpdater(
-    private val appDatabase: AppDatabase,
+    private val moodTrackDao: MoodTrackDao,
+    private val diaryAttachmentDao: DiaryAttachmentDao,
+    private val diaryTrackDao: DiaryTrackDao,
     private val moodWithActivityDeleter: MoodWithActivityDeleter,
     private val moodWithActivityCreator: MoodWithActivityCreator,
     private val attachmentTypeIdMapper: AttachmentTypeIdMapper,
@@ -26,20 +30,22 @@ class MoodTrackUpdater(
         moodTrack: MoodTrack,
         selectedActivities: Set<MoodActivity>,
     ) = withContext(dispatchers.io) {
-        appDatabase.moodTrackQueries.update(
-            id = moodTrack.id,
-            moodTypeId = moodTrack.moodType.id,
-            date = moodTrack.date,
+        moodTrackDao.update(
+            MoodTrack(
+                id = moodTrack.id,
+                moodTypeId = moodTrack.moodTypeId,
+                creationDate = moodTrack.creationDate,
+            ),
         )
 
-        appDatabase.diaryAttachmentQueries.selectByTarget(
+        diaryAttachmentDao.provideDiaryAttachmentsByTargetId(
             targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.MOOD_TRACKING_ENTITY),
             targetId = moodTrack.id,
         ).executeAsList().forEach {
-            appDatabase.diaryTrackQueries.delete(it.diaryTrackId)
+            diaryTrackDao.deleteById(it.diaryTrackId)
         }
 
-        appDatabase.diaryAttachmentQueries.deleteByTarget(
+        diaryAttachmentDao.deleteDiaryAttachmentsByTargetId(
             targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.MOOD_TRACKING_ENTITY),
             targetId = moodTrack.id,
         )

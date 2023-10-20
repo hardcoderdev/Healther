@@ -1,13 +1,14 @@
 package hardcoder.dev.logics.features.moodTracking.moodActivity
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.database.dao.features.moodTracking.MoodActivityDao
+import hardcoder.dev.database.entities.features.moodTracking.MoodActivity
 import hardcoder.dev.icons.Icon
-import hardcoder.dev.logic.features.moodTracking.moodActivity.CorrectActivityName
+import hardcoder.dev.validators.features.moodTracking.CorrectActivityName
 import kotlinx.coroutines.withContext
 
 class MoodActivityUpdater(
-    private val appDatabase: AppDatabase,
+    private val moodActivityDao: MoodActivityDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
@@ -16,10 +17,12 @@ class MoodActivityUpdater(
         name: CorrectActivityName,
         icon: Icon,
     ) = withContext(dispatchers.io) {
-        appDatabase.moodActivityQueries.update(
-            id = id,
-            name = name.data,
-            iconId = icon.id,
+        moodActivityDao.update(
+            MoodActivity(
+                id = id,
+                name = name.data,
+                iconId = icon.id,
+            ),
         )
     }
 }

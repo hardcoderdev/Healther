@@ -21,22 +21,21 @@ internal val foodTrackingLogicModule = module {
 
     single {
         FoodTrackCreator(
-            appDatabase = get(),
-            idGenerator = get(),
+            foodTrackDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         FoodTrackUpdater(
-            appDatabase = get(),
+            foodTrackDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         FoodTrackProvider(
-            appDatabase = get(),
+            foodTrackDao = get(),
             dispatchers = get(),
             foodTypeProvider = get(),
         )
@@ -44,36 +43,35 @@ internal val foodTrackingLogicModule = module {
 
     single {
         FoodTrackDeleter(
-            appDatabase = get(),
+            foodTrackDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         FoodTypeCreator(
-            idGenerator = get(),
-            appDatabase = get(),
+            foodTypeDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         FoodTypeUpdater(
-            appDatabase = get(),
+            foodTypeDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         FoodTypeDeleter(
-            appDatabase = get(),
+            foodTypeDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         FoodTypeProvider(
-            appDatabase = get(),
+            foodTypeDao = get(),
             dispatchers = get(),
             iconResourceProvider = get(),
         )

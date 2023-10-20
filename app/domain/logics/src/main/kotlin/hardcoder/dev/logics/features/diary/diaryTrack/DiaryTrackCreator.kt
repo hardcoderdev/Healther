@@ -1,16 +1,15 @@
 package hardcoder.dev.logics.features.diary.diaryTrack
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.identification.IdGenerator
+import hardcoder.dev.database.dao.features.diary.DiaryTrackDao
+import hardcoder.dev.database.entities.features.diary.DiaryTrack
 import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup
 import hardcoder.dev.logics.features.diary.diaryAttachment.DiaryAttachmentManager
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 
 class DiaryTrackCreator(
-    private val idGenerator: IdGenerator,
-    private val appDatabase: AppDatabase,
+    private val diaryTrackDao: DiaryTrackDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
     private val diaryAttachmentManager: DiaryAttachmentManager,
 ) {
@@ -20,15 +19,15 @@ class DiaryTrackCreator(
         date: Instant,
         content: String,
     ) = withContext(dispatchers.io) {
-        val diaryTrackId = idGenerator.nextId()
-        appDatabase.diaryTrackQueries.insert(
-            id = idGenerator.nextId(),
-            content = content,
-            date = date,
+        val diaryTrackId = diaryTrackDao.insert(
+            DiaryTrack(
+                content = content,
+                creationInstant = date,
+            )
         )
 
         diaryAttachmentManager.attach(
-            diaryTrackId = diaryTrackId,
+            diaryTrackId = diaryTrackId.toInt(),
             attachmentGroup = diaryAttachmentGroup,
         )
     }

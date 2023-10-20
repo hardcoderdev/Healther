@@ -1,9 +1,8 @@
 package hardcoder.dev.logics.features.waterTracking
 
-import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.WaterTrack
+import hardcoder.dev.database.dao.features.waterTracking.WaterTrackDao
+import hardcoder.dev.database.entities.features.waterTracking.WaterTrack
 import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.entities.features.waterTracking.WaterTrackingStatistics
 import hardcoder.dev.logics.features.waterTracking.drinkType.DrinkTypeProvider
@@ -21,17 +20,14 @@ import hardcoder.dev.entities.features.waterTracking.WaterTrack as WaterTrackEnt
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class WaterTrackingStatisticProvider(
-    private val appDatabase: AppDatabase,
+    private val waterTrackDao: WaterTrackDao,
     private val drinkTypeProvider: DrinkTypeProvider,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
-    fun provideWaterTrackingStatistic() = appDatabase.waterTrackQueries
+    fun provideWaterTrackingStatistic() = waterTrackDao
         .provideAllWaterTracks()
-        .asFlow()
-        .map {
-            it.executeAsList()
-        }.flatMapLatest { waterTracksListDatabase ->
+        .flatMapLatest { waterTracksListDatabase ->
             if (waterTracksListDatabase.isEmpty()) {
                 flowOf(null)
             } else {
@@ -56,7 +52,7 @@ class WaterTrackingStatisticProvider(
                             .roundToInt()
 
                     val averageWaterIntakes = waterTrackList.groupBy {
-                        it.date.toLocalDateTime(TimeZone.currentSystemDefault()).dayOfMonth
+                        it.creationInstant.toLocalDateTime(TimeZone.currentSystemDefault()).dayOfMonth
                     }.map {
                         it.value.count()
                     }.average().roundToInt()
@@ -73,7 +69,7 @@ class WaterTrackingStatisticProvider(
 
     private fun provideDrinkTypeById(waterTrack: WaterTrack): Flow<WaterTrackEntity> {
         return drinkTypeProvider.provideDrinkTypeById(waterTrack.drinkTypeId).map { drinkType ->
-            waterTrack.toEntity(drinkType = drinkType!!)
+            waterTrack.toEntity(drinkType = drinkType)
         }.flowOn(dispatchers.io)
     }
 
@@ -81,7 +77,7 @@ class WaterTrackingStatisticProvider(
         drinkType: DrinkType,
     ) = WaterTrackEntity(
         id = id,
-        date = date,
+        creationInstant = creationInstant,
         millilitersCount = millilitersCount,
         drinkType = drinkType,
     )

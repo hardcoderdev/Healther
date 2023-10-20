@@ -15,25 +15,25 @@ object DiaryMockDataProvider {
         DiaryTrack(
             id = 0,
             content = context.getString(R.string.diary_nowEmpty_text),
-            date = MockDateProvider.instant(),
+            creationInstant = MockDateProvider.instant(),
             diaryAttachmentGroup = null,
         ),
         DiaryTrack(
             id = 1,
             content = context.getString(R.string.diary_nowEmpty_text),
-            date = MockDateProvider.instant(),
+            creationInstant = MockDateProvider.instant(),
             diaryAttachmentGroup = diaryAttachmentsMoodTrack(context, false).toDiaryAttachmentGroup(),
         ),
         DiaryTrack(
             id = 2,
             content = context.getString(R.string.diary_nowEmpty_text),
-            date = MockDateProvider.instant(),
+            creationInstant = MockDateProvider.instant(),
             diaryAttachmentGroup = null,
         ),
         DiaryTrack(
             id = 3,
             content = context.getString(R.string.diary_nowEmpty_text),
-            date = MockDateProvider.instant(),
+            creationInstant = MockDateProvider.instant(),
             diaryAttachmentGroup = diaryAttachmentsMoodTrack(context, false).toDiaryAttachmentGroup(),
         ),
     )

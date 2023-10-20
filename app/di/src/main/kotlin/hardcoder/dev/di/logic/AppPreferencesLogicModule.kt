@@ -8,14 +8,14 @@ internal val appPreferencesLogicModule = module {
 
     single {
         AppPreferenceUpdater(
-            appDatabase = get(),
+            appPreferencesDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         AppPreferenceProvider(
-            appDatabase = get(),
+            appPreferencesDao = get(),
             dispatchers = get(),
         )
     }

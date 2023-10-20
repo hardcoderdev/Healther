@@ -1,25 +1,23 @@
 package hardcoder.dev.logics.appPreferences
 
-import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.AppPreference
+import hardcoder.dev.database.dao.appPreferences.AppPreferencesDao
+import hardcoder.dev.database.entities.appPreferences.AppPreferences
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import hardcoder.dev.entities.appPreferences.AppPreference as AppPreferenceEntity
 
 class AppPreferenceProvider(
-    private val appDatabase: AppDatabase,
+    private val appPreferencesDao: AppPreferencesDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
-    fun provideAppPreference() = appDatabase.appPreferenceQueries
+    fun provideAppPreference() = appPreferencesDao
         .providePreferences()
-        .asFlow()
-        .map { it.executeAsOneOrNull()?.toEntity() }
+        .map(AppPreferences::toEntity)
         .flowOn(dispatchers.io)
-
-    private fun AppPreference.toEntity() = AppPreferenceEntity(
-        firstLaunchTime = firstLaunchTime,
-    )
 }
+
+private fun AppPreferences.toEntity() = AppPreferenceEntity(
+    firstLaunchTime = firstLaunchTime,
+)

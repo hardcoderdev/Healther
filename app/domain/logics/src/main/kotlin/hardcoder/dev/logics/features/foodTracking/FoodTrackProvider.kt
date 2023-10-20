@@ -4,6 +4,8 @@ import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.FoodTrack
+import hardcoder.dev.database.dao.features.foodTracking.FoodTrackDao
+import hardcoder.dev.database.entities.features.foodTracking.FoodTrack
 import hardcoder.dev.entities.features.foodTracking.FoodType
 import hardcoder.dev.logics.features.foodTracking.foodType.FoodTypeProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,14 +19,13 @@ import hardcoder.dev.entities.features.foodTracking.FoodTrack as FoodTrackEntity
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FoodTrackProvider(
-    private val appDatabase: AppDatabase,
+    private val foodTrackDao: FoodTrackDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
     private val foodTypeProvider: FoodTypeProvider,
 ) {
 
-    fun provideFoodTracksByDayRange(dayRange: ClosedRange<Instant>) = appDatabase.foodTrackQueries
+    fun provideFoodTracksByDayRange(dayRange: ClosedRange<Instant>) = foodTrackDao
         .provideFoodTracksByDayRange(dayRange.start, dayRange.endInclusive)
-        .asFlow()
         .map {
             it.executeAsList()
         }.flatMapLatest { foodTracksList ->
@@ -43,9 +44,8 @@ class FoodTrackProvider(
             }
         }.flowOn(dispatchers.io)
 
-    fun provideFoodTrackById(id: Int) = appDatabase.foodTrackQueries
+    fun provideFoodTrackById(id: Int) = foodTrackDao
         .provideFoodTrackById(id)
-        .asFlow()
         .map { it.executeAsOneOrNull() }
         .flatMapLatest { foodTrack ->
             if (foodTrack == null) {
@@ -61,9 +61,8 @@ class FoodTrackProvider(
             }
         }.flowOn(dispatchers.io)
 
-    fun provideLastFoodTrack() = appDatabase.foodTrackQueries
+    fun provideLastFoodTrack() = foodTrackDao
         .provideLastFoodTrack()
-        .asFlow()
         .map { it.executeAsOneOrNull() }
         .flatMapLatest { foodTrack ->
             if (foodTrack == null) {

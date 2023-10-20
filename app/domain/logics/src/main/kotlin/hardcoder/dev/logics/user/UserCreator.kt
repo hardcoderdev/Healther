@@ -1,9 +1,9 @@
 package hardcoder.dev.logics.user
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.database.dao.user.UserDao
+import hardcoder.dev.database.entities.user.User
 import hardcoder.dev.entities.user.Gender
-import hardcoder.dev.identification.IdGenerator
 import hardcoder.dev.mappers.user.GenderIdMapper
 import hardcoder.dev.validators.user.CorrectUserExerciseStressTime
 import hardcoder.dev.validators.user.CorrectUserName
@@ -11,8 +11,7 @@ import hardcoder.dev.validators.user.CorrectUserWeight
 import kotlinx.coroutines.withContext
 
 class UserCreator(
-    private val idGenerator: IdGenerator,
-    private val appDatabase: AppDatabase,
+    private val userDao: UserDao,
     private val genderIdMapper: GenderIdMapper,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
@@ -23,12 +22,13 @@ class UserCreator(
         weight: CorrectUserWeight,
         exerciseStressTime: CorrectUserExerciseStressTime,
     ) = withContext(dispatchers.io) {
-        appDatabase.userQueries.insert(
-            id = idGenerator.nextId(),
-            name = name.data,
-            weight = weight.data.toInt(),
-            exerciseStressTime = exerciseStressTime.data.toInt(),
-            genderId = genderIdMapper.mapToId(gender),
+        userDao.insert(
+            User(
+                name = name.data,
+                weight = weight.data.toInt(),
+                exerciseStressTime = exerciseStressTime.data.toInt(),
+                genderId = genderIdMapper.mapToId(gender),
+            ),
         )
     }
 }

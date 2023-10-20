@@ -1,13 +1,14 @@
 package hardcoder.dev.logics.features.moodTracking.moodType
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.database.dao.features.moodTracking.MoodTypeDao
+import hardcoder.dev.database.entities.features.moodTracking.MoodType
 import hardcoder.dev.icons.Icon
-import hardcoder.dev.logic.features.moodTracking.moodType.CorrectMoodTypeName
+import hardcoder.dev.validators.features.moodTracking.CorrectMoodTypeName
 import kotlinx.coroutines.withContext
 
 class MoodTypeUpdater(
-    private val appDatabase: AppDatabase,
+    private val moodTypeDao: MoodTypeDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
@@ -17,11 +18,13 @@ class MoodTypeUpdater(
         icon: Icon,
         positivePercentage: Int,
     ) = withContext(dispatchers.io) {
-        appDatabase.moodTypeQueries.update(
-            name = name.data,
-            iconId = icon.id,
-            positivePercentage = positivePercentage,
-            id = id,
+        moodTypeDao.update(
+            MoodType(
+                name = name.data,
+                iconId = icon.id,
+                positivePercentage = positivePercentage,
+                id = id,
+            ),
         )
     }
 }

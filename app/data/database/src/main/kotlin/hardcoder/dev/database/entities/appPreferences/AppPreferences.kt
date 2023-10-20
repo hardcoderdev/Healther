@@ -8,5 +8,5 @@ import kotlinx.datetime.Instant
 data class AppPreferences(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val firstLaunchTime: Instant,
+    val firstLaunchTime: Instant?,
 )

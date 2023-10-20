@@ -2,7 +2,6 @@ package hardcoder.dev.di.logic.features
 
 import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityCreator
 import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityDeleter
-import hardcoder.dev.logic.features.moodTracking.moodActivity.MoodActivityNameValidator
 import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityProvider
 import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityUpdater
 import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackCreator
@@ -12,7 +11,6 @@ import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackUpdater
 import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeCreator
 import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeDeleter
-import hardcoder.dev.logic.features.moodTracking.moodType.MoodTypeNameValidator
 import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeProvider
 import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeUpdater
 import hardcoder.dev.logics.features.moodTracking.moodType.PredefinedMoodTypeProvider
@@ -23,6 +21,8 @@ import hardcoder.dev.logics.features.moodTracking.statistic.MoodTrackingStatisti
 import hardcoder.dev.resources.features.moodTracking.MoodActivityIconProvider
 import hardcoder.dev.resources.features.moodTracking.MoodTypeIconProvider
 import hardcoder.dev.resources.features.moodTracking.PredefinedMoodTypeProviderImpl
+import hardcoder.dev.validators.features.moodTracking.MoodActivityNameValidator
+import hardcoder.dev.validators.features.moodTracking.MoodTypeNameValidator
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -36,29 +36,28 @@ internal val moodTrackingLogicModule = module {
 
     single {
         MoodActivityCreator(
-            idGenerator = get(),
-            appDatabase = get(),
+            moodActivityDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         MoodActivityUpdater(
-            appDatabase = get(),
+            moodActivityDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         MoodActivityDeleter(
-            appDatabase = get(),
+            moodActivityDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         MoodActivityProvider(
-            appDatabase = get(),
+            moodActivityDao = get(),
             iconResourceProvider = get(),
             dispatchers = get(),
         )
@@ -89,8 +88,7 @@ internal val moodTrackingLogicModule = module {
 
     single {
         MoodTrackCreator(
-            appDatabase = get(),
-            idGenerator = get(),
+            moodTrackDao = get(),
             diaryTrackCreator = get(),
             moodWithActivityCreator = get(),
             moodTrackProvider = get(),
@@ -100,7 +98,9 @@ internal val moodTrackingLogicModule = module {
 
     single {
         MoodTrackUpdater(
-            appDatabase = get(),
+            moodTrackDao = get(),
+            diaryTrackDao = get(),
+            diaryAttachmentDao = get(),
             dispatchers = get(),
             moodWithActivityCreator = get(),
             moodWithActivityDeleter = get(),
@@ -111,14 +111,14 @@ internal val moodTrackingLogicModule = module {
 
     single {
         MoodTrackDeleter(
-            appDatabase = get(),
+            moodTrackDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         MoodTrackProvider(
-            appDatabase = get(),
+            moodTrackDao = get(),
             moodTypeProvider = get(),
             dispatchers = get(),
         )
@@ -126,8 +126,7 @@ internal val moodTrackingLogicModule = module {
 
     single {
         MoodTypeCreator(
-            idGenerator = get(),
-            appDatabase = get(),
+            moodTypeDao = get(),
             predefinedMoodTypeProvider = get(),
             dispatchers = get(),
         )
@@ -135,14 +134,14 @@ internal val moodTrackingLogicModule = module {
 
     single {
         MoodTypeUpdater(
-            appDatabase = get(),
+            moodTypeDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         MoodTypeDeleter(
-            appDatabase = get(),
+            moodTypeDao = get(),
             moodTrackDeleter = get(),
             dispatchers = get(),
         )
@@ -150,7 +149,7 @@ internal val moodTrackingLogicModule = module {
 
     single {
         MoodTypeProvider(
-            appDatabase = get(),
+            moodTypeDao = get(),
             iconResourceProvider = get(),
             dispatchers = get(),
         )
@@ -165,7 +164,7 @@ internal val moodTrackingLogicModule = module {
 
     single {
         MoodTrackingStatisticProvider(
-            appDatabase = get(),
+            moodTrackDao = get(),
             moodTypeProvider = get(),
             dispatchers = get(),
         )

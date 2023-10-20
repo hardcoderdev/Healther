@@ -1,4 +1,4 @@
-package hardcoder.dev.database.dao
+package hardcoder.dev.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

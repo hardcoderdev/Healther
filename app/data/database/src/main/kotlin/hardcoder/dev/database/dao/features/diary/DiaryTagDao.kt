@@ -17,12 +17,12 @@ interface DiaryTagDao {
     @Update
     suspend fun update(diaryTag: DiaryTag)
 
-    @Query("DELETE FROM diary_tags WHERE id = :diaryTagId")
+    @Query("DELETE FROM diary_tags WHERE diary_tag_id = :diaryTagId")
     suspend fun deleteById(diaryTagId: Int)
 
     @Query("SELECT * FROM diary_tags")
     fun provideAllDiaryTags(): Flow<List<DiaryTag>>
 
-    @Query("SELECT * FROM diary_tags WHERE id = :diaryTagId")
+    @Query("SELECT * FROM diary_tags WHERE diary_tag_id = :diaryTagId")
     fun provideDiaryTagById(diaryTagId: Int): Flow<DiaryTag>
 }

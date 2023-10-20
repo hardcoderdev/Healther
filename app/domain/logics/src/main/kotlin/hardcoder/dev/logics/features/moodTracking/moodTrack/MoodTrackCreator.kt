@@ -1,11 +1,11 @@
 package hardcoder.dev.logics.features.moodTracking.moodTrack
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.database.dao.features.moodTracking.MoodTrackDao
+import hardcoder.dev.database.entities.features.moodTracking.MoodTrack
 import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup
 import hardcoder.dev.entities.features.moodTracking.MoodActivity
 import hardcoder.dev.entities.features.moodTracking.MoodType
-import hardcoder.dev.identification.IdGenerator
 import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackCreator
 import hardcoder.dev.logics.features.moodTracking.moodWithActivity.MoodWithActivityCreator
 import kotlinx.coroutines.flow.filterNotNull
@@ -14,8 +14,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 
 class MoodTrackCreator(
-    private val idGenerator: IdGenerator,
-    private val appDatabase: AppDatabase,
+    private val moodTrackDao: MoodTrackDao,
     private val diaryTrackCreator: DiaryTrackCreator,
     private val moodTrackProvider: MoodTrackProvider,
     private val moodWithActivityCreator: MoodWithActivityCreator,
@@ -28,12 +27,11 @@ class MoodTrackCreator(
         date: Instant,
         selectedActivities: Set<MoodActivity>,
     ) = withContext(dispatchers.io) {
-        val moodTrackId = idGenerator.nextId()
-
-        appDatabase.moodTrackQueries.insert(
-            id = moodTrackId,
-            moodTypeId = moodType.id,
-            date = date,
+        val moodTrackId = moodTrackDao.insert(
+            MoodTrack(
+                moodTypeId = moodType.id,
+                creationDate = date,
+            )
         )
 
         if (note != null) {
@@ -42,7 +40,7 @@ class MoodTrackCreator(
                 date = date,
                 diaryAttachmentGroup = DiaryAttachmentGroup(
                     moodTracks = listOf(
-                        moodTrackProvider.provideById(moodTrackId).filterNotNull().first(),
+                        moodTrackProvider.provideById(moodTrackId.toInt()).filterNotNull().first(),
                     ),
                 ),
             )
@@ -50,7 +48,7 @@ class MoodTrackCreator(
 
         selectedActivities.forEach { activity ->
             moodWithActivityCreator.create(
-                moodTrackId = moodTrackId,
+                moodTrackId = moodTrackId.toInt(),
                 activityId = activity.id,
             )
         }

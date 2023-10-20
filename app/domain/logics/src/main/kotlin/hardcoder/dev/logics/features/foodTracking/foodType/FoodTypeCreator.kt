@@ -1,15 +1,14 @@
 package hardcoder.dev.logics.features.foodTracking.foodType
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.database.dao.features.foodTracking.FoodTypeDao
+import hardcoder.dev.database.entities.features.foodTracking.FoodType
 import hardcoder.dev.icons.Icon
-import hardcoder.dev.identification.IdGenerator
 import hardcoder.dev.validators.features.foodTracking.CorrectFoodTypeName
 import kotlinx.coroutines.withContext
 
 class FoodTypeCreator(
-    private val idGenerator: IdGenerator,
-    private val appDatabase: AppDatabase,
+    private val foodTypeDao: FoodTypeDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
@@ -17,10 +16,11 @@ class FoodTypeCreator(
         name: CorrectFoodTypeName,
         icon: Icon,
     ) = withContext(dispatchers.io) {
-        appDatabase.foodTypeQueries.insert(
-            id = idGenerator.nextId(),
-            name = name.data,
-            iconId = icon.id,
+        foodTypeDao.insert(
+            FoodType(
+                name = name.data,
+                iconId = icon.id,
+            ),
         )
     }
 }

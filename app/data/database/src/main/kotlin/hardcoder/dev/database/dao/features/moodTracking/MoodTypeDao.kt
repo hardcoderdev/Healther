@@ -17,12 +17,12 @@ interface MoodTypeDao {
     @Update
     suspend fun update(moodType: MoodType)
 
-    @Query("DELETE FROM mood_types WHERE id = :moodTypeId")
+    @Query("DELETE FROM mood_types WHERE mood_type_id = :moodTypeId")
     suspend fun deleteById(moodTypeId: Int)
 
     @Query("SELECT * FROM mood_types")
     fun provideAllMoodTypes(): Flow<List<MoodType>>
 
-    @Query("SELECT * FROM mood_types WHERE id = :moodTypeId")
+    @Query("SELECT * FROM mood_types WHERE mood_type_id = :moodTypeId")
     fun provideMoodTypeById(moodTypeId: Int): Flow<MoodType>
 }

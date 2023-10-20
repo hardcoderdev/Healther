@@ -22,8 +22,8 @@ import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
 import hardcoder.dev.icons.Icon
-import hardcoder.dev.logic.features.moodTracking.moodType.IncorrectMoodTypeName
-import hardcoder.dev.logic.features.moodTracking.moodType.ValidatedMoodTypeName
+import hardcoder.dev.validators.features.moodTracking.IncorrectMoodTypeName
+import hardcoder.dev.validators.features.moodTracking.ValidatedMoodTypeName
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.IconsMockDataProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig

@@ -1,20 +1,19 @@
 package hardcoder.dev.logics.features.pedometer
 
-import hardcoder.dev.identification.IdGenerator
 import java.time.LocalDateTime
+import kotlin.random.Random
 import kotlinx.datetime.toKotlinLocalDateTime
 
 class PedometerStepHandler(
-    private val idGenerator: IdGenerator,
     private val pedometerTrackUpserter: PedometerTrackUpserter,
 ) {
-    private var currentTrackId = idGenerator.nextId()
+    private var currentTrackId = Random.nextInt()
     private var currentTrackStepCount = 0
     private var currentTrackStartTime = LocalDateTime.now()
 
     suspend fun handleNewSteps(steps: Int) {
         if (LocalDateTime.now().hour > currentTrackStartTime.hour) {
-            currentTrackId = idGenerator.nextId()
+            currentTrackId = Random.nextInt()
             currentTrackStartTime = LocalDateTime.now()
             currentTrackStepCount = 0
         }

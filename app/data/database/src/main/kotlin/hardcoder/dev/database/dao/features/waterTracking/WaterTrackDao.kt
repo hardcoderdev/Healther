@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 import hardcoder.dev.database.entities.features.waterTracking.WaterTrack
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.Instant
 
 @Dao
 interface WaterTrackDao {
@@ -24,12 +25,12 @@ interface WaterTrackDao {
     suspend fun deleteAllTracksByDrinkTypeId(drinkTypeId: Int)
 
     @Query("SELECT * FROM water_tracks WHERE id = :waterTrackId")
-    fun provideWaterTrackById(waterTrackId: Int): Flow<WaterTrack>
+    fun provideWaterTrackById(waterTrackId: Int): Flow<WaterTrack?>
 
     @Query("SELECT * FROM water_tracks WHERE creationInstant BETWEEN :startDate AND :endDate")
     fun provideWaterTracksByDayRange(
-        startDate: Int,
-        endDate: Int,
+        startDate: Instant,
+        endDate: Instant,
     ): Flow<List<WaterTrack>>
 
     @Query("SELECT * FROM water_tracks")

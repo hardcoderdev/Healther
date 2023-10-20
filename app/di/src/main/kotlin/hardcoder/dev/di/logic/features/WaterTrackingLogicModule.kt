@@ -50,29 +50,28 @@ internal val waterTrackingLogicModule = module {
 
     single {
         WaterTrackCreator(
-            idGenerator = get(),
-            appDatabase = get(),
+            waterTrackDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         WaterTrackUpdater(
-            appDatabase = get(),
+            waterTrackDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         WaterTrackDeleter(
-            appDatabase = get(),
+            waterTrackDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         WaterTrackProvider(
-            appDatabase = get(),
+            waterTrackDao = get(),
             drinkTypeProvider = get(),
             dispatchers = get(),
         )
@@ -80,7 +79,7 @@ internal val waterTrackingLogicModule = module {
 
     single {
         WaterTrackingStatisticProvider(
-            appDatabase = get(),
+            waterTrackDao = get(),
             drinkTypeProvider = get(),
             dispatchers = get(),
         )
@@ -88,8 +87,7 @@ internal val waterTrackingLogicModule = module {
 
     single {
         DrinkTypeCreator(
-            idGenerator = get(),
-            appDatabase = get(),
+            drinkTypeDao = get(),
             predefinedDrinkTypeProvider = get(),
             dispatchers = get(),
         )
@@ -97,14 +95,14 @@ internal val waterTrackingLogicModule = module {
 
     single {
         DrinkTypeUpdater(
-            appDatabase = get(),
+            drinkTypeDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         DrinkTypeDeleter(
-            appDatabase = get(),
+            drinkTypeDao = get(),
             waterTrackDeleter = get(),
             dispatchers = get(),
         )
@@ -112,7 +110,7 @@ internal val waterTrackingLogicModule = module {
 
     single {
         DrinkTypeProvider(
-            appDatabase = get(),
+            drinkTypeDao = get(),
             iconResourceProvider = get(),
             dispatchers = get(),
         )

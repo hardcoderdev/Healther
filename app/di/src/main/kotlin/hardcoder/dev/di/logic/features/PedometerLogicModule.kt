@@ -25,14 +25,13 @@ internal val pedometerLogicModule = module {
 
     single {
         PedometerTrackUpserter(
-            appDatabase = get(),
+            pedometerTrackDao = get(),
             dispatchers = get(),
         )
     }
 
     single {
         PedometerStepHandler(
-            idGenerator = get(),
             pedometerTrackUpserter = get(),
         )
     }
@@ -47,7 +46,7 @@ internal val pedometerLogicModule = module {
 
     single {
         PedometerTrackProvider(
-            appDatabase = get(),
+            pedometerTrackDao = get(),
             dispatchers = get(),
         )
     }

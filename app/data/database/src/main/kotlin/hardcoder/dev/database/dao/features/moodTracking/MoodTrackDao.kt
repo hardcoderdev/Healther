@@ -13,12 +13,12 @@ import kotlinx.datetime.Instant
 interface MoodTrackDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(moodTrack: MoodTrack)
+    suspend fun insert(moodTrack: MoodTrack): Long
 
     @Update
     suspend fun update(moodTrack: MoodTrack)
 
-    @Query("DELETE FROM mood_tracks WHERE id = :moodTrackId")
+    @Query("DELETE FROM mood_tracks WHERE mood_track_id = :moodTrackId")
     suspend fun deleteById(moodTrackId: Int)
 
     @Query("DELETE FROM mood_tracks WHERE moodTypeId = :moodTypeId")
@@ -27,7 +27,7 @@ interface MoodTrackDao {
     @Query("SELECT * FROM mood_tracks")
     fun provideAllMoodTracks(): Flow<MoodTrack>
 
-    @Query("SELECT * FROM mood_tracks WHERE id = :moodTrackId")
+    @Query("SELECT * FROM mood_tracks WHERE mood_track_id = :moodTrackId")
     fun provideMoodTrackById(moodTrackId: Int): Flow<MoodTrack>
 
     @Query("SELECT * FROM mood_tracks WHERE creationDate BETWEEN :startTime AND :endTime")

@@ -1,31 +1,31 @@
 package hardcoder.dev.logics.features.pedometer
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.PedometerTrack
-import hardcoder.dev.sqldelight.asFlowOfList
+import hardcoder.dev.coroutines.mapItems
+import hardcoder.dev.database.dao.features.pedometer.PedometerTrackDao
+import hardcoder.dev.database.entities.features.pedometer.PedometerTrack
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.datetime.Instant
 import hardcoder.dev.entities.features.pedometer.PedometerTrack as PedometerTrackEntity
 
 class PedometerTrackProvider(
-    private val appDatabase: AppDatabase,
+    private val pedometerTrackDao: PedometerTrackDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
-    fun providePedometerTracksByRange(range: ClosedRange<Instant>) = appDatabase.pedometerTrackQueries
+    fun providePedometerTracksByRange(range: ClosedRange<Instant>) = pedometerTrackDao
         .providePedometerTracksByRange(
             range.start,
             range.endInclusive,
             range.start,
             range.endInclusive,
         )
-        .asFlowOfList(dispatchers.io) { pedometerDatabase ->
-            pedometerDatabase.toEntity()
-        }
-
-    private fun PedometerTrack.toEntity() = PedometerTrackEntity(
-        id = id,
-        stepsCount = stepsCount,
-        range = startTime..endTime,
-    )
+        .mapItems { it.toEntity() }
+        .flowOn(dispatchers.io)
 }
+
+private fun PedometerTrack.toEntity() = PedometerTrackEntity(
+    id = id,
+    stepsCount = stepsCount,
+    range = startTime..endTime,
+)

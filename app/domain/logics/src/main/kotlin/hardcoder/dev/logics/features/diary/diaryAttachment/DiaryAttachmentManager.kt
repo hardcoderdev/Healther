@@ -1,16 +1,15 @@
 package hardcoder.dev.logics.features.diary.diaryAttachment
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.database.dao.features.diary.DiaryAttachmentDao
+import hardcoder.dev.database.entities.features.diary.DiaryAttachment
 import hardcoder.dev.entities.features.diary.AttachmentType
 import hardcoder.dev.entities.features.diary.DiaryAttachmentGroup
-import hardcoder.dev.identification.IdGenerator
 import hardcoder.dev.mappers.features.diary.AttachmentTypeIdMapper
 import kotlinx.coroutines.withContext
 
 class DiaryAttachmentManager(
-    private val idGenerator: IdGenerator,
-    private val appDatabase: AppDatabase,
+    private val diaryAttachmentDao: DiaryAttachmentDao,
     private val dispatchers: BackgroundCoroutineDispatchers,
     private val attachmentTypeIdMapper: AttachmentTypeIdMapper,
 ) {
@@ -19,23 +18,25 @@ class DiaryAttachmentManager(
         diaryTrackId: Int,
         attachmentGroup: DiaryAttachmentGroup,
     ) = withContext(dispatchers.io) {
-        appDatabase.diaryAttachmentQueries.deleteByDiaryTrackId(diaryTrackId)
+        diaryAttachmentDao.provideDiaryAttachmentsByDiaryTrackId(diaryTrackId)
 
         attachmentGroup.moodTracks.forEach { moodTrack ->
-            appDatabase.diaryAttachmentQueries.insert(
-                id = idGenerator.nextId(),
-                diaryTrackId = diaryTrackId,
-                targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.MOOD_TRACKING_ENTITY),
-                targetId = moodTrack.id,
+            diaryAttachmentDao.insert(
+                DiaryAttachment(
+                    diaryTrackId = diaryTrackId,
+                    targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.MOOD_TRACKING_ENTITY),
+                    targetId = moodTrack.id,
+                ),
             )
         }
 
         attachmentGroup.tags.forEach { tag ->
-            appDatabase.diaryAttachmentQueries.insert(
-                id = idGenerator.nextId(),
-                diaryTrackId = diaryTrackId,
-                targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.TAG),
-                targetId = tag.id,
+            diaryAttachmentDao.insert(
+                DiaryAttachment(
+                    diaryTrackId = diaryTrackId,
+                    targetTypeId = attachmentTypeIdMapper.mapToId(AttachmentType.TAG),
+                    targetId = tag.id,
+                ),
             )
         }
     }

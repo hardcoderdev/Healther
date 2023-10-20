@@ -1,9 +1,8 @@
 package hardcoder.dev.logics.features.moodTracking.moodType
 
-import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
-import hardcoder.dev.database.MoodType
+import hardcoder.dev.database.dao.features.moodTracking.MoodTypeDao
+import hardcoder.dev.database.entities.features.moodTracking.MoodType
 import hardcoder.dev.icons.IconResourceProvider
 import hardcoder.dev.sqldelight.asFlowOfList
 import kotlinx.coroutines.flow.flowOn
@@ -11,18 +10,17 @@ import kotlinx.coroutines.flow.map
 import hardcoder.dev.entities.features.moodTracking.MoodType as MoodTypeEntity
 
 class MoodTypeProvider(
-    private val appDatabase: AppDatabase,
+    private val moodTypeDao: MoodTypeDao,
     private val iconResourceProvider: IconResourceProvider,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
-    fun provideAllMoodTypes() = appDatabase.moodTypeQueries.provideAllMoodTypes()
+    fun provideAllMoodTypes() = moodTypeDao.provideAllMoodTypes()
         .asFlowOfList(dispatchers.io) { moodTypeDatabase ->
             moodTypeDatabase.toEntity()
         }
 
-    fun provideMoodTypeByTrackId(id: Int) = appDatabase.moodTypeQueries.provideMoodTypeById(id)
-        .asFlow()
+    fun provideMoodTypeByTrackId(id: Int) = moodTypeDao.provideMoodTypeById(id)
         .map { it.executeAsOneOrNull()?.toEntity() }
         .flowOn(dispatchers.io)
 

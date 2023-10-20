@@ -1,15 +1,14 @@
 package hardcoder.dev.logics.features.waterTracking.drinkType
 
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
-import hardcoder.dev.database.AppDatabase
+import hardcoder.dev.database.dao.features.waterTracking.DrinkTypeDao
+import hardcoder.dev.database.entities.features.waterTracking.DrinkType
 import hardcoder.dev.icons.Icon
-import hardcoder.dev.identification.IdGenerator
 import hardcoder.dev.validators.features.waterTracking.CorrectDrinkTypeName
 import kotlinx.coroutines.withContext
 
 class DrinkTypeCreator(
-    private val idGenerator: IdGenerator,
-    private val appDatabase: AppDatabase,
+    private val drinkTypeDao: DrinkTypeDao,
     private val predefinedDrinkTypeProvider: PredefinedDrinkTypeProvider,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
@@ -17,23 +16,26 @@ class DrinkTypeCreator(
     suspend fun create(
         name: CorrectDrinkTypeName,
         icon: Icon,
-        hydrationIndexPercentage: Int,
+        hydrationIndexInPercentage: Int,
     ) = withContext(dispatchers.io) {
-        appDatabase.drinkTypeQueries.insert(
-            id = idGenerator.nextId(),
-            name = name.data,
-            iconId = icon.id,
-            hydrationIndexPercentage = hydrationIndexPercentage,
+        drinkTypeDao.insert(
+            DrinkType(
+                name = name.data,
+                iconId = icon.id,
+                hydrationIndexInPercentage = hydrationIndexInPercentage,
+            ),
         )
     }
 
+    // TODO PRE-POPULATE CALLBACK
     suspend fun createPredefined() = withContext(dispatchers.io) {
         predefinedDrinkTypeProvider.providePredefined().forEach { drinkType ->
-            appDatabase.drinkTypeQueries.insert(
-                id = idGenerator.nextId(),
-                name = drinkType.name,
-                iconId = drinkType.icon.id,
-                hydrationIndexPercentage = drinkType.hydrationIndexPercentage,
+            drinkTypeDao.insert(
+                DrinkType(
+                    name = drinkType.name,
+                    iconId = drinkType.icon.id,
+                    hydrationIndexInPercentage = drinkType.hydrationIndexPercentage,
+                )
             )
         }
     }

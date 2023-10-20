@@ -4,6 +4,8 @@ import app.cash.sqldelight.coroutines.asFlow
 import hardcoder.dev.coroutines.BackgroundCoroutineDispatchers
 import hardcoder.dev.database.AppDatabase
 import hardcoder.dev.database.MoodTrack
+import hardcoder.dev.database.dao.features.moodTracking.MoodTrackDao
+import hardcoder.dev.database.entities.features.moodTracking.MoodTrack
 import hardcoder.dev.entities.features.moodTracking.MoodType
 import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,15 +19,14 @@ import hardcoder.dev.entities.features.moodTracking.MoodTrack as MoodTrackEntity
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MoodTrackProvider(
-    private val appDatabase: AppDatabase,
+    private val moodTrackDao: MoodTrackDao,
     private val moodTypeProvider: MoodTypeProvider,
     private val dispatchers: BackgroundCoroutineDispatchers,
 ) {
 
     fun provideAllMoodTracksByDayRange(dayRange: ClosedRange<Instant>) =
-        appDatabase.moodTrackQueries
+        moodTrackDao
             .provideMoodTracksByDayRange(dayRange.start, dayRange.endInclusive)
-            .asFlow()
             .map {
                 it.executeAsList()
             }.flatMapLatest { moodTracksList ->
@@ -45,9 +46,8 @@ class MoodTrackProvider(
                 }
             }.flowOn(dispatchers.io)
 
-    fun provideById(id: Int) = appDatabase.moodTrackQueries
+    fun provideById(id: Int) = moodTrackDao
         .provideMoodTrackById(id)
-        .asFlow()
         .map {
             it.executeAsOneOrNull()
         }.flatMapLatest { moodTrack ->
