@@ -23,7 +23,7 @@ class DrinkTypeProvider(
 
     fun provideDrinkTypeById(id: Int) = drinkTypeDao
         .provideDrinkTypeById(id)
-        .map { it.toEntity(icon = iconResourceProvider.getIcon(it.iconId)) }
+        .map { it?.toEntity(icon = iconResourceProvider.getIcon(it.iconId)) }
         .flowOn(dispatchers.io)
 }
 

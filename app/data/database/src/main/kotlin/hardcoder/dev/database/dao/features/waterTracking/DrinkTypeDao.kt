@@ -24,5 +24,5 @@ interface DrinkTypeDao {
     fun provideAllDrinkTypes(): Flow<List<DrinkType>>
 
     @Query("SELECT * FROM drink_types WHERE id = :drinkTypeId")
-    fun provideDrinkTypeById(drinkTypeId: Int): Flow<DrinkType>
+    fun provideDrinkTypeById(drinkTypeId: Int): Flow<DrinkType?>
 }
