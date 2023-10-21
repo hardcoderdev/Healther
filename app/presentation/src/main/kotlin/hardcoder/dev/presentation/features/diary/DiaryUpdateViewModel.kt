@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 
 class DiaryUpdateViewModel(
     private val diaryTrackId: Int,
@@ -73,6 +74,7 @@ class DiaryUpdateViewModel(
             diaryTrackUpdater.update(
                 id = diaryTrackId,
                 content = contentInputController.validateAndRequire(),
+                creationInstant = Clock.System.now(),
                 diaryAttachmentGroup = initialDiaryTrack.firstNotNull().diaryAttachmentGroup?.copy(
                     tags = tagMultiSelectionController.requireSelectedItems(),
                 ) ?: DiaryAttachmentGroup(

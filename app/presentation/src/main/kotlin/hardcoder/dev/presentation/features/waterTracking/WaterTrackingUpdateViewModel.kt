@@ -77,7 +77,7 @@ class WaterTrackingUpdateViewModel(
         request = {
             waterTrackUpdater.update(
                 id = waterTrackId,
-                date = dateInputController.getInput().toInstant(timeInputController.getInput()),
+                creationInstant = dateInputController.getInput().toInstant(timeInputController.getInput()),
                 millilitersCount = millilitersDrunkInputController.validateAndRequire(),
                 drinkTypeId = drinkSelectionController.requireSelectedItem().id,
             )
@@ -101,7 +101,7 @@ class WaterTrackingUpdateViewModel(
     init {
         viewModelScope.launch {
             val waterTrack = waterTrackProvider.provideWaterTrackById(waterTrackId).first()!!
-            val waterTrackLocalDateTime = waterTrack.date.toLocalDateTime()
+            val waterTrackLocalDateTime = waterTrack.creationInstant.toLocalDateTime()
 
             initialWaterTrack.value = waterTrack
             dateInputController.changeInput(waterTrackLocalDateTime.date)

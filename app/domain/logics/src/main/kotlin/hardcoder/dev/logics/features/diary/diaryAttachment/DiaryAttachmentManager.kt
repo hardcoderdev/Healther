@@ -18,7 +18,7 @@ class DiaryAttachmentManager(
         diaryTrackId: Int,
         attachmentGroup: DiaryAttachmentGroup,
     ) = withContext(dispatchers.io) {
-        diaryAttachmentDao.provideDiaryAttachmentsByDiaryTrackId(diaryTrackId)
+        diaryAttachmentDao.deleteDiaryAttachmentsByDiaryTrackId(diaryTrackId)
 
         attachmentGroup.moodTracks.forEach { moodTrack ->
             diaryAttachmentDao.insert(

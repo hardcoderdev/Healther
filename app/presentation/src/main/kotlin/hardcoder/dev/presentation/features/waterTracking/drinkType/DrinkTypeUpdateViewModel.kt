@@ -54,7 +54,7 @@ class DrinkTypeUpdateViewModel(
                 id = drinkTypeId,
                 name = nameInputController.validateAndRequire(),
                 icon = iconSelectionController.requireSelectedItem(),
-                hydrationIndexPercentage = waterPercentageInputController.getInput(),
+                hydrationIndexInPercentage = waterPercentageInputController.getInput(),
             )
         },
         isAllowedFlow = nameInputController.state.map {

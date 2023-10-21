@@ -51,10 +51,10 @@ class MoodTrackProvider(
                 }
             }
         }.flowOn(dispatchers.io)
-
-    private fun MoodTrack.toEntity(moodType: MoodType) = MoodTrackEntity(
-        id = id,
-        moodType = moodType,
-        creationDate = creationDate,
-    )
 }
+
+private fun MoodTrack.toEntity(moodType: MoodType) = MoodTrackEntity(
+    id = id,
+    moodType = moodType,
+    creationDate = creationDate,
+)

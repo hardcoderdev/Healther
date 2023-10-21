@@ -10,6 +10,6 @@ class MoodWithActivityDeleter(
 ) {
 
     suspend fun deleteAllActivitiesByMoodTrackId(moodTrackId: Int) = withContext(dispatchers.io) {
-        appDatabase.moodWithActivityQueries.deleteAllActivitiesByMoodTrackId(moodTrackId)
+        appDatabase.moodWithActivityDao().deleteAllActivitiesByMoodTrackId(moodTrackId)
     }
 }

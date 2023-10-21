@@ -42,12 +42,12 @@ internal val moodTrackingPresentationModule = module {
     viewModel { parameters ->
         MoodTrackingUpdateViewModel(
             moodTrackId = parameters.get(),
+            moodTrackWithActivitiesProvider = get(),
             moodTrackUpdater = get(),
             moodTrackDeleter = get(),
             diaryTrackProvider = get(),
             moodTrackProvider = get(),
             diaryAttachmentProvider = get(),
-            moodWithActivityProvider = get(),
             moodActivityProvider = get(),
             moodTypeProvider = get(),
             dateTimeProvider = get(),

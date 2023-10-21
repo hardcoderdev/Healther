@@ -13,10 +13,12 @@ import hardcoder.dev.coroutines.firstNotNull
 import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.datetime.toInstant
 import hardcoder.dev.datetime.toLocalDateTime
+import hardcoder.dev.entities.features.diary.AttachmentType
 import hardcoder.dev.logics.features.diary.diaryAttachment.DiaryAttachmentProvider
 import hardcoder.dev.logics.features.diary.diaryTrack.DiaryTrackProvider
 import hardcoder.dev.logics.features.moodTracking.moodActivity.MoodActivityProvider
 import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackDeleter
+import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackProvider
 import hardcoder.dev.logics.features.moodTracking.moodTrack.MoodTrackUpdater
 import hardcoder.dev.logics.features.moodTracking.moodType.MoodTypeProvider
 import hardcoder.dev.logics.features.moodTracking.moodWithActivity.MoodWithActivitiesProvider
@@ -26,13 +28,13 @@ import kotlinx.coroutines.launch
 
 class MoodTrackingUpdateViewModel(
     private val moodTrackId: Int,
+    private val moodTrackProvider: MoodTrackProvider,
     private val moodTrackUpdater: MoodTrackUpdater,
     private val moodTrackDeleter: MoodTrackDeleter,
     private val diaryTrackProvider: DiaryTrackProvider,
     private val moodTrackWithActivitiesProvider: MoodWithActivitiesProvider,
     private val diaryAttachmentProvider: DiaryAttachmentProvider,
     dateTimeProvider: DateTimeProvider,
-    moodWithActivityProvider: MoodWithActivitiesProvider,
     moodActivityProvider: MoodActivityProvider,
     moodTypeProvider: MoodTypeProvider,
 ) : ViewModel() {
@@ -89,20 +91,19 @@ class MoodTrackingUpdateViewModel(
 
     init {
         viewModelScope.launch {
-            val moodTrackWithActivities = moodTrackWithActivitiesProvider.provideMoodWithActivityList(moodTrackId).firstNotNull()
+            val moodTrackWithActivities = moodTrackWithActivitiesProvider.provideMoodWithActivitiesById(moodTrackId).firstNotNull()
+            val moodTrack = moodTrackWithActivities.moodTrack
             val moodTrackLocalDateTime = moodTrack.creationDate.toLocalDateTime()
 
             moodTypeSelectionController.select(moodTrack.moodType)
             dateController.changeInput(moodTrackLocalDateTime.date)
             timeInputController.changeInput(moodTrackLocalDateTime.time)
-            activitiesMultiSelectionController.toggleItems(
-                moodWithActivityProvider.provideActivityListByMoodTrackId(moodTrackId).first(),
-            )
+            activitiesMultiSelectionController.toggleItems(moodTrackWithActivities.moodActivityList)
 
             diaryAttachmentProvider.provideAttachmentByEntityId(
-                attachmentType = hardcoder.dev.entities.features.diary.AttachmentType.MOOD_TRACKING_ENTITY,
+                attachmentType = AttachmentType.MOOD_TRACKING_ENTITY,
                 entityId = moodTrackId,
-            ).firstOrNull()?.let { attachment ->
+            ).firstOrNull()?.map { attachment ->
                 diaryTrackProvider.provideDiaryTrackById(
                     attachment.diaryTrackId,
                 ).firstOrNull().let { diaryTrack ->

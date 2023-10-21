@@ -65,7 +65,7 @@ internal val moodTrackingLogicModule = module {
 
     single {
         MoodWithActivitiesProvider(
-            appDatabase = get(),
+            moodWithActivityDao = get(),
             moodTrackProvider = get(),
             moodActivityProvider = get(),
             dispatchers = get(),
@@ -74,7 +74,7 @@ internal val moodTrackingLogicModule = module {
 
     single {
         MoodWithActivityCreator(
-            appDatabase = get(),
+            moodWithActivityDao = get(),
             dispatchers = get(),
         )
     }
@@ -105,7 +105,7 @@ internal val moodTrackingLogicModule = module {
             moodWithActivityCreator = get(),
             moodWithActivityDeleter = get(),
             attachmentTypeIdMapper = get(),
-            diaryTrackCreator = get(),
+            diaryTrackUpdater = get(),
         )
     }
 

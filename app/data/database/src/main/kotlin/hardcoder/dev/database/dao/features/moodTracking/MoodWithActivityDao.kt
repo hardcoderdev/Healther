@@ -22,5 +22,10 @@ interface MoodWithActivityDao {
         endTime: Instant,
     ): Flow<List<MoodTrackWithActivities>>
 
-    @Query("SELECT * FROM moodactivitycrossref ")
+    @Transaction
+    @Query("SELECT * FROM mood_tracks WHERE mood_track_id = :moodTrackId")
+    fun provideMoodTrackWithActivitiesByMoodTrackId(moodTrackId: Int): Flow<MoodTrackWithActivities?>
+
+    @Query("DELETE FROM moodactivitycrossref WHERE mood_track_id = :moodTrackId")
+    fun deleteAllActivitiesByMoodTrackId(moodTrackId: Int)
 }
