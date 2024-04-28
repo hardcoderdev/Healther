@@ -21,18 +21,18 @@ project.rootProject.file("local.properties").reader().use {
 fun extString(name: String) = ext[name].toString()
 
 android {
-    signingConfigs {
-        register("release") {
-            storeFile = file(extString("storeFile"))
-            storePassword = extString("storePassword")
-            keyAlias = extString("keyAlias")
-            keyPassword = extString("keyPassword")
-        }
-    }
+//    signingConfigs {
+//        register("release") {
+//            storeFile = file(extString("storeFile"))
+//            storePassword = extString("storePassword")
+//            keyAlias = extString("keyAlias")
+//            keyPassword = extString("keyPassword")
+//        }
+//    }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+           // signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
         }
