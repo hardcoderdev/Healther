@@ -18,6 +18,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.blocks.components.containers.ScaffoldWrapper
+import hardcoder.dev.blocks.components.icon.Icon
+import hardcoder.dev.blocks.components.icon.Image
+import hardcoder.dev.blocks.components.text.Title
+import hardcoder.dev.blocks.components.topBar.TopBarConfig
+import hardcoder.dev.blocks.components.topBar.TopBarType
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.controller.selection.SingleSelectionController
@@ -26,20 +32,17 @@ import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.resources.user.GenderResourcesProvider
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonConfig
 import hardcoder.dev.uikit.components.button.requestButton.RequestButtonWithIcon
-import hardcoder.dev.uikit.components.container.ScaffoldWrapper
 import hardcoder.dev.uikit.components.container.SingleCardSelectionRow
-import hardcoder.dev.uikit.components.icon.Icon
-import hardcoder.dev.uikit.components.icon.Image
-import hardcoder.dev.uikit.components.text.Title
 import hardcoder.dev.uikit.components.text.textField.TextFieldValidationAdapter
 import hardcoder.dev.uikit.components.text.textField.TextInputAdapter
 import hardcoder.dev.uikit.components.text.textField.ValidatedTextField
-import hardcoder.dev.uikit.components.topBar.TopBarConfig
-import hardcoder.dev.uikit.components.topBar.TopBarType
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
 import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoder.dev.validators.user.IncorrectUserExerciseStressTime
+import hardcoder.dev.validators.user.IncorrectUserWeight
 import hardcoder.dev.validators.user.ValidatedUserExerciseStressTime
+import hardcoder.dev.validators.user.ValidatedUserName
+import hardcoder.dev.validators.user.ValidatedUserWeight
 import hardcoderdev.healther.app.ui.resources.R
 
 @Composable
@@ -47,8 +50,8 @@ fun UserCreation(
     genderResourcesProvider: GenderResourcesProvider,
     userCreationController: RequestController,
     genderSelectionController: SingleSelectionController<Gender>,
-    nameInputController: ValidatedInputController<String, hardcoder.dev.validators.user.ValidatedUserName>,
-    weightInputController: ValidatedInputController<String, hardcoder.dev.validators.user.ValidatedUserWeight>,
+    nameInputController: ValidatedInputController<String, ValidatedUserName>,
+    weightInputController: ValidatedInputController<String, ValidatedUserWeight>,
     exerciseStressTimeInputController: ValidatedInputController<String, ValidatedUserExerciseStressTime>,
 ) {
     ScaffoldWrapper(
@@ -75,8 +78,8 @@ private fun UserCreationContent(
     genderResourcesProvider: GenderResourcesProvider,
     heroCreationController: RequestController,
     genderSelectionController: SingleSelectionController<Gender>,
-    nameInputController: ValidatedInputController<String, hardcoder.dev.validators.user.ValidatedUserName>,
-    weightInputController: ValidatedInputController<String, hardcoder.dev.validators.user.ValidatedUserWeight>,
+    nameInputController: ValidatedInputController<String, ValidatedUserName>,
+    weightInputController: ValidatedInputController<String, ValidatedUserWeight>,
     exerciseStressTimeInputController: ValidatedInputController<String, ValidatedUserExerciseStressTime>,
 ) {
     Column(
@@ -144,7 +147,7 @@ private fun SelectGenderSection(
 
 @Composable
 private fun EnterNameSection(
-    nameInputController: ValidatedInputController<String, hardcoder.dev.validators.user.ValidatedUserName>,
+    nameInputController: ValidatedInputController<String, ValidatedUserName>,
 ) {
     val context = LocalContext.current
 
@@ -187,7 +190,7 @@ private fun EnterNameSection(
 
 @Composable
 private fun EnterWeight(
-    weightInputController: ValidatedInputController<String, hardcoder.dev.validators.user.ValidatedUserWeight>,
+    weightInputController: ValidatedInputController<String, ValidatedUserWeight>,
 ) {
     val context = LocalContext.current
 
@@ -197,31 +200,31 @@ private fun EnterWeight(
         controller = weightInputController,
         inputAdapter = TextInputAdapter,
         validationAdapter = TextFieldValidationAdapter {
-            if (it !is hardcoder.dev.validators.user.IncorrectUserWeight) {
+            if (it !is IncorrectUserWeight) {
                 null
             } else {
                 when (val reason = it.reason) {
-                    is hardcoder.dev.validators.user.IncorrectUserWeight.Reason.Empty -> {
+                    is IncorrectUserWeight.Reason.Empty -> {
                         context.getString(
                             R.string.errors_fieldCantBeEmptyError,
                         )
                     }
 
-                    is hardcoder.dev.validators.user.IncorrectUserWeight.Reason.MoreThanMaximum -> {
+                    is IncorrectUserWeight.Reason.MoreThanMaximum -> {
                         context.getString(
                             R.string.user_creation_weightMoreThanMaximumBoundaryError,
                             reason.maximumBoundary,
                         )
                     }
 
-                    is hardcoder.dev.validators.user.IncorrectUserWeight.Reason.LessThanMinimum -> {
+                    is IncorrectUserWeight.Reason.LessThanMinimum -> {
                         context.getString(
                             R.string.user_creation_weightLessThanMinimumBoundaryError,
                             reason.minimumBoundary,
                         )
                     }
 
-                    is hardcoder.dev.validators.user.IncorrectUserWeight.Reason.InvalidCharsInWeight -> {
+                    is IncorrectUserWeight.Reason.InvalidCharsInWeight -> {
                         context.getString(
                             R.string.errors_invalidCharsError,
                             reason.invalidChars,

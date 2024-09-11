@@ -3,9 +3,10 @@ package hardcoder.dev.uikit.components.dialog
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import hardcoder.dev.blocks.components.dialog.TitleDialog
+import hardcoder.dev.blocks.components.text.Label
 import hardcoder.dev.controller.request.RequestController
 import hardcoder.dev.mock.controllers.MockControllersProvider
-import hardcoder.dev.uikit.components.text.Label
 import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoderdev.healther.app.ui.resources.R
 

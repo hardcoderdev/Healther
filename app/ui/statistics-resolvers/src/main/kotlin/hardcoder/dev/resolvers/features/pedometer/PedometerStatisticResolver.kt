@@ -1,10 +1,10 @@
 package hardcoder.dev.resolvers.features.pedometer
 
 import android.content.Context
+import hardcoder.dev.blocks.components.statistics.StatisticData
 import hardcoder.dev.entities.features.pedometer.PedometerStatistics
 import hardcoder.dev.formatters.DecimalFormatter
 import hardcoder.dev.formatters.MillisDistanceFormatter
-import hardcoder.dev.uikit.components.statistics.StatisticData
 import hardcoderdev.healther.app.ui.resources.R
 
 class PedometerStatisticResolver(

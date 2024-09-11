@@ -10,15 +10,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.blocks.components.button.circleIconButton.CircleIconButton
+import hardcoder.dev.blocks.components.button.circleIconButton.CircleIconButtonConfig
+import hardcoder.dev.blocks.components.text.Title
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.DiaryFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.FoodTrackingFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.MoodTrackingFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.PedometerFeatureItem
 import hardcoder.dev.screens.dashboard.featureItems.WaterTrackingFeatureItem
-import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButton
-import hardcoder.dev.uikit.components.button.circleIconButton.CircleIconButtonConfig
-import hardcoder.dev.uikit.components.text.Title
 import hardcoderdev.healther.app.ui.resources.R
 
 fun LazyListScope.dashboardFeaturesSection(

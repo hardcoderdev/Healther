@@ -6,11 +6,10 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.blocks.components.chip.content.SelectionContentChip
 import hardcoder.dev.controller.selection.SingleSelectionController
-import hardcoder.dev.uikit.components.chip.content.SelectionContentChip
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

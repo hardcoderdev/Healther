@@ -9,11 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.blocks.components.card.Card
+import hardcoder.dev.blocks.components.card.CardConfig
+import hardcoder.dev.blocks.components.text.Description
+import hardcoder.dev.blocks.components.text.Title
 import hardcoder.dev.formatters.MillisDistanceFormatter
-import hardcoder.dev.uikit.components.card.Card
-import hardcoder.dev.uikit.components.card.CardConfig
-import hardcoder.dev.uikit.components.text.Description
-import hardcoder.dev.uikit.components.text.Title
 import hardcoderdev.healther.app.ui.resources.R
 
 @Composable

@@ -13,7 +13,7 @@ import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.navigation.features.waterTracking.drinkTypes.DrinkTypesScreen
 import hardcoder.dev.presentation.features.foodTracking.FoodTrackingUpdateViewModel
-import hardcoder.dev.screens.features.foodTracking.foodTracks.FoodTrackUpdate
+import hardcoder.dev.screens.features.foodTracking.foodTracks.update.FoodTrackUpdate
 import hardcoder.dev.uikit.components.dialog.DeleteTrackDialog
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
 import org.koin.compose.koinInject

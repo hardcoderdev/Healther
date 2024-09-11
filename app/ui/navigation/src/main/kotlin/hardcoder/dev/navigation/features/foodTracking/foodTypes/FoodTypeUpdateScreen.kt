@@ -10,7 +10,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.presentation.features.foodTracking.foodType.FoodTypeUpdateViewModel
-import hardcoder.dev.screens.features.foodTracking.foodTypes.FoodTypeUpdate
+import hardcoder.dev.screens.features.foodTracking.foodTypes.update.FoodTypeUpdate
 import hardcoder.dev.uikit.components.dialog.DeleteTrackDialog
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
 import org.koin.core.parameter.parametersOf

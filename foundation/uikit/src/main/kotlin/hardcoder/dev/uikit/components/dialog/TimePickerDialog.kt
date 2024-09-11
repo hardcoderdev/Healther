@@ -2,6 +2,7 @@ package hardcoder.dev.uikit.components.dialog
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import hardcoder.dev.blocks.components.dialog.TitleDialog
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.getInput
 import hardcoder.dev.coroutines.DefaultBackgroundBackgroundCoroutineDispatchers

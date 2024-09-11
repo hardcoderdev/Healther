@@ -6,7 +6,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.presentation.features.moodTracking.moodType.MoodTypesViewModel
-import hardcoder.dev.screens.features.moodTracking.moodType.MoodTypes
+import hardcoder.dev.screens.features.moodTracking.moodType.observe.MoodTypes
 
 class MoodTypesScreen : Screen {
 

@@ -13,20 +13,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.blocks.components.button.fabButton.FabConfig
+import hardcoder.dev.blocks.components.containers.ScaffoldWrapper
+import hardcoder.dev.blocks.components.topBar.Action
+import hardcoder.dev.blocks.components.topBar.ActionConfig
+import hardcoder.dev.blocks.components.topBar.TopBarConfig
+import hardcoder.dev.blocks.components.topBar.TopBarType
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.entities.features.moodTracking.MoodWithActivities
 import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
-import hardcoder.dev.uikit.components.container.FabConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
-import hardcoder.dev.uikit.components.container.ScaffoldWrapper
-import hardcoder.dev.uikit.components.section.EmptySection
-import hardcoder.dev.uikit.components.topBar.Action
-import hardcoder.dev.uikit.components.topBar.ActionConfig
-import hardcoder.dev.uikit.components.topBar.TopBarConfig
-import hardcoder.dev.uikit.components.topBar.TopBarType
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.sections.EmptySection
 import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoderdev.healther.app.ui.resources.R
 
@@ -48,7 +48,10 @@ fun MoodTracking(
                 onUpdateMoodTrack = onUpdateMoodTrack,
             )
         },
-        fabConfig = FabConfig(onFabClick = onCreateMoodTrack),
+        fabConfig = FabConfig.LargeFab(
+            onFabClick = onCreateMoodTrack,
+            iconResId = R.drawable.ic_create,
+        ),
         topBarConfig = TopBarConfig(
             type = TopBarType.TopBarWithNavigationBack(
                 titleResId = R.string.moodTracking_title_topBar,

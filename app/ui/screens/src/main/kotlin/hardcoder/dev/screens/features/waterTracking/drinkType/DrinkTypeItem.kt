@@ -5,11 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.blocks.components.chip.Chip
+import hardcoder.dev.blocks.components.chip.ChipConfig
 import hardcoder.dev.entities.features.waterTracking.DrinkType
 import hardcoder.dev.icons.IconImpl
 import hardcoder.dev.icons.resourceId
-import hardcoder.dev.uikit.components.chip.Chip
-import hardcoder.dev.uikit.components.chip.ChipConfig
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
 import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoderdev.healther.app.ui.resources.R

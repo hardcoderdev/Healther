@@ -9,8 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.blocks.components.card.Card
+import hardcoder.dev.blocks.components.card.CardConfig
 import hardcoder.dev.controller.selection.SingleSelectionController
-import hardcoder.dev.uikit.components.card.internal.SelectionCard
 
 @Composable
 fun <T> SingleCardSelectionLazyColumn(
@@ -33,13 +34,14 @@ fun <T> SingleCardSelectionLazyColumn(
                 items(state.items) { item ->
                     val isSelected = state.selectedItem == item
 
-                    SelectionCard(
-                        modifier = itemModifier(),
-                        isSelected = isSelected,
-                        onSelect = { controller.select(item) },
-                    ) {
-                        itemContent(item, isSelected)
-                    }
+                    Card(
+                        cardConfig = CardConfig.Selection(
+                            modifier = itemModifier(),
+                            isSelected = isSelected,
+                            onSelect = { controller.select(item) },
+                            cardContent = { itemContent(item, isSelected) },
+                        ),
+                    )
                 }
             }
         }

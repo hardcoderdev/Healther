@@ -9,7 +9,7 @@ import hardcoder.dev.datetime.DateTimeProvider
 import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.navigation.features.foodTracking.foodTypes.FoodTypesScreen
 import hardcoder.dev.presentation.features.foodTracking.FoodTrackingCreationViewModel
-import hardcoder.dev.screens.features.foodTracking.foodTracks.FoodTrackCreation
+import hardcoder.dev.screens.features.foodTracking.foodTracks.create.FoodTrackCreation
 import hardcoder.dev.uikit.components.sideEffects.LaunchedEffectWhenExecuted
 import org.koin.compose.koinInject
 

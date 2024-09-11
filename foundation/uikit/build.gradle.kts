@@ -11,6 +11,7 @@ dependencies {
     api(projects.app.data.mock)
     api(platform(libs.compose.bom))
     api(projects.foundation.datetime)
+    api(libs.blocks.uikit)
     implementation(libs.compose.activity)
     implementation(libs.compose.material)
     implementation(libs.compose.ui)

@@ -18,14 +18,14 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import hardcoder.dev.blocks.components.button.textIconButton.TextIconButton
+import hardcoder.dev.blocks.components.button.textIconButton.TextIconButtonConfig
+import hardcoder.dev.blocks.components.card.Card
+import hardcoder.dev.blocks.components.card.CardConfig
+import hardcoder.dev.blocks.components.text.Description
+import hardcoder.dev.blocks.components.text.Title
 import hardcoder.dev.pedometer_manager.permissions.Initial
 import hardcoder.dev.pedometer_manager.permissions.Rejected
-import hardcoder.dev.uikit.components.button.textIconButton.TextIconButton
-import hardcoder.dev.uikit.components.button.textIconButton.TextIconButtonConfig
-import hardcoder.dev.uikit.components.card.Card
-import hardcoder.dev.uikit.components.card.CardConfig
-import hardcoder.dev.uikit.components.text.Description
-import hardcoder.dev.uikit.components.text.Title
 import hardcoderdev.healther.foundation.uikit.R
 
 @Composable

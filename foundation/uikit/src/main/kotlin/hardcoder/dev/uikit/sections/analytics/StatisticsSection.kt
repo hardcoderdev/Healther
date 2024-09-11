@@ -7,9 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.uikit.components.statistics.StatisticData
-import hardcoder.dev.uikit.components.statistics.Statistics
-import hardcoder.dev.uikit.components.text.Title
+import hardcoder.dev.blocks.components.statistics.StatisticData
+import hardcoder.dev.blocks.components.statistics.Statistics
+import hardcoder.dev.blocks.components.text.Title
 import hardcoder.dev.uikit.values.HealtherThemePreview
 import hardcoderdev.healther.app.ui.resources.R
 

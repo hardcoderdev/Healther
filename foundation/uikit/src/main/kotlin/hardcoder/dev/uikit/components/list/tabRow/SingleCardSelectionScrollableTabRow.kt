@@ -3,8 +3,9 @@ package hardcoder.dev.uikit.components.list.tabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import hardcoder.dev.blocks.components.card.Card
+import hardcoder.dev.blocks.components.card.CardConfig
 import hardcoder.dev.controller.selection.SingleSelectionController
-import hardcoder.dev.uikit.components.card.internal.SelectionCard
 
 @Composable
 fun <T> SingleCardSelectionScrollableTabRow(
@@ -21,13 +22,14 @@ fun <T> SingleCardSelectionScrollableTabRow(
                 actionButton()
                 state.items.forEach { item ->
                     val isSelected = state.selectedItem == item
-                    SelectionCard(
-                        modifier = itemModifier(),
-                        isSelected = isSelected,
-                        onSelect = { controller.select(item) },
-                    ) {
-                        itemContent(item, isSelected)
-                    }
+                    Card(
+                        cardConfig = CardConfig.Selection(
+                            modifier = itemModifier(),
+                            isSelected = isSelected,
+                            onSelect = { controller.select(item) },
+                            cardContent = { itemContent(item, isSelected) },
+                        ),
+                    )
                 }
             }
         }

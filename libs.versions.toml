@@ -1,12 +1,11 @@
 [versions]
-android-gradle-plugin = "8.3.0-alpha18"
-kotlin = "1.9.22"
-core-ktx = "1.13.0"
-play-core = "1.10.3"
-activity-ktx = "1.9.0"
-compose-bom = "2024.04.01"
+android-gradle-plugin = "8.6.0"
+kotlin = "1.9.24"
+core-ktx = "1.13.1"
+activity-ktx = "1.9.2"
+compose-bom = "2024.09.01"
 lifecycle-viewmodelCompose = "2.6.2"
-activity-compose = "1.9.0"
+activity-compose = "1.9.2"
 kotlin-coroutines = "1.7.3"
 kotlin-datetime = "0.4.1"
 kotlin-serialization = "1.5.1"
@@ -19,6 +18,7 @@ compose-charts = "1.6.4"
 compose-calendar = "1.0.5"
 compose-numberPicker = "1.0.3"
 composeAccompanist = "0.29.1-alpha"
+blocks = "0.06"
 koin-compose="3.5.0"
 koin-di = "3.5.0"
 moko-resources = "0.23.0"
@@ -31,7 +31,6 @@ android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref 
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity-ktx" }
-play-core = { module = "com.google.android.play:core", version.ref = "play-core" }
 kotlin-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 kotlin-coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
@@ -65,6 +64,7 @@ compose-accompanistFlowrow = { module = "com.google.accompanist:accompanist-flow
 compose-coil = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 compose-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+blocks-uikit = { module = "com.github.hardcoderdev:blocks", version.ref = "blocks" }
 koinDi = { module = "io.insert-koin:koin-android", version.ref = "koin-di" }
 koinDi-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
 moko-resourcesCompose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }

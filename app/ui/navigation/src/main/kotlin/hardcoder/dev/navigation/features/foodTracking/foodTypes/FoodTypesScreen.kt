@@ -6,7 +6,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.presentation.features.foodTracking.foodType.FoodTypesViewModel
-import hardcoder.dev.screens.features.foodTracking.foodTypes.FoodTypes
+import hardcoder.dev.screens.features.foodTracking.foodTypes.observe.FoodTypes
 
 class FoodTypesScreen : Screen {
 

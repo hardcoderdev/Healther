@@ -8,7 +8,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.presentation.features.diary.DiaryViewModel
 import hardcoder.dev.resources.features.diary.DateRangeFilterTypeResourcesProvider
-import hardcoder.dev.screens.features.diary.Diary
+import hardcoder.dev.screens.features.diary.observe.Diary
 import org.koin.compose.koinInject
 
 class DiaryScreen : Screen {

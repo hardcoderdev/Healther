@@ -7,7 +7,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.formatters.MillisDistanceFormatter
 import hardcoder.dev.presentation.features.foodTracking.FoodTrackingViewModel
-import hardcoder.dev.screens.features.foodTracking.foodTracks.FoodTracking
+import hardcoder.dev.screens.features.foodTracking.foodTracks.observe.FoodTracking
 import org.koin.compose.koinInject
 
 class FoodTrackingScreen : Screen {

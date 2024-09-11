@@ -1,9 +1,9 @@
 package hardcoder.dev.resolvers.features.waterTracking
 
 import android.content.Context
+import hardcoder.dev.blocks.components.statistics.StatisticData
 import hardcoder.dev.entities.features.waterTracking.WaterTrackingStatistics
 import hardcoder.dev.formatters.LiquidFormatter
-import hardcoder.dev.uikit.components.statistics.StatisticData
 import hardcoderdev.healther.app.ui.resources.R
 
 class WaterTrackingStatisticResolver(
@@ -17,7 +17,7 @@ class WaterTrackingStatisticResolver(
                 name = context.getString(R.string.waterTracking_statistic_water_total_drunk),
                 value = liquidFormatter.formatMillisDistance(
                     defaultMilliliters = statistic.totalMilliliters,
-                    accuracy = hardcoder.dev.formatters.LiquidFormatter.Accuracy.MILLILITERS,
+                    accuracy = LiquidFormatter.Accuracy.MILLILITERS,
                 ),
             ),
             StatisticData(

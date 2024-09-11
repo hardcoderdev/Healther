@@ -24,10 +24,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.blocks.components.text.ErrorText
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.uikit.components.modifier.onFocusLost
-import hardcoder.dev.uikit.components.text.ErrorText
 import hardcoder.dev.uikit.components.text.textField.internal.FilledTextField
 import hardcoder.dev.uikit.components.text.textField.internal.OutlinedTextField
 

@@ -6,7 +6,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.presentation.features.diary.tags.DiaryTagsViewModel
-import hardcoder.dev.screens.features.diary.tags.DiaryTags
+import hardcoder.dev.screens.features.diary.tags.observe.DiaryTags
 
 class DiaryTagsScreen : Screen {
 

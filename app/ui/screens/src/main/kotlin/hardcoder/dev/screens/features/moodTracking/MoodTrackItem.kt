@@ -19,15 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.blocks.components.card.Card
+import hardcoder.dev.blocks.components.card.CardConfig
+import hardcoder.dev.blocks.components.chip.Chip
+import hardcoder.dev.blocks.components.chip.ChipConfig
+import hardcoder.dev.blocks.components.text.Description
 import hardcoder.dev.entities.features.moodTracking.MoodActivity
 import hardcoder.dev.entities.features.moodTracking.MoodTrack
 import hardcoder.dev.formatters.DateTimeFormatter
 import hardcoder.dev.icons.resourceId
-import hardcoder.dev.uikit.components.card.Card
-import hardcoder.dev.uikit.components.card.CardConfig
-import hardcoder.dev.uikit.components.chip.Chip
-import hardcoder.dev.uikit.components.chip.ChipConfig
-import hardcoder.dev.uikit.components.text.Description
 import hardcoderdev.healther.app.ui.resources.R
 
 private const val MAX_ACTIVITIES_VISIBLE_IN_ITEM = 4

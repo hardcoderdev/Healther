@@ -6,7 +6,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import hardcoder.dev.presentation.features.waterTracking.drinkType.DrinkTypesViewModel
-import hardcoder.dev.screens.features.waterTracking.drinkType.DrinkTypes
+import hardcoder.dev.screens.features.waterTracking.drinkType.observe.DrinkTypes
 
 class DrinkTypesScreen : Screen {
 

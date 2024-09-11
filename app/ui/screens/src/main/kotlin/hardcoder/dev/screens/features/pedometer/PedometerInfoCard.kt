@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import hardcoder.dev.uikit.components.icon.Icon
-import hardcoder.dev.uikit.components.text.Label
-import hardcoder.dev.uikit.components.text.Title
+import hardcoder.dev.blocks.components.icon.Icon
+import hardcoder.dev.blocks.components.text.Label
+import hardcoder.dev.blocks.components.text.Title
 import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoderdev.healther.app.ui.resources.R
 

@@ -9,6 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import hardcoder.dev.blocks.components.containers.ScaffoldWrapper
+import hardcoder.dev.blocks.components.topBar.TopBarConfig
+import hardcoder.dev.blocks.components.topBar.TopBarType
 import hardcoder.dev.controller.LoadingController
 import hardcoder.dev.entities.features.moodTracking.MoodTrackingChartData
 import hardcoder.dev.entities.features.moodTracking.MoodTrackingStatistics
@@ -16,11 +19,8 @@ import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.MoodTrackingMockDataProvider
 import hardcoder.dev.resolvers.features.moodTracking.MoodTrackingStatisticResolver
 import hardcoder.dev.uikit.components.container.LoadingContainer
-import hardcoder.dev.uikit.components.container.ScaffoldWrapper
-import hardcoder.dev.uikit.components.section.EmptySection
-import hardcoder.dev.uikit.components.topBar.TopBarConfig
-import hardcoder.dev.uikit.components.topBar.TopBarType
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
+import hardcoder.dev.uikit.sections.EmptySection
 import hardcoder.dev.uikit.sections.analytics.ChartSection
 import hardcoder.dev.uikit.sections.analytics.StatisticsSection
 import hardcoder.dev.uikit.values.HealtherTheme
