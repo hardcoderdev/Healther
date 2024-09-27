@@ -1,6 +1,7 @@
 package hardcoder.dev.mock.controllers
 
 import hardcoder.dev.controller.LoadingController
+import hardcoder.dev.controller.SwitchController
 import hardcoder.dev.controller.ToggleController
 import hardcoder.dev.controller.input.InputController
 import hardcoder.dev.controller.input.ValidatedInputController
@@ -27,6 +28,11 @@ object MockControllersProvider {
         coroutineScope = mockCoroutineScope,
         toggle = {},
         isActiveFlow = flowOf(isActive),
+    )
+
+    fun switchController(isActive: Boolean = true) = SwitchController(
+        coroutineScope = mockCoroutineScope,
+        initialValue = isActive,
     )
 
     fun <INPUT : Any> inputController(input: INPUT) = InputController(

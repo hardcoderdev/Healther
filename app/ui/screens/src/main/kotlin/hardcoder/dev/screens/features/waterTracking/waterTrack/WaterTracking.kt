@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.blocks.components.button.fabButton.FabConfig
 import hardcoder.dev.blocks.components.containers.ScaffoldWrapper
+import hardcoder.dev.blocks.components.progressBar.LinearProgressBar
 import hardcoder.dev.blocks.components.text.Headline
 import hardcoder.dev.blocks.components.text.Title
 import hardcoder.dev.blocks.components.topBar.Action
@@ -29,7 +30,6 @@ import hardcoder.dev.mock.controllers.MockControllersProvider
 import hardcoder.dev.mock.dataProviders.features.WaterTrackingMockDataProvider
 import hardcoder.dev.presentation.features.waterTracking.WaterTrackingItem
 import hardcoder.dev.uikit.components.container.LoadingContainer
-import hardcoder.dev.uikit.components.progressBar.LinearProgressBar
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
 import hardcoder.dev.uikit.sections.EmptySection
 import hardcoder.dev.uikit.values.HealtherTheme

@@ -23,6 +23,7 @@ data class DiaryTagUpdateScreen(val diaryTagId: Int) : Screen {
             controller = viewModel.updateController,
             action = navigator::pop,
         )
+
         LaunchedEffectWhenExecuted(
             controller = viewModel.deleteController,
             action = navigator::pop,

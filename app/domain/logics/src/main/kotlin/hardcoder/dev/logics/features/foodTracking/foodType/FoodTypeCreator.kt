@@ -16,11 +16,21 @@ class FoodTypeCreator(
     suspend fun create(
         name: CorrectFoodTypeName,
         icon: Icon,
+        isSpicy: Boolean,
+        isVegetarian: Boolean,
+        proteins: Float,
+        fats: Float,
+        carbohydrates: Float,
     ) = withContext(dispatchers.io) {
         appDatabase.foodTypeQueries.insert(
             id = idGenerator.nextId(),
             name = name.data,
             iconId = icon.id,
+            isSpicy = isSpicy,
+            isVegetarian = isVegetarian,
+            proteins = proteins,
+            fats = fats,
+            carbohydrates = carbohydrates,
         )
     }
 }

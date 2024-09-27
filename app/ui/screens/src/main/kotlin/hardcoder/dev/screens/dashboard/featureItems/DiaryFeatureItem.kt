@@ -25,11 +25,11 @@ import hardcoder.dev.blocks.components.button.circleIconButton.CircleIconButtonC
 import hardcoder.dev.blocks.components.card.Card
 import hardcoder.dev.blocks.components.card.CardConfig
 import hardcoder.dev.blocks.components.icon.Image
+import hardcoder.dev.blocks.components.progressBar.LinearProgressBar
 import hardcoder.dev.blocks.components.text.Description
 import hardcoder.dev.blocks.components.text.Title
 import hardcoder.dev.mock.dataProviders.DashboardMockDataProvider
 import hardcoder.dev.presentation.dashboard.DashboardFeatureItem
-import hardcoder.dev.uikit.components.progressBar.LinearProgressBar
 import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
 import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoderdev.healther.app.ui.resources.R

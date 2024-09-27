@@ -16,4 +16,11 @@
     <string name="foodTracking_fasting_not_started">You haven\'t added meals yet!</string>
     <string name="foodTracking_title_topBar">Food and nutrition</string>
     <string name="fasting_foodTracksList_text">Meals list:</string>
+    <string name="foodTracking_foodTypes_creation_dish_features_text">Dish features:</string>
+    <string name="foodTracking_foodTypes_creation_dish_features_vegetarian_checkbox">Vegetarian dish</string>
+    <string name="foodTracking_foodTypes_creation_dish_features_spiciness_checkbox">Spicy dish</string>
+    <string name="foodTracking_foodTypes_creation_dish_foods_nutrients_text">Food nutrients:</string>
+    <string name="foodTracking_foodTypes_creation_dish_proteins_text">Proteins</string>
+    <string name="foodTracking_foodTypes_creation_dish_fats_text">Fats</string>
+    <string name="foodTracking_foodTypes_creation_dish_carbohydrates_text">Carbohydrates</string>
 </resources>

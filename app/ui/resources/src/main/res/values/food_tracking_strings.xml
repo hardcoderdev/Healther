@@ -16,4 +16,11 @@
     <string name="foodTracking_fasting_not_started">Вы еще не добавляли приемы пищи!</string>
     <string name="foodTracking_title_topBar">Еда и питание</string>
     <string name="fasting_foodTracksList_text">Приемы пищи:</string>
+    <string name="foodTracking_foodTypes_creation_dish_features_text">Особенности блюда:</string>
+    <string name="foodTracking_foodTypes_creation_dish_features_vegetarian_checkbox">Вегетарианское блюдо</string>
+    <string name="foodTracking_foodTypes_creation_dish_features_spiciness_checkbox">Острое блюдо</string>
+    <string name="foodTracking_foodTypes_creation_dish_foods_nutrients_text">БЖУ блюда:</string>
+    <string name="foodTracking_foodTypes_creation_dish_proteins_text">Белки</string>
+    <string name="foodTracking_foodTypes_creation_dish_fats_text">Жиры</string>
+    <string name="foodTracking_foodTypes_creation_dish_carbohydrates_text">Углеводы</string>
 </resources>

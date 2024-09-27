@@ -55,8 +55,9 @@ class DashboardScreen : Screen {
             onCreateDiaryTrack = {
                 navigator += DiaryCreationScreen()
             },
-        ) {
-            navigator += SettingsScreen()
-        }
+            onGoToSettings = {
+                navigator += SettingsScreen()
+            },
+        )
     }
 }

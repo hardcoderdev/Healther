@@ -1,17 +1,24 @@
+import kotlin.Boolean;
+import kotlin.Float;
 import kotlin.Int;
 
 CREATE TABLE IF NOT EXISTS FoodType(
     id INTEGER AS Int NOT NULL PRIMARY KEY,
     name TEXT NOT NULL,
-    iconId INTEGER AS Int NOT NULL
+    iconId INTEGER AS Int NOT NULL,
+    isSpicy INTEGER AS Boolean NOT NULL,
+    isVegetarian INTEGER AS Boolean NOT NULL,
+    proteins REAL AS Float NOT NULL,
+    fats REAL AS Float NOT NULL,
+    carbohydrates REAL AS Float NOT NULL
 );
 
 insert:
-INSERT INTO FoodType (id, name, iconId)
-VALUES (?, ?, ?);
+INSERT INTO FoodType (id, name, iconId, isSpicy, isVegetarian, proteins, fats, carbohydrates)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 
 update:
-UPDATE FoodType SET name = ?, iconId = ? WHERE id = ?;
+UPDATE FoodType SET name = ?, iconId = ?, isSpicy = ?, isVegetarian = ?, proteins = ?, fats = ?, carbohydrates = ? WHERE id = ?;
 
 deleteById:
 DELETE FROM FoodType WHERE id = ?;

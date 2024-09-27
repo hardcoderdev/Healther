@@ -32,5 +32,10 @@ class FoodTypeProvider(
         id = id,
         name = name,
         icon = iconResourceProvider.getIcon(iconId),
+        isSpicy = isSpicy,
+        isVegetarian = isVegetarian,
+        proteins = proteins,
+        fats = fats,
+        carbohydrates = carbohydrates,
     )
 }

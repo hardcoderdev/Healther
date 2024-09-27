@@ -11,6 +11,7 @@ dependencies {
     api(projects.app.ui.statisticsResolvers)
     api(libs.moko.resourcesCompose)
     api(platform(libs.compose.bom))
+    api(libs.compose.material)
     api(libs.compose.activity)
     api(libs.compose.graphics)
     api(libs.compose.tooling)

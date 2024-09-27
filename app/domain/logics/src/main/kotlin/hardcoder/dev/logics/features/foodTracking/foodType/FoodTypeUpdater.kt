@@ -15,11 +15,21 @@ class FoodTypeUpdater(
         id: Int,
         name: CorrectFoodTypeName,
         icon: Icon,
+        isSpicy: Boolean,
+        isVegetarian: Boolean,
+        proteins: Float,
+        fats: Float,
+        carbohydrates: Float,
     ) = withContext(dispatchers.io) {
         appDatabase.foodTypeQueries.update(
             id = id,
             name = name.data,
             iconId = icon.id,
+            isSpicy = isSpicy,
+            isVegetarian = isVegetarian,
+            proteins = proteins,
+            fats = fats,
+            carbohydrates = carbohydrates,
         )
     }
 }

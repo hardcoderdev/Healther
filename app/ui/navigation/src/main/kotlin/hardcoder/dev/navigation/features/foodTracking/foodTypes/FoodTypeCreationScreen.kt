@@ -24,6 +24,11 @@ class FoodTypeCreationScreen : Screen {
         FoodTypeCreation(
             nameInputController = viewModel.nameInputController,
             iconSelectionController = viewModel.iconSingleSelectionController,
+            spicinessSwitchController = viewModel.spicinessToggleController,
+            vegetarianSwitchController = viewModel.vegetarianToggleController,
+            proteinsInputController = viewModel.proteinsInputController,
+            fatsInputController = viewModel.fatsInputController,
+            carbohydratesInputController = viewModel.carbohydratesInputController,
             creationController = viewModel.creationController,
             onGoBack = navigator::pop,
         )

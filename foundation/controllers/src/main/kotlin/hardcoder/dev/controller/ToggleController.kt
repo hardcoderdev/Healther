@@ -25,7 +25,5 @@ class ToggleController(
         }
     }
 
-    data class State(
-        val isActive: Boolean,
-    )
+    data class State(val isActive: Boolean)
 }

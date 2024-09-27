@@ -75,6 +75,11 @@ object NumberInputAdapter : TextFieldInputAdapter<Int> {
     override fun encodeInput(input: String) = input.toIntOrNull() ?: 0
 }
 
+object DecimalInputAdapter : TextFieldInputAdapter<Float> {
+    override fun decodeInput(input: Float) = input.toString()
+    override fun encodeInput(input: String) = input.toFloatOrNull() ?: 0f
+}
+
 enum class TextFieldStyle {
     FILLED, OUTLINED
 }

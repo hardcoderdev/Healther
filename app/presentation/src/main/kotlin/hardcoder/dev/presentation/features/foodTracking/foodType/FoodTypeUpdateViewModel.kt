@@ -2,6 +2,7 @@ package hardcoder.dev.presentation.features.foodTracking.foodType
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
+import hardcoder.dev.controller.SwitchController
 import hardcoder.dev.controller.input.ValidatedInputController
 import hardcoder.dev.controller.input.validateAndRequire
 import hardcoder.dev.controller.request.RequestController
@@ -41,6 +42,10 @@ class FoodTypeUpdateViewModel(
         items = iconResourceProvider.getIcons(),
     )
 
+    val spicinessToggleController = SwitchController(coroutineScope = coroutineScope)
+
+    val vegetarianToggleController = SwitchController(coroutineScope = coroutineScope)
+
     val updateController = RequestController(
         coroutineScope = coroutineScope,
         request = {
@@ -48,6 +53,11 @@ class FoodTypeUpdateViewModel(
                 id = foodTypeId,
                 name = nameInputController.validateAndRequire(),
                 icon = iconSelectionController.requireSelectedItem(),
+                isVegetarian = vegetarianToggleController.isActive(),
+                isSpicy = spicinessToggleController.isActive(),
+                proteins = 0.0f,
+                fats = 0.0f,
+                carbohydrates = 0.0f,
             )
         },
         isAllowedFlow = nameInputController.state.map {

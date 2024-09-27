@@ -46,6 +46,8 @@ data class FoodTypeUpdateScreen(val foodTypeId: Int) : Screen {
         FoodTypeUpdate(
             nameInputController = viewModel.nameInputController,
             iconSelectionController = viewModel.iconSelectionController,
+            spicinessSwitchController = viewModel.spicinessToggleController,
+            vegetarianSwitchController = viewModel.vegetarianToggleController,
             updateController = viewModel.updateController,
             onGoBack = navigator::pop,
             onDeleteDialogShow = {

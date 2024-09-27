@@ -25,7 +25,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hardcoder.dev.blocks.components.button.fabButton.FabConfig
+import hardcoder.dev.blocks.components.chip.content.ChipIconDefaultContent
 import hardcoder.dev.blocks.components.containers.ScaffoldWrapper
+import hardcoder.dev.blocks.components.icon.Icon
+import hardcoder.dev.blocks.components.text.Description
+import hardcoder.dev.blocks.components.text.Label
+import hardcoder.dev.blocks.components.text.Title
 import hardcoder.dev.blocks.components.topBar.Action
 import hardcoder.dev.blocks.components.topBar.ActionConfig
 import hardcoder.dev.blocks.components.topBar.TopBarConfig
@@ -45,23 +50,12 @@ import hardcoder.dev.mock.dataProviders.features.DiaryMockDataProvider
 import hardcoder.dev.resources.features.diary.DateRangeFilterTypeResourcesProvider
 import hardcoder.dev.uikit.components.bottomSheet.BottomSheet
 import hardcoder.dev.uikit.components.bottomSheet.rememberBottomSheetState
-import hardcoder.dev.uikit.components.chip.content.ChipIconDefaultContent
-import hardcoder.dev.uikit.components.container.FabConfig
 import hardcoder.dev.uikit.components.container.LoadingContainer
-import hardcoder.dev.uikit.components.container.ScaffoldWrapper
-import hardcoder.dev.uikit.components.icon.Icon
 import hardcoder.dev.uikit.components.list.flowRow.MultiSelectionChipFlowRow
 import hardcoder.dev.uikit.components.list.flowRow.SingleSelectionChipFlowRow
+import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
 import hardcoder.dev.uikit.sections.EmptyBlock
 import hardcoder.dev.uikit.sections.EmptySection
-import hardcoder.dev.uikit.components.text.Description
-import hardcoder.dev.uikit.components.text.Label
-import hardcoder.dev.uikit.components.text.Title
-import hardcoder.dev.uikit.components.topBar.Action
-import hardcoder.dev.uikit.components.topBar.ActionConfig
-import hardcoder.dev.uikit.components.topBar.TopBarConfig
-import hardcoder.dev.uikit.components.topBar.TopBarType
-import hardcoder.dev.uikit.preview.screens.HealtherScreenPhonePreviews
 import hardcoder.dev.uikit.values.HealtherTheme
 import hardcoderdev.healther.app.ui.resources.R
 import kotlinx.coroutines.launch
@@ -113,8 +107,10 @@ fun Diary(
                 iconResId = R.drawable.ic_create,
             ),
             topBarConfig = TopBarConfig(
-                type = TopBarType.SearchTopBarController(
-                    controller = searchTextInputController,
+                type = TopBarType.SearchTopBar(
+                    searchText = searchTextInputController.getInput(),
+                    onSearchTextChanged = searchTextInputController::changeInput,
+                    onClearClick = { searchTextInputController.changeInput("") },
                     titleResId = R.string.diary_title_topBar,
                     placeholderText = R.string.diary_searchTrack_textField,
                     onGoBack = onGoBack,
@@ -239,7 +235,10 @@ private fun FilterBottomSheetContent(
                 text = stringResource(R.string.diary_filterBottomSheetTitle_text),
                 modifier = Modifier.weight(2f),
             )
-            Icon(iconResId = R.drawable.ic_clear, modifier = Modifier.clickable { onClose() })
+            Icon(
+                iconResId = R.drawable.ic_clear,
+                modifier = Modifier.clickable(onClick = onClose),
+            )
         }
         Spacer(modifier = Modifier.height(32.dp))
         DateRangeSection(
